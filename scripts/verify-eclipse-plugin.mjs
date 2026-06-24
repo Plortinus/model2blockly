@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const pluginVersion = '1.0.7.qualifier';
+const pluginVersion = '1.0.8.qualifier';
 const failures = [];
 
 checkRequiredFiles();
@@ -95,6 +95,11 @@ function checkManifestFiles() {
   const core = read('io.github.plortinus.model2blockly/META-INF/MANIFEST.MF');
   assertNotIncludes(core, 'org.junit', 'Core bundle should not import JUnit in production metadata');
   assertIncludes(core, 'io.github.plortinus.model2blockly.validationpatch', 'Core bundle exports validation patch package');
+
+  const ui = read('io.github.plortinus.model2blockly.ui/META-INF/MANIFEST.MF');
+  for (const dependency of ['org.eclipse.xtext', 'org.eclipse.emf.common', 'org.eclipse.emf.ecore', 'org.eclipse.emf.ecore.xmi']) {
+    assertIncludes(ui, dependency, `UI bundle declares direct runtime dependency ${dependency}`);
+  }
 }
 
 function checkClasspathFiles() {
@@ -202,12 +207,18 @@ function checkFeatureAndUpdateSite() {
   ];
   for (const [index, file] of pluginJars.entries()) {
     assertExists(file);
-    const manifest = execFileSync('unzip', ['-p', abs(file), 'META-INF/MANIFEST.MF'], { encoding: 'utf8' });
+    const manifest = unfoldManifest(
+      execFileSync('unzip', ['-p', abs(file), 'META-INF/MANIFEST.MF'], { encoding: 'utf8' }));
     assertIncludes(manifest, `Bundle-SymbolicName: ${expectedBundleIds[index]};`,
       `${file} uses the renamed Bundle-SymbolicName`);
     assertNotIncludes(manifest, 'org.example.blocklydsl',
       `${file} does not contain the legacy bundle id`);
     assertIncludes(manifest, 'Bundle-ClassPath: ., bin/', `${file} keeps bin/ classes loadable after installation`);
+    if (expectedBundleIds[index] === 'io.github.plortinus.model2blockly.ui') {
+      for (const dependency of ['org.eclipse.xtext', 'org.eclipse.emf.common', 'org.eclipse.emf.ecore', 'org.eclipse.emf.ecore.xmi']) {
+        assertIncludes(manifest, dependency, `${file} declares direct runtime dependency ${dependency}`);
+      }
+    }
   }
   const coreListing = execFileSync('unzip', ['-l', abs(pluginJars[0])], { encoding: 'utf8' });
   assertIncludes(coreListing, 'bin/io/github/plortinus/model2blockly/ValidationPatchService.class',
@@ -498,6 +509,10 @@ function assertNotIncludes(text, needle, message) {
 
 function read(file) {
   return readFileSync(abs(file), 'utf8');
+}
+
+function unfoldManifest(text) {
+  return text.replace(/\r?\n /g, '');
 }
 
 function abs(file) {

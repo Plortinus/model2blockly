@@ -12,7 +12,7 @@ const coreUpdateSiteJar = path.join(
   'io.github.plortinus.model2blockly.updatesite',
   'repository',
   'plugins',
-  'io.github.plortinus.model2blockly_1.0.7.qualifier.jar',
+  'io.github.plortinus.model2blockly_1.0.8.qualifier.jar',
 );
 const eclipsePlugins = process.env.ECLIPSE_PLUGINS || '/Applications/Eclipse.app/Contents/Eclipse/plugins';
 const javaHome = process.env.JAVA_HOME || findBundledJavaHome(eclipsePlugins);

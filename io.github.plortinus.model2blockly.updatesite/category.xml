@@ -2,7 +2,7 @@
 <site>
    <feature
          id="io.github.plortinus.model2blockly.feature"
-         version="1.0.7.qualifier">
+         version="1.0.8.qualifier">
       <category name="model2blockly"/>
    </feature>
 
