@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: io.github.plortinus.model2blockly.ui
+Bundle-ManifestVersion: 2
+Bundle-Name: Model2Blockly UI
+Bundle-Vendor: Xiaoyong Wang
+Bundle-Version: 1.0.7.qualifier
+Bundle-SymbolicName: io.github.plortinus.model2blockly.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: ., bin/
+Require-Bundle: io.github.plortinus.model2blockly,
+ io.github.plortinus.model2blockly.ide,
+ org.eclipse.xtext.ui,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.ui.editors;bundle-version="3.14.300",
+ org.eclipse.ui.ide;bundle-version="3.18.500",
+ org.eclipse.ui,
+ org.eclipse.core.commands,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.jface,
+ org.eclipse.swt,
+ org.eclipse.compare,
+ org.eclipse.xtext.builder,
+ org.eclipse.emf.edit.ui
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Export-Package: io.github.plortinus.model2blockly.ui.quickfix,
+ io.github.plortinus.model2blockly.ui.internal,
+ io.github.plortinus.model2blockly.ui.contentassist
+Bundle-Activator: io.github.plortinus.model2blockly.ui.internal.Model2BlocklyActivator

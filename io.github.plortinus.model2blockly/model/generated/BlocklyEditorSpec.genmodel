@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/io.github.plortinus.model2blockly/src-gen" modelPluginID="io.github.plortinus.model2blockly"
+    forceOverwrite="true" modelName="BlocklyEditorSpec" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="21.0" copyrightFields="false" runtimeVersion="2.36">
+  <genPackages prefix="BlocklySpec" basePackage="io.github.plortinus.model2blockly.intermediate"
+      disposableProviderFactory="true" fileExtensions="blocklyspec" ecorePackage="../blockly_editor_spec.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="../blockly_editor_spec.ecore#//ConnectionType">
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ConnectionType/NONE"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ConnectionType/FREE"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ConnectionType/TYPED"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ConnectionType/OUTPUT"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ConnectionType/OUTPUT_TYPED"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="../blockly_editor_spec.ecore#//FieldType">
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//FieldType/TEXT"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//FieldType/INTEGER"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//FieldType/FLOAT"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//FieldType/BOOLEAN"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//FieldType/DROPDOWN"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//FieldType/COLOUR"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//FieldType/ANGLE"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//FieldType/IMAGE"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//FieldType/LABEL"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="../blockly_editor_spec.ecore#//ValidationType">
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationType/MUST_FOLLOW"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationType/CARDINALITY"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationType/REQUIRED"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationType/FIELD_CARDINALITY"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationType/UNIQUE"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationType/EXPRESSION"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="../blockly_editor_spec.ecore#//ValidationExpressionKind">
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/LOGIC_OPERATION"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/LOGIC_NEGATE"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/LOGIC_COMPARE"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/NUMBER_LITERAL"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/STRING_LITERAL"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/BOOLEAN_LITERAL"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/FIELD_VALUE"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/FIELD_NUMBER"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/FIELD_EXISTS"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/FIELD_COUNT"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/FIELD_UNIQUE"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/TYPE_FIELD_UNIQUE"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/INPUT_COUNT"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/PREVIOUS_BLOCK_IS"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//ValidationExpressionKind/CUSTOM"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="../blockly_editor_spec.ecore#//WorkspaceOptionType">
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//WorkspaceOptionType/STRING"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//WorkspaceOptionType/INTEGER"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//WorkspaceOptionType/BOOLEAN"/>
+      <genEnumLiterals ecoreEnumLiteral="../blockly_editor_spec.ecore#//WorkspaceOptionType/OBJECT"/>
+    </genEnums>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//EditorSpec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//EditorSpec/domainName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//EditorSpec/nsURI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//EditorSpec/nsPrefix"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//EditorSpec/toolboxType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//EditorSpec/codeLanguage"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//EditorSpec/codeFileExtension"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//EditorSpec/runtimeKind"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//EditorSpec/categories"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//EditorSpec/blockTypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//EditorSpec/validations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//EditorSpec/workspaceOptions"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//CategorySpec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//CategorySpec/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//CategorySpec/label"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//CategorySpec/colour"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//CategorySpec/children"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//BlockTypeSpec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/typeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/label"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/colour"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/categoryName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/superTypeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/connectionType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/connectionTypeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/orderedInputNames"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/outputType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/message0"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/inputsInline"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/tooltip"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/helpUrl"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/codeTemplate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//BlockTypeSpec/idFieldName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//BlockTypeSpec/fields"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//BlockTypeSpec/statementInputs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//BlockTypeSpec/referenceFields"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//BlockTypeSpec/valueInputs"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//NamedValue">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//NamedValue/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//NamedValue/value"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//DropdownOption">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//DropdownOption/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//DropdownOption/label"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//FieldSpec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/fieldType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/defaultValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//FieldSpec/options"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/imageUrl"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/imageWidth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/imageHeight"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/imageAlt"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/min"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/max"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/required"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/upperBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/unique"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/ordered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/uiWidget"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/uiLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/uiHelp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/uiPlaceholder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/uiGroup"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/uiOrder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/uiReadonly"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/uiHidden"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//FieldSpec/uiVariant"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//StatementInputSpec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/checkType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/upperBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/uiWidget"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/uiLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/uiHelp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/uiPlaceholder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/uiGroup"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/uiOrder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/uiReadonly"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/uiHidden"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//StatementInputSpec/uiVariant"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//ReferenceFieldSpec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/targetTypeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/required"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/upperBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/unique"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/ordered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/oppositeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/uiWidget"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/uiLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/uiHelp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/uiPlaceholder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/uiGroup"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/uiOrder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/uiReadonly"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/uiHidden"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/uiVariant"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ReferenceFieldSpec/referenceLabelField"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//ValueInputSpec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/checkType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/shadowBlockType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/uiWidget"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/uiLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/uiHelp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/uiPlaceholder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/uiGroup"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/uiOrder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/uiReadonly"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/uiHidden"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValueInputSpec/uiVariant"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//WorkspaceOption">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//WorkspaceOption/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//WorkspaceOption/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//WorkspaceOption/valueType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//WorkspaceOption/children"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//ValidationSpec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/targetType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/predecessorType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/ownerType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/containmentName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/upperBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/fieldName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/fieldKind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationSpec/message"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//ValidationSpec/visualBlock"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//ValidationSpec/visualExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//ValidationBlockSpec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationBlockSpec/blocklyBlockType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//ValidationBlockSpec/fields"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//ValidationBlockSpec/inputs"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//ValidationBlockInput">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationBlockInput/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//ValidationBlockInput/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="../blockly_editor_spec.ecore#//ValidationExpressionSpec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationExpressionSpec/kind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationExpressionSpec/operator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationExpressionSpec/fieldName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationExpressionSpec/typeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationExpressionSpec/literal"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../blockly_editor_spec.ecore#//ValidationExpressionSpec/blocklyBlockType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../blockly_editor_spec.ecore#//ValidationExpressionSpec/children"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

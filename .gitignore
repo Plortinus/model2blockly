@@ -1,0 +1,81 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+dist/
+build/
+_site/
+.next/
+out/
+.nuxt/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE / local workspace
+/.project
+.github/modernize/
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+.DS_Store
+*.bak
+*.orig
+*_gen
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Cache
+.cache/
+.eslintcache
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+dist-ssr/
+
+# Private project notes and manuscript material
+README_ZH.md
+
+# LaTeX auxiliary output
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.out
+*.run.xml
+*.toc
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.xdv
+
+# Eclipse/Xtext local build output
+**/bin/
+**/test-bin/
+**/.metadata/
+**/.recommenders/
+**/.antlr-generator-*.jar
+**/*.java._trace
+**/*.xtendbin
+
+# Keep tracked Xtext/Xtend generated sources for delivery:
+# io.github.plortinus.model2blockly/src-gen/
+# io.github.plortinus.model2blockly/xtend-gen/
+# io.github.plortinus.model2blockly.ide/src-gen/
+# io.github.plortinus.model2blockly.ui/src-gen/

@@ -1,0 +1,19 @@
+{
+  "name": "model2blockly",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:site-docs": "node scripts/build-site-docs.mjs",
+    "categorize:update-site": "node scripts/categorize-update-site.mjs",
+    "prepare:update-site": "node scripts/prepare-update-site.mjs",
+    "rebuild:update-site": "node scripts/rebuild-update-site.mjs",
+    "verify:docs": "node scripts/verify-docs-i18n.mjs",
+    "smoke": "node scripts/smoke-test-generated.mjs",
+    "verify:dsl-validation": "node scripts/verify-dsl-validation.mjs",
+    "verify:plugin": "node scripts/verify-eclipse-plugin.mjs",
+    "verify:patch": "node scripts/verify-validation-patch.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}

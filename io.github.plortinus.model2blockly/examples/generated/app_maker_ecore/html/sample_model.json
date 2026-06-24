@@ -1,0 +1,370 @@
+[
+  {
+    "_type": "App",
+    "_blockId": "sample_App_1",
+    "name": "Task Tracker",
+    "theme": "light",
+    "dataSources": [
+      {
+        "_type": "DataSource",
+        "_blockId": "sample_DataSource_1",
+        "name": "tasks",
+        "url": "https://example.com/api/tasks",
+        "method": "get",
+        "cacheEnabled": "true"
+      }
+    ],
+    "pages": [
+      {
+        "_type": "Page",
+        "_blockId": "sample_Page_1",
+        "title": "Home",
+        "route": "/home",
+        "layout": "column",
+        "navigationStyle": "standard",
+        "backgroundColor": "#ffffff",
+        "scrollable": "true",
+        "components": [
+          {
+            "_type": "TextLabel",
+            "_blockId": "sample_TextLabel_1",
+            "textStyle": "body",
+            "alignment": "start",
+            "content": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_1",
+              "content": "Saved!"
+            }
+          },
+          {
+            "_type": "Button",
+            "_blockId": "sample_Button_1",
+            "labelText": "Save",
+            "style": "primary",
+            "onClick": [
+              {
+                "_type": "Alert",
+                "_blockId": "sample_Alert_1",
+                "message": {
+                  "_type": "TextLiteral",
+                  "_blockId": "sample_TextLiteral_2",
+                  "content": "Saved!"
+                }
+              },
+              {
+                "_type": "Navigate",
+                "_blockId": "sample_Navigate_1",
+                "target": "sample_Page_1"
+              }
+            ]
+          },
+          {
+            "_type": "TextInput",
+            "_blockId": "sample_TextInput_1",
+            "name": "taskTitle",
+            "labelText": "Task title",
+            "hint": "What needs to be done?",
+            "inputType": "plainText",
+            "mandatory": "true"
+          },
+          {
+            "_type": "TextArea",
+            "_blockId": "sample_TextArea_1",
+            "name": "notes",
+            "labelText": "Notes",
+            "hint": "Add details",
+            "rows": "4",
+            "mandatory": "false"
+          },
+          {
+            "_type": "ImageView",
+            "_blockId": "sample_ImageView_1",
+            "altText": "Preview",
+            "fit": "cover",
+            "url": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_3",
+              "content": "Saved!"
+            }
+          },
+          {
+            "_type": "ListView",
+            "_blockId": "sample_ListView_1",
+            "emptyText": "No items yet",
+            "source": "sample_DataSource_1",
+            "itemTitle": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_4",
+              "content": "Saved!"
+            }
+          },
+          {
+            "_type": "ToggleSwitch",
+            "_blockId": "sample_ToggleSwitch_1",
+            "name": "notifyMe",
+            "labelText": "Notify me",
+            "defaultOn": "false"
+          },
+          {
+            "_type": "SelectInput",
+            "_blockId": "sample_SelectInput_1",
+            "name": "priority",
+            "labelText": "Priority",
+            "optionsText": "Low\nMedium\nHigh",
+            "initialValue": "Medium",
+            "mandatory": "false"
+          },
+          {
+            "_type": "CheckboxInput",
+            "_blockId": "sample_CheckboxInput_1",
+            "name": "acceptedTerms",
+            "labelText": "I agree",
+            "defaultChecked": "false"
+          },
+          {
+            "_type": "RadioGroup",
+            "_blockId": "sample_RadioGroup_1",
+            "name": "status",
+            "labelText": "Status",
+            "optionsText": "Open\nIn progress\nDone",
+            "initialValue": "Open"
+          },
+          {
+            "_type": "NumberInput",
+            "_blockId": "sample_NumberInput_1",
+            "name": "estimate",
+            "labelText": "Estimate",
+            "initialValue": "1",
+            "minValue": "0",
+            "maxValue": "100",
+            "stepValue": "1"
+          },
+          {
+            "_type": "SliderInput",
+            "_blockId": "sample_SliderInput_1",
+            "name": "progress",
+            "labelText": "Progress",
+            "initialValue": "50",
+            "minValue": "0",
+            "maxValue": "100",
+            "stepValue": "5"
+          },
+          {
+            "_type": "DateInput",
+            "_blockId": "sample_DateInput_1",
+            "name": "dueDate",
+            "labelText": "Due date",
+            "initialValue": "2026-06-14",
+            "mandatory": "false"
+          },
+          {
+            "_type": "TimeInput",
+            "_blockId": "sample_TimeInput_1",
+            "name": "reminderTime",
+            "labelText": "Reminder time",
+            "initialValue": "09:00",
+            "mandatory": "false"
+          },
+          {
+            "_type": "FileUpload",
+            "_blockId": "sample_FileUpload_1",
+            "name": "attachment",
+            "labelText": "Attachment",
+            "acceptTypes": ".png,.jpg,.pdf",
+            "multipleFiles": "false"
+          },
+          {
+            "_type": "TableView",
+            "_blockId": "sample_TableView_1",
+            "columnsText": "title\nstatus\nsubtitle",
+            "emptyText": "No rows",
+            "source": "sample_DataSource_1"
+          },
+          {
+            "_type": "Container",
+            "_blockId": "sample_Container_1",
+            "layout": "column",
+            "gap": "12",
+            "padding": "16",
+            "children": [
+              {
+                "_type": "TextLabel",
+                "_blockId": "sample_TextLabel_2",
+                "textStyle": "body",
+                "alignment": "start",
+                "content": {
+                  "_type": "TextLiteral",
+                  "_blockId": "sample_TextLiteral_5",
+                  "content": "Saved!"
+                }
+              }
+            ]
+          },
+          {
+            "_type": "Card",
+            "_blockId": "sample_Card_1",
+            "title": "Details",
+            "children": [
+              {
+                "_type": "TextLabel",
+                "_blockId": "sample_TextLabel_3",
+                "textStyle": "body",
+                "alignment": "start",
+                "content": {
+                  "_type": "TextLiteral",
+                  "_blockId": "sample_TextLiteral_6",
+                  "content": "Saved!"
+                }
+              }
+            ]
+          },
+          {
+            "_type": "Form",
+            "_blockId": "sample_Form_1",
+            "title": "Task form",
+            "endpoint": "sample_DataSource_1",
+            "children": [
+              {
+                "_type": "TextLabel",
+                "_blockId": "sample_TextLabel_4",
+                "textStyle": "body",
+                "alignment": "start",
+                "content": {
+                  "_type": "TextLiteral",
+                  "_blockId": "sample_TextLiteral_7",
+                  "content": "Saved!"
+                }
+              }
+            ],
+            "onSubmit": [
+              {
+                "_type": "Alert",
+                "_blockId": "sample_Alert_2",
+                "message": {
+                  "_type": "TextLiteral",
+                  "_blockId": "sample_TextLiteral_8",
+                  "content": "Saved!"
+                }
+              },
+              {
+                "_type": "Navigate",
+                "_blockId": "sample_Navigate_2",
+                "target": "sample_Page_1"
+              }
+            ]
+          },
+          {
+            "_type": "TabsView",
+            "_blockId": "sample_TabsView_1",
+            "panels": [
+              {
+                "_type": "TabPanel",
+                "_blockId": "sample_TabPanel_1",
+                "title": "Details",
+                "children": [
+                  {
+                    "_type": "TextLabel",
+                    "_blockId": "sample_TextLabel_5",
+                    "textStyle": "body",
+                    "alignment": "start"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "_type": "Modal",
+            "_blockId": "sample_Modal_1",
+            "title": "Confirm",
+            "triggerText": "Open modal",
+            "openByDefault": "false",
+            "children": [
+              {
+                "_type": "TextLabel",
+                "_blockId": "sample_TextLabel_6",
+                "textStyle": "body",
+                "alignment": "start",
+                "content": {
+                  "_type": "TextLiteral",
+                  "_blockId": "sample_TextLiteral_9",
+                  "content": "Saved!"
+                }
+              }
+            ]
+          },
+          {
+            "_type": "Toast",
+            "_blockId": "sample_Toast_1",
+            "tone": "info",
+            "message": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_10",
+              "content": "Saved!"
+            }
+          },
+          {
+            "_type": "Divider",
+            "_blockId": "sample_Divider_1",
+            "thickness": "1",
+            "dividerColor": "#e5e7eb"
+          },
+          {
+            "_type": "Spacer",
+            "_blockId": "sample_Spacer_1",
+            "size": "16"
+          }
+        ],
+        "onEnter": [
+          {
+            "_type": "Alert",
+            "_blockId": "sample_Alert_3",
+            "message": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_11",
+              "content": "Saved!"
+            }
+          },
+          {
+            "_type": "Navigate",
+            "_blockId": "sample_Navigate_3",
+            "target": "sample_Page_1"
+          },
+          {
+            "_type": "Alert",
+            "_blockId": "sample_Alert_4",
+            "message": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_12",
+              "content": "Saved!"
+            }
+          },
+          {
+            "_type": "SubmitForm",
+            "_blockId": "sample_SubmitForm_1",
+            "endpoint": "sample_DataSource_1",
+            "successTarget": "sample_Page_1"
+          },
+          {
+            "_type": "SetInputValue",
+            "_blockId": "sample_SetInputValue_1",
+            "input": "sample_TextInput_1",
+            "newValue": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_13",
+              "content": "Saved!"
+            }
+          },
+          {
+            "_type": "OpenUrl",
+            "_blockId": "sample_OpenUrl_1",
+            "url": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_14",
+              "content": "Saved!"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

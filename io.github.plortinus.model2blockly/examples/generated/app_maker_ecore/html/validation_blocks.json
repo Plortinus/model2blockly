@@ -1,0 +1,3263 @@
+{
+  "format": "model2blockly.validationBlocks.v1",
+  "domain": "Appmaker",
+  "customBlockTypes": [
+    { "type": "validation_rule", "label": "Validation rule wrapper", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "wrapper", "expressionTemplate": "" } },
+    { "type": "validation_required_field", "label": "Validation rule: required field/reference", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "requiredField", "expressionTemplate": "has(\"${FIELD}\")" } },
+    { "type": "validation_statement_cardinality", "label": "Validation rule: statement input cardinality", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "statementCardinality", "expressionTemplate": "inputCount(\"${INPUT}\") within ${MIN}..${MAX}" } },
+    { "type": "validation_field_cardinality", "label": "Validation rule: multi-valued field/reference cardinality", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "fieldCardinality", "expressionTemplate": "fieldCount(\"${FIELD}\") within ${MIN}..${MAX}" } },
+    { "type": "validation_expression_rule", "label": "Validation rule: custom semantic expression", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "semanticExpression", "expressionTemplate": "${EXPRESSION}" } },
+    { "type": "validation_field_exists", "label": "Domain accessor: field/reference has a value", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "expressionNode", "expressionTemplate": "has(\"${FIELD}\")" } },
+    { "type": "validation_field_value", "label": "Domain accessor: field/reference value as text", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "expressionNode", "expressionTemplate": "value(\"${FIELD}\")" } },
+    { "type": "validation_field_number", "label": "Domain accessor: field value as number", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "expressionNode", "expressionTemplate": "number(\"${FIELD}\")" } },
+    { "type": "validation_field_count", "label": "Domain accessor: multi-valued field/reference count", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "expressionNode", "expressionTemplate": "fieldCount(\"${FIELD}\")" } },
+    { "type": "validation_field_unique", "label": "Domain accessor: multi-valued field/reference values are unique", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "fieldUnique", "expressionTemplate": "fieldUnique(\"${FIELD}\")" } },
+    { "type": "validation_type_field_unique", "label": "Domain accessor: field values are unique across a block type", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "typeFieldUnique", "expressionTemplate": "typeFieldUnique(\"${TYPE}\", \"${FIELD}\")" } },
+    { "type": "validation_input_count", "label": "Domain accessor: statement input child count", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "expressionNode", "expressionTemplate": "inputCount(\"${INPUT}\")" } },
+    { "type": "validation_previous_block_is", "label": "Domain accessor: previous block type", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "previousBlockIs", "expressionTemplate": "previousBlockIs(\"${TYPE}\")" } }
+  ],
+  "blockDefinitions": [
+    {
+      "type": "validation_rule",
+      "message0": "rule %1",
+      "args0": [{"type": "field_input", "name": "NAME", "text": "validation"}],
+      "message1": "target %1 type %2",
+      "args1": [
+        {"type": "field_input", "name": "TARGET", "text": "-"},
+        {"type": "field_input", "name": "VALIDATION_TYPE", "text": "-"}
+      ],
+      "message2": "message %1",
+      "args2": [{"type": "field_input", "name": "MESSAGE", "text": ""}],
+      "message3": "condition %1",
+      "args3": [{"type": "input_value", "name": "CONDITION", "check": "Boolean"}],
+      "colour": 20,
+      "tooltip": "Generated validation rule",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_required_field",
+      "message0": "%1.%2 is required",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "message1": "kind %1",
+      "args1": [{"type": "field_input", "name": "FIELD_KIND", "text": "field"}],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks that a required field or reference has a value",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_statement_cardinality",
+      "message0": "%1.%2 children count",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "INPUT", "text": "children"}
+      ],
+      "message1": "min %1 max %2",
+      "args1": [
+        {"type": "field_input", "name": "MIN", "text": "0"},
+        {"type": "field_input", "name": "MAX", "text": "unbounded"}
+      ],
+      "output": "Boolean",
+      "colour": 260,
+      "tooltip": "Checks the number of child blocks in a statement input",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_cardinality",
+      "message0": "%1.%2 value count",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "message1": "kind %1 min %2 max %3",
+      "args1": [
+        {"type": "field_input", "name": "FIELD_KIND", "text": "field"},
+        {"type": "field_input", "name": "MIN", "text": "0"},
+        {"type": "field_input", "name": "MAX", "text": "unbounded"}
+      ],
+      "output": "Boolean",
+      "colour": 260,
+      "tooltip": "Checks the number of values in a multi-valued field or reference",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_expression_rule",
+      "message0": "%1 expression %2",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "EXPRESSION", "text": "true"}
+      ],
+      "message1": "expanded %1",
+      "args1": [{"type": "input_value", "name": "CONDITION", "check": "Boolean"}],
+      "output": "Boolean",
+      "colour": 0,
+      "tooltip": "Semantic expression validation, optionally expanded into lower-level blocks",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_exists",
+      "message0": "field %1 exists",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks whether a field or reference has a value",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_value",
+      "message0": "field %1 text",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "String",
+      "colour": 160,
+      "tooltip": "Reads a field value as text",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_number",
+      "message0": "field %1 number",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "Number",
+      "colour": 230,
+      "tooltip": "Reads a field value as a number",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_count",
+      "message0": "field %1 count",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "Number",
+      "colour": 260,
+      "tooltip": "Counts values in a multi-valued field or reference",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_unique",
+      "message0": "%1.%2 values unique",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "message1": "kind %1",
+      "args1": [{"type": "field_input", "name": "FIELD_KIND", "text": "field"}],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks that values inside a multi-valued field or reference are unique",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_type_field_unique",
+      "message0": "all %1 field %2 unique",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks that field values are unique across all blocks of a type",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_input_count",
+      "message0": "input %1 count",
+      "args0": [{"type": "field_input", "name": "INPUT", "text": "children"}],
+      "output": "Number",
+      "colour": 260,
+      "tooltip": "Counts child blocks in a statement input",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_previous_block_is",
+      "message0": "%1 previous block is %2",
+      "args0": [
+        {"type": "field_input", "name": "TARGET", "text": "target"},
+        {"type": "field_input", "name": "TYPE", "text": "Type"}
+      ],
+      "output": "Boolean",
+      "colour": 35,
+      "tooltip": "Checks the previous connected block type",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_custom",
+      "message0": "custom check %1",
+      "args0": [{"type": "field_input", "name": "VALUE", "text": ""}],
+      "output": "Boolean",
+      "colour": 0,
+      "tooltip": "Custom validation check",
+      "helpUrl": ""
+    }
+  ],
+  "rules": [
+    {
+      "name": "Navigate_after_Alert",
+      "validationType": "MUST_FOLLOW",
+      "targetType": "Navigate",
+      "message": "Navigate must follow Alert.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Navigate_after_Alert",
+          "TARGET": "Navigate",
+          "VALIDATION_TYPE": "MUST_FOLLOW",
+          "MESSAGE": "Navigate must follow Alert."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_previous_block_is",
+            "fields": {
+              "TARGET": "Navigate",
+              "TYPE": "Alert"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_previous_block_is",
+        "fields": { "TYPE": "Alert" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_previous_block_is",
+        "runtimeCheck": "previousBlockIs",
+        "runtimeExpression": "previousBlockIs(\"Alert\")",
+        "parameters": {
+          "TARGET": "Navigate",
+          "TYPE": "Alert"
+        }
+      }
+    },
+    {
+      "name": "App_dataSources",
+      "validationType": "CARDINALITY",
+      "targetType": "App",
+      "message": "App.dataSources has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "App_dataSources",
+          "TARGET": "App",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "App.dataSources has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "App",
+              "INPUT": "dataSources",
+              "MIN": "1",
+              "MAX": "20"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_operation",
+        "fields": { "OP": "AND" },
+        "inputs": {
+          "A": {
+            "type": "logic_compare",
+            "fields": { "OP": "GTE" },
+            "inputs": {
+              "A": {
+                "type": "validation_input_count",
+                "fields": { "INPUT": "dataSources" }
+              },
+              "B": {
+                "type": "math_number",
+                "fields": { "NUM": "1" }
+              }
+            }
+          },
+          "B": {
+            "type": "logic_compare",
+            "fields": { "OP": "LTE" },
+            "inputs": {
+              "A": {
+                "type": "validation_input_count",
+                "fields": { "INPUT": "dataSources" }
+              },
+              "B": {
+                "type": "math_number",
+                "fields": { "NUM": "20" }
+              }
+            }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"dataSources\") >= 1 && inputCount(\"dataSources\") <= 20",
+        "parameters": {
+          "TYPE": "App",
+          "INPUT": "dataSources",
+          "MIN": "1",
+          "MAX": "20"
+        }
+      }
+    },
+    {
+      "name": "App_pages",
+      "validationType": "CARDINALITY",
+      "targetType": "App",
+      "message": "App.pages has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "App_pages",
+          "TARGET": "App",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "App.pages has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "App",
+              "INPUT": "pages",
+              "MIN": "1",
+              "MAX": "20"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_operation",
+        "fields": { "OP": "AND" },
+        "inputs": {
+          "A": {
+            "type": "logic_compare",
+            "fields": { "OP": "GTE" },
+            "inputs": {
+              "A": {
+                "type": "validation_input_count",
+                "fields": { "INPUT": "pages" }
+              },
+              "B": {
+                "type": "math_number",
+                "fields": { "NUM": "1" }
+              }
+            }
+          },
+          "B": {
+            "type": "logic_compare",
+            "fields": { "OP": "LTE" },
+            "inputs": {
+              "A": {
+                "type": "validation_input_count",
+                "fields": { "INPUT": "pages" }
+              },
+              "B": {
+                "type": "math_number",
+                "fields": { "NUM": "20" }
+              }
+            }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"pages\") >= 1 && inputCount(\"pages\") <= 20",
+        "parameters": {
+          "TYPE": "App",
+          "INPUT": "pages",
+          "MIN": "1",
+          "MAX": "20"
+        }
+      }
+    },
+    {
+      "name": "Page_components",
+      "validationType": "CARDINALITY",
+      "targetType": "Page",
+      "message": "Page.components has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Page_components",
+          "TARGET": "Page",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "Page.components has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "Page",
+              "INPUT": "components",
+              "MIN": "1",
+              "MAX": "40"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_operation",
+        "fields": { "OP": "AND" },
+        "inputs": {
+          "A": {
+            "type": "logic_compare",
+            "fields": { "OP": "GTE" },
+            "inputs": {
+              "A": {
+                "type": "validation_input_count",
+                "fields": { "INPUT": "components" }
+              },
+              "B": {
+                "type": "math_number",
+                "fields": { "NUM": "1" }
+              }
+            }
+          },
+          "B": {
+            "type": "logic_compare",
+            "fields": { "OP": "LTE" },
+            "inputs": {
+              "A": {
+                "type": "validation_input_count",
+                "fields": { "INPUT": "components" }
+              },
+              "B": {
+                "type": "math_number",
+                "fields": { "NUM": "40" }
+              }
+            }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"components\") >= 1 && inputCount(\"components\") <= 40",
+        "parameters": {
+          "TYPE": "Page",
+          "INPUT": "components",
+          "MIN": "1",
+          "MAX": "40"
+        }
+      }
+    },
+    {
+      "name": "Page_onEnter",
+      "validationType": "CARDINALITY",
+      "targetType": "Page",
+      "message": "Page.onEnter has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Page_onEnter",
+          "TARGET": "Page",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "Page.onEnter has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "Page",
+              "INPUT": "onEnter",
+              "MIN": "0",
+              "MAX": "10"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_compare",
+        "fields": { "OP": "LTE" },
+        "inputs": {
+          "A": {
+            "type": "validation_input_count",
+            "fields": { "INPUT": "onEnter" }
+          },
+          "B": {
+            "type": "math_number",
+            "fields": { "NUM": "10" }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"onEnter\") <= 10",
+        "parameters": {
+          "TYPE": "Page",
+          "INPUT": "onEnter",
+          "MIN": "0",
+          "MAX": "10"
+        }
+      }
+    },
+    {
+      "name": "Button_onClick",
+      "validationType": "CARDINALITY",
+      "targetType": "Button",
+      "message": "Button.onClick has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Button_onClick",
+          "TARGET": "Button",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "Button.onClick has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "Button",
+              "INPUT": "onClick",
+              "MIN": "0",
+              "MAX": "10"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_compare",
+        "fields": { "OP": "LTE" },
+        "inputs": {
+          "A": {
+            "type": "validation_input_count",
+            "fields": { "INPUT": "onClick" }
+          },
+          "B": {
+            "type": "math_number",
+            "fields": { "NUM": "10" }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"onClick\") <= 10",
+        "parameters": {
+          "TYPE": "Button",
+          "INPUT": "onClick",
+          "MIN": "0",
+          "MAX": "10"
+        }
+      }
+    },
+    {
+      "name": "Container_children",
+      "validationType": "CARDINALITY",
+      "targetType": "Container",
+      "message": "Container.children has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Container_children",
+          "TARGET": "Container",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "Container.children has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "Container",
+              "INPUT": "children",
+              "MIN": "0",
+              "MAX": "20"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_compare",
+        "fields": { "OP": "LTE" },
+        "inputs": {
+          "A": {
+            "type": "validation_input_count",
+            "fields": { "INPUT": "children" }
+          },
+          "B": {
+            "type": "math_number",
+            "fields": { "NUM": "20" }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"children\") <= 20",
+        "parameters": {
+          "TYPE": "Container",
+          "INPUT": "children",
+          "MIN": "0",
+          "MAX": "20"
+        }
+      }
+    },
+    {
+      "name": "Card_children",
+      "validationType": "CARDINALITY",
+      "targetType": "Card",
+      "message": "Card.children has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Card_children",
+          "TARGET": "Card",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "Card.children has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "Card",
+              "INPUT": "children",
+              "MIN": "0",
+              "MAX": "20"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_compare",
+        "fields": { "OP": "LTE" },
+        "inputs": {
+          "A": {
+            "type": "validation_input_count",
+            "fields": { "INPUT": "children" }
+          },
+          "B": {
+            "type": "math_number",
+            "fields": { "NUM": "20" }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"children\") <= 20",
+        "parameters": {
+          "TYPE": "Card",
+          "INPUT": "children",
+          "MIN": "0",
+          "MAX": "20"
+        }
+      }
+    },
+    {
+      "name": "Form_children",
+      "validationType": "CARDINALITY",
+      "targetType": "Form",
+      "message": "Form.children has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Form_children",
+          "TARGET": "Form",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "Form.children has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "Form",
+              "INPUT": "children",
+              "MIN": "0",
+              "MAX": "20"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_compare",
+        "fields": { "OP": "LTE" },
+        "inputs": {
+          "A": {
+            "type": "validation_input_count",
+            "fields": { "INPUT": "children" }
+          },
+          "B": {
+            "type": "math_number",
+            "fields": { "NUM": "20" }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"children\") <= 20",
+        "parameters": {
+          "TYPE": "Form",
+          "INPUT": "children",
+          "MIN": "0",
+          "MAX": "20"
+        }
+      }
+    },
+    {
+      "name": "Form_onSubmit",
+      "validationType": "CARDINALITY",
+      "targetType": "Form",
+      "message": "Form.onSubmit has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Form_onSubmit",
+          "TARGET": "Form",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "Form.onSubmit has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "Form",
+              "INPUT": "onSubmit",
+              "MIN": "0",
+              "MAX": "10"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_compare",
+        "fields": { "OP": "LTE" },
+        "inputs": {
+          "A": {
+            "type": "validation_input_count",
+            "fields": { "INPUT": "onSubmit" }
+          },
+          "B": {
+            "type": "math_number",
+            "fields": { "NUM": "10" }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"onSubmit\") <= 10",
+        "parameters": {
+          "TYPE": "Form",
+          "INPUT": "onSubmit",
+          "MIN": "0",
+          "MAX": "10"
+        }
+      }
+    },
+    {
+      "name": "TabsView_panels",
+      "validationType": "CARDINALITY",
+      "targetType": "TabsView",
+      "message": "TabsView.panels has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TabsView_panels",
+          "TARGET": "TabsView",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "TabsView.panels has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "TabsView",
+              "INPUT": "panels",
+              "MIN": "1",
+              "MAX": "8"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_operation",
+        "fields": { "OP": "AND" },
+        "inputs": {
+          "A": {
+            "type": "logic_compare",
+            "fields": { "OP": "GTE" },
+            "inputs": {
+              "A": {
+                "type": "validation_input_count",
+                "fields": { "INPUT": "panels" }
+              },
+              "B": {
+                "type": "math_number",
+                "fields": { "NUM": "1" }
+              }
+            }
+          },
+          "B": {
+            "type": "logic_compare",
+            "fields": { "OP": "LTE" },
+            "inputs": {
+              "A": {
+                "type": "validation_input_count",
+                "fields": { "INPUT": "panels" }
+              },
+              "B": {
+                "type": "math_number",
+                "fields": { "NUM": "8" }
+              }
+            }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"panels\") >= 1 && inputCount(\"panels\") <= 8",
+        "parameters": {
+          "TYPE": "TabsView",
+          "INPUT": "panels",
+          "MIN": "1",
+          "MAX": "8"
+        }
+      }
+    },
+    {
+      "name": "TabPanel_children",
+      "validationType": "CARDINALITY",
+      "targetType": "TabPanel",
+      "message": "TabPanel.children has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TabPanel_children",
+          "TARGET": "TabPanel",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "TabPanel.children has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "TabPanel",
+              "INPUT": "children",
+              "MIN": "0",
+              "MAX": "20"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_compare",
+        "fields": { "OP": "LTE" },
+        "inputs": {
+          "A": {
+            "type": "validation_input_count",
+            "fields": { "INPUT": "children" }
+          },
+          "B": {
+            "type": "math_number",
+            "fields": { "NUM": "20" }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"children\") <= 20",
+        "parameters": {
+          "TYPE": "TabPanel",
+          "INPUT": "children",
+          "MIN": "0",
+          "MAX": "20"
+        }
+      }
+    },
+    {
+      "name": "Modal_children",
+      "validationType": "CARDINALITY",
+      "targetType": "Modal",
+      "message": "Modal.children has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Modal_children",
+          "TARGET": "Modal",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "Modal.children has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "Modal",
+              "INPUT": "children",
+              "MIN": "0",
+              "MAX": "20"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_compare",
+        "fields": { "OP": "LTE" },
+        "inputs": {
+          "A": {
+            "type": "validation_input_count",
+            "fields": { "INPUT": "children" }
+          },
+          "B": {
+            "type": "math_number",
+            "fields": { "NUM": "20" }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"children\") <= 20",
+        "parameters": {
+          "TYPE": "Modal",
+          "INPUT": "children",
+          "MIN": "0",
+          "MAX": "20"
+        }
+      }
+    },
+    {
+      "name": "App_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "App",
+      "message": "App.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "App_name_required",
+          "TARGET": "App",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "App.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "App",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "App",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "DataSource_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "DataSource",
+      "message": "DataSource.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "DataSource_name_required",
+          "TARGET": "DataSource",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "DataSource.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "DataSource",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "DataSource",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "DataSource_url_required",
+      "validationType": "REQUIRED",
+      "targetType": "DataSource",
+      "message": "DataSource.url is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "DataSource_url_required",
+          "TARGET": "DataSource",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "DataSource.url is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "DataSource",
+              "FIELD": "url",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "url" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"url\")",
+        "parameters": {
+          "TYPE": "DataSource",
+          "FIELD": "url",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "Page_title_required",
+      "validationType": "REQUIRED",
+      "targetType": "Page",
+      "message": "Page.title is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Page_title_required",
+          "TARGET": "Page",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "Page.title is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "Page",
+              "FIELD": "title",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "title" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"title\")",
+        "parameters": {
+          "TYPE": "Page",
+          "FIELD": "title",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "Page_route_required",
+      "validationType": "REQUIRED",
+      "targetType": "Page",
+      "message": "Page.route is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Page_route_required",
+          "TARGET": "Page",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "Page.route is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "Page",
+              "FIELD": "route",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "route" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"route\")",
+        "parameters": {
+          "TYPE": "Page",
+          "FIELD": "route",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "Button_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "Button",
+      "message": "Button.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Button_labelText_required",
+          "TARGET": "Button",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "Button.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "Button",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "Button",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "TextInput_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "TextInput",
+      "message": "TextInput.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TextInput_name_required",
+          "TARGET": "TextInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TextInput.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TextInput",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "TextInput",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "TextInput_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "TextInput",
+      "message": "TextInput.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TextInput_labelText_required",
+          "TARGET": "TextInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TextInput.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TextInput",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "TextInput",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "TextInput_hint_required",
+      "validationType": "REQUIRED",
+      "targetType": "TextInput",
+      "message": "TextInput.hint is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TextInput_hint_required",
+          "TARGET": "TextInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TextInput.hint is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TextInput",
+              "FIELD": "hint",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "hint" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"hint\")",
+        "parameters": {
+          "TYPE": "TextInput",
+          "FIELD": "hint",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "TextArea_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "TextArea",
+      "message": "TextArea.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TextArea_name_required",
+          "TARGET": "TextArea",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TextArea.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TextArea",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "TextArea",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "TextArea_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "TextArea",
+      "message": "TextArea.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TextArea_labelText_required",
+          "TARGET": "TextArea",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TextArea.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TextArea",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "TextArea",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "ListView_source_required",
+      "validationType": "REQUIRED",
+      "targetType": "ListView",
+      "message": "ListView.source is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "ListView_source_required",
+          "TARGET": "ListView",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "ListView.source is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "ListView",
+              "FIELD": "source",
+              "FIELD_KIND": "reference"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "source" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"source\")",
+        "parameters": {
+          "TYPE": "ListView",
+          "FIELD": "source",
+          "FIELD_KIND": "reference"
+        }
+      }
+    },
+    {
+      "name": "ToggleSwitch_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "ToggleSwitch",
+      "message": "ToggleSwitch.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "ToggleSwitch_name_required",
+          "TARGET": "ToggleSwitch",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "ToggleSwitch.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "ToggleSwitch",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "ToggleSwitch",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "ToggleSwitch_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "ToggleSwitch",
+      "message": "ToggleSwitch.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "ToggleSwitch_labelText_required",
+          "TARGET": "ToggleSwitch",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "ToggleSwitch.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "ToggleSwitch",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "ToggleSwitch",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "SelectInput_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "SelectInput",
+      "message": "SelectInput.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "SelectInput_name_required",
+          "TARGET": "SelectInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "SelectInput.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "SelectInput",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "SelectInput",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "SelectInput_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "SelectInput",
+      "message": "SelectInput.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "SelectInput_labelText_required",
+          "TARGET": "SelectInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "SelectInput.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "SelectInput",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "SelectInput",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "SelectInput_optionsText_required",
+      "validationType": "REQUIRED",
+      "targetType": "SelectInput",
+      "message": "SelectInput.optionsText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "SelectInput_optionsText_required",
+          "TARGET": "SelectInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "SelectInput.optionsText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "SelectInput",
+              "FIELD": "optionsText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "optionsText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"optionsText\")",
+        "parameters": {
+          "TYPE": "SelectInput",
+          "FIELD": "optionsText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "CheckboxInput_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "CheckboxInput",
+      "message": "CheckboxInput.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "CheckboxInput_name_required",
+          "TARGET": "CheckboxInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "CheckboxInput.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "CheckboxInput",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "CheckboxInput",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "CheckboxInput_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "CheckboxInput",
+      "message": "CheckboxInput.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "CheckboxInput_labelText_required",
+          "TARGET": "CheckboxInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "CheckboxInput.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "CheckboxInput",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "CheckboxInput",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "RadioGroup_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "RadioGroup",
+      "message": "RadioGroup.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "RadioGroup_name_required",
+          "TARGET": "RadioGroup",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "RadioGroup.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "RadioGroup",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "RadioGroup",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "RadioGroup_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "RadioGroup",
+      "message": "RadioGroup.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "RadioGroup_labelText_required",
+          "TARGET": "RadioGroup",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "RadioGroup.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "RadioGroup",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "RadioGroup",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "RadioGroup_optionsText_required",
+      "validationType": "REQUIRED",
+      "targetType": "RadioGroup",
+      "message": "RadioGroup.optionsText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "RadioGroup_optionsText_required",
+          "TARGET": "RadioGroup",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "RadioGroup.optionsText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "RadioGroup",
+              "FIELD": "optionsText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "optionsText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"optionsText\")",
+        "parameters": {
+          "TYPE": "RadioGroup",
+          "FIELD": "optionsText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "NumberInput_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "NumberInput",
+      "message": "NumberInput.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "NumberInput_name_required",
+          "TARGET": "NumberInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "NumberInput.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "NumberInput",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "NumberInput",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "NumberInput_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "NumberInput",
+      "message": "NumberInput.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "NumberInput_labelText_required",
+          "TARGET": "NumberInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "NumberInput.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "NumberInput",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "NumberInput",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "SliderInput_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "SliderInput",
+      "message": "SliderInput.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "SliderInput_name_required",
+          "TARGET": "SliderInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "SliderInput.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "SliderInput",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "SliderInput",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "SliderInput_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "SliderInput",
+      "message": "SliderInput.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "SliderInput_labelText_required",
+          "TARGET": "SliderInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "SliderInput.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "SliderInput",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "SliderInput",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "DateInput_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "DateInput",
+      "message": "DateInput.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "DateInput_name_required",
+          "TARGET": "DateInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "DateInput.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "DateInput",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "DateInput",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "DateInput_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "DateInput",
+      "message": "DateInput.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "DateInput_labelText_required",
+          "TARGET": "DateInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "DateInput.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "DateInput",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "DateInput",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "TimeInput_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "TimeInput",
+      "message": "TimeInput.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TimeInput_name_required",
+          "TARGET": "TimeInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TimeInput.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TimeInput",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "TimeInput",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "TimeInput_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "TimeInput",
+      "message": "TimeInput.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TimeInput_labelText_required",
+          "TARGET": "TimeInput",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TimeInput.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TimeInput",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "TimeInput",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "FileUpload_name_required",
+      "validationType": "REQUIRED",
+      "targetType": "FileUpload",
+      "message": "FileUpload.name is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "FileUpload_name_required",
+          "TARGET": "FileUpload",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "FileUpload.name is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "FileUpload",
+              "FIELD": "name",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"name\")",
+        "parameters": {
+          "TYPE": "FileUpload",
+          "FIELD": "name",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "FileUpload_labelText_required",
+      "validationType": "REQUIRED",
+      "targetType": "FileUpload",
+      "message": "FileUpload.labelText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "FileUpload_labelText_required",
+          "TARGET": "FileUpload",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "FileUpload.labelText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "FileUpload",
+              "FIELD": "labelText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "labelText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"labelText\")",
+        "parameters": {
+          "TYPE": "FileUpload",
+          "FIELD": "labelText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "TableView_columnsText_required",
+      "validationType": "REQUIRED",
+      "targetType": "TableView",
+      "message": "TableView.columnsText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TableView_columnsText_required",
+          "TARGET": "TableView",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TableView.columnsText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TableView",
+              "FIELD": "columnsText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "columnsText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"columnsText\")",
+        "parameters": {
+          "TYPE": "TableView",
+          "FIELD": "columnsText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "TableView_source_required",
+      "validationType": "REQUIRED",
+      "targetType": "TableView",
+      "message": "TableView.source is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TableView_source_required",
+          "TARGET": "TableView",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TableView.source is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TableView",
+              "FIELD": "source",
+              "FIELD_KIND": "reference"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "source" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"source\")",
+        "parameters": {
+          "TYPE": "TableView",
+          "FIELD": "source",
+          "FIELD_KIND": "reference"
+        }
+      }
+    },
+    {
+      "name": "Card_title_required",
+      "validationType": "REQUIRED",
+      "targetType": "Card",
+      "message": "Card.title is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Card_title_required",
+          "TARGET": "Card",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "Card.title is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "Card",
+              "FIELD": "title",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "title" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"title\")",
+        "parameters": {
+          "TYPE": "Card",
+          "FIELD": "title",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "Form_title_required",
+      "validationType": "REQUIRED",
+      "targetType": "Form",
+      "message": "Form.title is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Form_title_required",
+          "TARGET": "Form",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "Form.title is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "Form",
+              "FIELD": "title",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "title" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"title\")",
+        "parameters": {
+          "TYPE": "Form",
+          "FIELD": "title",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "TabPanel_title_required",
+      "validationType": "REQUIRED",
+      "targetType": "TabPanel",
+      "message": "TabPanel.title is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TabPanel_title_required",
+          "TARGET": "TabPanel",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TabPanel.title is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TabPanel",
+              "FIELD": "title",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "title" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"title\")",
+        "parameters": {
+          "TYPE": "TabPanel",
+          "FIELD": "title",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "Modal_title_required",
+      "validationType": "REQUIRED",
+      "targetType": "Modal",
+      "message": "Modal.title is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Modal_title_required",
+          "TARGET": "Modal",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "Modal.title is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "Modal",
+              "FIELD": "title",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "title" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"title\")",
+        "parameters": {
+          "TYPE": "Modal",
+          "FIELD": "title",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "Modal_triggerText_required",
+      "validationType": "REQUIRED",
+      "targetType": "Modal",
+      "message": "Modal.triggerText is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Modal_triggerText_required",
+          "TARGET": "Modal",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "Modal.triggerText is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "Modal",
+              "FIELD": "triggerText",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "triggerText" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"triggerText\")",
+        "parameters": {
+          "TYPE": "Modal",
+          "FIELD": "triggerText",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "Navigate_target_required",
+      "validationType": "REQUIRED",
+      "targetType": "Navigate",
+      "message": "Navigate.target is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Navigate_target_required",
+          "TARGET": "Navigate",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "Navigate.target is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "Navigate",
+              "FIELD": "target",
+              "FIELD_KIND": "reference"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "target" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"target\")",
+        "parameters": {
+          "TYPE": "Navigate",
+          "FIELD": "target",
+          "FIELD_KIND": "reference"
+        }
+      }
+    },
+    {
+      "name": "SubmitForm_endpoint_required",
+      "validationType": "REQUIRED",
+      "targetType": "SubmitForm",
+      "message": "SubmitForm.endpoint is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "SubmitForm_endpoint_required",
+          "TARGET": "SubmitForm",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "SubmitForm.endpoint is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "SubmitForm",
+              "FIELD": "endpoint",
+              "FIELD_KIND": "reference"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "endpoint" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"endpoint\")",
+        "parameters": {
+          "TYPE": "SubmitForm",
+          "FIELD": "endpoint",
+          "FIELD_KIND": "reference"
+        }
+      }
+    },
+    {
+      "name": "SetInputValue_input_required",
+      "validationType": "REQUIRED",
+      "targetType": "SetInputValue",
+      "message": "SetInputValue.input is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "SetInputValue_input_required",
+          "TARGET": "SetInputValue",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "SetInputValue.input is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "SetInputValue",
+              "FIELD": "input",
+              "FIELD_KIND": "reference"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "input" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"input\")",
+        "parameters": {
+          "TYPE": "SetInputValue",
+          "FIELD": "input",
+          "FIELD_KIND": "reference"
+        }
+      }
+    },
+    {
+      "name": "TextLiteral_content_required",
+      "validationType": "REQUIRED",
+      "targetType": "TextLiteral",
+      "message": "TextLiteral.content is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TextLiteral_content_required",
+          "TARGET": "TextLiteral",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "TextLiteral.content is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "TextLiteral",
+              "FIELD": "content",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "content" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"content\")",
+        "parameters": {
+          "TYPE": "TextLiteral",
+          "FIELD": "content",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "InputValue_input_required",
+      "validationType": "REQUIRED",
+      "targetType": "InputValue",
+      "message": "InputValue.input is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "InputValue_input_required",
+          "TARGET": "InputValue",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "InputValue.input is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "InputValue",
+              "FIELD": "input",
+              "FIELD_KIND": "reference"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "input" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"input\")",
+        "parameters": {
+          "TYPE": "InputValue",
+          "FIELD": "input",
+          "FIELD_KIND": "reference"
+        }
+      }
+    },
+    {
+      "name": "DataField_fieldName_required",
+      "validationType": "REQUIRED",
+      "targetType": "DataField",
+      "message": "DataField.fieldName is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "DataField_fieldName_required",
+          "TARGET": "DataField",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "DataField.fieldName is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "DataField",
+              "FIELD": "fieldName",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "fieldName" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"fieldName\")",
+        "parameters": {
+          "TYPE": "DataField",
+          "FIELD": "fieldName",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    },
+    {
+      "name": "DataSource_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "DataSource",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "DataSource_name_unique",
+          "TARGET": "DataSource",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "DataSource",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "DataSource", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"DataSource\", \"name\")",
+        "parameters": {
+          "TYPE": "DataSource",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "TextInput_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "TextInput",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TextInput_name_unique",
+          "TARGET": "TextInput",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "TextInput",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "TextInput", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"TextInput\", \"name\")",
+        "parameters": {
+          "TYPE": "TextInput",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "TextArea_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "TextArea",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TextArea_name_unique",
+          "TARGET": "TextArea",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "TextArea",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "TextArea", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"TextArea\", \"name\")",
+        "parameters": {
+          "TYPE": "TextArea",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "ToggleSwitch_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "ToggleSwitch",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "ToggleSwitch_name_unique",
+          "TARGET": "ToggleSwitch",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "ToggleSwitch",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "ToggleSwitch", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"ToggleSwitch\", \"name\")",
+        "parameters": {
+          "TYPE": "ToggleSwitch",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "SelectInput_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "SelectInput",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "SelectInput_name_unique",
+          "TARGET": "SelectInput",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "SelectInput",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "SelectInput", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"SelectInput\", \"name\")",
+        "parameters": {
+          "TYPE": "SelectInput",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "CheckboxInput_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "CheckboxInput",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "CheckboxInput_name_unique",
+          "TARGET": "CheckboxInput",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "CheckboxInput",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "CheckboxInput", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"CheckboxInput\", \"name\")",
+        "parameters": {
+          "TYPE": "CheckboxInput",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "RadioGroup_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "RadioGroup",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "RadioGroup_name_unique",
+          "TARGET": "RadioGroup",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "RadioGroup",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "RadioGroup", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"RadioGroup\", \"name\")",
+        "parameters": {
+          "TYPE": "RadioGroup",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "NumberInput_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "NumberInput",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "NumberInput_name_unique",
+          "TARGET": "NumberInput",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "NumberInput",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "NumberInput", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"NumberInput\", \"name\")",
+        "parameters": {
+          "TYPE": "NumberInput",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "SliderInput_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "SliderInput",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "SliderInput_name_unique",
+          "TARGET": "SliderInput",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "SliderInput",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "SliderInput", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"SliderInput\", \"name\")",
+        "parameters": {
+          "TYPE": "SliderInput",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "DateInput_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "DateInput",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "DateInput_name_unique",
+          "TARGET": "DateInput",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "DateInput",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "DateInput", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"DateInput\", \"name\")",
+        "parameters": {
+          "TYPE": "DateInput",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "TimeInput_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "TimeInput",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TimeInput_name_unique",
+          "TARGET": "TimeInput",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "TimeInput",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "TimeInput", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"TimeInput\", \"name\")",
+        "parameters": {
+          "TYPE": "TimeInput",
+          "FIELD": "name"
+        }
+      }
+    },
+    {
+      "name": "FileUpload_name_unique",
+      "validationType": "UNIQUE",
+      "targetType": "FileUpload",
+      "message": "UNIQUE",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "FileUpload_name_unique",
+          "TARGET": "FileUpload",
+          "VALIDATION_TYPE": "UNIQUE",
+          "MESSAGE": "UNIQUE"
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_type_field_unique",
+            "fields": {
+              "TYPE": "FileUpload",
+              "FIELD": "name"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_type_field_unique",
+        "fields": { "TYPE": "FileUpload", "FIELD": "name" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_type_field_unique",
+        "runtimeCheck": "typeFieldUnique",
+        "runtimeExpression": "typeFieldUnique(\"FileUpload\", \"name\")",
+        "parameters": {
+          "TYPE": "FileUpload",
+          "FIELD": "name"
+        }
+      }
+    }
+  ]
+}

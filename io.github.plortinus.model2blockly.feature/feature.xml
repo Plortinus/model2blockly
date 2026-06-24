@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="io.github.plortinus.model2blockly.feature"
+      label="%featureName"
+      version="1.0.7.qualifier"
+      provider-name="%providerName">
+
+   <description>
+      %description
+   </description>
+
+   <plugin
+         id="io.github.plortinus.model2blockly"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="io.github.plortinus.model2blockly.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="io.github.plortinus.model2blockly.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

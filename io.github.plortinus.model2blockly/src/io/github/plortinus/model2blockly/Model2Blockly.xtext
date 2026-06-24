@@ -1,0 +1,193 @@
+/**
+ * DSL para definir metamodelos de dominio y generar automáticamente editores Blockly.
+ *
+ * El usuario describe su dominio con clases, atributos, contenciones y referencias.
+ * El generador mapea automáticamente cada clase a un bloque Blockly.
+ * Las anotaciones opcionales (colour, label, category) permiten personalizar la
+ * presentación sin necesidad de conocer Blockly.
+ *
+ * Flujo: .model2blockly → modelo EMF del DSL → EditorSpec EMF → XMI intermedio
+ * → recarga y validación → Blockly (JSON + JS + HTML)
+ */
+grammar io.github.plortinus.model2blockly.Model2Blockly with org.eclipse.xtext.common.Terminals
+
+generate model2Blockly "https://plortinus.github.io/model2blockly/ns/model2blockly"
+
+/* ═══════════════════════════════════════════════════════════════════
+   Raíz: un dominio con clases agrupadas opcionalmente en categorías
+   ═══════════════════════════════════════════════════════════════════ */
+
+DomainModel:
+  'domain' name=ID
+  ('codeLanguage' codeLanguage=STRING)?
+  ('codeFileExtension' codeFileExtension=STRING)?
+  ('runtimeKind' runtimeKind=STRING)?
+  (workspace=WorkspaceConfig)?
+  (categories += CategoryDef)*
+  (classes += ClassDef)*
+  (constraints += ConstraintDef)*
+  (validations += ValidationDef)*;
+
+/* ─── Categorías (para organizar la paleta de bloques) ─────────── */
+
+CategoryDef:
+  'category' name=ID
+  ('label' label=STRING)?
+  ('colour' colour=INT)?
+  ('{' (subcategories += CategoryDef)* '}')?;
+
+/* ─── Clases del dominio ─────────────────────────────────────────
+   Cada clase se convierte en un bloque Blockly.
+   - Sus atributos → campos del bloque (field_input, field_number, etc.)
+   - Sus contenciones → statement inputs (bloques anidados)
+   - Sus value-inputs → value inputs (conectores horizontales)
+   - Sus referencias → dropdowns o indicadores
+   - output → bloque con conexión de salida (pieza de puzzle)
+   - inline → campos en línea horizontal
+   ─────────────────────────────────────────────────────────────── */
+
+ClassDef:
+  (abstract?='abstract')? (output?='output' ('as' outputType=[ClassDef])?)? 'class' name=ID
+  ('extends' superClass=[ClassDef])?
+  ('category' category=[CategoryDef])?
+  ('colour' colour=INT)?
+  ('label' label=STRING)?
+  ('message0' message0=STRING)?
+  ('tooltip' tooltip=STRING)?
+  ('helpUrl' helpUrl=STRING)?
+  ('inputsInline' inputsInline=BoolVal)?
+  (inline?='inline')?
+  ('code' codeTemplate=STRING)?
+  '{'
+    (features += Feature)*
+  '}';
+
+/* ─── Features: atributos, contenciones, value inputs y referencias ─ */
+
+Feature:
+  Attribute | Containment | Reference | ValueInput;
+
+Attribute:
+  'attribute' name=ID ':' type=AttributeType
+  (cardinality=Cardinality)?
+  ('default' defaultValue=STRING)?
+  ('min' min=STRING)?
+  ('max' max=STRING)?
+  ('src' imageUrl=STRING)?
+  ('width' imageWidth=INT)?
+  ('height' imageHeight=INT)?
+  ('alt' imageAlt=STRING)?
+  (required?='required')?
+  (id?='modelId')?
+  (unique?='unique')?
+  (nonUnique?='nonUnique')?
+  (ordered?='ordered')?
+  (unordered?='unordered')?
+  (ui=UiOptions)?;
+
+Containment:
+  'contains' type=[ClassDef] name=ID
+  ('[' lower=INT '..' upper=INT ']')?
+  (ui=UiOptions)?;
+
+Reference:
+  'reference' type=[ClassDef] name=ID
+  (cardinality=Cardinality)?
+  ('opposite' oppositeName=ID)?
+  (required?='required')?
+  (unique?='unique')?
+  (nonUnique?='nonUnique')?
+  (ordered?='ordered')?
+  (unordered?='unordered')?
+  (ui=UiOptions)?;
+
+ValueInput:
+  'value' type=[ClassDef] name=ID
+  ('shadow' shadowType=[ClassDef])?
+  (ui=UiOptions)?;
+
+Cardinality:
+  '[' lower=INT '..' upper=INT ']';
+
+UiOptions:
+  (
+    'widget' widget=UiWidget
+    | 'uiLabel' uiLabel=STRING
+    | 'help' help=STRING
+    | 'placeholder' placeholder=STRING
+    | 'group' group=STRING
+    | 'order' order=INT
+    | uiReadonly?='readonly'
+    | uiHidden?='hidden'
+    | 'variant' variant=UiVariant
+    | 'referenceLabelField' referenceLabelField=ID
+  )+;
+
+enum UiWidget:
+  TEXT='text' | TEXTAREA='textarea' | NUMBER='number' | SLIDER='slider'
+  | SWITCH='switch' | CHECKBOX='checkbox' | SELECT='select' | RADIO='radio'
+  | COLOR='color' | ANGLE='angle' | IMAGE='image'
+  | REFERENCE_SELECT='reference-select'
+  | SLOT='slot' | EXPRESSION_SLOT='expression-slot';
+
+enum UiVariant:
+  DEFAULT='default' | COMPACT='compact' | PROMINENT='prominent';
+
+/* ─── Tipos de atributo ──────────────────────────────────────── */
+
+AttributeType:
+  SimpleType | EnumType;
+
+SimpleType:
+  typeName=SimpleTypeName;
+
+enum SimpleTypeName:
+  string = 'string' | int = 'int' | boolean = 'boolean' | float = 'float'
+  | colour = 'colour' | angle = 'angle' | image = 'image' | label = 'label';
+
+EnumType:
+  'enum' '{' literals+=EnumLiteral (',' literals+=EnumLiteral)* '}';
+
+EnumLiteral:
+  name=ID ('=' label=STRING)?;
+
+/* ─── Restricciones entre clases ─────────────────────────────── */
+
+ConstraintDef:
+  'constraint' name=ID
+  'on' target=[ClassDef]
+  ':' 'must' 'follow' predecessor=[ClassDef];
+
+ValidationDef:
+  'validation' name=ID
+  'on' target=[ClassDef]
+  ':' kind=ValidationKind expression=STRING
+  ('errorMessage' message=STRING)?;
+
+enum ValidationKind:
+  EXPRESSION='expression' | CONDITION='condition' | JS='js' | OCL='ocl';
+
+/* ─── Workspace configuration (thin wrapper over Blockly options) ─── */
+
+WorkspaceConfig:
+  'workspace' '{'
+    (options += WorkspaceOption)*
+  '}';
+
+WorkspaceOption:
+  StringOption | IntOption | BoolOption | ObjectOption;
+
+StringOption:
+  key=ID ':' value=STRING;
+
+IntOption:
+  key=ID ':' value=INT;
+
+BoolOption:
+  key=ID ':' value=BoolVal;
+
+ObjectOption:
+  key=ID ':' '{' (entries += WorkspaceOption)* '}';
+
+enum BoolVal:
+  TRUE='true' | FALSE='false';

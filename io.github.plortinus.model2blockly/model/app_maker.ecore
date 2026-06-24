@@ -1,0 +1,1607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="appmaker"
+    nsURI="http://www.example.org/appmaker"
+    nsPrefix="app">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.zoom.startScale" value="1"/>
+    <details key="workspace.zoom.maxScale" value="3"/>
+    <details key="workspace.zoom.minScale" value="0.3"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+    <details key="workspace.move.wheel" value="true"/>
+  </eAnnotations>
+  <eAnnotations source="code">
+    <details key="language" value="javascript"/>
+    <details key="fileExtension" value="js"/>
+  </eAnnotations>
+  <eAnnotations source="runtime">
+    <details key="kind" value="appMaker"/>
+  </eAnnotations>
+
+  <eClassifiers xsi:type="ecore:EClass" name="App">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Pages"/>
+      <details key="tooltip" value="Root low-code app model containing data sources and pages."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="App"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="app(&quot;{{name}}&quot;, {&#10;theme: &quot;{{theme}}&quot;,&#10;dataSources: [&#10;{{statements:dataSources}}&#10;],&#10;pages: [&#10;{{statements:pages}}&#10;]&#10;});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Task Tracker">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="App name"/>
+        <details key="group" value="App"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="theme"
+        eType="#//Theme" defaultValueLiteral="light">
+      <eAnnotations source="ui">
+        <details key="label" value="Theme"/>
+        <details key="group" value="App"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataSources"
+        lowerBound="1" upperBound="20" eType="#//DataSource" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="Data sources"/>
+        <details key="group" value="Data"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pages"
+        lowerBound="1" upperBound="20" eType="#//Page" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="Pages"/>
+        <details key="group" value="Pages"/>
+        <details key="order" value="4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="DataSource">
+    <eAnnotations source="blockly">
+      <details key="colour" value="210"/>
+      <details key="category" value="Data"/>
+      <details key="inputsInline" value="true"/>
+      <details key="tooltip" value="HTTP data source that components and actions can reference."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Data source"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="dataSource(&quot;{{name}}&quot;, {&#10;url: &quot;{{url}}&quot;,&#10;method: &quot;{{method}}&quot;,&#10;cacheEnabled: &quot;{{cacheEnabled}}&quot; === &quot;TRUE&quot;&#10;});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="tasks">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Name"/>
+        <details key="group" value="Data"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="https://example.com/api/tasks">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="URL"/>
+        <details key="group" value="Data"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="method"
+        eType="#//HttpMethod" defaultValueLiteral="get">
+      <eAnnotations source="ui">
+        <details key="label" value="Method"/>
+        <details key="group" value="Data"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cacheEnabled"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true">
+      <eAnnotations source="ui">
+        <details key="widget" value="checkbox"/>
+        <details key="label" value="Cache"/>
+        <details key="group" value="Data"/>
+        <details key="order" value="4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Page">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Pages"/>
+      <details key="tooltip" value="A navigable page with design settings, components and optional lifecycle actions."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Page"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="page(&quot;{{title}}&quot;, {&#10;route: &quot;{{route}}&quot;,&#10;layout: &quot;{{layout}}&quot;,&#10;navigation: &quot;{{navigationStyle}}&quot;,&#10;backgroundColor: &quot;{{backgroundColor}}&quot;,&#10;scrollable: &quot;{{scrollable}}&quot; === &quot;TRUE&quot;,&#10;onEnter: [&#10;{{statements:onEnter}}&#10;],&#10;components: [&#10;{{statements:components}}&#10;]&#10;});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Home">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Title"/>
+        <details key="group" value="Page"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="route" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="/home">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Route"/>
+        <details key="group" value="Page"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout"
+        eType="#//PageLayout" defaultValueLiteral="column">
+      <eAnnotations source="ui">
+        <details key="label" value="Layout"/>
+        <details key="group" value="Design"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="navigationStyle"
+        eType="#//NavigationStyle" defaultValueLiteral="standard">
+      <eAnnotations source="ui">
+        <details key="label" value="Navigation"/>
+        <details key="group" value="Design"/>
+        <details key="order" value="4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="#ffffff">
+      <eAnnotations source="blockly">
+        <details key="type" value="field_colour"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="color"/>
+        <details key="label" value="Background"/>
+        <details key="group" value="Design"/>
+        <details key="order" value="5"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scrollable"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true">
+      <eAnnotations source="ui">
+        <details key="widget" value="checkbox"/>
+        <details key="label" value="Scrollable"/>
+        <details key="group" value="Design"/>
+        <details key="order" value="6"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="components"
+        lowerBound="1" upperBound="40" eType="#//Component" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="Components"/>
+        <details key="group" value="Components"/>
+        <details key="order" value="7"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="onEnter"
+        upperBound="10" eType="#//Action" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="On enter"/>
+        <details key="group" value="Actions"/>
+        <details key="order" value="8"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Abstract base class for page components."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Component"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TextLabel" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Static or computed text component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Text"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="text({{value:content}}, { variant: &quot;{{textStyle}}&quot;, align: &quot;{{alignment}}&quot; });"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="content"
+        lowerBound="1" eType="#//TextExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="shadow" value="TextLiteral"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="Text"/>
+        <details key="group" value="Text"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="textStyle"
+        eType="#//TextVariant" defaultValueLiteral="body">
+      <eAnnotations source="ui">
+        <details key="label" value="Variant"/>
+        <details key="group" value="Text"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alignment"
+        eType="#//TextAlignment" defaultValueLiteral="start">
+      <eAnnotations source="ui">
+        <details key="label" value="Align"/>
+        <details key="group" value="Text"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Button" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Button component with click actions."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Button"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="button(&quot;{{labelText}}&quot;, &quot;{{style}}&quot;, () =&gt; {&#10;{{statements:onClick}}&#10;});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Save">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Text"/>
+        <details key="group" value="Button"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="style"
+        eType="#//ButtonStyle" defaultValueLiteral="primary">
+      <eAnnotations source="ui">
+        <details key="label" value="Style"/>
+        <details key="group" value="Button"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="onClick"
+        upperBound="10" eType="#//Action" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="On click"/>
+        <details key="group" value="Button"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TextInput" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="inputsInline" value="true"/>
+      <details key="tooltip" value="Single-line text input component that actions can reference."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Text input"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="textInput(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, &quot;{{hint}}&quot;, {&#10;type: &quot;{{inputType}}&quot;,&#10;mandatory: &quot;{{mandatory}}&quot; === &quot;TRUE&quot;&#10;});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="taskTitle">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Name"/>
+        <details key="group" value="Input"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Task title">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Label"/>
+        <details key="group" value="Input"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hint" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="What needs to be done?">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Placeholder"/>
+        <details key="group" value="Input"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inputType"
+        eType="#//InputType" defaultValueLiteral="plainText">
+      <eAnnotations source="ui">
+        <details key="label" value="Input type"/>
+        <details key="group" value="Input"/>
+        <details key="order" value="4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true">
+      <eAnnotations source="ui">
+        <details key="widget" value="checkbox"/>
+        <details key="label" value="Required"/>
+        <details key="group" value="Input"/>
+        <details key="order" value="5"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TextArea" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Multi-line text input component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Text area"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="textArea(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, &quot;{{hint}}&quot;, { rows: {{rows}}, mandatory: &quot;{{mandatory}}&quot; === &quot;TRUE&quot; });"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="notes">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Name"/>
+        <details key="group" value="Text area"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Notes">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Label"/>
+        <details key="group" value="Text area"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hint"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Add details">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Placeholder"/>
+        <details key="group" value="Text area"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rows"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="4">
+      <eAnnotations source="blockly">
+        <details key="min" value="2"/>
+        <details key="max" value="12"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="number"/>
+        <details key="label" value="Rows"/>
+        <details key="group" value="Text area"/>
+        <details key="order" value="4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false">
+      <eAnnotations source="ui">
+        <details key="widget" value="checkbox"/>
+        <details key="label" value="Required"/>
+        <details key="group" value="Text area"/>
+        <details key="order" value="5"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="ImageView" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Image component with a dynamic URL expression."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Image"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="image({{value:url}}, &quot;{{altText}}&quot;, &quot;{{fit}}&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="url"
+        lowerBound="1" eType="#//TextExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="shadow" value="TextLiteral"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="URL"/>
+        <details key="group" value="Image"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="altText"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Preview">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Alt text"/>
+        <details key="group" value="Image"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fit"
+        eType="#//ImageFit" defaultValueLiteral="cover">
+      <eAnnotations source="ui">
+        <details key="label" value="Fit"/>
+        <details key="group" value="Image"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="ListView" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="List component backed by a data source."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="List view"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="listView(&quot;{{source}}&quot;, { title: {{value:itemTitle}}, emptyText: &quot;{{emptyText}}&quot; });"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source"
+        lowerBound="1" eType="#//DataSource">
+      <eAnnotations source="ui">
+        <details key="widget" value="reference-select"/>
+        <details key="label" value="Source"/>
+        <details key="referenceLabelField" value="name"/>
+        <details key="group" value="List"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="itemTitle"
+        lowerBound="1" eType="#//TextExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="shadow" value="TextLiteral"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="Item title"/>
+        <details key="group" value="List"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="emptyText"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="No items yet">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Empty text"/>
+        <details key="group" value="List"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="ToggleSwitch" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="inputsInline" value="true"/>
+      <details key="tooltip" value="Boolean switch component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Switch"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="toggle(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, &quot;{{defaultOn}}&quot; === &quot;TRUE&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="notifyMe">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Name"/>
+        <details key="group" value="Switch"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Notify me">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Label"/>
+        <details key="group" value="Switch"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultOn"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false">
+      <eAnnotations source="ui">
+        <details key="widget" value="switch"/>
+        <details key="label" value="Default on"/>
+        <details key="group" value="Switch"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="SelectInput" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Select/dropdown input component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Select"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="selectInput(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, &quot;{{optionsText}}&quot;, &quot;{{initialValue}}&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="priority">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Name"/>
+        <details key="group" value="Select"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Priority">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Label"/>
+        <details key="group" value="Select"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optionsText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Low&#10;Medium&#10;High">
+      <eAnnotations source="ui">
+        <details key="widget" value="textarea"/>
+        <details key="label" value="Options"/>
+        <details key="group" value="Select"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Medium">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Initial value"/>
+        <details key="group" value="Select"/>
+        <details key="order" value="4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false">
+      <eAnnotations source="ui">
+        <details key="widget" value="checkbox"/>
+        <details key="label" value="Required"/>
+        <details key="group" value="Select"/>
+        <details key="order" value="5"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="CheckboxInput" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="inputsInline" value="true"/>
+      <details key="tooltip" value="Checkbox input component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Checkbox"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="checkboxInput(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, &quot;{{defaultChecked}}&quot; === &quot;TRUE&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="acceptedTerms">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Name"/>
+        <details key="group" value="Checkbox"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="I agree">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Label"/>
+        <details key="group" value="Checkbox"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultChecked"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false">
+      <eAnnotations source="ui">
+        <details key="widget" value="checkbox"/>
+        <details key="label" value="Checked"/>
+        <details key="group" value="Checkbox"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="RadioGroup" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Radio group input component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Radio group"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="radioGroup(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, &quot;{{optionsText}}&quot;, &quot;{{initialValue}}&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="status">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Name"/>
+        <details key="group" value="Radio"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Status">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Label"/>
+        <details key="group" value="Radio"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optionsText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Open&#10;In progress&#10;Done">
+      <eAnnotations source="ui">
+        <details key="widget" value="textarea"/>
+        <details key="label" value="Options"/>
+        <details key="group" value="Radio"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Open">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Initial value"/>
+        <details key="group" value="Radio"/>
+        <details key="order" value="4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="NumberInput" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Numeric input component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Number input"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="numberInput(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, {{initialValue}}, {{minValue}}, {{maxValue}}, {{stepValue}});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="estimate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Estimate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="100"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stepValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="1"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="SliderInput" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Range slider input component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Slider"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="sliderInput(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, {{initialValue}}, {{minValue}}, {{maxValue}}, {{stepValue}});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="progress"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Progress"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="50"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="100"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stepValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="5"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="DateInput" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Date input component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Date input"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="dateInput(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, &quot;{{initialValue}}&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="dueDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Due date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="2026-06-14"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TimeInput" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Time input component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Time input"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="timeInput(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, &quot;{{initialValue}}&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="reminderTime"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Reminder time"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="09:00"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="FileUpload" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="File upload input component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="File upload"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="fileUpload(&quot;{{name}}&quot;, &quot;{{labelText}}&quot;, &quot;{{acceptTypes}}&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="attachment"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Attachment"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="acceptTypes"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral=".png,.jpg,.pdf"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multipleFiles"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TableView" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Table component backed by a data source."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Table"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="tableView(&quot;{{source}}&quot;, &quot;{{columnsText}}&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
+        eType="#//DataSource">
+      <eAnnotations source="ui">
+        <details key="widget" value="reference-select"/>
+        <details key="label" value="Source"/>
+        <details key="referenceLabelField" value="name"/>
+        <details key="group" value="Table"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnsText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="title&#10;status&#10;subtitle"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="emptyText"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="No rows"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Container" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="category" value="Layout"/>
+      <details key="tooltip" value="Layout container for grouping child components."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Container"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="container({ layout: &quot;{{layout}}&quot;, gap: {{gap}}, padding: {{padding}} }, [&#10;{{statements:children}}&#10;]);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout"
+        eType="#//ContainerLayout" defaultValueLiteral="column">
+      <eAnnotations source="ui">
+        <details key="label" value="Layout"/>
+        <details key="group" value="Container"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gap"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="12">
+      <eAnnotations source="blockly">
+        <details key="min" value="0"/>
+        <details key="max" value="64"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="number"/>
+        <details key="label" value="Gap"/>
+        <details key="group" value="Container"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="padding"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="16">
+      <eAnnotations source="blockly">
+        <details key="min" value="0"/>
+        <details key="max" value="96"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="number"/>
+        <details key="label" value="Padding"/>
+        <details key="group" value="Container"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children"
+        upperBound="20" eType="#//Component" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="Children"/>
+        <details key="group" value="Container"/>
+        <details key="order" value="4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Card" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="category" value="Layout"/>
+      <details key="tooltip" value="Card container with a title and child components."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Card"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="card(&quot;{{title}}&quot;, [&#10;{{statements:children}}&#10;]);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Details">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Title"/>
+        <details key="group" value="Card"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children"
+        upperBound="20" eType="#//Component" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="Children"/>
+        <details key="group" value="Card"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Form" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="category" value="Layout"/>
+      <details key="tooltip" value="Form container with fields and submit actions."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Form"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="form(&quot;{{title}}&quot;, &quot;{{endpoint}}&quot;, [&#10;{{statements:children}}&#10;], () =&gt; {&#10;{{statements:onSubmit}}&#10;});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Task form">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Title"/>
+        <details key="group" value="Form"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="endpoint"
+        eType="#//DataSource">
+      <eAnnotations source="ui">
+        <details key="widget" value="reference-select"/>
+        <details key="label" value="Endpoint"/>
+        <details key="referenceLabelField" value="name"/>
+        <details key="group" value="Form"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children"
+        upperBound="20" eType="#//Component" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="Fields"/>
+        <details key="group" value="Form"/>
+        <details key="order" value="3"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="onSubmit"
+        upperBound="10" eType="#//Action" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="On submit"/>
+        <details key="group" value="Form"/>
+        <details key="order" value="4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TabsView" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="category" value="Layout"/>
+      <details key="tooltip" value="Tabbed container component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Tabs"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="tabs([&#10;{{statements:panels}}&#10;]);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="panels"
+        lowerBound="1" upperBound="8" eType="#//TabPanel" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="Panels"/>
+        <details key="group" value="Tabs"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TabPanel">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="category" value="Layout"/>
+      <details key="tooltip" value="Single tab panel inside a Tabs component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Tab panel"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="tab(&quot;{{title}}&quot;, [&#10;{{statements:children}}&#10;]);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Details">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Title"/>
+        <details key="group" value="Tab"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children"
+        upperBound="20" eType="#//Component" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="Children"/>
+        <details key="group" value="Tab"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Modal" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="category" value="Layout"/>
+      <details key="tooltip" value="Modal dialog component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Modal"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="modal(&quot;{{title}}&quot;, &quot;{{triggerText}}&quot;, [&#10;{{statements:children}}&#10;]);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Confirm"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="triggerText" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Open modal"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="openByDefault"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children"
+        upperBound="20" eType="#//Component" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Toast" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+      <details key="tooltip" value="Toast message component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Toast"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="toast({{value:message}}, &quot;{{tone}}&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="message"
+        lowerBound="1" eType="#//TextExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="shadow" value="TextLiteral"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="Message"/>
+        <details key="group" value="Toast"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tone"
+        eType="#//ToastTone" defaultValueLiteral="info">
+      <eAnnotations source="ui">
+        <details key="label" value="Tone"/>
+        <details key="group" value="Toast"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Divider" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="category" value="Layout"/>
+      <details key="inputsInline" value="true"/>
+      <details key="tooltip" value="Horizontal divider component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Divider"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="divider({ thickness: {{thickness}}, colour: &quot;{{dividerColor}}&quot; });"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="thickness"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="1">
+      <eAnnotations source="blockly">
+        <details key="min" value="1"/>
+        <details key="max" value="8"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="number"/>
+        <details key="label" value="Thickness"/>
+        <details key="group" value="Divider"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dividerColor"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="#e5e7eb">
+      <eAnnotations source="blockly">
+        <details key="type" value="field_colour"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="color"/>
+        <details key="label" value="Colour"/>
+        <details key="group" value="Divider"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Spacer" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="category" value="Layout"/>
+      <details key="inputsInline" value="true"/>
+      <details key="tooltip" value="Vertical or horizontal spacing component."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Spacer"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="spacer({{size}});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="16">
+      <eAnnotations source="blockly">
+        <details key="min" value="0"/>
+        <details key="max" value="128"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="number"/>
+        <details key="label" value="Size"/>
+        <details key="group" value="Spacer"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Action" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+      <details key="tooltip" value="Abstract base class for UI actions."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Action"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Navigate" eSuperTypes="#//Action">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+      <details key="inputsInline" value="true"/>
+      <details key="tooltip" value="Navigate to another page."/>
+    </eAnnotations>
+    <eAnnotations source="validation">
+      <details key="mustFollow" value="Alert"/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Navigate"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="navigate(&quot;{{target}}&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target"
+        lowerBound="1" eType="#//Page">
+      <eAnnotations source="ui">
+        <details key="widget" value="reference-select"/>
+        <details key="label" value="Target page"/>
+        <details key="referenceLabelField" value="title"/>
+        <details key="group" value="Action"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Alert" eSuperTypes="#//Action">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+      <details key="tooltip" value="Show a message to the user."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Alert"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="alert({{value:message}});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="message"
+        lowerBound="1" eType="#//TextExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="shadow" value="TextLiteral"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="Message"/>
+        <details key="group" value="Action"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="SubmitForm" eSuperTypes="#//Action">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+      <details key="tooltip" value="Submit form data to a data source and optionally navigate."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Submit form"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="submitForm(&quot;{{endpoint}}&quot;, &quot;{{successTarget}}&quot;);"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="endpoint"
+        lowerBound="1" eType="#//DataSource">
+      <eAnnotations source="ui">
+        <details key="widget" value="reference-select"/>
+        <details key="label" value="Endpoint"/>
+        <details key="referenceLabelField" value="name"/>
+        <details key="group" value="Action"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="successTarget"
+        eType="#//Page">
+      <eAnnotations source="ui">
+        <details key="widget" value="reference-select"/>
+        <details key="label" value="Success page"/>
+        <details key="referenceLabelField" value="title"/>
+        <details key="group" value="Action"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="SetInputValue" eSuperTypes="#//Action">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+      <details key="tooltip" value="Set a text input value from an expression."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Set input value"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="setInputValue(&quot;{{input}}&quot;, {{value:newValue}});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input"
+        lowerBound="1" eType="#//TextInput">
+      <eAnnotations source="ui">
+        <details key="widget" value="reference-select"/>
+        <details key="label" value="Input"/>
+        <details key="referenceLabelField" value="name"/>
+        <details key="group" value="Action"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newValue"
+        lowerBound="1" eType="#//TextExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="shadow" value="TextLiteral"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="Value"/>
+        <details key="group" value="Action"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="OpenUrl" eSuperTypes="#//Action">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+      <details key="tooltip" value="Open an external URL."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Open URL"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="openUrl({{value:url}});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="url"
+        lowerBound="1" eType="#//TextExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="shadow" value="TextLiteral"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="URL"/>
+        <details key="group" value="Action"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TextExpression" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="true"/>
+      <details key="tooltip" value="Abstract text expression."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Text expression"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TextLiteral" eSuperTypes="#//TextExpression">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="true"/>
+      <details key="inputsInline" value="true"/>
+      <details key="tooltip" value="Literal text value."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Text"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="&quot;{{content}}&quot;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="content"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Saved!">
+      <eAnnotations source="ui">
+        <details key="widget" value="textarea"/>
+        <details key="label" value="Content"/>
+        <details key="group" value="Expression"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="InputValue" eSuperTypes="#//TextExpression">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="true"/>
+      <details key="tooltip" value="Read the current value from a text input."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Input value"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="inputValue(&quot;{{input}}&quot;)"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input"
+        lowerBound="1" eType="#//TextInput">
+      <eAnnotations source="ui">
+        <details key="widget" value="reference-select"/>
+        <details key="label" value="Input"/>
+        <details key="referenceLabelField" value="name"/>
+        <details key="group" value="Expression"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="DataField" eSuperTypes="#//TextExpression">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="true"/>
+      <details key="inputsInline" value="true"/>
+      <details key="tooltip" value="Read a field from the current list item."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Data field"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="item[&quot;{{fieldName}}&quot;]"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fieldName"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="title">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Field"/>
+        <details key="group" value="Expression"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="JoinText" eSuperTypes="#//TextExpression">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="true"/>
+      <details key="tooltip" value="Concatenate two text expressions."/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Join text"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="String({{value:left}}) + String({{value:right}})"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left"
+        lowerBound="1" eType="#//TextExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="shadow" value="TextLiteral"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="Left"/>
+        <details key="group" value="Expression"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right"
+        lowerBound="1" eType="#//TextExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="shadow" value="TextLiteral"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="Right"/>
+        <details key="group" value="Expression"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="Theme">
+    <eLiterals name="light" value="0" literal="light"/>
+    <eLiterals name="dark" value="1" literal="dark"/>
+    <eLiterals name="system" value="2" literal="system"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="HttpMethod">
+    <eLiterals name="get" value="0" literal="get"/>
+    <eLiterals name="post" value="1" literal="post"/>
+    <eLiterals name="put" value="2" literal="put"/>
+    <eLiterals name="delete" value="3" literal="delete"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="PageLayout">
+    <eLiterals name="column" value="0" literal="column"/>
+    <eLiterals name="row" value="1" literal="row"/>
+    <eLiterals name="grid" value="2" literal="grid"/>
+    <eLiterals name="tabs" value="3" literal="tabs"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="NavigationStyle">
+    <eLiterals name="standard" value="0" literal="standard"/>
+    <eLiterals name="none" value="1" literal="none"/>
+    <eLiterals name="bottomTabs" value="2" literal="bottomTabs"/>
+    <eLiterals name="drawer" value="3" literal="drawer"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="TextVariant">
+    <eLiterals name="title" value="0" literal="title"/>
+    <eLiterals name="subtitle" value="1" literal="subtitle"/>
+    <eLiterals name="body" value="2" literal="body"/>
+    <eLiterals name="caption" value="3" literal="caption"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="TextAlignment">
+    <eLiterals name="start" value="0" literal="start"/>
+    <eLiterals name="center" value="1" literal="center"/>
+    <eLiterals name="end" value="2" literal="end"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="ButtonStyle">
+    <eLiterals name="primary" value="0" literal="primary"/>
+    <eLiterals name="secondary" value="1" literal="secondary"/>
+    <eLiterals name="danger" value="2" literal="danger"/>
+    <eLiterals name="ghost" value="3" literal="ghost"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="InputType">
+    <eLiterals name="plainText" value="0" literal="plainText"/>
+    <eLiterals name="email" value="1" literal="email"/>
+    <eLiterals name="password" value="2" literal="password"/>
+    <eLiterals name="numeric" value="3" literal="numeric"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="ImageFit">
+    <eLiterals name="cover" value="0" literal="cover"/>
+    <eLiterals name="contain" value="1" literal="contain"/>
+    <eLiterals name="fill" value="2" literal="fill"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="ContainerLayout">
+    <eLiterals name="column" value="0" literal="column"/>
+    <eLiterals name="row" value="1" literal="row"/>
+    <eLiterals name="wrap" value="2" literal="wrap"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="ToastTone">
+    <eLiterals name="info" value="0" literal="info"/>
+    <eLiterals name="success" value="1" literal="success"/>
+    <eLiterals name="warning" value="2" literal="warning"/>
+    <eLiterals name="error" value="3" literal="error"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,7050 @@
+/**
+ * Code generator: BlocklyEditorSpec → Blockly (JSON + JS + HTML).
+ * 
+ * This generator is independent of the input source (DSL or Ecore).
+ * It takes a BlocklyEditorSpec intermediate model and produces editor files:
+ *   _blocks.js, _toolbox.js, _generators.js, _validations.js,
+ *   _editor.html, _standalone.html, validation_workspace.html,
+ *   validation_blocks.json, validation_runtime.js, sample_model.json
+ */
+package io.github.plortinus.model2blockly.generator;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.ListExtensions;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.BlockTypeSpec;
+import io.github.plortinus.model2blockly.blocklyspec.BlocklyEditorSpec;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.CategorySpec;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.ConnectionType;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.DropdownOption;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.EditorSpec;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.FieldSpec;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.FieldType;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.ReferenceFieldSpec;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.StatementInputSpec;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.ValidationSpec;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.ValidationType;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.ValueInputSpec;
+import io.github.plortinus.model2blockly.intermediate.BlocklySpecModelMapper;
+
+@SuppressWarnings("all")
+public class BlocklyCodeGenerator {
+  public Map<String, String> generate(final BlocklyEditorSpec spec) {
+    return this.generate(BlocklySpecModelMapper.toEmfSpec(spec));
+  }
+
+  public Map<String, String> generate(final EditorSpec spec) {
+    final LinkedHashMap<String, String> files = new LinkedHashMap<String, String>();
+    String _elvis = null;
+    String _domainName = spec.getDomainName();
+    if (_domainName != null) {
+      _elvis = _domainName;
+    } else {
+      _elvis = "domain";
+    }
+    final String base = _elvis;
+    files.put((base + "_blocks.js"), this.generateBlocksJs(spec));
+    files.put((base + "_toolbox.js"), this.generateToolboxJs(spec));
+    files.put((base + "_generators.js"), this.generateGeneratorsJs(spec));
+    files.put((base + "_validations.js"), this.generateValidationsJs(spec));
+    files.put((base + "_editor.html"), this.generateEditorHtml(spec));
+    files.put((base + "_standalone.html"), this.generateStandaloneHtml(spec));
+    files.put("validation_workspace.html", ValidationWorkspaceHtmlGenerator.generate(spec));
+    files.put("validation_blocks.json", ValidationBlockModelGenerator.generate(spec));
+    files.put("validation_runtime.js", ValidationRuntimeGenerator.generateClassicJs(spec));
+    files.put("sample_model.json", SampleModelGenerator.generate(spec));
+    return files;
+  }
+
+  public String generateBlocksJs(final EditorSpec spec) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("// Block definitions for domain \"");
+    String _domainName = spec.getDomainName();
+    _builder.append(_domainName);
+    _builder.append("\".");
+    _builder.newLineIfNotEmpty();
+    _builder.append("// Auto-generated from metamodel.");
+    _builder.newLine();
+    String _generateReferenceFieldSupportScript = this.generateReferenceFieldSupportScript(spec);
+    _builder.append(_generateReferenceFieldSupportScript);
+    _builder.newLineIfNotEmpty();
+    _builder.append("window.BLOCKLY_BLOCKS = ");
+    String _generateBlocksArray = this.generateBlocksArray(spec);
+    _builder.append(_generateBlocksArray);
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+
+  public String generateBlocksArray(final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      final Function1<BlockTypeSpec, String> _function = (BlockTypeSpec it) -> {
+        return this.blockTypeToBlockJson(it);
+      };
+      final List<String> blocks = ListExtensions.<BlockTypeSpec, String>map(BlocklySpecModelQueries.concreteBlockTypes(spec), _function);
+      String _join = IterableExtensions.join(blocks, ",\n");
+      String _plus = ("[\n" + _join);
+      _xblockexpression = (_plus + "\n]");
+    }
+    return _xblockexpression;
+  }
+
+  public String blockTypeToBlockJson(final BlockTypeSpec bt) {
+    String _xblockexpression = null;
+    {
+      final ArrayList<String> argsList = new ArrayList<String>();
+      final ArrayList<String> msgParts = new ArrayList<String>();
+      String _elvis = null;
+      String _label = bt.getLabel();
+      if (_label != null) {
+        _elvis = _label;
+      } else {
+        String _typeName = bt.getTypeName();
+        _elvis = _typeName;
+      }
+      msgParts.add(_elvis);
+      final LinkedHashMap<String, FieldSpec> fieldMap = CollectionLiterals.<String, FieldSpec>newLinkedHashMap();
+      List<FieldSpec> _fields = bt.getFields();
+      for (final FieldSpec f : _fields) {
+        fieldMap.put(f.getName(), f);
+      }
+      final LinkedHashMap<String, ReferenceFieldSpec> refMap = CollectionLiterals.<String, ReferenceFieldSpec>newLinkedHashMap();
+      List<ReferenceFieldSpec> _referenceFields = bt.getReferenceFields();
+      for (final ReferenceFieldSpec r : _referenceFields) {
+        refMap.put(r.getName(), r);
+      }
+      final LinkedHashMap<String, ValueInputSpec> viMap = CollectionLiterals.<String, ValueInputSpec>newLinkedHashMap();
+      List<ValueInputSpec> _valueInputs = bt.getValueInputs();
+      for (final ValueInputSpec v : _valueInputs) {
+        viMap.put(v.getName(), v);
+      }
+      final LinkedHashMap<String, StatementInputSpec> siMap = CollectionLiterals.<String, StatementInputSpec>newLinkedHashMap();
+      List<StatementInputSpec> _statementInputs = bt.getStatementInputs();
+      for (final StatementInputSpec s : _statementInputs) {
+        siMap.put(s.getName(), s);
+      }
+      int argIdx = 1;
+      List<String> _xifexpression = null;
+      boolean _isEmpty = bt.getOrderedInputNames().isEmpty();
+      boolean _not = (!_isEmpty);
+      if (_not) {
+        _xifexpression = bt.getOrderedInputNames();
+      } else {
+        ArrayList<String> _xblockexpression_1 = null;
+        {
+          final ArrayList<String> fallback = new ArrayList<String>();
+          List<FieldSpec> _fields_1 = bt.getFields();
+          for (final FieldSpec f_1 : _fields_1) {
+            fallback.add(f_1.getName());
+          }
+          List<ReferenceFieldSpec> _referenceFields_1 = bt.getReferenceFields();
+          for (final ReferenceFieldSpec r_1 : _referenceFields_1) {
+            fallback.add(r_1.getName());
+          }
+          List<ValueInputSpec> _valueInputs_1 = bt.getValueInputs();
+          for (final ValueInputSpec v_1 : _valueInputs_1) {
+            fallback.add(v_1.getName());
+          }
+          List<StatementInputSpec> _statementInputs_1 = bt.getStatementInputs();
+          for (final StatementInputSpec s_1 : _statementInputs_1) {
+            fallback.add(s_1.getName());
+          }
+          _xblockexpression_1 = fallback;
+        }
+        _xifexpression = _xblockexpression_1;
+      }
+      final List<String> ordered = _xifexpression;
+      for (final String inputName : ordered) {
+        boolean _containsKey = fieldMap.containsKey(inputName);
+        if (_containsKey) {
+          msgParts.add(("%" + Integer.valueOf(argIdx)));
+          argsList.add(this.fieldToArg(fieldMap.get(inputName)));
+          argIdx++;
+        } else {
+          boolean _containsKey_1 = refMap.containsKey(inputName);
+          if (_containsKey_1) {
+            msgParts.add(("%" + Integer.valueOf(argIdx)));
+            argsList.add(this.referenceToArg(refMap.get(inputName)));
+            argIdx++;
+          } else {
+            boolean _containsKey_2 = viMap.containsKey(inputName);
+            if (_containsKey_2) {
+              msgParts.add(("%" + Integer.valueOf(argIdx)));
+              argsList.add(this.valueInputToArg(viMap.get(inputName)));
+              argIdx++;
+            } else {
+              boolean _containsKey_3 = siMap.containsKey(inputName);
+              if (_containsKey_3) {
+                msgParts.add(("%" + Integer.valueOf(argIdx)));
+                argsList.add(this.statementInputToArg(siMap.get(inputName)));
+                argIdx++;
+              }
+            }
+          }
+        }
+      }
+      final String generatedMessage0 = IterableExtensions.join(msgParts, " ");
+      String _elvis_1 = null;
+      String _message0 = bt.getMessage0();
+      if (_message0 != null) {
+        _elvis_1 = _message0;
+      } else {
+        _elvis_1 = generatedMessage0;
+      }
+      final String message0 = _elvis_1;
+      final String args0 = IterableExtensions.join(argsList, ", ");
+      String _switchResult = null;
+      ConnectionType _connectionType = bt.getConnectionType();
+      if (_connectionType != null) {
+        switch (_connectionType) {
+          case NONE:
+            _switchResult = "";
+            break;
+          case TYPED:
+            StringConcatenation _builder = new StringConcatenation();
+            _builder.append("\"previousStatement\": \"");
+            String _connectionTypeName = bt.getConnectionTypeName();
+            _builder.append(_connectionTypeName);
+            _builder.append("\", \"nextStatement\": \"");
+            String _connectionTypeName_1 = bt.getConnectionTypeName();
+            _builder.append(_connectionTypeName_1);
+            _builder.append("\",");
+            _switchResult = _builder.toString();
+            break;
+          case FREE:
+            _switchResult = "\"previousStatement\": null, \"nextStatement\": null,";
+            break;
+          case OUTPUT:
+            _switchResult = "\"output\": null,";
+            break;
+          case OUTPUT_TYPED:
+            StringConcatenation _builder_1 = new StringConcatenation();
+            _builder_1.append("\"output\": \"");
+            String _outputType = bt.getOutputType();
+            _builder_1.append(_outputType);
+            _builder_1.append("\",");
+            _switchResult = _builder_1.toString();
+            break;
+          default:
+            break;
+        }
+      }
+      final String connectionJson = _switchResult;
+      String _xifexpression_1 = null;
+      Boolean _inputsInline = bt.getInputsInline();
+      boolean _tripleNotEquals = (_inputsInline != null);
+      if (_tripleNotEquals) {
+        StringConcatenation _builder_2 = new StringConcatenation();
+        _builder_2.append("\"inputsInline\": ");
+        Boolean _inputsInline_1 = bt.getInputsInline();
+        _builder_2.append(_inputsInline_1);
+        _builder_2.append(",");
+        _xifexpression_1 = _builder_2.toString();
+      } else {
+        _xifexpression_1 = "";
+      }
+      final String inlineJson = _xifexpression_1;
+      String _elvis_2 = null;
+      String _elvis_3 = null;
+      String _tooltip = bt.getTooltip();
+      if (_tooltip != null) {
+        _elvis_3 = _tooltip;
+      } else {
+        String _label_1 = bt.getLabel();
+        _elvis_3 = _label_1;
+      }
+      if (_elvis_3 != null) {
+        _elvis_2 = _elvis_3;
+      } else {
+        String _typeName_1 = bt.getTypeName();
+        _elvis_2 = _typeName_1;
+      }
+      final String tooltipText = _elvis_2;
+      String _elvis_4 = null;
+      String _helpUrl = bt.getHelpUrl();
+      if (_helpUrl != null) {
+        _elvis_4 = _helpUrl;
+      } else {
+        _elvis_4 = "";
+      }
+      final String helpUrlText = _elvis_4;
+      StringConcatenation _builder_3 = new StringConcatenation();
+      _builder_3.append("{");
+      _builder_3.newLine();
+      _builder_3.append("\t");
+      _builder_3.append("\"type\": \"");
+      String _typeName_2 = bt.getTypeName();
+      _builder_3.append(_typeName_2, "\t");
+      _builder_3.append("\",");
+      _builder_3.newLineIfNotEmpty();
+      _builder_3.append("\t");
+      _builder_3.append("\"message0\": ");
+      String _jsonString = this.toJsonString(message0);
+      _builder_3.append(_jsonString, "\t");
+      _builder_3.append(",");
+      _builder_3.newLineIfNotEmpty();
+      _builder_3.append("\t");
+      _builder_3.append("\"args0\": [");
+      _builder_3.append(args0, "\t");
+      _builder_3.append("],");
+      _builder_3.newLineIfNotEmpty();
+      _builder_3.append("\t");
+      _builder_3.append(connectionJson, "\t");
+      _builder_3.newLineIfNotEmpty();
+      _builder_3.append("\t");
+      _builder_3.append(inlineJson, "\t");
+      _builder_3.newLineIfNotEmpty();
+      _builder_3.append("\t");
+      _builder_3.append("\"colour\": ");
+      int _colour = bt.getColour();
+      _builder_3.append(_colour, "\t");
+      _builder_3.append(",");
+      _builder_3.newLineIfNotEmpty();
+      _builder_3.append("\t");
+      _builder_3.append("\"tooltip\": ");
+      String _jsonString_1 = this.toJsonString(tooltipText);
+      _builder_3.append(_jsonString_1, "\t");
+      _builder_3.append(",");
+      _builder_3.newLineIfNotEmpty();
+      _builder_3.append("\t");
+      _builder_3.append("\"helpUrl\": ");
+      String _jsonString_2 = this.toJsonString(helpUrlText);
+      _builder_3.append(_jsonString_2, "\t");
+      _builder_3.newLineIfNotEmpty();
+      _builder_3.append("}");
+      _xblockexpression = _builder_3.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String fieldToArg(final FieldSpec field) {
+    String _xblockexpression = null;
+    {
+      boolean _isMany = BlocklySpecModelQueries.isMany(field);
+      if (_isMany) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("{\"type\": \"field_multivalue\", \"name\": \"");
+        String _name = field.getName();
+        _builder.append(_name);
+        _builder.append("\", \"text\": ");
+        String _elvis = null;
+        String _defaultValue = field.getDefaultValue();
+        if (_defaultValue != null) {
+          _elvis = _defaultValue;
+        } else {
+          _elvis = "";
+        }
+        String _jsonString = this.toJsonString(_elvis);
+        _builder.append(_jsonString);
+        _builder.append("}");
+        return _builder.toString();
+      }
+      String _switchResult = null;
+      FieldType _fieldType = field.getFieldType();
+      if (_fieldType != null) {
+        switch (_fieldType) {
+          case TEXT:
+            StringConcatenation _builder_1 = new StringConcatenation();
+            _builder_1.append("{\"type\": \"field_input\", \"name\": \"");
+            String _name_1 = field.getName();
+            _builder_1.append(_name_1);
+            _builder_1.append("\", \"text\": ");
+            String _elvis_1 = null;
+            String _defaultValue_1 = field.getDefaultValue();
+            if (_defaultValue_1 != null) {
+              _elvis_1 = _defaultValue_1;
+            } else {
+              _elvis_1 = "";
+            }
+            String _jsonString_1 = this.toJsonString(_elvis_1);
+            _builder_1.append(_jsonString_1);
+            _builder_1.append("}");
+            _switchResult = _builder_1.toString();
+            break;
+          case INTEGER:
+            String _xblockexpression_1 = null;
+            {
+              String _xifexpression = null;
+              String _min = field.getMin();
+              boolean _tripleNotEquals = (_min != null);
+              if (_tripleNotEquals) {
+                StringConcatenation _builder_2 = new StringConcatenation();
+                _builder_2.append(", \"min\": ");
+                String _min_1 = field.getMin();
+                _builder_2.append(_min_1);
+                _xifexpression = _builder_2.toString();
+              } else {
+                _xifexpression = "";
+              }
+              final String minPart = _xifexpression;
+              String _xifexpression_1 = null;
+              String _max = field.getMax();
+              boolean _tripleNotEquals_1 = (_max != null);
+              if (_tripleNotEquals_1) {
+                StringConcatenation _builder_3 = new StringConcatenation();
+                _builder_3.append(", \"max\": ");
+                String _max_1 = field.getMax();
+                _builder_3.append(_max_1);
+                _xifexpression_1 = _builder_3.toString();
+              } else {
+                _xifexpression_1 = "";
+              }
+              final String maxPart = _xifexpression_1;
+              StringConcatenation _builder_4 = new StringConcatenation();
+              _builder_4.append("{\"type\": \"field_number\", \"name\": \"");
+              String _name_2 = field.getName();
+              _builder_4.append(_name_2);
+              _builder_4.append("\", \"value\": ");
+              int _parseNumberOrDefault = this.parseNumberOrDefault(field.getDefaultValue(), 0);
+              _builder_4.append(_parseNumberOrDefault);
+              _builder_4.append(", \"precision\": 1");
+              _builder_4.append(minPart);
+              _builder_4.append(maxPart);
+              _builder_4.append("}");
+              _xblockexpression_1 = _builder_4.toString();
+            }
+            _switchResult = _xblockexpression_1;
+            break;
+          case FLOAT:
+            String _xblockexpression_2 = null;
+            {
+              String _xifexpression = null;
+              String _min = field.getMin();
+              boolean _tripleNotEquals = (_min != null);
+              if (_tripleNotEquals) {
+                StringConcatenation _builder_2 = new StringConcatenation();
+                _builder_2.append(", \"min\": ");
+                String _min_1 = field.getMin();
+                _builder_2.append(_min_1);
+                _xifexpression = _builder_2.toString();
+              } else {
+                _xifexpression = "";
+              }
+              final String minPart = _xifexpression;
+              String _xifexpression_1 = null;
+              String _max = field.getMax();
+              boolean _tripleNotEquals_1 = (_max != null);
+              if (_tripleNotEquals_1) {
+                StringConcatenation _builder_3 = new StringConcatenation();
+                _builder_3.append(", \"max\": ");
+                String _max_1 = field.getMax();
+                _builder_3.append(_max_1);
+                _xifexpression_1 = _builder_3.toString();
+              } else {
+                _xifexpression_1 = "";
+              }
+              final String maxPart = _xifexpression_1;
+              StringConcatenation _builder_4 = new StringConcatenation();
+              _builder_4.append("{\"type\": \"field_number\", \"name\": \"");
+              String _name_2 = field.getName();
+              _builder_4.append(_name_2);
+              _builder_4.append("\", \"value\": ");
+              int _parseNumberOrDefault = this.parseNumberOrDefault(field.getDefaultValue(), 0);
+              _builder_4.append(_parseNumberOrDefault);
+              _builder_4.append(", \"precision\": 0.1");
+              _builder_4.append(minPart);
+              _builder_4.append(maxPart);
+              _builder_4.append("}");
+              _xblockexpression_2 = _builder_4.toString();
+            }
+            _switchResult = _xblockexpression_2;
+            break;
+          case BOOLEAN:
+            StringConcatenation _builder_2 = new StringConcatenation();
+            _builder_2.append("{\"type\": \"field_checkbox\", \"name\": \"");
+            String _name_2 = field.getName();
+            _builder_2.append(_name_2);
+            _builder_2.append("\", \"checked\": ");
+            String _xifexpression = null;
+            String _defaultValue_2 = field.getDefaultValue();
+            boolean _equals = Objects.equals(_defaultValue_2, "true");
+            if (_equals) {
+              _xifexpression = "true";
+            } else {
+              _xifexpression = "false";
+            }
+            _builder_2.append(_xifexpression);
+            _builder_2.append("}");
+            _switchResult = _builder_2.toString();
+            break;
+          case DROPDOWN:
+            String _xblockexpression_3 = null;
+            {
+              final Function1<DropdownOption, String> _function = (DropdownOption it) -> {
+                StringConcatenation _builder_3 = new StringConcatenation();
+                _builder_3.append("[");
+                String _jsonString_2 = this.toJsonString(it.getLabel());
+                _builder_3.append(_jsonString_2);
+                _builder_3.append(", \"");
+                String _value = it.getValue();
+                _builder_3.append(_value);
+                _builder_3.append("\"]");
+                return _builder_3.toString();
+              };
+              final String opts = IterableExtensions.join(ListExtensions.<DropdownOption, String>map(field.getOptions(), _function), ", ");
+              StringConcatenation _builder_3 = new StringConcatenation();
+              _builder_3.append("{\"type\": \"field_dropdown\", \"name\": \"");
+              String _name_3 = field.getName();
+              _builder_3.append(_name_3);
+              _builder_3.append("\", \"options\": [");
+              _builder_3.append(opts);
+              _builder_3.append("]}");
+              _xblockexpression_3 = _builder_3.toString();
+            }
+            _switchResult = _xblockexpression_3;
+            break;
+          case COLOUR:
+            StringConcatenation _builder_3 = new StringConcatenation();
+            _builder_3.append("{\"type\": \"field_colour\", \"name\": \"");
+            String _name_3 = field.getName();
+            _builder_3.append(_name_3);
+            _builder_3.append("\", \"colour\": ");
+            String _elvis_2 = null;
+            String _defaultValue_3 = field.getDefaultValue();
+            if (_defaultValue_3 != null) {
+              _elvis_2 = _defaultValue_3;
+            } else {
+              _elvis_2 = "#ff0000";
+            }
+            String _jsonString_2 = this.toJsonString(_elvis_2);
+            _builder_3.append(_jsonString_2);
+            _builder_3.append("}");
+            _switchResult = _builder_3.toString();
+            break;
+          case ANGLE:
+            StringConcatenation _builder_4 = new StringConcatenation();
+            _builder_4.append("{\"type\": \"field_angle\", \"name\": \"");
+            String _name_4 = field.getName();
+            _builder_4.append(_name_4);
+            _builder_4.append("\", \"angle\": ");
+            int _parseNumberOrDefault = this.parseNumberOrDefault(field.getDefaultValue(), 90);
+            _builder_4.append(_parseNumberOrDefault);
+            _builder_4.append("}");
+            _switchResult = _builder_4.toString();
+            break;
+          case IMAGE:
+            String _xblockexpression_4 = null;
+            {
+              String _elvis_3 = null;
+              String _elvis_4 = null;
+              String _imageUrl = field.getImageUrl();
+              if (_imageUrl != null) {
+                _elvis_4 = _imageUrl;
+              } else {
+                String _defaultValue_4 = field.getDefaultValue();
+                _elvis_4 = _defaultValue_4;
+              }
+              if (_elvis_4 != null) {
+                _elvis_3 = _elvis_4;
+              } else {
+                _elvis_3 = "";
+              }
+              final String url = _elvis_3;
+              int _xifexpression_1 = (int) 0;
+              int _imageWidth = field.getImageWidth();
+              boolean _greaterThan = (_imageWidth > 0);
+              if (_greaterThan) {
+                _xifexpression_1 = field.getImageWidth();
+              } else {
+                _xifexpression_1 = 40;
+              }
+              final int w = _xifexpression_1;
+              int _xifexpression_2 = (int) 0;
+              int _imageHeight = field.getImageHeight();
+              boolean _greaterThan_1 = (_imageHeight > 0);
+              if (_greaterThan_1) {
+                _xifexpression_2 = field.getImageHeight();
+              } else {
+                _xifexpression_2 = 40;
+              }
+              final int h = _xifexpression_2;
+              StringConcatenation _builder_5 = new StringConcatenation();
+              _builder_5.append("{\"type\": \"field_image\", \"src\": ");
+              String _jsonString_3 = this.toJsonString(url);
+              _builder_5.append(_jsonString_3);
+              _builder_5.append(", \"width\": ");
+              _builder_5.append(w);
+              _builder_5.append(", \"height\": ");
+              _builder_5.append(h);
+              _builder_5.append(", \"alt\": ");
+              String _elvis_5 = null;
+              String _imageAlt = field.getImageAlt();
+              if (_imageAlt != null) {
+                _elvis_5 = _imageAlt;
+              } else {
+                String _name_5 = field.getName();
+                _elvis_5 = _name_5;
+              }
+              String _jsonString_4 = this.toJsonString(_elvis_5);
+              _builder_5.append(_jsonString_4);
+              _builder_5.append("}");
+              _xblockexpression_4 = _builder_5.toString();
+            }
+            _switchResult = _xblockexpression_4;
+            break;
+          case LABEL:
+            StringConcatenation _builder_5 = new StringConcatenation();
+            _builder_5.append("{\"type\": \"field_label\", \"name\": \"");
+            String _name_5 = field.getName();
+            _builder_5.append(_name_5);
+            _builder_5.append("\", \"text\": ");
+            String _elvis_3 = null;
+            String _defaultValue_4 = field.getDefaultValue();
+            if (_defaultValue_4 != null) {
+              _elvis_3 = _defaultValue_4;
+            } else {
+              String _name_6 = field.getName();
+              _elvis_3 = _name_6;
+            }
+            String _jsonString_3 = this.toJsonString(_elvis_3);
+            _builder_5.append(_jsonString_3);
+            _builder_5.append("}");
+            _switchResult = _builder_5.toString();
+            break;
+          default:
+            break;
+        }
+      }
+      _xblockexpression = _switchResult;
+    }
+    return _xblockexpression;
+  }
+
+  public String referenceToArg(final ReferenceFieldSpec ref) {
+    String _xblockexpression = null;
+    {
+      boolean _isMany = BlocklySpecModelQueries.isMany(ref);
+      if (_isMany) {
+        String _xifexpression = null;
+        String _referenceLabelField = ref.getReferenceLabelField();
+        boolean _tripleNotEquals = (_referenceLabelField != null);
+        if (_tripleNotEquals) {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append(", \"labelField\": ");
+          String _jsonString = this.toJsonString(ref.getReferenceLabelField());
+          _builder.append(_jsonString);
+          _xifexpression = _builder.toString();
+        } else {
+          _xifexpression = "";
+        }
+        final String labelField = _xifexpression;
+        StringConcatenation _builder_1 = new StringConcatenation();
+        _builder_1.append("{\"type\": \"field_reference_multiselect\", \"name\": \"");
+        String _name = ref.getName();
+        _builder_1.append(_name);
+        _builder_1.append("\", \"text\": \"\", \"targetType\": ");
+        String _elvis = null;
+        String _targetTypeName = ref.getTargetTypeName();
+        if (_targetTypeName != null) {
+          _elvis = _targetTypeName;
+        } else {
+          _elvis = "";
+        }
+        String _jsonString_1 = this.toJsonString(_elvis);
+        _builder_1.append(_jsonString_1);
+        _builder_1.append(labelField);
+        _builder_1.append("}");
+        return _builder_1.toString();
+      }
+      StringConcatenation _builder_2 = new StringConcatenation();
+      _builder_2.append("{\"type\": \"field_dropdown\", \"name\": \"");
+      String _name_1 = ref.getName();
+      _builder_2.append(_name_1);
+      _builder_2.append("\", \"options\": [[\"(none)\", \"\"]]}");
+      _xblockexpression = _builder_2.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String valueInputToArg(final ValueInputSpec vi) {
+    String _xblockexpression = null;
+    {
+      String _xifexpression = null;
+      String _checkType = vi.getCheckType();
+      boolean _tripleNotEquals = (_checkType != null);
+      if (_tripleNotEquals) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("\"");
+        String _checkType_1 = vi.getCheckType();
+        _builder.append(_checkType_1);
+        _builder.append("\"");
+        _xifexpression = _builder.toString();
+      } else {
+        _xifexpression = "null";
+      }
+      final String check = _xifexpression;
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("{\"type\": \"input_value\", \"name\": \"");
+      String _name = vi.getName();
+      _builder_1.append(_name);
+      _builder_1.append("\", \"check\": ");
+      _builder_1.append(check);
+      _builder_1.append("}");
+      _xblockexpression = _builder_1.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String statementInputToArg(final StatementInputSpec si) {
+    String _xblockexpression = null;
+    {
+      String _xifexpression = null;
+      String _checkType = si.getCheckType();
+      boolean _tripleNotEquals = (_checkType != null);
+      if (_tripleNotEquals) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("\"");
+        String _checkType_1 = si.getCheckType();
+        _builder.append(_checkType_1);
+        _builder.append("\"");
+        _xifexpression = _builder.toString();
+      } else {
+        _xifexpression = "null";
+      }
+      final String check = _xifexpression;
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("{\"type\": \"input_statement\", \"name\": \"");
+      String _name = si.getName();
+      _builder_1.append(_name);
+      _builder_1.append("\", \"check\": ");
+      _builder_1.append(check);
+      _builder_1.append("}");
+      _xblockexpression = _builder_1.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String generateReferenceFieldSupportScript(final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      final Map<String, List<String>> targetMap = this.referenceTargetMap(spec);
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("window.BLOCKLY_REFERENCE_TARGETS = {");
+      _builder.newLine();
+      {
+        Set<Map.Entry<String, List<String>>> _entrySet = targetMap.entrySet();
+        boolean _hasElements = false;
+        for(final Map.Entry<String, List<String>> entry : _entrySet) {
+          if (!_hasElements) {
+            _hasElements = true;
+          } else {
+            _builder.appendImmediate(",", "");
+          }
+          String _jsonString = this.toJsonString(entry.getKey());
+          _builder.append(_jsonString);
+          _builder.append(": [");
+          final Function1<String, String> _function = (String it) -> {
+            return this.toJsonString(it);
+          };
+          String _join = IterableExtensions.join(ListExtensions.<String, String>map(entry.getValue(), _function), ", ");
+          _builder.append(_join);
+          _builder.append("]");
+          _builder.newLineIfNotEmpty();
+        }
+      }
+      _builder.append("};");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("(function() {");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("if (typeof Blockly === \'undefined\' || !Blockly.FieldTextInput || !Blockly.fieldRegistry) return;");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("if (Blockly.fieldRegistry.getClass && Blockly.fieldRegistry.getClass(\'field_reference_multiselect\')) return;");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function parseReferenceMultiValue(value) {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (Array.isArray(value)) return value;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (value === null || value === undefined) return [];");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("return String(value).split(/[,\\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("window.parseReferenceMultiValue = parseReferenceMultiValue;");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("window.parseBlocklyListField = parseReferenceMultiValue;");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("function closeMultiValueDialog() {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var existing = document.getElementById(\'multiValueDialog\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (existing) existing.remove();");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("window.openMultiValueDialog = function(field) {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("closeMultiValueDialog();");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var values = parseReferenceMultiValue(field.getValue());");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var overlay = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("overlay.id = \'multiValueDialog\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("overlay.className = \'reference-dialog-backdrop\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var panel = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("panel.className = \'reference-dialog-panel\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var title = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("title.className = \'reference-dialog-title\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("title.textContent = \'Edit \' + (field.name || \'values\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("panel.appendChild(title);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var input = document.createElement(\'textarea\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("input.className = \'reference-dialog-textarea\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("input.rows = 8;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("input.value = values.join(\'\\\\n\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("panel.appendChild(input);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var hint = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("hint.className = \'reference-dialog-empty\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("hint.textContent = \'One value per line. Values are stored as a comma-separated list.\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("panel.appendChild(hint);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var actions = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("actions.className = \'reference-dialog-actions\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var clearBtn = document.createElement(\'button\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("clearBtn.type = \'button\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("clearBtn.textContent = \'Clear\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("clearBtn.addEventListener(\'click\', function() { input.value = \'\'; });");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var cancelBtn = document.createElement(\'button\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("cancelBtn.type = \'button\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("cancelBtn.textContent = \'Cancel\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("cancelBtn.addEventListener(\'click\', closeMultiValueDialog);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var applyBtn = document.createElement(\'button\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("applyBtn.type = \'button\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("applyBtn.className = \'reference-dialog-primary\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("applyBtn.textContent = \'Apply\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("applyBtn.addEventListener(\'click\', function() {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("field.setValue(parseReferenceMultiValue(input.value).join(\', \'));");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (typeof applyValidationWarnings === \'function\') applyValidationWarnings(referenceWorkspaceForField(field));");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (typeof updateOutput === \'function\') updateOutput();");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("closeMultiValueDialog();");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("actions.appendChild(clearBtn);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("actions.appendChild(cancelBtn);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("actions.appendChild(applyBtn);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("panel.appendChild(actions);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("overlay.appendChild(panel);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("overlay.addEventListener(\'click\', function(event) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (event.target === overlay) closeMultiValueDialog();");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("document.body.appendChild(overlay);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("input.focus();");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("};");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("function referenceLabelForBlock(block, labelField) {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (!block) return \'\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var label = labelField && block.getField ? block.getFieldValue(labelField) : null;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("return label || block.getFieldValue(\'displayName\') || block.getFieldValue(\'title\') ||");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("block.getFieldValue(\'name\') || block.type + \'_\' + block.id.substring(0, 6);");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("function referenceWorkspaceForField(field) {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var source = field && field.getSourceBlock ? field.getSourceBlock() : null;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("return source && source.workspace ? source.workspace : window.workspace;");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("function referenceTargetBlocksForField(field) {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var workspace = referenceWorkspaceForField(field);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (!workspace) return [];");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var targetType = field.targetTypeName_ || \'\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var targetTypes = (window.BLOCKLY_REFERENCE_TARGETS && window.BLOCKLY_REFERENCE_TARGETS[targetType]) || [targetType];");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var source = field.getSourceBlock ? field.getSourceBlock() : null;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("return workspace.getAllBlocks(false).filter(function(block) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return block !== source && targetTypes.indexOf(block.type) !== -1;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("function referenceDisplayText(field, value) {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var workspace = referenceWorkspaceForField(field);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var ids = parseReferenceMultiValue(value);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (!ids.length) return \'(select)\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (!workspace) return ids.join(\', \');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var labels = ids.map(function(id) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("var block = workspace.getBlockById(id);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return block ? referenceLabelForBlock(block, field.labelFieldName_) : id;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("return labels.join(\', \');");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("function closeReferenceMultiDialog() {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var existing = document.getElementById(\'referenceMultiDialog\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (existing) existing.remove();");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("window.openReferenceMultiSelectDialog = function(field) {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("closeReferenceMultiDialog();");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var selected = new Set(parseReferenceMultiValue(field.getValue()));");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var candidates = referenceTargetBlocksForField(field);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var overlay = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("overlay.id = \'referenceMultiDialog\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("overlay.className = \'reference-dialog-backdrop\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var panel = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("panel.className = \'reference-dialog-panel\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var title = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("title.className = \'reference-dialog-title\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("title.textContent = \'Select \' + (field.name || \'references\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("panel.appendChild(title);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var list = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("list.className = \'reference-dialog-list\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("if (!candidates.length) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("var empty = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("empty.className = \'reference-dialog-empty\';");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("empty.textContent = \'No compatible blocks exist yet.\';");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("list.appendChild(empty);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("candidates.forEach(function(block) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("var row = document.createElement(\'label\');");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("row.className = \'reference-dialog-row\';");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("var checkbox = document.createElement(\'input\');");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("checkbox.type = \'checkbox\';");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("checkbox.value = block.id;");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("checkbox.checked = selected.has(block.id);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("checkbox.addEventListener(\'change\', function() {");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("if (checkbox.checked) selected.add(block.id);");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("else selected.delete(block.id);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("var text = document.createElement(\'span\');");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("text.textContent = referenceLabelForBlock(block, field.labelFieldName_);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("row.appendChild(checkbox);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("row.appendChild(text);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("list.appendChild(row);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("panel.appendChild(list);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var actions = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("actions.className = \'reference-dialog-actions\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var clearBtn = document.createElement(\'button\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("clearBtn.type = \'button\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("clearBtn.textContent = \'Clear\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("clearBtn.addEventListener(\'click\', function() {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("selected.clear();");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("list.querySelectorAll(\'input[type=\"checkbox\"]\').forEach(function(input) { input.checked = false; });");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var cancelBtn = document.createElement(\'button\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("cancelBtn.type = \'button\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("cancelBtn.textContent = \'Cancel\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("cancelBtn.addEventListener(\'click\', closeReferenceMultiDialog);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("var applyBtn = document.createElement(\'button\');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("applyBtn.type = \'button\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("applyBtn.className = \'reference-dialog-primary\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("applyBtn.textContent = \'Apply\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("applyBtn.addEventListener(\'click\', function() {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("field.setValue(Array.from(selected).join(\', \'));");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (typeof synchronizeOppositeReferences === \'function\') {");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("var sourceBlock = field.getSourceBlock ? field.getSourceBlock() : null;");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("synchronizeOppositeReferences(referenceWorkspaceForField(field), { blockId: sourceBlock ? sourceBlock.id : null, name: field.name });");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (typeof applyValidationWarnings === \'function\') applyValidationWarnings(referenceWorkspaceForField(field));");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (typeof updateOutput === \'function\') updateOutput();");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("closeReferenceMultiDialog();");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("actions.appendChild(clearBtn);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("actions.appendChild(cancelBtn);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("actions.appendChild(applyBtn);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("panel.appendChild(actions);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("overlay.appendChild(panel);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("overlay.addEventListener(\'click\', function(event) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (event.target === overlay) closeReferenceMultiDialog();");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("document.body.appendChild(overlay);");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("};");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("class FieldReferenceMultiselect extends Blockly.FieldTextInput {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("constructor(value, validator, config) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("super(value || \'\', validator, config);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("this.targetTypeName_ = config && config.targetType ? config.targetType : \'\';");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("this.labelFieldName_ = config && config.labelField ? config.labelField : \'\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("static fromJson(options) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return new FieldReferenceMultiselect(options.text || \'\', undefined, options);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("doClassValidation_(value) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (value === null || value === undefined) return \'\';");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return String(value);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("getDisplayText_() {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return referenceDisplayText(this, this.getValue());");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("showEditor_() {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("window.openReferenceMultiSelectDialog(this);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("refreshDisplay() {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (this.forceRerender) this.forceRerender();");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("Blockly.fieldRegistry.register(\'field_reference_multiselect\', FieldReferenceMultiselect);");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("class FieldMultiValue extends Blockly.FieldTextInput {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("constructor(value, validator, config) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("super(value || \'\', validator, config);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("static fromJson(options) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return new FieldMultiValue(options.text || \'\', undefined, options);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("doClassValidation_(value) {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (value === null || value === undefined) return \'\';");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return parseReferenceMultiValue(value).join(\', \');");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("getDisplayText_() {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("var values = parseReferenceMultiValue(this.getValue());");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (!values.length) return \'(empty)\';");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("if (values.length <= 2) return values.join(\', \');");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("return values.length + \' values\';");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("showEditor_() {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("window.openMultiValueDialog(this);");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("Blockly.fieldRegistry.register(\'field_multivalue\', FieldMultiValue);");
+      _builder.newLine();
+      _builder.append("})();");
+      _builder.newLine();
+      _xblockexpression = _builder.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public Map<String, List<String>> referenceTargetMap(final EditorSpec spec) {
+    LinkedHashMap<String, List<String>> _xblockexpression = null;
+    {
+      final LinkedHashMap<String, List<String>> result = new LinkedHashMap<String, List<String>>();
+      if ((spec == null)) {
+        return result;
+      }
+      final ArrayList<ReferenceFieldSpec> allRefs = new ArrayList<ReferenceFieldSpec>();
+      List<BlockTypeSpec> _concreteBlockTypes = BlocklySpecModelQueries.concreteBlockTypes(spec);
+      for (final BlockTypeSpec bt : _concreteBlockTypes) {
+        allRefs.addAll(bt.getReferenceFields());
+      }
+      for (final ReferenceFieldSpec ref : allRefs) {
+        if (((ref.getTargetTypeName() != null) && (!result.containsKey(ref.getTargetTypeName())))) {
+          final ArrayList<String> matching = new ArrayList<String>();
+          List<BlockTypeSpec> _concreteBlockTypes_1 = BlocklySpecModelQueries.concreteBlockTypes(spec);
+          for (final BlockTypeSpec bt_1 : _concreteBlockTypes_1) {
+            if (((Objects.equals(bt_1.getTypeName(), ref.getTargetTypeName()) || Objects.equals(bt_1.getConnectionTypeName(), ref.getTargetTypeName())) || Objects.equals(bt_1.getOutputType(), ref.getTargetTypeName()))) {
+              matching.add(bt_1.getTypeName());
+            }
+          }
+          boolean _isEmpty = matching.isEmpty();
+          if (_isEmpty) {
+            matching.add(ref.getTargetTypeName());
+          }
+          result.put(ref.getTargetTypeName(), matching);
+        }
+      }
+      _xblockexpression = result;
+    }
+    return _xblockexpression;
+  }
+
+  public String generateToolboxJs(final EditorSpec spec) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("// Toolbox for domain \"");
+    String _domainName = spec.getDomainName();
+    _builder.append(_domainName);
+    _builder.append("\".");
+    _builder.newLineIfNotEmpty();
+    _builder.append("// Auto-generated from metamodel.");
+    _builder.newLine();
+    _builder.append("window.BLOCKLY_TOOLBOX = ");
+    String _generateToolboxObject = this.generateToolboxObject(spec);
+    _builder.append(_generateToolboxObject);
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+
+  public String generateToolboxObject(final EditorSpec spec) {
+    final String toolboxType = BlocklySpecModelQueries.effectiveToolboxType(spec);
+    boolean _equals = Objects.equals("flyout", toolboxType);
+    if (_equals) {
+      return this.generateFlyoutToolbox(spec);
+    }
+    return this.generateCategoryToolbox(spec);
+  }
+
+  public String generateFlyoutToolbox(final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      final List<BlockTypeSpec> concrete = BlocklySpecModelQueries.concreteBlockTypes(spec);
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("{");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("\"kind\": \"flyoutToolbox\",");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("\"contents\": [");
+      _builder.newLine();
+      _builder.append("\t\t");
+      final Function1<BlockTypeSpec, String> _function = (BlockTypeSpec it) -> {
+        return this.blockToToolboxEntry(it, spec);
+      };
+      String _join = IterableExtensions.join(ListExtensions.<BlockTypeSpec, String>map(concrete, _function), ",\n\t\t\t\t");
+      _builder.append(_join, "\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("]");
+      _builder.newLine();
+      _builder.append("}");
+      _xblockexpression = _builder.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String generateCategoryToolbox(final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      final List<BlockTypeSpec> concrete = BlocklySpecModelQueries.concreteBlockTypes(spec);
+      final Function1<CategorySpec, String> _function = (CategorySpec cat) -> {
+        String _xblockexpression_1 = null;
+        {
+          final Function1<BlockTypeSpec, Boolean> _function_1 = (BlockTypeSpec c) -> {
+            return Boolean.valueOf(((c.getCategoryName() != null) && Objects.equals(c.getCategoryName(), cat.getName())));
+          };
+          final List<BlockTypeSpec> catBlocks = IterableExtensions.<BlockTypeSpec>toList(IterableExtensions.<BlockTypeSpec>filter(concrete, _function_1));
+          _xblockexpression_1 = this.categoryToToolbox(cat, catBlocks, spec);
+        }
+        return _xblockexpression_1;
+      };
+      final List<String> categorized = ListExtensions.<CategorySpec, String>map(spec.getCategories(), _function);
+      final Function1<BlockTypeSpec, Boolean> _function_1 = (BlockTypeSpec c) -> {
+        String _categoryName = c.getCategoryName();
+        return Boolean.valueOf((_categoryName == null));
+      };
+      final List<BlockTypeSpec> uncategorized = IterableExtensions.<BlockTypeSpec>toList(IterableExtensions.<BlockTypeSpec>filter(concrete, _function_1));
+      String _xifexpression = null;
+      boolean _isEmpty = uncategorized.isEmpty();
+      boolean _not = (!_isEmpty);
+      if (_not) {
+        StringConcatenation _builder = new StringConcatenation();
+        {
+          boolean _isEmpty_1 = spec.getCategories().isEmpty();
+          boolean _not_1 = (!_isEmpty_1);
+          if (_not_1) {
+            _builder.append(",");
+          }
+        }
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t");
+        _builder.append("{");
+        _builder.newLine();
+        _builder.append("\t\t\t\t");
+        _builder.append("\"kind\": \"category\",");
+        _builder.newLine();
+        _builder.append("\t\t\t\t");
+        _builder.append("\"name\": \"Other\",");
+        _builder.newLine();
+        _builder.append("\t\t\t\t");
+        _builder.append("\"colour\": \"0\",");
+        _builder.newLine();
+        _builder.append("\t\t\t\t");
+        _builder.append("\"contents\": [");
+        _builder.newLine();
+        _builder.append("\t\t\t\t\t");
+        final Function1<BlockTypeSpec, String> _function_2 = (BlockTypeSpec it) -> {
+          return this.blockToToolboxEntry(it, spec);
+        };
+        String _join = IterableExtensions.join(ListExtensions.<BlockTypeSpec, String>map(uncategorized, _function_2), ",\n\t\t\t\t\t");
+        _builder.append(_join, "\t\t\t\t\t");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t\t");
+        _builder.append("]");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("}");
+        _xifexpression = _builder.toString();
+      } else {
+        _xifexpression = "";
+      }
+      final String uncatJson = _xifexpression;
+      final boolean hasDomainContent = ((!categorized.isEmpty()) || (!uncategorized.isEmpty()));
+      String _xifexpression_1 = null;
+      if (hasDomainContent) {
+        StringConcatenation _builder_1 = new StringConcatenation();
+        _builder_1.append(",");
+        _builder_1.newLine();
+        _builder_1.append("\t\t\t\t");
+        _builder_1.append("{\"kind\": \"sep\", \"gap\": \"32\"},");
+        _xifexpression_1 = _builder_1.toString();
+      } else {
+        _xifexpression_1 = "";
+      }
+      final String builtinSep = _xifexpression_1;
+      StringConcatenation _builder_2 = new StringConcatenation();
+      _builder_2.append("{");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("\"kind\": \"categoryToolbox\",");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("\"contents\": [");
+      _builder_2.newLine();
+      _builder_2.append("\t\t");
+      String _join_1 = IterableExtensions.join(categorized, ",\n\t\t\t");
+      _builder_2.append(_join_1, "\t\t");
+      _builder_2.append(uncatJson, "\t\t");
+      _builder_2.append(builtinSep, "\t\t");
+      _builder_2.newLineIfNotEmpty();
+      _builder_2.append("\t\t");
+      String _generateBuiltinToolboxCategories = this.generateBuiltinToolboxCategories();
+      _builder_2.append(_generateBuiltinToolboxCategories, "\t\t");
+      _builder_2.newLineIfNotEmpty();
+      _builder_2.append("\t");
+      _builder_2.append("]");
+      _builder_2.newLine();
+      _builder_2.append("}");
+      _xblockexpression = _builder_2.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String categoryToToolbox(final CategorySpec cat, final List<BlockTypeSpec> blocks, final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      final String colour = String.valueOf(cat.getColour());
+      String _elvis = null;
+      String _label = cat.getLabel();
+      if (_label != null) {
+        _elvis = _label;
+      } else {
+        String _name = cat.getName();
+        _elvis = _name;
+      }
+      final String label = _elvis;
+      final List<BlockTypeSpec> concrete = BlocklySpecModelQueries.concreteBlockTypes(spec);
+      final ArrayList<String> contentParts = new ArrayList<String>();
+      for (final BlockTypeSpec b : blocks) {
+        contentParts.add(this.blockToToolboxEntry(b, spec));
+      }
+      List<CategorySpec> _children = cat.getChildren();
+      for (final CategorySpec child : _children) {
+        {
+          final Function1<BlockTypeSpec, Boolean> _function = (BlockTypeSpec c) -> {
+            return Boolean.valueOf(((c.getCategoryName() != null) && Objects.equals(c.getCategoryName(), child.getName())));
+          };
+          final List<BlockTypeSpec> childBlocks = IterableExtensions.<BlockTypeSpec>toList(IterableExtensions.<BlockTypeSpec>filter(concrete, _function));
+          contentParts.add(this.categoryToToolbox(child, childBlocks, spec));
+        }
+      }
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("{");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("\"kind\": \"category\",");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("\"name\": ");
+      String _jsonString = this.toJsonString(label);
+      _builder.append(_jsonString, "\t");
+      _builder.append(",");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("\"colour\": \"");
+      _builder.append(colour, "\t");
+      _builder.append("\",");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("\"contents\": [");
+      _builder.newLine();
+      _builder.append("\t\t");
+      String _join = IterableExtensions.join(contentParts, ",\n\t\t\t\t");
+      _builder.append(_join, "\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("]");
+      _builder.newLine();
+      _builder.append("}");
+      _xblockexpression = _builder.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String blockToToolboxEntry(final BlockTypeSpec bt, final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      if ((bt.getValueInputs().isEmpty() || IterableExtensions.isEmpty(IterableExtensions.<ValueInputSpec>filter(bt.getValueInputs(), ((Function1<ValueInputSpec, Boolean>) (ValueInputSpec it) -> {
+        String _shadowBlockType = it.getShadowBlockType();
+        return Boolean.valueOf((_shadowBlockType != null));
+      }))))) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("{\"kind\": \"block\", \"type\": \"");
+        String _typeName = bt.getTypeName();
+        _builder.append(_typeName);
+        _builder.append("\"}");
+        return _builder.toString();
+      }
+      final Function1<ValueInputSpec, Boolean> _function = (ValueInputSpec it) -> {
+        String _shadowBlockType = it.getShadowBlockType();
+        return Boolean.valueOf((_shadowBlockType != null));
+      };
+      final List<ValueInputSpec> shadowInputs = IterableExtensions.<ValueInputSpec>toList(IterableExtensions.<ValueInputSpec>filter(bt.getValueInputs(), _function));
+      boolean _isEmpty = shadowInputs.isEmpty();
+      if (_isEmpty) {
+        StringConcatenation _builder_1 = new StringConcatenation();
+        _builder_1.append("{\"kind\": \"block\", \"type\": \"");
+        String _typeName_1 = bt.getTypeName();
+        _builder_1.append(_typeName_1);
+        _builder_1.append("\"}");
+        return _builder_1.toString();
+      }
+      final Function1<ValueInputSpec, String> _function_1 = (ValueInputSpec it) -> {
+        StringConcatenation _builder_2 = new StringConcatenation();
+        _builder_2.append("\"");
+        String _name = it.getName();
+        _builder_2.append(_name);
+        _builder_2.append("\": {");
+        _builder_2.newLineIfNotEmpty();
+        _builder_2.append("\t");
+        _builder_2.append("\"shadow\": { \"type\": \"");
+        String _shadowBlockType = it.getShadowBlockType();
+        _builder_2.append(_shadowBlockType, "\t");
+        _builder_2.append("\" }");
+        _builder_2.newLineIfNotEmpty();
+        _builder_2.append("}");
+        return _builder_2.toString();
+      };
+      final String inputsJson = IterableExtensions.join(ListExtensions.<ValueInputSpec, String>map(shadowInputs, _function_1), ",");
+      StringConcatenation _builder_2 = new StringConcatenation();
+      _builder_2.append("{\"kind\": \"block\", \"type\": \"");
+      String _typeName_2 = bt.getTypeName();
+      _builder_2.append(_typeName_2);
+      _builder_2.append("\", \"inputs\": {");
+      _builder_2.append(inputsJson);
+      _builder_2.newLineIfNotEmpty();
+      _builder_2.append("\t\t\t\t");
+      _builder_2.append("}}");
+      _xblockexpression = _builder_2.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String generateBuiltinToolboxCategories() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"kind\": \"category\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"name\": \"Logic\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"colour\": \"210\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"contents\": [");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"controls_if\"},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"controls_if\", \"extraState\": {\"hasElse\": true}},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"logic_compare\"},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"logic_operation\"},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"logic_negate\"},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"logic_boolean\"},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"logic_null\"},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"logic_ternary\"}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"kind\": \"category\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"name\": \"Loops\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"colour\": \"120\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"contents\": [");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"controls_repeat_ext\", \"inputs\": {\"TIMES\": {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 10}}}}},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"controls_whileUntil\"},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"controls_for\", \"inputs\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"FROM\": {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 1}}},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"TO\":   {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 10}}},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"BY\":   {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 1}}}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"controls_forEach\"},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"controls_flow_statements\"}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"kind\": \"category\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"name\": \"Math\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"colour\": \"230\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"contents\": [");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"math_number\", \"fields\": {\"NUM\": 0}},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"math_arithmetic\", \"inputs\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"A\": {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 1}}},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"B\": {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 1}}}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"math_single\", \"inputs\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"NUM\": {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 9}}}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"math_round\", \"inputs\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"NUM\": {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 3.1}}}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"math_modulo\", \"inputs\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"DIVIDEND\": {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 64}}},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"DIVISOR\":  {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 10}}}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"math_constrain\", \"inputs\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"VALUE\": {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 50}}},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"LOW\":   {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 1}}},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"HIGH\":  {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 100}}}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"math_random_int\", \"inputs\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"FROM\": {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 1}}},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"TO\":   {\"shadow\": {\"type\": \"math_number\", \"fields\": {\"NUM\": 100}}}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}},");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{\"kind\": \"block\", \"type\": \"math_random_float\"}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"kind\": \"category\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"name\": \"Variables\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"colour\": \"330\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"custom\": \"VARIABLE\"");
+    _builder.newLine();
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"kind\": \"category\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"name\": \"Functions\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"colour\": \"290\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"custom\": \"PROCEDURE\"");
+    _builder.newLine();
+    _builder.append("}");
+    return _builder.toString();
+  }
+
+  public String generateGeneratorsJs(final EditorSpec spec) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("// Code generators for domain \"");
+    String _domainName = spec.getDomainName();
+    _builder.append(_domainName);
+    _builder.append("\".");
+    _builder.newLineIfNotEmpty();
+    _builder.append("// Auto-generated from metamodel.");
+    _builder.newLine();
+    String _generateGeneratorsBody = this.generateGeneratorsBody(spec);
+    _builder.append(_generateGeneratorsBody);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+
+  public String generateGeneratorsBody(final EditorSpec spec) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("function parseBlocklyListField(value) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("if (Array.isArray(value)) return value;");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("if (value === null || value === undefined) return [];");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return String(value).split(/[,\\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("window.parseBlocklyListField = parseBlocklyListField;");
+    _builder.newLine();
+    _builder.newLine();
+    {
+      List<BlockTypeSpec> _concreteBlockTypes = BlocklySpecModelQueries.concreteBlockTypes(spec);
+      for(final BlockTypeSpec bt : _concreteBlockTypes) {
+        String _blockTypeToGeneratorJs = this.blockTypeToGeneratorJs(bt);
+        _builder.append(_blockTypeToGeneratorJs);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    String _generateBuiltinBlockGenerators = this.generateBuiltinBlockGenerators();
+    _builder.append(_generateBuiltinBlockGenerators);
+    _builder.newLineIfNotEmpty();
+    String _generateDomainCodegenBody = this.generateDomainCodegenBody(spec);
+    _builder.append(_generateDomainCodegenBody);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+
+  public String generateDomainCodegenBody(final EditorSpec spec) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("/* ── Domain code generation (template based) ── */");
+    _builder.newLine();
+    _builder.append("window.BLOCKLY_DOMAIN_CODEGEN = {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("language: \'");
+    String _elvis = null;
+    String _codeLanguage = spec.getCodeLanguage();
+    if (_codeLanguage != null) {
+      _elvis = _codeLanguage;
+    } else {
+      _elvis = "text";
+    }
+    String _escapeJson = this.escapeJson(_elvis);
+    _builder.append(_escapeJson, "  ");
+    _builder.append("\',");
+    _builder.newLineIfNotEmpty();
+    _builder.append("  ");
+    _builder.append("fileExtension: \'");
+    String _elvis_1 = null;
+    String _codeFileExtension = spec.getCodeFileExtension();
+    if (_codeFileExtension != null) {
+      _elvis_1 = _codeFileExtension;
+    } else {
+      _elvis_1 = "txt";
+    }
+    String _escapeJson_1 = this.escapeJson(_elvis_1);
+    _builder.append(_escapeJson_1, "  ");
+    _builder.append("\',");
+    _builder.newLineIfNotEmpty();
+    _builder.append("  ");
+    _builder.append("blocks: {");
+    _builder.newLine();
+    {
+      List<BlockTypeSpec> _concreteBlockTypes = BlocklySpecModelQueries.concreteBlockTypes(spec);
+      boolean _hasElements = false;
+      for(final BlockTypeSpec bt : _concreteBlockTypes) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(",", "");
+        }
+        _builder.append("\'");
+        String _escapeJson_2 = this.escapeJson(bt.getTypeName());
+        _builder.append(_escapeJson_2);
+        _builder.append("\': {");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.append("label: \'");
+        String _elvis_2 = null;
+        String _label = bt.getLabel();
+        if (_label != null) {
+          _elvis_2 = _label;
+        } else {
+          String _typeName = bt.getTypeName();
+          _elvis_2 = _typeName;
+        }
+        String _escapeJson_3 = this.escapeJson(_elvis_2);
+        _builder.append(_escapeJson_3, "  ");
+        _builder.append("\',");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.append("template: ");
+        {
+          String _codeTemplate = bt.getCodeTemplate();
+          boolean _tripleNotEquals = (_codeTemplate != null);
+          if (_tripleNotEquals) {
+            _builder.append("\'");
+            String _escapeJson_4 = this.escapeJson(bt.getCodeTemplate());
+            _builder.append(_escapeJson_4, "  ");
+            _builder.append("\'");
+          } else {
+            _builder.append("null");
+          }
+        }
+        _builder.append(",");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.append("fields: [");
+        final Function1<FieldSpec, String> _function = (FieldSpec it) -> {
+          String _escapeJson_5 = this.escapeJson(it.getName());
+          String _plus = ("\'" + _escapeJson_5);
+          return (_plus + "\'");
+        };
+        String _join = IterableExtensions.join(ListExtensions.<FieldSpec, String>map(bt.getFields(), _function), ", ");
+        _builder.append(_join, "  ");
+        _builder.append("],");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.append("fieldTypes: {");
+        final Function1<FieldSpec, String> _functionFieldTypes = (FieldSpec it) -> {
+          String _escapeJson_5 = this.escapeJson(it.getName());
+          String _plus = ("\'" + _escapeJson_5);
+          String _plus_1 = (_plus + "\': \'");
+          FieldType _fieldType = it.getFieldType();
+          String _fieldTypeName = ((_fieldType != null) ? _fieldType.toString() : "TEXT");
+          String _plus_2 = (_plus_1 + _fieldTypeName);
+          return (_plus_2 + "\'");
+        };
+        String _joinFieldTypes = IterableExtensions.join(ListExtensions.<FieldSpec, String>map(bt.getFields(), _functionFieldTypes), ", ");
+        _builder.append(_joinFieldTypes, "  ");
+        _builder.append("},");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.append("references: [");
+        final Function1<ReferenceFieldSpec, String> _function_1 = (ReferenceFieldSpec it) -> {
+          String _escapeJson_5 = this.escapeJson(it.getName());
+          String _plus = ("\'" + _escapeJson_5);
+          return (_plus + "\'");
+        };
+        String _join_1 = IterableExtensions.join(ListExtensions.<ReferenceFieldSpec, String>map(bt.getReferenceFields(), _function_1), ", ");
+        _builder.append(_join_1, "  ");
+        _builder.append("],");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.append("values: [");
+        final Function1<ValueInputSpec, String> _function_2 = (ValueInputSpec it) -> {
+          String _escapeJson_5 = this.escapeJson(it.getName());
+          String _plus = ("\'" + _escapeJson_5);
+          return (_plus + "\'");
+        };
+        String _join_2 = IterableExtensions.join(ListExtensions.<ValueInputSpec, String>map(bt.getValueInputs(), _function_2), ", ");
+        _builder.append(_join_2, "  ");
+        _builder.append("],");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.append("statements: [");
+        final Function1<StatementInputSpec, String> _function_3 = (StatementInputSpec it) -> {
+          String _escapeJson_5 = this.escapeJson(it.getName());
+          String _plus = ("\'" + _escapeJson_5);
+          return (_plus + "\'");
+        };
+        String _join_3 = IterableExtensions.join(ListExtensions.<StatementInputSpec, String>map(bt.getStatementInputs(), _function_3), ", ");
+        _builder.append(_join_3, "  ");
+        _builder.append("]");
+        _builder.newLineIfNotEmpty();
+        _builder.append("}");
+        _builder.newLine();
+      }
+    }
+    _builder.append("  ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("function generateDomainCode(workspace) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("if (!workspace) return \'\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var topBlocks = workspace.getTopBlocks(true).filter(function(block) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("return !block.outputConnection;");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("});");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("if (topBlocks.length === 0) topBlocks = workspace.getTopBlocks(true);");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return topBlocks.map(renderDomainBlock).filter(Boolean).join(\'\\n\');");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("function renderDomainBlock(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("if (!block) return \'\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var config = window.BLOCKLY_DOMAIN_CODEGEN.blocks[block.type] || null;");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("if (!config) return renderFallbackDomainBlock(block);");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var template = config.template;");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("if (!template) return renderFallbackDomainBlock(block, config);");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return applyDomainTemplate(block, config, template);");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("function applyDomainTemplate(block, config, template) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return template");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append(".replace(/\\{\\{\\s*(value|statement|statements|children):\\s*([A-Za-z_][\\w-]*)\\s*\\}\\}/g, function(_, kind, name) {");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("if (kind === \'value\') return renderDomainValue(block, name);");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("return renderDomainStatement(block, name);");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("})");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append(".replace(/\\{\\{\\s*type\\s*\\}\\}/g, block.type)");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append(".replace(/\\{\\{\\s*([A-Za-z_][\\w-]*)\\s*\\}\\}/g, function(_, name) {");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("return block.getFieldValue(name) || \'\';");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("});");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("function renderDomainValue(block, inputName) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var child = block.getInputTargetBlock(inputName);");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return child ? renderDomainBlock(child) : \'\';");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("function renderDomainStatement(block, inputName) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var child = block.getInputTargetBlock(inputName);");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var lines = [];");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("while (child) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("var rendered = renderDomainBlock(child);");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("if (rendered) lines.push(rendered);");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("child = child.getNextBlock();");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return lines.join(\'\\n\');");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("function renderFallbackDomainBlock(block, config) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("config = config || { fields: [], references: [], values: [], statements: [] };");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var parts = [];");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("(config.fields || []).forEach(function(name) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("var value = block.getFieldValue(name);");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("if (value !== null && value !== undefined && value !== \'\') parts.push(name + \'=\' + JSON.stringify(value));");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("});");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("(config.references || []).forEach(function(name) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("var value = block.getFieldValue(name);");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("if (value !== null && value !== undefined && value !== \'\') parts.push(name + \'=\' + JSON.stringify(value));");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("});");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("(config.values || []).forEach(function(name) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("var valueCode = renderDomainValue(block, name);");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("if (valueCode) parts.push(name + \'=\' + valueCode);");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("});");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("(config.statements || []).forEach(function(name) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("var stmtCode = renderDomainStatement(block, name);");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("if (stmtCode) parts.push(name + \'={\\n\' + indentDomainCode(stmtCode) + \'\\n}\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("});");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return block.type + (parts.length ? \'(\' + parts.join(\', \') + \')\' : \'\');");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("function indentDomainCode(text) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return String(text || \'\').split(\'\\n\').map(function(line) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("return line ? \'  \' + line : line;");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("}).join(\'\\n\');");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder.toString();
+  }
+
+  /**
+   * Override Blockly's default JavaScript generators for built-in blocks
+   * so they produce JSON AST output compatible with the domain generators.
+   */
+  public String generateBuiltinBlockGenerators() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("/* ── Built-in block generators (JSON AST output) ── */");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("/* --- Logic --- */");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'controls_if\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var branches = [];");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var i = 0;");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("while (block.getInput(\'IF\' + i)) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("var cond = javascript.javascriptGenerator.valueToCode(block, \'IF\' + i, 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("var body = javascript.javascriptGenerator.statementToCode(block, \'DO\' + i);");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("var bodyArr = (body || \'\').trim().replace(/,\\s*$/, \'\');");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("branches.push(\'{\"condition\": \' + cond + \', \"body\": \' + (bodyArr ? \'[\' + bodyArr + \']\' : \'[]\') + \'}\');");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("i++;");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var elseBody = javascript.javascriptGenerator.statementToCode(block, \'ELSE\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var elseArr = (elseBody || \'\').trim().replace(/,\\s*$/, \'\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var elsePart = elseArr ? \', \"else\": [\' + elseArr + \']\' : \'\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"controls_if\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"branches\": [\' + branches.join(\',\') + \']\' + elsePart + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'logic_compare\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var op = block.getFieldValue(\'OP\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var a = javascript.javascriptGenerator.valueToCode(block, \'A\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var b = javascript.javascriptGenerator.valueToCode(block, \'B\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"logic_compare\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"op\": \' + JSON.stringify(op) + \', \"left\": \' + a + \', \"right\": \' + b + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'logic_operation\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var op = block.getFieldValue(\'OP\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var a = javascript.javascriptGenerator.valueToCode(block, \'A\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var b = javascript.javascriptGenerator.valueToCode(block, \'B\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"logic_operation\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"op\": \' + JSON.stringify(op) + \', \"left\": \' + a + \', \"right\": \' + b + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'logic_negate\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var val = javascript.javascriptGenerator.valueToCode(block, \'BOOL\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"logic_negate\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"value\": \' + val + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'logic_boolean\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var val = block.getFieldValue(\'BOOL\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"logic_boolean\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"value\": \' + (val === \'TRUE\' ? \'true\' : \'false\') + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'logic_null\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"logic_null\", \"_blockId\": \' + JSON.stringify(block.id) + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'logic_ternary\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var cond = javascript.javascriptGenerator.valueToCode(block, \'IF\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var thenVal = javascript.javascriptGenerator.valueToCode(block, \'THEN\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var elseVal = javascript.javascriptGenerator.valueToCode(block, \'ELSE\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"logic_ternary\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"condition\": \' + cond + \', \"then\": \' + thenVal + \', \"else\": \' + elseVal + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("/* --- Loops --- */");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'controls_repeat_ext\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var times = javascript.javascriptGenerator.valueToCode(block, \'TIMES\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var body = javascript.javascriptGenerator.statementToCode(block, \'DO\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var bodyArr = (body || \'\').trim().replace(/,\\s*$/, \'\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"controls_repeat\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"times\": \' + times + \', \"body\": \' + (bodyArr ? \'[\' + bodyArr + \']\' : \'[]\') + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'controls_whileUntil\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var mode = block.getFieldValue(\'MODE\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var cond = javascript.javascriptGenerator.valueToCode(block, \'BOOL\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var body = javascript.javascriptGenerator.statementToCode(block, \'DO\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var bodyArr = (body || \'\').trim().replace(/,\\s*$/, \'\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"controls_whileUntil\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"mode\": \' + JSON.stringify(mode) + \', \"condition\": \' + cond +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"body\": \' + (bodyArr ? \'[\' + bodyArr + \']\' : \'[]\') + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'controls_for\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var varName = block.getField(\'VAR\').getText();");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var from = javascript.javascriptGenerator.valueToCode(block, \'FROM\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var to = javascript.javascriptGenerator.valueToCode(block, \'TO\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var by = javascript.javascriptGenerator.valueToCode(block, \'BY\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var body = javascript.javascriptGenerator.statementToCode(block, \'DO\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var bodyArr = (body || \'\').trim().replace(/,\\s*$/, \'\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"controls_for\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"variable\": \' + JSON.stringify(varName) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"from\": \' + from + \', \"to\": \' + to + \', \"by\": \' + by +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"body\": \' + (bodyArr ? \'[\' + bodyArr + \']\' : \'[]\') + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'controls_forEach\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var varName = block.getField(\'VAR\').getText();");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var list = javascript.javascriptGenerator.valueToCode(block, \'LIST\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var body = javascript.javascriptGenerator.statementToCode(block, \'DO\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var bodyArr = (body || \'\').trim().replace(/,\\s*$/, \'\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"controls_forEach\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"variable\": \' + JSON.stringify(varName) + \', \"list\": \' + list +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"body\": \' + (bodyArr ? \'[\' + bodyArr + \']\' : \'[]\') + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'controls_flow_statements\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var flow = block.getFieldValue(\'FLOW\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"controls_flow\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"flow\": \' + JSON.stringify(flow) + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("/* --- Math --- */");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'math_number\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var num = block.getFieldValue(\'NUM\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"math_number\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"value\": \' + Number(num) + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'math_arithmetic\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var op = block.getFieldValue(\'OP\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var a = javascript.javascriptGenerator.valueToCode(block, \'A\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var b = javascript.javascriptGenerator.valueToCode(block, \'B\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"math_arithmetic\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"op\": \' + JSON.stringify(op) + \', \"left\": \' + a + \', \"right\": \' + b + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'math_single\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var op = block.getFieldValue(\'OP\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var num = javascript.javascriptGenerator.valueToCode(block, \'NUM\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"math_single\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"op\": \' + JSON.stringify(op) + \', \"value\": \' + num + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'math_round\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var op = block.getFieldValue(\'OP\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var num = javascript.javascriptGenerator.valueToCode(block, \'NUM\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"math_round\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"op\": \' + JSON.stringify(op) + \', \"value\": \' + num + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'math_modulo\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var a = javascript.javascriptGenerator.valueToCode(block, \'DIVIDEND\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var b = javascript.javascriptGenerator.valueToCode(block, \'DIVISOR\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"math_modulo\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"dividend\": \' + a + \', \"divisor\": \' + b + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'math_constrain\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var val = javascript.javascriptGenerator.valueToCode(block, \'VALUE\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var lo = javascript.javascriptGenerator.valueToCode(block, \'LOW\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var hi = javascript.javascriptGenerator.valueToCode(block, \'HIGH\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"math_constrain\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"value\": \' + val + \', \"low\": \' + lo + \', \"high\": \' + hi + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'math_random_int\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var from = javascript.javascriptGenerator.valueToCode(block, \'FROM\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var to = javascript.javascriptGenerator.valueToCode(block, \'TO\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"math_random_int\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"from\": \' + from + \', \"to\": \' + to + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'math_random_float\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"math_random_float\", \"_blockId\": \' + JSON.stringify(block.id) + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("/* --- Variables --- */");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'variables_get\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var varName = block.getField(\'VAR\').getText();");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"variables_get\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"variable\": \' + JSON.stringify(varName) + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'variables_set\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var varName = block.getField(\'VAR\').getText();");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var val = javascript.javascriptGenerator.valueToCode(block, \'VALUE\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"variables_set\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"variable\": \' + JSON.stringify(varName) + \', \"value\": \' + val + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("/* --- Procedures (Functions) --- */");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'procedures_defnoreturn\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var name = block.getFieldValue(\'NAME\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var params = block.arguments_ || [];");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var body = javascript.javascriptGenerator.statementToCode(block, \'STACK\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var bodyArr = (body || \'\').trim().replace(/,\\s*$/, \'\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"procedures_def\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"name\": \' + JSON.stringify(name) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"params\": \' + JSON.stringify(params) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"body\": \' + (bodyArr ? \'[\' + bodyArr + \']\' : \'[]\') + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'procedures_defreturn\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var name = block.getFieldValue(\'NAME\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var params = block.arguments_ || [];");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var body = javascript.javascriptGenerator.statementToCode(block, \'STACK\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var bodyArr = (body || \'\').trim().replace(/,\\s*$/, \'\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var ret = javascript.javascriptGenerator.valueToCode(block, \'RETURN\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"procedures_def\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"name\": \' + JSON.stringify(name) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"params\": \' + JSON.stringify(params) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"body\": \' + (bodyArr ? \'[\' + bodyArr + \']\' : \'[]\') +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"return\": \' + ret + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'procedures_callnoreturn\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var name = block.getFieldValue(\'NAME\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var args = {};");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("for (var i = 0; i < (block.arguments_ ? block.arguments_.length : 0); i++) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("args[block.arguments_[i]] = JSON.parse(");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("javascript.javascriptGenerator.valueToCode(block, \'ARG\' + i, 0) || \'null\'");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append(");");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"procedures_call\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"name\": \' + JSON.stringify(name) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"args\": \' + JSON.stringify(args) + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'procedures_callreturn\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var name = block.getFieldValue(\'NAME\');");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var args = {};");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("for (var i = 0; i < (block.arguments_ ? block.arguments_.length : 0); i++) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("args[block.arguments_[i]] = JSON.parse(");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("javascript.javascriptGenerator.valueToCode(block, \'ARG\' + i, 0) || \'null\'");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append(");");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var code = \'{\' + \'\"_type\": \"procedures_call\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"name\": \' + JSON.stringify(name) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"args\": \' + JSON.stringify(args) + \' }\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return [code, 0];");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("javascript.javascriptGenerator.forBlock[\'procedures_ifreturn\'] = function(block) {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var cond = javascript.javascriptGenerator.valueToCode(block, \'CONDITION\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var val = javascript.javascriptGenerator.valueToCode(block, \'VALUE\', 0) || \'null\';");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("return \'{\' + \'\"_type\": \"procedures_ifreturn\", \"_blockId\": \' + JSON.stringify(block.id) +");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\', \"condition\": \' + cond + \', \"value\": \' + val + \' },\\n\';");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("/* ── Type compatibility: allow built-in expression blocks to connect");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("to domain value inputs that check for \"Expression\" ── */");
+    _builder.newLine();
+    _builder.append("(function() {");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("var exprTypes = [");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\'math_number\',\'math_arithmetic\',\'math_single\',\'math_round\',");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\'math_modulo\',\'math_constrain\',\'math_random_int\',\'math_random_float\',");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\'logic_compare\',\'logic_operation\',\'logic_negate\',\'logic_boolean\',");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\'logic_null\',\'logic_ternary\',\'variables_get\',\'procedures_callreturn\'");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("];");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("exprTypes.forEach(function(type) {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("var def = Blockly.Blocks[type];");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("if (def && def.init) {");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("var origInit = def.init;");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("def.init = function() {");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("origInit.call(this);");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("this.setOutput(true, null);");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("};");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("});");
+    _builder.newLine();
+    _builder.append("})();");
+    _builder.newLine();
+    return _builder.toString();
+  }
+
+  public String blockTypeToGeneratorJs(final BlockTypeSpec bt) {
+    String _xblockexpression = null;
+    {
+      final Function1<FieldSpec, String> _function = (FieldSpec it) -> {
+        String _xifexpression = null;
+        boolean _isMany = BlocklySpecModelQueries.isMany(it);
+        if (_isMany) {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("  ");
+          _builder.append("var ");
+          String _name = it.getName();
+          _builder.append(_name, "  ");
+          _builder.append(" = parseBlocklyListField(block.getFieldValue(\'");
+          String _name_1 = it.getName();
+          _builder.append(_name_1, "  ");
+          _builder.append("\'));");
+          _xifexpression = _builder.toString();
+        } else {
+          StringConcatenation _builder_1 = new StringConcatenation();
+          _builder_1.append("  ");
+          _builder_1.append("var ");
+          String _name_2 = it.getName();
+          _builder_1.append(_name_2, "  ");
+          _builder_1.append(" = block.getFieldValue(\'");
+          String _name_3 = it.getName();
+          _builder_1.append(_name_3, "  ");
+          _builder_1.append("\');");
+          _xifexpression = _builder_1.toString();
+        }
+        return _xifexpression;
+      };
+      final String fieldReads = IterableExtensions.join(ListExtensions.<FieldSpec, String>map(bt.getFields(), _function), "\n");
+      final Function1<ReferenceFieldSpec, String> _function_1 = (ReferenceFieldSpec it) -> {
+        String _xifexpression = null;
+        boolean _isMany = BlocklySpecModelQueries.isMany(it);
+        if (_isMany) {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("  ");
+          _builder.append("var ");
+          String _name = it.getName();
+          _builder.append(_name, "  ");
+          _builder.append(" = parseBlocklyListField(block.getFieldValue(\'");
+          String _name_1 = it.getName();
+          _builder.append(_name_1, "  ");
+          _builder.append("\'));");
+          _xifexpression = _builder.toString();
+        } else {
+          StringConcatenation _builder_1 = new StringConcatenation();
+          _builder_1.append("  ");
+          _builder_1.append("var ");
+          String _name_2 = it.getName();
+          _builder_1.append(_name_2, "  ");
+          _builder_1.append(" = block.getFieldValue(\'");
+          String _name_3 = it.getName();
+          _builder_1.append(_name_3, "  ");
+          _builder_1.append("\');");
+          _xifexpression = _builder_1.toString();
+        }
+        return _xifexpression;
+      };
+      final String refReads = IterableExtensions.join(ListExtensions.<ReferenceFieldSpec, String>map(bt.getReferenceFields(), _function_1), "\n");
+      final Function1<ValueInputSpec, String> _function_2 = (ValueInputSpec it) -> {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("  ");
+        _builder.append("var ");
+        String _name = it.getName();
+        _builder.append(_name, "  ");
+        _builder.append("_code = javascript.javascriptGenerator.valueToCode(block, \'");
+        String _name_1 = it.getName();
+        _builder.append(_name_1, "  ");
+        _builder.append("\', 0) || \'null\';");
+        return _builder.toString();
+      };
+      final String valueReads = IterableExtensions.join(ListExtensions.<ValueInputSpec, String>map(bt.getValueInputs(), _function_2), "\n");
+      final Function1<StatementInputSpec, String> _function_3 = (StatementInputSpec it) -> {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("  ");
+        _builder.append("var ");
+        String _name = it.getName();
+        _builder.append(_name, "  ");
+        _builder.append("_code = javascript.javascriptGenerator.statementToCode(block, \'");
+        String _name_1 = it.getName();
+        _builder.append(_name_1, "  ");
+        _builder.append("\');");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.append("var ");
+        String _name_2 = it.getName();
+        _builder.append(_name_2, "  ");
+        _builder.append("_stmt = (");
+        String _name_3 = it.getName();
+        _builder.append(_name_3, "  ");
+        _builder.append("_code || \'\').trim().replace(/,\\\\s*$/, \'\');");
+        return _builder.toString();
+      };
+      final String stmtReads = IterableExtensions.join(ListExtensions.<StatementInputSpec, String>map(bt.getStatementInputs(), _function_3), "\n");
+      final ArrayList<String> jsonParts = new ArrayList<String>();
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("  ");
+      _builder.append("\'\"_type\": \"");
+      String _typeName = bt.getTypeName();
+      _builder.append(_typeName, "  ");
+      _builder.append("\", \"_blockId\": \' + JSON.stringify(block.id)");
+      jsonParts.add(_builder.toString());
+      String _idFieldName = bt.getIdFieldName();
+      boolean _tripleNotEquals = (_idFieldName != null);
+      if (_tripleNotEquals) {
+        StringConcatenation _builder_1 = new StringConcatenation();
+        _builder_1.append(" ");
+        _builder_1.append("\', \"_modelId\": \' + JSON.stringify(");
+        String _idFieldName_1 = bt.getIdFieldName();
+        _builder_1.append(_idFieldName_1, " ");
+        _builder_1.append(" || block.id)");
+        jsonParts.add(_builder_1.toString());
+      }
+      List<FieldSpec> _fields = bt.getFields();
+      for (final FieldSpec f : _fields) {
+        StringConcatenation _builder_2 = new StringConcatenation();
+        _builder_2.append(" ");
+        _builder_2.append("\', \"");
+        String _name = f.getName();
+        _builder_2.append(_name, " ");
+        _builder_2.append("\": \' + JSON.stringify(");
+        String _name_1 = f.getName();
+        _builder_2.append(_name_1, " ");
+        _builder_2.append(")");
+        jsonParts.add(_builder_2.toString());
+      }
+      List<ReferenceFieldSpec> _referenceFields = bt.getReferenceFields();
+      for (final ReferenceFieldSpec r : _referenceFields) {
+        StringConcatenation _builder_3 = new StringConcatenation();
+        _builder_3.append(" ");
+        _builder_3.append("\', \"");
+        String _name_2 = r.getName();
+        _builder_3.append(_name_2, " ");
+        _builder_3.append("\": \' + JSON.stringify(");
+        String _name_3 = r.getName();
+        _builder_3.append(_name_3, " ");
+        _builder_3.append(")");
+        jsonParts.add(_builder_3.toString());
+      }
+      List<ValueInputSpec> _valueInputs = bt.getValueInputs();
+      for (final ValueInputSpec v : _valueInputs) {
+        StringConcatenation _builder_4 = new StringConcatenation();
+        _builder_4.append(" ");
+        _builder_4.append("\', \"");
+        String _name_4 = v.getName();
+        _builder_4.append(_name_4, " ");
+        _builder_4.append("\": \' + ");
+        String _name_5 = v.getName();
+        _builder_4.append(_name_5, " ");
+        _builder_4.append("_code");
+        jsonParts.add(_builder_4.toString());
+      }
+      List<StatementInputSpec> _statementInputs = bt.getStatementInputs();
+      for (final StatementInputSpec s : _statementInputs) {
+        {
+          final String sn = s.getName();
+          jsonParts.add((((((("  \', \"" + sn) + "\": \' + (") + sn) + "_stmt ? \'[\' + ") + sn) + "_stmt + \']\' : \'[]\')"));
+        }
+      }
+      final String jsonConcat = IterableExtensions.join(jsonParts, " + ");
+      final boolean isOutputBlock = (Objects.equals(bt.getConnectionType(), ConnectionType.OUTPUT) || Objects.equals(bt.getConnectionType(), ConnectionType.OUTPUT_TYPED));
+      String _xifexpression = null;
+      if (isOutputBlock) {
+        StringConcatenation _builder_5 = new StringConcatenation();
+        _builder_5.append("javascript.javascriptGenerator.forBlock[\'");
+        String _typeName_1 = bt.getTypeName();
+        _builder_5.append(_typeName_1);
+        _builder_5.append("\'] = function(block) {");
+        _builder_5.newLineIfNotEmpty();
+        _builder_5.append(fieldReads);
+        _builder_5.newLineIfNotEmpty();
+        _builder_5.append(refReads);
+        _builder_5.newLineIfNotEmpty();
+        _builder_5.append(valueReads);
+        _builder_5.newLineIfNotEmpty();
+        _builder_5.append(stmtReads);
+        _builder_5.newLineIfNotEmpty();
+        _builder_5.append("  ");
+        _builder_5.append("var code = \'{\' + ");
+        _builder_5.append(jsonConcat, "  ");
+        _builder_5.append(" + \' }\';");
+        _builder_5.newLineIfNotEmpty();
+        _builder_5.append("  ");
+        _builder_5.append("return [code, 0];");
+        _builder_5.newLine();
+        _builder_5.append("};");
+        _builder_5.newLine();
+        _xifexpression = _builder_5.toString();
+      } else {
+        StringConcatenation _builder_6 = new StringConcatenation();
+        _builder_6.append("javascript.javascriptGenerator.forBlock[\'");
+        String _typeName_2 = bt.getTypeName();
+        _builder_6.append(_typeName_2);
+        _builder_6.append("\'] = function(block) {");
+        _builder_6.newLineIfNotEmpty();
+        _builder_6.append(fieldReads);
+        _builder_6.newLineIfNotEmpty();
+        _builder_6.append(refReads);
+        _builder_6.newLineIfNotEmpty();
+        _builder_6.append(valueReads);
+        _builder_6.newLineIfNotEmpty();
+        _builder_6.append(stmtReads);
+        _builder_6.newLineIfNotEmpty();
+        _builder_6.append("  ");
+        _builder_6.append("return \'{\' + ");
+        _builder_6.append(jsonConcat, "  ");
+        _builder_6.append(" + \' },\\n\';");
+        _builder_6.newLineIfNotEmpty();
+        _builder_6.append("};");
+        _builder_6.newLine();
+        _xifexpression = _builder_6.toString();
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
+  }
+
+  public String generateValidationsJs(final EditorSpec spec) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("// Validations for domain \"");
+    String _domainName = spec.getDomainName();
+    _builder.append(_domainName);
+    _builder.append("\".");
+    _builder.newLineIfNotEmpty();
+    _builder.append("// Auto-generated from metamodel.");
+    _builder.newLine();
+    String _generateValidationsBody = this.generateValidationsBody(spec);
+    _builder.append(_generateValidationsBody);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+
+  public String generateValidationsBody(final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      final Function1<ValidationSpec, Boolean> _function = (ValidationSpec it) -> {
+        ValidationType _type = it.getType();
+        return Boolean.valueOf(Objects.equals(_type, ValidationType.MUST_FOLLOW));
+      };
+      final List<ValidationSpec> mustFollows = IterableExtensions.<ValidationSpec>toList(IterableExtensions.<ValidationSpec>filter(spec.getValidations(), _function));
+      final Function1<ValidationSpec, Boolean> _function_1 = (ValidationSpec it) -> {
+        ValidationType _type = it.getType();
+        return Boolean.valueOf(Objects.equals(_type, ValidationType.CARDINALITY));
+      };
+      final List<ValidationSpec> cardinalities = IterableExtensions.<ValidationSpec>toList(IterableExtensions.<ValidationSpec>filter(spec.getValidations(), _function_1));
+      final Function1<ValidationSpec, Boolean> _function_2 = (ValidationSpec it) -> {
+        ValidationType _type = it.getType();
+        return Boolean.valueOf(Objects.equals(_type, ValidationType.REQUIRED));
+      };
+      final List<ValidationSpec> requireds = IterableExtensions.<ValidationSpec>toList(IterableExtensions.<ValidationSpec>filter(spec.getValidations(), _function_2));
+      final Function1<ValidationSpec, Boolean> _function_3 = (ValidationSpec it) -> {
+        ValidationType _type = it.getType();
+        return Boolean.valueOf(Objects.equals(_type, ValidationType.FIELD_CARDINALITY));
+      };
+      final List<ValidationSpec> fieldCardinalities = IterableExtensions.<ValidationSpec>toList(IterableExtensions.<ValidationSpec>filter(spec.getValidations(), _function_3));
+      final Function1<ValidationSpec, Boolean> _function_4 = (ValidationSpec it) -> {
+        ValidationType _type = it.getType();
+        return Boolean.valueOf(Objects.equals(_type, ValidationType.UNIQUE));
+      };
+      final List<ValidationSpec> uniques = IterableExtensions.<ValidationSpec>toList(IterableExtensions.<ValidationSpec>filter(spec.getValidations(), _function_4));
+      final Function1<ValidationSpec, Boolean> _function_5 = (ValidationSpec it) -> {
+        ValidationType _type = it.getType();
+        return Boolean.valueOf(Objects.equals(_type, ValidationType.EXPRESSION));
+      };
+      final List<ValidationSpec> expressions = IterableExtensions.<ValidationSpec>toList(IterableExtensions.<ValidationSpec>filter(spec.getValidations(), _function_5));
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("function computeValidationWarnings(workspace) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var warnings = [];");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!workspace) return warnings;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function queueWarn(block, text) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!block) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("warnings.push({ block: block, blockId: block.id, message: text });");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function fieldMultiplicityCount(value) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof parseBlocklyListField === \'function\') return parseBlocklyListField(value).length;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (value === null || value === undefined || value === \'\') return 0;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return String(value).split(/[,\\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; }).length;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function fieldValues(value) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof parseBlocklyListField === \'function\') return parseBlocklyListField(value);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (value === null || value === undefined || value === \'\') return [];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return String(value).split(/[,\\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function duplicateValues(values) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var seen = {};");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var duplicates = [];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("values.forEach(function(value) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (seen[value] && duplicates.indexOf(value) === -1) duplicates.push(value);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("seen[value] = true;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return duplicates;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function validationValue(block, name) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var value = block && block.getFieldValue ? block.getFieldValue(name) : \'\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (value === null || value === undefined) return \'\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return String(value).trim();");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function validationNumber(block, name) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var number = Number(validationValue(block, name));");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return isFinite(number) ? number : 0;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function validationSize(block, name) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return fieldMultiplicityCount(block && block.getFieldValue ? block.getFieldValue(name) : \'\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function validationHas(block, name) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return validationSize(block, name) > 0 && validationValue(block, name) !== \'\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function validationIncludes(block, name, item) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return fieldValues(block && block.getFieldValue ? block.getFieldValue(name) : \'\').indexOf(String(item)) !== -1;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function evaluateValidationExpression(block, expression) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var value = function(name) { return validationValue(block, name); };");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var number = function(name) { return validationNumber(block, name); };");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var size = function(name) { return validationSize(block, name); };");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var has = function(name) { return validationHas(block, name); };");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var includes = function(name, item) { return validationIncludes(block, name, item); };");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("try {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("return { ok: !!(new Function(\'value\', \'number\', \'size\', \'has\', \'includes\', \'block\', \'return (\' + expression + \');\'))(value, number, size, has, includes, block) };");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("} catch(e) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("return { ok: false, error: e && e.message ? e.message : String(e) };");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function validationRuntimeApi() {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof Model2BlocklyValidationRuntime !== \'undefined\') return Model2BlocklyValidationRuntime;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof window !== \'undefined\' && window.Model2BlocklyValidationRuntime) return window.Model2BlocklyValidationRuntime;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return null;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function activeValidationBlockModel() {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof window !== \'undefined\' && window.__activeValidationBlockModel) return window.__activeValidationBlockModel;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof window !== \'undefined\' && window.BLOCKLY_VALIDATION_BLOCK_MODEL) return window.BLOCKLY_VALIDATION_BLOCK_MODEL;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return null;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function setActiveValidationBlockModel(model) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!model || typeof model !== \'object\') return false;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("window.__activeValidationBlockModel = model;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("window.BLOCKLY_VALIDATION_BLOCK_MODEL = model;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof workspace !== \'undefined\' && typeof applyValidationWarnings === \'function\') {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("applyValidationWarnings(workspace);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return true;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function syncValidationBlocksFromFrame() {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var iframe = document.querySelector(\'#validationBlocksView iframe\');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!iframe || !iframe.contentWindow || typeof iframe.contentWindow.workspaceToValidationBlockModel !== \'function\') return false;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("try {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("return setActiveValidationBlockModel(iframe.contentWindow.workspaceToValidationBlockModel());");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("} catch (e) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("return false;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("window.setActiveValidationBlockModel = setActiveValidationBlockModel;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("window.syncValidationBlocksFromFrame = syncValidationBlocksFromFrame;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("window.addEventListener(\'message\', function(event) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var iframe = document.querySelector(\'#validationBlocksView iframe\');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (iframe && event.source !== iframe.contentWindow) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var data = event.data || {};");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (data.type !== \'model2blockly.validationModelChanged\') return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("setActiveValidationBlockModel(data.model);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function computeRuntimeValidationWarnings(workspace, queueWarn) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var runtime = validationRuntimeApi();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!runtime ||");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("typeof runtime.generateValidationRuntimeRules !== \'function\' ||");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("typeof runtime.evaluateRuntimeExpression !== \'function\') return false;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var rules = runtime.generateValidationRuntimeRules(activeValidationBlockModel());");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!rules || !rules.length) return false;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var runnableRules = rules.filter(function(rule) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("return rule && rule.runtimeExpression && String(rule.runtimeExpression).trim();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (runnableRules.length !== rules.length) return false;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("workspace.getAllBlocks(false).forEach(function(block) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("runnableRules.forEach(function(rule) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("if (rule.targetType && block.type !== rule.targetType) return;");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("var result = runtime.evaluateRuntimeExpression(block, workspace, rule.runtimeExpression);");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("if (!result.ok) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t\t");
+      _builder.append("var message = rule.message || (rule.name ? rule.name + \' is violated.\' : \'Validation rule is violated.\');");
+      _builder.newLine();
+      _builder.append("\t\t\t\t\t");
+      _builder.append("if (result.error) message += \' Expression error: \' + result.error;");
+      _builder.newLine();
+      _builder.append("\t\t\t\t\t");
+      _builder.append("queueWarn(block, message);");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return true;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (computeRuntimeValidationWarnings(workspace, queueWarn)) return warnings;");
+      _builder.newLine();
+      {
+        if ((((((mustFollows.isEmpty() && cardinalities.isEmpty()) && requireds.isEmpty()) && fieldCardinalities.isEmpty()) && uniques.isEmpty()) && expressions.isEmpty())) {
+          _builder.append("\t");
+          _builder.append("return warnings;");
+          _builder.newLine();
+        } else {
+          {
+            for(final ValidationSpec v : mustFollows) {
+              _builder.append("\t");
+              _builder.append("workspace.getAllBlocks(false).forEach(function(block) {");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t");
+              _builder.append("if (block.type === \'");
+              String _targetType = v.getTargetType();
+              _builder.append(_targetType, "\t\t");
+              _builder.append("\') {");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("var prev = block.getPreviousBlock();");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("if (!prev || prev.type !== \'");
+              String _predecessorType = v.getPredecessorType();
+              _builder.append(_predecessorType, "\t\t\t");
+              _builder.append("\')");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t\t");
+              _builder.append("queueWarn(block, \'\"");
+              String _targetType_1 = v.getTargetType();
+              _builder.append(_targetType_1, "\t\t\t\t");
+              _builder.append("\" must be preceded by \"");
+              String _predecessorType_1 = v.getPredecessorType();
+              _builder.append(_predecessorType_1, "\t\t\t\t");
+              _builder.append("\".\');");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t");
+              _builder.append("}");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("});");
+              _builder.newLine();
+            }
+          }
+          {
+            for(final ValidationSpec v_1 : cardinalities) {
+              _builder.append("\t");
+              _builder.append("workspace.getAllBlocks(false).forEach(function(block) {");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t");
+              _builder.append("if (block.type === \'");
+              String _ownerType = v_1.getOwnerType();
+              _builder.append(_ownerType, "\t\t");
+              _builder.append("\') {");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("var count = 0;");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("var child = block.getInputTargetBlock(\'");
+              String _containmentName = v_1.getContainmentName();
+              _builder.append(_containmentName, "\t\t\t");
+              _builder.append("\');");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("while (child) { count++; child = child.getNextBlock(); }");
+              _builder.newLine();
+              {
+                int _lowerBound = v_1.getLowerBound();
+                boolean _tripleNotEquals = (_lowerBound != 0);
+                if (_tripleNotEquals) {
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("if (count < ");
+                  int _lowerBound_1 = v_1.getLowerBound();
+                  _builder.append(_lowerBound_1, "\t\t\t");
+                  _builder.append(")");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("\t");
+                  _builder.append("queueWarn(block, \'\"");
+                  String _ownerType_1 = v_1.getOwnerType();
+                  _builder.append(_ownerType_1, "\t\t\t\t");
+                  _builder.append(".");
+                  String _containmentName_1 = v_1.getContainmentName();
+                  _builder.append(_containmentName_1, "\t\t\t\t");
+                  _builder.append("\" needs at least ");
+                  int _lowerBound_2 = v_1.getLowerBound();
+                  _builder.append(_lowerBound_2, "\t\t\t\t");
+                  _builder.append(" element(s). Has: \' + count);");
+                  _builder.newLineIfNotEmpty();
+                }
+              }
+              {
+                int _upperBound = v_1.getUpperBound();
+                boolean _tripleNotEquals_1 = (_upperBound != 0);
+                if (_tripleNotEquals_1) {
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("if (count > ");
+                  int _upperBound_1 = v_1.getUpperBound();
+                  _builder.append(_upperBound_1, "\t\t\t");
+                  _builder.append(")");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("\t");
+                  _builder.append("queueWarn(block, \'\"");
+                  String _ownerType_2 = v_1.getOwnerType();
+                  _builder.append(_ownerType_2, "\t\t\t\t");
+                  _builder.append(".");
+                  String _containmentName_2 = v_1.getContainmentName();
+                  _builder.append(_containmentName_2, "\t\t\t\t");
+                  _builder.append("\" allows at most ");
+                  int _upperBound_2 = v_1.getUpperBound();
+                  _builder.append(_upperBound_2, "\t\t\t\t");
+                  _builder.append(" element(s). Has: \' + count);");
+                  _builder.newLineIfNotEmpty();
+                }
+              }
+              _builder.append("\t");
+              _builder.append("\t");
+              _builder.append("}");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("});");
+              _builder.newLine();
+            }
+          }
+          {
+            for(final ValidationSpec v_2 : requireds) {
+              _builder.append("\t");
+              _builder.append("workspace.getAllBlocks(false).forEach(function(block) {");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t");
+              _builder.append("if (block.type === \'");
+              String _ownerType_3 = v_2.getOwnerType();
+              _builder.append(_ownerType_3, "\t\t");
+              _builder.append("\') {");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("var val = block.getFieldValue(\'");
+              String _fieldName = v_2.getFieldName();
+              _builder.append(_fieldName, "\t\t\t");
+              _builder.append("\');");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("if (val === null || val === undefined || val === \'\')");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t\t\t");
+              _builder.append("queueWarn(block, \'\"");
+              String _ownerType_4 = v_2.getOwnerType();
+              _builder.append(_ownerType_4, "\t\t\t\t");
+              _builder.append(".");
+              String _fieldName_1 = v_2.getFieldName();
+              _builder.append(_fieldName_1, "\t\t\t\t");
+              _builder.append("\" is required (cannot be empty).\');");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t");
+              _builder.append("}");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("});");
+              _builder.newLine();
+            }
+          }
+          {
+            for(final ValidationSpec v_3 : fieldCardinalities) {
+              _builder.append("\t");
+              _builder.append("workspace.getAllBlocks(false).forEach(function(block) {");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t");
+              _builder.append("if (block.type === \'");
+              String _ownerType_5 = v_3.getOwnerType();
+              _builder.append(_ownerType_5, "\t\t");
+              _builder.append("\') {");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("var count = fieldMultiplicityCount(block.getFieldValue(\'");
+              String _fieldName_2 = v_3.getFieldName();
+              _builder.append(_fieldName_2, "\t\t\t");
+              _builder.append("\'));");
+              _builder.newLineIfNotEmpty();
+              {
+                int _lowerBound_3 = v_3.getLowerBound();
+                boolean _greaterThan = (_lowerBound_3 > 1);
+                if (_greaterThan) {
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("if (count < ");
+                  int _lowerBound_4 = v_3.getLowerBound();
+                  _builder.append(_lowerBound_4, "\t\t\t");
+                  _builder.append(")");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("\t");
+                  _builder.append("queueWarn(block, \'\"");
+                  String _ownerType_6 = v_3.getOwnerType();
+                  _builder.append(_ownerType_6, "\t\t\t\t");
+                  _builder.append(".");
+                  String _fieldName_3 = v_3.getFieldName();
+                  _builder.append(_fieldName_3, "\t\t\t\t");
+                  _builder.append("\" needs at least ");
+                  int _lowerBound_5 = v_3.getLowerBound();
+                  _builder.append(_lowerBound_5, "\t\t\t\t");
+                  _builder.append(" value(s). Has: \' + count);");
+                  _builder.newLineIfNotEmpty();
+                }
+              }
+              {
+                int _upperBound_3 = v_3.getUpperBound();
+                boolean _tripleNotEquals_2 = (_upperBound_3 != 0);
+                if (_tripleNotEquals_2) {
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("if (count > ");
+                  int _upperBound_4 = v_3.getUpperBound();
+                  _builder.append(_upperBound_4, "\t\t\t");
+                  _builder.append(")");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("\t");
+                  _builder.append("queueWarn(block, \'\"");
+                  String _ownerType_7 = v_3.getOwnerType();
+                  _builder.append(_ownerType_7, "\t\t\t\t");
+                  _builder.append(".");
+                  String _fieldName_4 = v_3.getFieldName();
+                  _builder.append(_fieldName_4, "\t\t\t\t");
+                  _builder.append("\" allows at most ");
+                  int _upperBound_5 = v_3.getUpperBound();
+                  _builder.append(_upperBound_5, "\t\t\t\t");
+                  _builder.append(" value(s). Has: \' + count);");
+                  _builder.newLineIfNotEmpty();
+                }
+              }
+              _builder.append("\t");
+              _builder.append("\t");
+              _builder.append("}");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("});");
+              _builder.newLine();
+            }
+          }
+          {
+            for(final ValidationSpec v_4 : uniques) {
+              {
+                String _fieldKind = v_4.getFieldKind();
+                boolean _equals = Objects.equals(_fieldKind, "id");
+                if (_equals) {
+                  _builder.append("\t");
+                  _builder.append("(function() {");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t");
+                  _builder.append("var seen = {};");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t");
+                  _builder.append("workspace.getAllBlocks(false).forEach(function(block) {");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("if (block.type === \'");
+                  String _ownerType_8 = v_4.getOwnerType();
+                  _builder.append(_ownerType_8, "\t\t\t");
+                  _builder.append("\') {");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t");
+                  _builder.append("var val = block.getFieldValue(\'");
+                  String _fieldName_5 = v_4.getFieldName();
+                  _builder.append(_fieldName_5, "\t\t\t\t");
+                  _builder.append("\');");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t");
+                  _builder.append("val = val === null || val === undefined ? \'\' : String(val).trim();");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t");
+                  _builder.append("if (!val) return;");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t");
+                  _builder.append("if (seen[val]) {");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t\t");
+                  _builder.append("queueWarn(block, \'\"");
+                  String _ownerType_9 = v_4.getOwnerType();
+                  _builder.append(_ownerType_9, "\t\t\t\t\t");
+                  _builder.append(".");
+                  String _fieldName_6 = v_4.getFieldName();
+                  _builder.append(_fieldName_6, "\t\t\t\t\t");
+                  _builder.append("\" must be unique. Duplicate ID: \' + val);");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t\t");
+                  _builder.append("queueWarn(seen[val], \'\"");
+                  String _ownerType_10 = v_4.getOwnerType();
+                  _builder.append(_ownerType_10, "\t\t\t\t\t");
+                  _builder.append(".");
+                  String _fieldName_7 = v_4.getFieldName();
+                  _builder.append(_fieldName_7, "\t\t\t\t\t");
+                  _builder.append("\" must be unique. Duplicate ID: \' + val);");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t");
+                  _builder.append("} else {");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t\t");
+                  _builder.append("seen[val] = block;");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t");
+                  _builder.append("}");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("}");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t");
+                  _builder.append("});");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("})();");
+                  _builder.newLine();
+                } else {
+                  _builder.append("\t");
+                  _builder.append("workspace.getAllBlocks(false).forEach(function(block) {");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t");
+                  _builder.append("if (block.type === \'");
+                  String _ownerType_11 = v_4.getOwnerType();
+                  _builder.append(_ownerType_11, "\t\t");
+                  _builder.append("\') {");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("var duplicates = duplicateValues(fieldValues(block.getFieldValue(\'");
+                  String _fieldName_8 = v_4.getFieldName();
+                  _builder.append(_fieldName_8, "\t\t\t");
+                  _builder.append("\')));");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t\t");
+                  _builder.append("if (duplicates.length)");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("\t\t\t");
+                  _builder.append("queueWarn(block, \'\"");
+                  String _ownerType_12 = v_4.getOwnerType();
+                  _builder.append(_ownerType_12, "\t\t\t\t");
+                  _builder.append(".");
+                  String _fieldName_9 = v_4.getFieldName();
+                  _builder.append(_fieldName_9, "\t\t\t\t");
+                  _builder.append("\" values must be unique. Duplicate: \' + duplicates.join(\', \'));");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("\t");
+                  _builder.append("}");
+                  _builder.newLine();
+                  _builder.append("\t");
+                  _builder.append("});");
+                  _builder.newLine();
+                }
+              }
+            }
+          }
+          {
+            for(final ValidationSpec v_5 : expressions) {
+              _builder.append("\t");
+              _builder.append("workspace.getAllBlocks(false).forEach(function(block) {");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t");
+              _builder.append("if (block.type === \'");
+              String _ownerType_13 = v_5.getOwnerType();
+              _builder.append(_ownerType_13, "\t\t");
+              _builder.append("\') {");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("var result = evaluateValidationExpression(block, ");
+              String _jsonString = this.toJsonString(v_5.getExpression());
+              _builder.append(_jsonString, "\t\t\t");
+              _builder.append(");");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("if (!result.ok) {");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t\t\t");
+              _builder.append("var message = ");
+              String _elvis = null;
+              String _message = v_5.getMessage();
+              if (_message != null) {
+                _elvis = _message;
+              } else {
+                _elvis = "Semantic constraint is violated.";
+              }
+              String _jsonString_1 = this.toJsonString(_elvis);
+              _builder.append(_jsonString_1, "\t\t\t\t");
+              _builder.append(";");
+              _builder.newLineIfNotEmpty();
+              _builder.append("\t");
+              _builder.append("\t\t\t");
+              _builder.append("if (result.error) message += \' Expression error: \' + result.error;");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t\t\t");
+              _builder.append("queueWarn(block, message);");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t\t");
+              _builder.append("}");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("\t");
+              _builder.append("}");
+              _builder.newLine();
+              _builder.append("\t");
+              _builder.append("});");
+              _builder.newLine();
+            }
+          }
+          _builder.append("\t");
+          _builder.append("return warnings;");
+          _builder.newLine();
+        }
+      }
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function applyValidationWarnings(workspace) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!workspace) return [];");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("workspace.getAllBlocks(false).forEach(function(b) { b.setWarningText(null); });");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var warnings = computeValidationWarnings(workspace);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var pending = {};");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("warnings.forEach(function(w) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!w.block) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!pending[w.block.id]) pending[w.block.id] = { b: w.block, msgs: [] };");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("pending[w.block.id].msgs.push(w.message);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("Object.keys(pending).forEach(function(k) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var p = pending[k];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("p.b.setWarningText(p.msgs.join(\'\\n\'));");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("renderValidationIssues(warnings);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("return warnings;");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function renderValidationIssues(warnings) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var view = document.getElementById(\'issuesView\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var badge = document.getElementById(\'issuesBadge\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (badge) badge.textContent = warnings && warnings.length ? \'(\' + warnings.length + \')\' : \'\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!view) return;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("view.innerHTML = \'\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!warnings || warnings.length === 0) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var empty = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("empty.className = \'validation-empty\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("empty.textContent = \'No validation issues\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("view.appendChild(empty);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var summary = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("summary.className = \'validation-summary\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("summary.textContent = warnings.length + \' validation issue\' + (warnings.length === 1 ? \'\' : \'s\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("view.appendChild(summary);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var list = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("list.className = \'validation-list\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("warnings.forEach(function(w) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var item = document.createElement(\'button\');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("item.type = \'button\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("item.className = \'validation-item\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("item.addEventListener(\'click\', function() { focusValidationBlock(w.blockId); });");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var type = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("type.className = \'validation-item-type\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("type.textContent = w.block ? w.block.type : \'Model\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var msg = document.createElement(\'div\');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("msg.className = \'validation-item-message\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("msg.textContent = w.message;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("item.appendChild(type);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("item.appendChild(msg);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("list.appendChild(item);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("view.appendChild(list);");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function focusValidationBlock(blockId) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!blockId || !workspace) return;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var block = workspace.getBlockById(blockId);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!block) return;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (typeof switchTab === \'function\') switchTab(\'issues\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (workspace.centerOnBlock) workspace.centerOnBlock(blockId);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (block.select) block.select();");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("workspace.highlightBlock(blockId);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("window.setTimeout(function() { workspace.highlightBlock(null); }, 1200);");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function confirmExportIfInvalid(workspace) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var warnings = applyValidationWarnings(workspace);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!warnings.length) return true;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var preview = warnings.slice(0, 5).map(function(w) { return \'- \' + w.message; }).join(\'\\n\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (warnings.length > 5) preview += \'\\n- ...and \' + (warnings.length - 5) + \' more.\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("return confirm(\'This workspace has validation warnings:\\n\\n\' + preview + \'\\n\\nExport anyway?\');");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function initValidations(workspace) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("applyValidationWarnings(workspace);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("workspace.addChangeListener(function(event) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (event.type !== Blockly.Events.BLOCK_MOVE &&");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("event.type !== Blockly.Events.BLOCK_CREATE &&");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("event.type !== Blockly.Events.BLOCK_DELETE &&");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("event.type !== Blockly.Events.BLOCK_CHANGE) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("applyValidationWarnings(workspace);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _xblockexpression = _builder.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String generateReferenceUpdateScript(final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      final ArrayList<ReferenceFieldSpec> allRefs = new ArrayList<ReferenceFieldSpec>();
+      final LinkedHashMap<String, List<ReferenceFieldSpec>> refOwners = new LinkedHashMap<String, List<ReferenceFieldSpec>>();
+      List<BlockTypeSpec> _concreteBlockTypes = BlocklySpecModelQueries.concreteBlockTypes(spec);
+      for (final BlockTypeSpec bt : _concreteBlockTypes) {
+        boolean _isEmpty = bt.getReferenceFields().isEmpty();
+        boolean _not = (!_isEmpty);
+        if (_not) {
+          refOwners.put(bt.getTypeName(), bt.getReferenceFields());
+          allRefs.addAll(bt.getReferenceFields());
+        }
+      }
+      boolean _isEmpty_1 = allRefs.isEmpty();
+      if (_isEmpty_1) {
+        return "";
+      }
+      final LinkedHashMap<String, List<String>> concreteSubtypes = new LinkedHashMap<String, List<String>>();
+      for (final ReferenceFieldSpec ref : allRefs) {
+        boolean _containsKey = concreteSubtypes.containsKey(ref.getTargetTypeName());
+        boolean _not_1 = (!_containsKey);
+        if (_not_1) {
+          final ArrayList<String> matching = new ArrayList<String>();
+          List<BlockTypeSpec> _concreteBlockTypes_1 = BlocklySpecModelQueries.concreteBlockTypes(spec);
+          for (final BlockTypeSpec bt_1 : _concreteBlockTypes_1) {
+            if (((Objects.equals(bt_1.getTypeName(), ref.getTargetTypeName()) || Objects.equals(bt_1.getConnectionTypeName(), ref.getTargetTypeName())) || Objects.equals(bt_1.getOutputType(), ref.getTargetTypeName()))) {
+              matching.add(bt_1.getTypeName());
+            }
+          }
+          boolean _isEmpty_2 = matching.isEmpty();
+          if (_isEmpty_2) {
+            matching.add(ref.getTargetTypeName());
+          }
+          concreteSubtypes.put(ref.getTargetTypeName(), matching);
+        }
+      }
+      final ArrayList<String> oppositeRules = new ArrayList<String>();
+      Set<Map.Entry<String, List<ReferenceFieldSpec>>> _entrySet = refOwners.entrySet();
+      for (final Map.Entry<String, List<ReferenceFieldSpec>> entry : _entrySet) {
+        List<ReferenceFieldSpec> _value = entry.getValue();
+        for (final ReferenceFieldSpec ref_1 : _value) {
+          String _oppositeName = ref_1.getOppositeName();
+          boolean _tripleNotEquals = (_oppositeName != null);
+          if (_tripleNotEquals) {
+            final List<String> targetTypes = concreteSubtypes.get(ref_1.getTargetTypeName());
+            String _xifexpression = null;
+            if (((targetTypes != null) && (!targetTypes.isEmpty()))) {
+              final Function1<String, String> _function = (String it) -> {
+                return this.toJsonString(it);
+              };
+              _xifexpression = IterableExtensions.join(ListExtensions.<String, String>map(targetTypes, _function), ", ");
+            } else {
+              String _elvis = null;
+              String _targetTypeName = ref_1.getTargetTypeName();
+              if (_targetTypeName != null) {
+                _elvis = _targetTypeName;
+              } else {
+                _elvis = "";
+              }
+              _xifexpression = this.toJsonString(_elvis);
+            }
+            final String targetTypeJson = _xifexpression;
+            StringConcatenation _builder = new StringConcatenation();
+            _builder.append("{ ownerType: ");
+            String _jsonString = this.toJsonString(entry.getKey());
+            _builder.append(_jsonString);
+            _builder.append(", name: ");
+            String _jsonString_1 = this.toJsonString(ref_1.getName());
+            _builder.append(_jsonString_1);
+            _builder.append(", targetTypes: [");
+            _builder.append(targetTypeJson);
+            _builder.append("], oppositeName: ");
+            String _jsonString_2 = this.toJsonString(ref_1.getOppositeName());
+            _builder.append(_jsonString_2);
+            _builder.append(", many: ");
+            boolean _isMany = BlocklySpecModelQueries.isMany(ref_1);
+            _builder.append(_isMany);
+            _builder.append(" }");
+            oppositeRules.add(_builder.toString());
+          }
+        }
+      }
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("/* ── Reference dropdowns (dynamic) ── */");
+      _builder_1.newLine();
+      _builder_1.append("window.BLOCKLY_OPPOSITE_REFERENCES = [");
+      _builder_1.newLine();
+      String _join = IterableExtensions.join(oppositeRules, ",\n");
+      _builder_1.append(_join);
+      _builder_1.newLineIfNotEmpty();
+      _builder_1.append("];");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("function referenceFieldValues(block, name) {");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("if (!block || !block.getField || !block.getField(name)) return [];");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var value = block.getFieldValue(name);");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("if (value === null || value === undefined || value === \'\') return [];");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("if (typeof parseBlocklyListField === \'function\') return parseBlocklyListField(value);");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("return [String(value)];");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("function setReferenceFieldValues(block, name, ids) {");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("if (!block || !block.getField || !block.getField(name)) return;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("ids = (ids || []).filter(function(id, index, all) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("return id && all.indexOf(id) === index;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("});");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var field = block.getField(name);");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var isDropdown = !!field.menuGenerator_;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var nextIds = isDropdown ? (ids.length ? [ids[0]] : []) : ids;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var currentIds = referenceFieldValues(block, name);");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("if (currentIds.join(\'|\') === nextIds.join(\'|\')) return;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("try {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("block.setFieldValue(isDropdown ? (nextIds[0] || \'\') : nextIds.join(\', \'), name);");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("} catch(e) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("try { block.setFieldValue(\'\', name); } catch(ignored) {}");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("function synchronizeOppositeReferences(workspace, event) {");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var rules = window.BLOCKLY_OPPOSITE_REFERENCES || [];");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("if (!workspace || rules.length === 0 || window.__syncingOppositeReferences) return;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var changedBlock = event && event.blockId ? workspace.getBlockById(event.blockId) : null;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var changedField = event && event.name ? event.name : null;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var activeRules = rules;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("if (changedBlock && changedField) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("activeRules = rules.filter(function(rule) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t");
+      _builder_1.append("return rule.ownerType === changedBlock.type && rule.name === changedField;");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("});");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("if (activeRules.length === 0) return;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("window.__syncingOppositeReferences = true;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var eventsEnabled = Blockly.Events && Blockly.Events.isEnabled ? Blockly.Events.isEnabled() : true;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("if (Blockly.Events && Blockly.Events.disable) Blockly.Events.disable();");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("try {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("var blocks = workspace.getAllBlocks(false);");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("var byId = {};");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("blocks.forEach(function(block) { byId[block.id] = block; });");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("activeRules.forEach(function(rule) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t");
+      _builder_1.append("var desiredByTarget = {};");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t");
+      _builder_1.append("blocks.forEach(function(source) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t\t");
+      _builder_1.append("if (source.type !== rule.ownerType) return;");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t\t");
+      _builder_1.append("referenceFieldValues(source, rule.name).forEach(function(targetId) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t\t\t");
+      _builder_1.append("var target = byId[targetId];");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t\t\t");
+      _builder_1.append("if (!target || rule.targetTypes.indexOf(target.type) === -1) return;");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t\t\t");
+      _builder_1.append("if (!desiredByTarget[target.id]) desiredByTarget[target.id] = [];");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t\t\t");
+      _builder_1.append("if (desiredByTarget[target.id].indexOf(source.id) === -1) desiredByTarget[target.id].push(source.id);");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t\t");
+      _builder_1.append("});");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t");
+      _builder_1.append("});");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t");
+      _builder_1.append("blocks.forEach(function(target) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t\t");
+      _builder_1.append("if (rule.targetTypes.indexOf(target.type) === -1) return;");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t\t");
+      _builder_1.append("setReferenceFieldValues(target, rule.oppositeName, desiredByTarget[target.id] || []);");
+      _builder_1.newLine();
+      _builder_1.append("\t\t\t");
+      _builder_1.append("});");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("});");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("} finally {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("if (eventsEnabled && Blockly.Events && Blockly.Events.enable) Blockly.Events.enable();");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("window.__syncingOppositeReferences = false;");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("window.synchronizeOppositeReferences = synchronizeOppositeReferences;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("function updateReferenceDropdowns(workspace) {");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("var instancesByType = {};");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("workspace.getAllBlocks(false).forEach(function(b) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("if (!instancesByType[b.type]) instancesByType[b.type] = [];");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("instancesByType[b.type].push(b);");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("});");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("function referenceOption(block, labelField) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("var label = labelField ? block.getFieldValue(labelField) : null;");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("label = label || block.getFieldValue(\'name\') || block.type + \'_\' + block.id.substring(0,6);");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("return [label, block.id];");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      {
+        Set<Map.Entry<String, List<ReferenceFieldSpec>>> _entrySet_1 = refOwners.entrySet();
+        for(final Map.Entry<String, List<ReferenceFieldSpec>> entry_1 : _entrySet_1) {
+          {
+            List<ReferenceFieldSpec> _value_1 = entry_1.getValue();
+            for(final ReferenceFieldSpec ref_2 : _value_1) {
+              _builder_1.append("\t");
+              _builder_1.append("workspace.getAllBlocks(false).forEach(function(b) {");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("\t");
+              _builder_1.append("if (b.type === \'");
+              String _key = entry_1.getKey();
+              _builder_1.append(_key, "\t\t");
+              _builder_1.append("\') {");
+              _builder_1.newLineIfNotEmpty();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t");
+              _builder_1.append("var field = b.getField(\'");
+              String _name = ref_2.getName();
+              _builder_1.append(_name, "\t\t\t");
+              _builder_1.append("\');");
+              _builder_1.newLineIfNotEmpty();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t\t");
+              _builder_1.append("if (field && field.menuGenerator_) {");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t\t\t");
+              _builder_1.append("var opts = [[\'(none)\', \'\']];");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t\t\t");
+              _builder_1.append("var labelField = ");
+              {
+                String _referenceLabelField = ref_2.getReferenceLabelField();
+                boolean _tripleNotEquals_1 = (_referenceLabelField != null);
+                if (_tripleNotEquals_1) {
+                  _builder_1.append("\'");
+                  String _escapeJson = this.escapeJson(ref_2.getReferenceLabelField());
+                  _builder_1.append(_escapeJson, "\t\t\t\t\t");
+                  _builder_1.append("\'");
+                } else {
+                  _builder_1.append("null");
+                }
+              }
+              _builder_1.append(";");
+              _builder_1.newLineIfNotEmpty();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t\t\t");
+              final List<String> targetTypes_1 = concreteSubtypes.get(ref_2.getTargetTypeName());
+              _builder_1.newLineIfNotEmpty();
+              {
+                if ((targetTypes_1 != null)) {
+                  _builder_1.append("\t");
+                  _builder_1.append("\t\t\t\t");
+                  _builder_1.append("[\'");
+                  String _join_1 = IterableExtensions.join(targetTypes_1, "\',\'");
+                  _builder_1.append(_join_1, "\t\t\t\t\t");
+                  _builder_1.append("\'].forEach(function(t) {");
+                  _builder_1.newLineIfNotEmpty();
+                  _builder_1.append("\t");
+                  _builder_1.append("\t\t\t\t");
+                  _builder_1.append("\t");
+                  _builder_1.append("(instancesByType[t] || []).forEach(function(targetBlock) { opts.push(referenceOption(targetBlock, labelField)); });");
+                  _builder_1.newLine();
+                  _builder_1.append("\t");
+                  _builder_1.append("\t\t\t\t");
+                  _builder_1.append("});");
+                  _builder_1.newLine();
+                } else {
+                  _builder_1.append("var targets = instancesByType[\'");
+                  String _targetTypeName_1 = ref_2.getTargetTypeName();
+                  _builder_1.append(_targetTypeName_1);
+                  _builder_1.append("\'] || [];");
+                  _builder_1.newLineIfNotEmpty();
+                  _builder_1.append("for (var i = 0; i < targets.length; i++) opts.push(referenceOption(targets[i], labelField));");
+                  _builder_1.newLine();
+                }
+              }
+              _builder_1.append("\t");
+              _builder_1.append("\t\t\t");
+              _builder_1.append("var cur = field.getValue();");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t\t");
+              _builder_1.append("field.menuGenerator_ = opts;");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t\t");
+              _builder_1.append("var valid = opts.some(function(o) { return o[1] === cur; });");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t\t");
+              _builder_1.append("if (!valid) field.setValue(\'\');");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t");
+              _builder_1.append("} else if (field && field.refreshDisplay) {");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t\t");
+              _builder_1.append("field.refreshDisplay();");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("\t\t");
+              _builder_1.append("}");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("\t");
+              _builder_1.append("}");
+              _builder_1.newLine();
+              _builder_1.append("\t");
+              _builder_1.append("});");
+              _builder_1.newLine();
+            }
+          }
+        }
+      }
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("workspace.addChangeListener(function(event) {");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("if (event.type === Blockly.Events.BLOCK_MOVE ||");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("event.type === Blockly.Events.BLOCK_CREATE ||");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("event.type === Blockly.Events.BLOCK_DELETE ||");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("event.type === Blockly.Events.BLOCK_CHANGE) {");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("updateReferenceDropdowns(workspace);");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("synchronizeOppositeReferences(workspace, event);");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("if (typeof applyValidationWarnings === \'function\') applyValidationWarnings(workspace);");
+      _builder_1.newLine();
+      _builder_1.append("\t\t");
+      _builder_1.append("if (typeof updateOutput === \'function\') updateOutput();");
+      _builder_1.newLine();
+      _builder_1.append("\t");
+      _builder_1.append("}");
+      _builder_1.newLine();
+      _builder_1.append("});");
+      _builder_1.newLine();
+      _xblockexpression = _builder_1.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String generateEditorHtml(final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      String _elvis = null;
+      String _domainName = spec.getDomainName();
+      if (_domainName != null) {
+        _elvis = _domainName;
+      } else {
+        _elvis = "domain";
+      }
+      final String base = _elvis;
+      String _elvis_1 = null;
+      String _domainName_1 = spec.getDomainName();
+      if (_domainName_1 != null) {
+        _elvis_1 = _domainName_1;
+      } else {
+        _elvis_1 = "Blockly Editor";
+      }
+      final String title = _elvis_1;
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("<!DOCTYPE html>");
+      _builder.newLine();
+      _builder.append("<html lang=\"en\">");
+      _builder.newLine();
+      _builder.append("<head>");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("<meta charset=\"UTF-8\">");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("<title>");
+      String _esc = this.esc(title);
+      _builder.append(_esc, "\t");
+      _builder.append(" — Blockly Editor</title>");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("<script src=\"https://unpkg.com/blockly/blockly.min.js\"></script>");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("<script src=\"https://unpkg.com/blockly/javascript_compressed.js\"></script>");
+      _builder.newLine();
+      _builder.append("\t");
+      String _editorCss = this.editorCss();
+      _builder.append(_editorCss, "\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("</head>");
+      _builder.newLine();
+      _builder.append("<body>");
+      _builder.newLine();
+      _builder.append("\t");
+      String _editorHeaderHtml = this.editorHeaderHtml(title);
+      _builder.append(_editorHeaderHtml, "\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      String _editorMainHtml = this.editorMainHtml(spec);
+      _builder.append(_editorMainHtml, "\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("<script src=\"");
+      _builder.append(base, "\t");
+      _builder.append("_blocks.js\"></script>");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("<script src=\"");
+      _builder.append(base, "\t");
+      _builder.append("_toolbox.js\"></script>");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("<script src=\"");
+      _builder.append(base, "\t");
+      _builder.append("_generators.js\"></script>");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("<script src=\"validation_runtime.js\"></script>");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("<script src=\"");
+      _builder.append(base, "\t");
+      _builder.append("_validations.js\"></script>");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      String _editorBootstrapScript = this.editorBootstrapScript(spec);
+      _builder.append(_editorBootstrapScript, "\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("</body>");
+      _builder.newLine();
+      _builder.append("</html>");
+      _builder.newLine();
+      _xblockexpression = _builder.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String generateStandaloneHtml(final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      String _elvis = null;
+      String _domainName = spec.getDomainName();
+      if (_domainName != null) {
+        _elvis = _domainName;
+      } else {
+        _elvis = "Blockly Editor";
+      }
+      final String title = _elvis;
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("\t");
+      _builder.append("<!DOCTYPE html>");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("<html lang=\"en\">");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("<head>");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("<meta charset=\"UTF-8\">");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("<title>");
+      String _esc = this.esc(title);
+      _builder.append(_esc, "\t\t");
+      _builder.append(" — Blockly Editor</title>");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("<script src=\"https://unpkg.com/blockly/blockly.min.js\"></script>");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("<script src=\"https://unpkg.com/blockly/javascript_compressed.js\"></script>");
+      _builder.newLine();
+      _builder.append("\t\t");
+      String _editorCss = this.editorCss();
+      _builder.append(_editorCss, "\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("</head>");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("<body>");
+      _builder.newLine();
+      _builder.append("\t\t");
+      String _editorHeaderHtml = this.editorHeaderHtml(title);
+      _builder.append(_editorHeaderHtml, "\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      String _editorMainHtml = this.editorMainHtml(spec);
+      _builder.append(_editorMainHtml, "\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("<script>");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("/* ═══ 1. BLOCKS ═══ */");
+      _builder.newLine();
+      _builder.append("\t\t");
+      String _generateReferenceFieldSupportScript = this.generateReferenceFieldSupportScript(spec);
+      _builder.append(_generateReferenceFieldSupportScript, "\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("var BLOCKLY_BLOCKS = ");
+      String _generateBlocksArray = this.generateBlocksArray(spec);
+      _builder.append(_generateBlocksArray, "\t\t");
+      _builder.append(";");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("Blockly.defineBlocksWithJsonArray(BLOCKLY_BLOCKS);");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("/* ═══ 2. TOOLBOX ═══ */");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var BLOCKLY_TOOLBOX = ");
+      String _generateToolboxObject = this.generateToolboxObject(spec);
+      _builder.append(_generateToolboxObject, "\t\t");
+      _builder.append(";");
+      _builder.newLineIfNotEmpty();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("/* ═══ 3. WORKSPACE ═══ */");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var workspace = Blockly.inject(\'blocklyDiv\', {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("toolbox: BLOCKLY_TOOLBOX,");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      String _workspaceOptions = this.workspaceOptions(spec);
+      _builder.append(_workspaceOptions, "\t\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("Blockly.svgResize(workspace);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("window.addEventListener(\'resize\', function() {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("Blockly.svgResize(workspace);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("/* ═══ 4. GENERATORS ═══ */");
+      _builder.newLine();
+      _builder.append("\t\t");
+      String _generateGeneratorsBody = this.generateGeneratorsBody(spec);
+      _builder.append(_generateGeneratorsBody, "\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("/* ═══ 5. VALIDATION BLOCK RUNTIME ═══ */");
+      _builder.newLine();
+      _builder.append("\t\t");
+      String _generateClassicJs = ValidationRuntimeGenerator.generateClassicJs(spec);
+      _builder.append(_generateClassicJs, "\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("/* ═══ 6. VALIDATIONS ═══ */");
+      _builder.newLine();
+      _builder.append("\t\t");
+      String _generateValidationsBody = this.generateValidationsBody(spec);
+      _builder.append(_generateValidationsBody, "\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("initValidations(workspace);");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("/* ═══ 7. REFERENCES ═══ */");
+      _builder.newLine();
+      _builder.append("\t\t");
+      String _generateReferenceUpdateScript = this.generateReferenceUpdateScript(spec);
+      _builder.append(_generateReferenceUpdateScript, "\t\t");
+      _builder.newLineIfNotEmpty();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("/* ═══ 8. MODEL VIEWER ═══ */");
+      _builder.newLine();
+      _builder.append("\t");
+      String _script = AppMakerHtmlRuntimeGenerator.script(spec);
+      _builder.append(_script, "\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      String _modelViewerScript = this.modelViewerScript(spec);
+      _builder.append(_modelViewerScript, "\t");
+      _builder.newLineIfNotEmpty();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("/* ═══ 9. AST RUNTIME ═══ */");
+      _builder.newLine();
+      _builder.append("\t");
+      String _generateRuntimeScript = this.generateRuntimeScript(spec);
+      _builder.append(_generateRuntimeScript, "\t");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("</script>");
+      _builder.newLine();
+      _builder.append("</body>");
+      _builder.newLine();
+      _builder.append("</html>");
+      _builder.newLine();
+      _xblockexpression = _builder.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String workspaceOptions(final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      final LinkedHashMap<String, Object> merged = CollectionLiterals.<String, Object>newLinkedHashMap();
+      merged.putAll(this.defaultWorkspaceOptions());
+      merged.putAll(BlocklySpecModelQueries.workspaceOptions(spec));
+      final Function1<Map.Entry<String, Object>, Boolean> _function = (Map.Entry<String, Object> e) -> {
+        Object _value = e.getValue();
+        return Boolean.valueOf((_value != null));
+      };
+      final Function1<Map.Entry<String, Object>, String> _function_1 = (Map.Entry<String, Object> e) -> {
+        StringConcatenation _builder = new StringConcatenation();
+        String _key = e.getKey();
+        _builder.append(_key);
+        _builder.append(": ");
+        String _renderJsValue = this.renderJsValue(e.getValue());
+        _builder.append(_renderJsValue);
+        return _builder.toString();
+      };
+      final Iterable<String> lines = IterableExtensions.<Map.Entry<String, Object>, String>map(IterableExtensions.<Map.Entry<String, Object>>filter(merged.entrySet(), _function), _function_1);
+      _xblockexpression = IterableExtensions.join(lines, ",\n");
+    }
+    return _xblockexpression;
+  }
+
+  public Map<String, Object> defaultWorkspaceOptions() {
+    LinkedHashMap<String, Object> _xblockexpression = null;
+    {
+      final LinkedHashMap<String, Object> defaults = CollectionLiterals.<String, Object>newLinkedHashMap();
+      defaults.put("trashcan", Boolean.valueOf(true));
+      final LinkedHashMap<String, Object> zoom = CollectionLiterals.<String, Object>newLinkedHashMap();
+      zoom.put("controls", Boolean.valueOf(true));
+      zoom.put("wheel", Boolean.valueOf(true));
+      zoom.put("startScale", Double.valueOf(1.0));
+      zoom.put("maxScale", Integer.valueOf(3));
+      zoom.put("minScale", Double.valueOf(0.3));
+      defaults.put("zoom", zoom);
+      final LinkedHashMap<String, Boolean> move = CollectionLiterals.<String, Boolean>newLinkedHashMap();
+      move.put("scrollbars", Boolean.valueOf(true));
+      move.put("drag", Boolean.valueOf(true));
+      move.put("wheel", Boolean.valueOf(true));
+      defaults.put("move", move);
+      defaults.put("grid", null);
+      _xblockexpression = defaults;
+    }
+    return _xblockexpression;
+  }
+
+  public String renderJsValue(final Object value) {
+    String _xblockexpression = null;
+    {
+      if ((value == null)) {
+        return "null";
+      }
+      if ((value instanceof String)) {
+        return this.toJsonString(((String) value));
+      }
+      if (((value instanceof Boolean) || (value instanceof Number))) {
+        return String.valueOf(value);
+      }
+      if ((value instanceof Map<?, ?>)) {
+        return this.renderJsMap(value);
+      }
+      if ((value instanceof List<?>)) {
+        return this.renderJsList(value);
+      }
+      _xblockexpression = this.toJsonString(String.valueOf(value));
+    }
+    return _xblockexpression;
+  }
+
+  public String renderJsMap(final Object mapObj) {
+    String _xblockexpression = null;
+    {
+      final Map<String, Object> map = ((Map<String, Object>) mapObj);
+      if (((map == null) || map.isEmpty())) {
+        return "{}";
+      }
+      final ArrayList<String> pairs = new ArrayList<String>();
+      Set<String> _keySet = map.keySet();
+      final ArrayList<String> keys = new ArrayList<String>(_keySet);
+      for (final String key : keys) {
+        {
+          final Object v = map.get(key);
+          if (((key != null) && (v != null))) {
+            String _renderJsValue = this.renderJsValue(v);
+            String _plus = ((key + ": ") + _renderJsValue);
+            pairs.add(_plus);
+          }
+        }
+      }
+      String _join = IterableExtensions.join(pairs, ", ");
+      String _plus = ("{ " + _join);
+      _xblockexpression = (_plus + " }");
+    }
+    return _xblockexpression;
+  }
+
+  public String renderJsList(final Object listObj) {
+    String _xblockexpression = null;
+    {
+      final List<Object> list = ((List<Object>) listObj);
+      if (((list == null) || list.isEmpty())) {
+        return "[]";
+      }
+      final ArrayList<String> parts = new ArrayList<String>();
+      for (int i = 0; (i < list.size()); i++) {
+        parts.add(this.renderJsValue(list.get(i)));
+      }
+      String _join = IterableExtensions.join(parts, ", ");
+      String _plus = ("[" + _join);
+      _xblockexpression = (_plus + "]");
+    }
+    return _xblockexpression;
+  }
+
+  public String editorCss() {
+    return """
+<style>
+:root{color-scheme:light;--bg:#f4f6f8;--surface:#fff;--panel:#fbfcfe;--text:#17202a;--muted:#5d6875;--line:#d9dee7;--accent:#1f6feb;--accent-strong:#174ea6;--success:#15803d;--warning:#8a5a00;--danger:#b42318}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;display:flex;flex-direction:column;height:100vh;min-height:0}
+button,summary{font:inherit}
+button{border:1px solid var(--line);background:#fff;color:var(--text);padding:7px 11px;border-radius:6px;cursor:pointer;font-weight:650;white-space:nowrap}
+button:hover,summary:hover{border-color:#b8c2cf;background:#f8fafc}
+button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#header.appbar{background:var(--surface);border-bottom:1px solid var(--line);padding:10px 14px;display:grid;grid-template-columns:minmax(220px,auto) 1fr;gap:12px;align-items:center;box-shadow:0 1px 2px rgba(15,23,42,.04);z-index:2}
+.header-title{min-width:0}
+.header-kicker{margin:0 0 2px;color:var(--muted);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0}
+#header h1{margin:0;font-size:1.15rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.editor-mode-hint{margin-top:2px;color:var(--muted);font-size:.76rem}
+.header-buttons{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+.toolbar-group{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-right:8px;border-right:1px solid var(--line)}
+.toolbar-group:last-child{padding-right:0;border-right:0}
+.command-button{min-height:34px}
+.button-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.button-primary:hover{background:var(--accent-strong);border-color:var(--accent-strong)}
+.button-success{background:#ecfdf3;border-color:#bbf7d0;color:#166534}
+.button-danger{background:#fef2f2;border-color:#fecaca;color:var(--danger)}
+.mode-toggle{display:flex;gap:0;padding:2px;border:1px solid var(--line);border-radius:8px;background:#f8fafc}
+.mode-toggle button{border:0;background:transparent;color:var(--muted);padding:6px 9px;border-radius:6px}
+.mode-toggle button.active{background:var(--surface);color:var(--accent);box-shadow:0 1px 3px rgba(15,23,42,.12)}
+.toolbar-menu{position:relative}
+.toolbar-menu summary{list-style:none;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--text);padding:7px 11px;cursor:pointer;font-weight:650;white-space:nowrap}
+.toolbar-menu summary::-webkit-details-marker{display:none}
+.toolbar-menu-panel{position:absolute;right:0;top:calc(100% + 8px);min-width:230px;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 16px 34px rgba(15,23,42,.18);display:flex;flex-direction:column;gap:6px;z-index:20}
+.toolbar-menu-panel button{width:100%;text-align:left}
+.speed-control{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.82rem;padding:4px 2px}
+.speed-control input{width:90px}
+.editor-toast{position:fixed;right:16px;bottom:16px;max-width:min(420px,calc(100vw - 32px));padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);box-shadow:0 14px 36px rgba(15,23,42,.18);z-index:30;display:none}
+.editor-toast.visible{display:block}
+.editor-toast.error{border-color:#fecaca;background:#fef2f2;color:#991b1b}
+.editor-toast.warning{border-color:#fde68a;background:#fffbeb;color:#92400e}
+#main{display:grid;grid-template-columns:minmax(520px,1fr) minmax(360px,min(40vw,500px));gap:12px;flex:1;min-height:0;overflow:hidden;padding:12px}
+.workspace-shell,.inspector-panel{min-height:0;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.workspace-shell{display:flex;flex-direction:column}
+.workspace-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--panel)}
+.workspace-title{font-weight:700}
+.workspace-hint{color:var(--muted);font-size:.78rem}
+#blocklyDiv{flex:1 1 auto;min-height:0;height:100%}
+#outputPanel{display:flex;flex-direction:column;min-width:0}
+.panel-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 12px 6px}
+#outputPanel h2{margin:0;font-size:1rem;color:var(--text);line-height:1.2}
+.panel-subtitle{margin-top:2px;color:var(--muted);font-size:.76rem}
+#tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:0 10px;overflow-x:auto;scrollbar-width:thin}
+#tabs button{flex:0 0 auto;padding:8px 10px;border:0;background:#f1f4f8;color:#526071;border-radius:6px 6px 0 0}
+#tabs button.active{background:#fff;color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent)}
+body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
+.tab-content{flex:1;display:none;margin:0 10px 10px;padding:10px;overflow:auto;font-size:.85em;border:1px solid var(--line);border-top:0;border-radius:0 0 6px 6px;min-height:0}
+.tab-content.active{display:block}
+#modelView{background:#fff;font-family:Arial,sans-serif}
+#jsonView{background:#f5f5f5;font-family:monospace;white-space:pre-wrap}
+#runtimeView{background:#172033;color:#d4d4d4;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82em;white-space:pre-wrap}
+.model-node{margin:4px 0;padding:8px 12px;border-radius:6px;border-left:4px solid #4285f4}
+.model-node .node-type{font-weight:bold;font-size:.9em;color:#333}
+.model-node .node-attr{font-size:.8em;color:#666;margin-top:2px}
+.model-node .node-attr span{background:#e8f0fe;padding:1px 6px;border-radius:3px;margin-right:4px}
+.model-children{margin-left:16px;padding-left:8px;border-left:2px dashed #ccc}
+.validation-summary{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:.85em;color:#333}
+.validation-empty{color:#5f6368;text-align:center;margin-top:40px}
+.validation-list{display:flex;flex-direction:column;gap:8px}
+.validation-item{border:1px solid #f4b400;border-left:4px solid #f4b400;background:#fff8e1;border-radius:4px;padding:8px 10px;text-align:left;cursor:pointer;color:#3c4043}
+.validation-item:hover{background:#fff3c4}
+.validation-item-type{font-size:.75em;font-weight:bold;color:#8a5a00;margin-bottom:3px}
+.validation-item-message{font-size:.85em;line-height:1.35}
+#validationBlocksView{padding:0;background:#f5f7fb;overflow:hidden}
+#validationBlocksView iframe{width:100%;height:100%;min-height:520px;border:0;background:#fff}
+.reference-dialog-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;z-index:9999}
+.reference-dialog-panel{background:#fff;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.25);width:min(420px,calc(100vw - 32px));max-height:min(520px,calc(100vh - 32px));display:flex;flex-direction:column}
+.reference-dialog-title{font-weight:bold;color:#202124;padding:14px 16px;border-bottom:1px solid #e0e0e0}
+.reference-dialog-list{padding:8px 16px;overflow:auto}
+.reference-dialog-row{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:.9em;color:#333}
+.reference-dialog-row input{margin:0}
+.reference-dialog-empty{padding:18px 0;color:#777;text-align:center}
+.reference-dialog-textarea{margin:12px 16px 0;min-height:160px;resize:vertical;border:1px solid #dadce0;border-radius:4px;padding:8px;font:13px/1.4 monospace}
+.reference-dialog-actions{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid #e0e0e0}
+.reference-dialog-actions button{border:1px solid #dadce0;background:#fff;border-radius:4px;padding:7px 12px;cursor:pointer;font-weight:bold}
+.reference-dialog-actions .reference-dialog-primary{background:#1a73e8;border-color:#1a73e8;color:#fff}
+.rt-step{padding:2px 6px;border-bottom:1px solid #333}.rt-step:hover{background:#2a2a2a}
+.rt-done{padding:4px 6px;color:#4CAF50;font-weight:bold;border-top:1px solid #444}
+.rt-info{padding:2px 6px;color:#888;font-style:italic}
+.rt-err{padding:2px 6px;color:#f44336}
+@media (max-width:1040px){#header.appbar{grid-template-columns:1fr}.header-buttons{justify-content:flex-start}#main{grid-template-columns:1fr;overflow:auto}.workspace-shell{min-height:420px}.inspector-panel{min-height:420px;max-height:620px}}
+@media (max-width:560px){#header.appbar{padding:10px}.toolbar-group{width:100%;border-right:0;padding-right:0}.toolbar-group.primary-actions button{flex:1 1 auto}.mode-toggle{width:100%}.mode-toggle button{flex:1}.toolbar-menu{width:100%}.toolbar-menu summary{width:100%;text-align:center}.toolbar-menu-panel{position:static;margin-top:6px;box-shadow:none}#main{padding:8px}.workspace-shell{min-height:360px}.inspector-panel{min-height:420px;max-height:520px}}
+""" + AppMakerHtmlRuntimeGenerator.css() + """
+</style>
+""";
+  }
+
+  public String editorHeaderHtml(final String title) {
+    return """
+<div id="header" class="appbar" data-generated-ui="2026-product">
+  <div class="header-title">
+    <div class="header-kicker">Blockly editor</div>
+    <h1>""" + this.esc(title) + """
+</h1>
+    <div id="editorModeHint" class="editor-mode-hint">Build mode</div>
+  </div>
+  <div class="header-buttons" role="toolbar" aria-label="Editor actions">
+    <div class="toolbar-group primary-actions">
+      <button class="button-primary command-button" onclick="loadSampleModel()">Load Sample</button>
+      <button class="command-button" onclick="saveWorkspace()">Save</button>
+      <button class="command-button" onclick="loadWorkspace()">Load</button>
+      <button class="command-button" onclick="exportJSON()">Export JSON</button>
+    </div>
+    <div class="toolbar-group">
+      <details class="toolbar-menu">
+        <summary>More</summary>
+        <div class="toolbar-menu-panel">
+          <button onclick="loadModelJSON()">Import Model JSON</button>
+          <button onclick="exportXMI()">Export XMI</button>
+          <button onclick="exportCode()">Export Code</button>
+          <button class="button-success" onclick="runModel()">Run Runtime</button>
+          <button onclick="pauseModel()">Pause Runtime</button>
+          <button onclick="stepModel()">Step Runtime</button>
+          <button class="button-danger" onclick="stopModel()">Stop Runtime</button>
+          <label class="speed-control">Speed
+            <input type="range" min="50" max="2000" value="500" step="50" oninput="_astRunner.speed=parseInt(this.value)">
+          </label>
+        </div>
+      </details>
+    </div>
+    <div class="toolbar-group">
+      <div class="mode-toggle" aria-label="Editor mode">
+        <button id="buildModeButton" type="button" class="active" onclick="setEditorMode('build')">Build</button>
+        <button id="developerModeButton" type="button" onclick="setEditorMode('developer')">Developer</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="editorToast" class="editor-toast" role="status" aria-live="polite"></div>
+""";
+  }
+
+  public String editorMainHtml(final EditorSpec spec) {
+    return """
+<div id="main">
+  <section class="workspace-shell" aria-label="Blockly workspace">
+    <div class="workspace-panel-header">
+      <div class="workspace-title">Workspace</div>
+      <div class="workspace-hint">Drag blocks here to build the model.</div>
+    </div>
+    <div id="blocklyDiv"></div>
+  </section>
+  <aside id="outputPanel" class="inspector-panel" aria-label="Generated model inspector">
+    <div class="panel-header">
+      <div>
+        <h2>Inspector</h2>
+        <div id="panelSubtitle" class="panel-subtitle">Model, preview and validation issues</div>
+      </div>
+    </div>
+    <div id="tabs">
+      <button class="active" data-tab="model" onclick="switchTab('model')">Model</button>
+      """ + AppMakerHtmlRuntimeGenerator.tabButton(spec) + """
+      <button data-tab="issues" onclick="switchTab('issues')">Issues <span id="issuesBadge"></span></button>
+      <button data-tab="json" data-developer-only="true" onclick="switchTab('json')">JSON</button>
+      <button data-tab="validationBlocks" data-developer-only="true" onclick="switchTab('validationBlocks')">Validation Blocks</button>
+      <button data-tab="runtime" data-developer-only="true" onclick="switchTab('runtime')">Runtime</button>
+    </div>
+    <div id="modelView" class="tab-content active"></div>
+    """ + AppMakerHtmlRuntimeGenerator.tabContent(spec) + """
+    <div id="jsonView" class="tab-content"></div>
+    <div id="issuesView" class="tab-content"></div>
+    <div id="validationBlocksView" class="tab-content"><iframe title="Visual validation Blockly workspace" src="validation_workspace.html"></iframe></div>
+    <div id="runtimeView" class="tab-content"></div>
+  </aside>
+</div>
+""";
+  }
+
+  public String editorBootstrapScript(final EditorSpec spec) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<script>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("Blockly.defineBlocksWithJsonArray(window.BLOCKLY_BLOCKS);");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("var workspace = Blockly.inject(\'blocklyDiv\', {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("toolbox: window.BLOCKLY_TOOLBOX,");
+    _builder.newLine();
+    _builder.append("\t\t");
+    String _workspaceOptions = this.workspaceOptions(spec);
+    _builder.append(_workspaceOptions, "\t\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("});");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("Blockly.svgResize(workspace);");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("window.addEventListener(\'resize\', function() {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("Blockly.svgResize(workspace);");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("});");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("initValidations(workspace);");
+    _builder.newLine();
+    _builder.append("\t");
+    String _generateReferenceUpdateScript = this.generateReferenceUpdateScript(spec);
+    _builder.append(_generateReferenceUpdateScript, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    String _script = AppMakerHtmlRuntimeGenerator.script(spec);
+    _builder.append(_script, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    String _modelViewerScript = this.modelViewerScript(spec);
+    _builder.append(_modelViewerScript, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    String _generateRuntimeScript = this.generateRuntimeScript(spec);
+    _builder.append(_generateRuntimeScript, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("</script>");
+    _builder.newLine();
+    return _builder.toString();
+  }
+
+  public String modelViewerScript(final EditorSpec spec) {
+    String _xblockexpression = null;
+    {
+      String _elvis = null;
+      String _nsURI = spec.getNsURI();
+      if (_nsURI != null) {
+        _elvis = _nsURI;
+      } else {
+        String _elvis_1 = null;
+        String _domainName = spec.getDomainName();
+        if (_domainName != null) {
+          _elvis_1 = _domainName;
+        } else {
+          _elvis_1 = "domain";
+        }
+        String _plus = ("http://www.example.org/" + _elvis_1);
+        _elvis = _plus;
+      }
+      final String nsURI = _elvis;
+      String _elvis_2 = null;
+      String _nsPrefix = spec.getNsPrefix();
+      if (_nsPrefix != null) {
+        _elvis_2 = _nsPrefix;
+      } else {
+        String _elvis_3 = null;
+        String _domainName_1 = spec.getDomainName();
+        if (_domainName_1 != null) {
+          _elvis_3 = _domainName_1;
+        } else {
+          _elvis_3 = "domain";
+        }
+        String _lowerCase = _elvis_3.toLowerCase();
+        _elvis_2 = _lowerCase;
+      }
+      final String nsPrefix = _elvis_2;
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("/* ── Tab switching ── */");
+      _builder.newLine();
+      _builder.append("var DEVELOPER_TABS = { json: true, validationBlocks: true, runtime: true };");
+      _builder.newLine();
+      _builder.append("var currentEditorTab = 'model';");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function showEditorMessage(message, type) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var toast = document.getElementById('editorToast');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!toast) { if (type === 'error') console.error(message); return; }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("toast.textContent = message;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("toast.className = 'editor-toast visible' + (type ? ' ' + type : '');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("window.clearTimeout(window.__editorToastTimer);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("window.__editorToastTimer = window.setTimeout(function() { toast.className = 'editor-toast'; }, 4200);");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function setEditorMode(mode, keepTab) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var developer = mode === 'developer';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("document.body.classList.toggle('developer-mode', developer);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("document.body.classList.toggle('build-mode', !developer);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var buildButton = document.getElementById('buildModeButton');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var developerButton = document.getElementById('developerModeButton');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (buildButton) { buildButton.classList.toggle('active', !developer); buildButton.setAttribute('aria-pressed', String(!developer)); }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (developerButton) { developerButton.classList.toggle('active', developer); developerButton.setAttribute('aria-pressed', String(developer)); }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var hint = document.getElementById('editorModeHint');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (hint) hint.textContent = developer ? 'Developer mode' : 'Build mode';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var subtitle = document.getElementById('panelSubtitle');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (subtitle) subtitle.textContent = developer ? 'Model, preview, JSON, runtime and validation internals' : 'Model, preview and validation issues';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!developer && !keepTab && DEVELOPER_TABS[currentEditorTab]) switchTab(document.querySelector('[data-tab=\"preview\"]') ? 'preview' : 'model');");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function switchTab(tab) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (DEVELOPER_TABS[tab]) setEditorMode('developer', true);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("currentEditorTab = tab;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("document.querySelectorAll(\'.tab-content\').forEach(function(el) { el.classList.remove(\'active\'); });");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("document.querySelectorAll(\'#tabs button\').forEach(function(el) { el.classList.remove(\'active\'); });");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var view = document.getElementById(tab + \'View\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (view) view.classList.add(\'active\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var btns = document.querySelectorAll(\'#tabs button\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("for (var i = 0; i < btns.length; i++) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (btns[i].getAttribute(\'onclick\') && btns[i].getAttribute(\'onclick\').indexOf(\"\'\" + tab + \"\'\") !== -1) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("btns[i].classList.add(\'active\'); break;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var activeButton = document.querySelector('#tabs button[data-tab=\"' + tab + '\"]');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (activeButton) activeButton.classList.add('active');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (tab === \'validationBlocks\' && typeof syncValidationBlocksFromFrame === \'function\') {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("window.setTimeout(syncValidationBlocksFromFrame, 0);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("window.BLOCKLY_SAMPLE_MODEL = ");
+      String _generate = SampleModelGenerator.generate(spec);
+      _builder.append(_generate);
+      _builder.append(";");
+      _builder.newLineIfNotEmpty();
+      _builder.newLine();
+      _builder.append("/* ── Extract model JSON from workspace ── */");
+      _builder.newLine();
+      _builder.append("function getModelJSON() {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var code = javascript.javascriptGenerator.workspaceToCode(workspace);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!code || !code.trim()) return null;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("try {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var wrapped = \'[\' + code.replace(/,\\s*$/, \'\') + \']\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("wrapped = wrapped.replace(/,\\s*\\]/g, \']\');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return JSON.parse(wrapped);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("} catch(e) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return null;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("/* ── Render model tree as visual cards ── */");
+      _builder.newLine();
+      _builder.append("function renderModelNode(obj) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!obj || typeof obj !== \'object\') return \'\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var type = obj._type || \'Unknown\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var html = \'<div class=\"model-node\">\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("html += \'<div class=\"node-type\">\' + type + \'</div>\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("html += \'<div class=\"node-attr\">\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("Object.keys(obj).forEach(function(key) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (key === \'_type\') return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var val = obj[key];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (Array.isArray(val)) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (val !== null && typeof val === \'object\') return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("html += \'<span>\' + key + \': \' + val + \'</span> \';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("html += \'</div>\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("Object.keys(obj).forEach(function(key) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var val = obj[key];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (Array.isArray(val)) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (val.length === 0) return;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("html += \'<div class=\"model-children\">\';");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("html += \'<div style=\"font-size:.75em;color:#999;margin:4px 0\">\' + key + \':</div>\';");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("val.forEach(function(child) { html += renderModelNode(child); });");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("html += \'</div>\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("} else if (val !== null && typeof val === \'object\' && val._type) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("html += \'<div class=\"model-children\">\';");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("html += \'<div style=\"font-size:.75em;color:#999;margin:4px 0\">\' + key + \':</div>\';");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("html += renderModelNode(val);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("html += \'</div>\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("html += \'</div>\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("return html;");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("/* ── Update both tabs ── */");
+      _builder.newLine();
+      _builder.append("function updateOutput() {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var model = getModelJSON();");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var modelView = document.getElementById(\'modelView\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var jsonView = document.getElementById(\'jsonView\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!model || model.length === 0) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("modelView.innerHTML = \'<p style=\"color:#999;text-align:center;margin-top:40px\">Drag blocks to build your model</p>\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("jsonView.textContent = \'// Empty workspace\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof renderAppMakerPreview === \'function\') renderAppMakerPreview([]);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var html = \'\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("model.forEach(function(node) { html += renderModelNode(node); });");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("modelView.innerHTML = html;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("jsonView.textContent = JSON.stringify(model, null, 2);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (typeof renderAppMakerPreview === \'function\') renderAppMakerPreview(model);");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("/* ── Save workspace state ── */");
+      _builder.newLine();
+      _builder.append("function saveWorkspace() {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var state = Blockly.serialization.workspaces.save(workspace);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var json = JSON.stringify(state, null, 2);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var blob = new Blob([json], {type: \'application/json\'});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var a = document.createElement(\'a\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("a.href = URL.createObjectURL(blob);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("a.download = \'");
+      String _elvis_4 = null;
+      String _domainName_2 = spec.getDomainName();
+      if (_domainName_2 != null) {
+        _elvis_4 = _domainName_2;
+      } else {
+        _elvis_4 = "model";
+      }
+      String _esc = this.esc(_elvis_4);
+      _builder.append(_esc, "\t");
+      _builder.append("_workspace.json\';");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("a.click();");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("/* ── Load workspace state ── */");
+      _builder.newLine();
+      _builder.append("function loadWorkspace() {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var input = document.createElement(\'input\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("input.type = \'file\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("input.accept = \'.json\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("input.onchange = function(e) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var file = e.target.files[0];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!file) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var reader = new FileReader();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("reader.onload = function(ev) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("try {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("var state = JSON.parse(ev.target.result);");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("Blockly.serialization.workspaces.load(state, workspace);");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("if (typeof updateReferenceDropdowns === \'function\') updateReferenceDropdowns(workspace);");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("if (typeof applyValidationWarnings === \'function\') applyValidationWarnings(workspace);");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("if (typeof updateOutput === \'function\') updateOutput();");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("Blockly.svgResize(workspace);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("} catch(err) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("showEditorMessage(\'Error loading workspace: \' + err.message, \'error\');");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("};");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("reader.readAsText(file);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("};");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("input.click();");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("/* ── Import domain model JSON back into Blockly blocks ── */");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function loadModelJSON() {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var input = document.createElement(\'input\');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("input.type = \'file\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("input.accept = \'.json\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("input.onchange = function(e) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("var file = e.target.files[0];");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (!file) return;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("var reader = new FileReader();");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("reader.onload = function(ev) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("try {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t\t");
+      _builder.append("var model = JSON.parse(ev.target.result);");
+      _builder.newLine();
+      _builder.append("\t\t\t\t\t");
+      _builder.append("importModelJSON(model);");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("} catch(err) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t\t");
+      _builder.append("showEditorMessage(\'Error importing model JSON: \' + err.message, \'error\');");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("};");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("reader.readAsText(file);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("};");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("input.click();");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function loadSampleModel() {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!window.BLOCKLY_SAMPLE_MODEL || window.BLOCKLY_SAMPLE_MODEL.length === 0) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("showEditorMessage(\'No sample model was generated for this domain.\', \'warning\');");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("importModelJSON(JSON.parse(JSON.stringify(window.BLOCKLY_SAMPLE_MODEL)));");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function importModelJSON(model) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var config = (window.BLOCKLY_DOMAIN_CODEGEN && window.BLOCKLY_DOMAIN_CODEGEN.blocks) || {};");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var roots = Array.isArray(model) ? model : [model];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var supported = roots.filter(function(node) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("return node && node._type && config[node._type];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (supported.length === 0) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("throw new Error(\'No known domain nodes were found.\');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var idMap = {};");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var pendingReferences = [];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var eventsEnabled = Blockly.Events.isEnabled ? Blockly.Events.isEnabled() : true;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (Blockly.Events.disable) Blockly.Events.disable();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("try {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("workspace.clear();");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("var x = 40;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("var y = 40;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("roots.forEach(function(node) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("if (!node || !node._type || !config[node._type]) return;");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("createImportedModelNode(node, x, y, idMap, pendingReferences);");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("x += 300;");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("if (x > 640) { x = 40; y += 170; }");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("} finally {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (eventsEnabled && Blockly.Events.enable) Blockly.Events.enable();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("applyImportedReferences(pendingReferences, idMap);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof applyValidationWarnings === \'function\') applyValidationWarnings(workspace);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof updateOutput === \'function\') updateOutput();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("Blockly.svgResize(workspace);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function createImportedModelNode(node, x, y, idMap, pendingReferences) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var config = (window.BLOCKLY_DOMAIN_CODEGEN && window.BLOCKLY_DOMAIN_CODEGEN.blocks) || {};");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var blockConfig = node && node._type ? config[node._type] : null;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!blockConfig) return null;");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var block = createImportedBlock(node._type, node._blockId, x, y, idMap);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("(blockConfig.fields || []).forEach(function(name) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (Object.prototype.hasOwnProperty.call(node, name)) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("setImportedField(block, name, node[name]);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("(blockConfig.references || []).forEach(function(name) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("pendingReferences.push({ block: block, field: name, oldId: node[name] || \'\' });");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("(blockConfig.values || []).forEach(function(name) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("var childNode = node[name];");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (!childNode || !childNode._type) return;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("var child = createImportedModelNode(childNode, 0, 0, idMap, pendingReferences);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("var input = block.getInput(name);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (child && input && input.connection && child.outputConnection) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("input.connection.connect(child.outputConnection);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("(blockConfig.statements || []).forEach(function(name) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("var children = Array.isArray(node[name]) ? node[name] : [];");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("connectImportedStatementBlocks(block, name, children, idMap, pendingReferences);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return block;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function connectImportedStatementBlocks(parent, inputName, children, idMap, pendingReferences) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var input = parent.getInput(inputName);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var previous = null;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("children.forEach(function(childNode) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (!childNode || !childNode._type) return;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("var child = createImportedModelNode(childNode, 0, 0, idMap, pendingReferences);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (!child) return;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (!previous && input && input.connection && child.previousConnection) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("input.connection.connect(child.previousConnection);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("} else if (previous && previous.nextConnection && child.previousConnection) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("previous.nextConnection.connect(child.previousConnection);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("previous = child;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function createImportedBlock(type, requestedId, x, y, idMap) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var block = null;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var blockId = requestedId && !workspace.getBlockById(requestedId) ? requestedId : importedModelNewId();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("try {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("block = workspace.newBlock(type, blockId);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("} catch(e) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("blockId = importedModelNewId();");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("block = workspace.newBlock(type, blockId);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (requestedId) idMap[requestedId] = block.id;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("block.initSvg();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("block.render();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof x === \'number\' && typeof y === \'number\') block.moveBy(x, y);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return block;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function applyImportedReferences(pendingReferences, idMap) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof updateReferenceDropdowns === \'function\') updateReferenceDropdowns(workspace);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("pendingReferences.forEach(function(ref) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (!ref.oldId || !ref.block || !ref.block.getField(ref.field)) return;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (Array.isArray(ref.oldId)) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("var mappedIds = ref.oldId.map(function(oldId) { return idMap[oldId] || oldId; }).filter(function(id) { return !!workspace.getBlockById(id); });");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("try {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t\t");
+      _builder.append("ref.block.setFieldValue(mappedIds.join(\', \'), ref.field);");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("} catch(e) {}");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("return;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("var mappedId = idMap[ref.oldId] || ref.oldId;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (!workspace.getBlockById(mappedId)) return;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("try {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("ref.block.setFieldValue(mappedId, ref.field);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("} catch(e) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("ref.block.setFieldValue(\'\', ref.field);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof updateReferenceDropdowns === \'function\') updateReferenceDropdowns(workspace);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function setImportedField(block, name, value) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!block || !block.getField(name) || value === null || value === undefined) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var field = block.getField(name);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var current = field.getValue ? field.getValue() : null;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (Array.isArray(value)) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("value = value.map(function(item) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("return item === null || item === undefined ? \'\' : String(item).trim();");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}).filter(function(item) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("return item.length > 0;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}).join(\', \');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (typeof value === \'boolean\' && (current === \'TRUE\' || current === \'FALSE\')) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("value = value ? \'TRUE\' : \'FALSE\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("try {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("block.setFieldValue(String(value), name);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("} catch(e) {}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function importedModelNewId() {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (Blockly.utils && Blockly.utils.idGenerator && Blockly.utils.idGenerator.genUid) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("return Blockly.utils.idGenerator.genUid();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return \'imported_\' + Math.random().toString(36).slice(2);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("/* ── Export JSON ── */");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("function exportJSON() {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (!confirmExportIfInvalid(workspace)) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var model = getModelJSON();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!model) { showEditorMessage(\'Workspace is empty.\', \'warning\'); return; }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var json = JSON.stringify(model, null, 2);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var blob = new Blob([json], {type: \'application/json\'});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var a = document.createElement(\'a\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("a.href = URL.createObjectURL(blob);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("a.download = \'");
+      String _elvis_5 = null;
+      String _domainName_3 = spec.getDomainName();
+      if (_domainName_3 != null) {
+        _elvis_5 = _domainName_3;
+      } else {
+        _elvis_5 = "model";
+      }
+      String _esc_1 = this.esc(_elvis_5);
+      _builder.append(_esc_1, "\t");
+      _builder.append("_model.json\';");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("a.click();");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("""
+      	/* ── Export domain instance XMI (EMF/XMI style) ── */
+      	function exportXMI() {
+      		if (!confirmExportIfInvalid(workspace)) return;
+      		var model = getModelJSON();
+      		if (!model) { showEditorMessage('Workspace is empty.', 'warning'); return; }
+      	var xmi = modelToDomainXMI(model);
+      	var blob = new Blob([xmi], {type: 'application/xml'});
+      	var a = document.createElement('a');
+      	a.href = URL.createObjectURL(blob);
+      	a.download = '""");
+      String _elvis_6 = null;
+      String _domainName_4 = spec.getDomainName();
+      if (_domainName_4 != null) {
+        _elvis_6 = _domainName_4;
+      } else {
+        _elvis_6 = "model";
+      }
+      String _esc_2 = this.esc(_elvis_6);
+      _builder.append(_esc_2);
+      _builder.append("""
+      _model.xmi';
+      	a.click();
+      }
+      
+      """);
+      _builder.append("\t");
+      _builder.append("/* ── Export generated domain code ── */");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function exportCode() {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!confirmExportIfInvalid(workspace)) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var code = generateDomainCode(workspace);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!code || !code.trim()) { showEditorMessage(\'Workspace is empty.\', \'warning\'); return; }");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var config = window.BLOCKLY_DOMAIN_CODEGEN || {};");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var ext = config.fileExtension || \'txt\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var blob = new Blob([code], {type: \'text/plain\'});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var a = document.createElement(\'a\');");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("a.href = URL.createObjectURL(blob);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("a.download = \'");
+      String _elvis_7 = null;
+      String _domainName_5 = spec.getDomainName();
+      if (_domainName_5 != null) {
+        _elvis_7 = _domainName_5;
+      } else {
+        _elvis_7 = "model";
+      }
+      String _esc_3 = this.esc(_elvis_7);
+      _builder.append(_esc_3, "\t\t");
+      _builder.append("_code.\' + ext.replace(/^\\./, \'\');");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("a.click();");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("""
+      function modelToDomainXMI(model) {
+      	var nsURI = '""");
+      String _domainXmiNsUri = this.escapeJson(nsURI);
+      _builder.append(_domainXmiNsUri);
+      _builder.append("""
+      ';
+      	var nsPrefix = '""");
+      String _domainXmiNsPrefix = this.escapeJson(nsPrefix);
+      _builder.append(_domainXmiNsPrefix);
+      _builder.append("""
+      ';
+      	var roots = Array.isArray(model) ? model : [model];
+      	var xmi = '<?xml version="1.0" encoding="UTF-8"?>\\n';
+      	xmi += '<xmi:XMI xmi:version="2.0"';
+      	xmi += ' xmlns:xmi="http://www.omg.org/XMI"';
+      	xmi += ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
+      	xmi += ' xmlns:' + nsPrefix + '="' + xmlAttribute(nsURI) + '">\\n';
+      	roots.forEach(function(node) {
+      		xmi += domainNodeToXMI(node, 1, nsPrefix, nsPrefix + ':' + xmlName(node && node._type ? node._type : 'Element'), false);
+      	});
+      	xmi += '</xmi:XMI>';
+      	return xmi;
+      }
+      window.modelToDomainXMI = modelToDomainXMI;
+      
+      function domainNodeToXMI(obj, indent, nsPrefix, elementName, includeType) {
+      	if (!obj || typeof obj !== 'object') return '';
+      	var pad = '  '.repeat(indent);
+      	var type = obj._type || 'Element';
+      	var config = domainBlockConfig(type);
+      	var tag = elementName || (nsPrefix + ':' + xmlName(type));
+      	var attrs = '';
+      	var children = '';
+      
+      	if (includeType) attrs += ' xsi:type="' + nsPrefix + ':' + xmlName(type) + '"';
+      	if (obj._blockId) attrs += ' xmi:id="' + xmlAttribute(obj._blockId) + '"';
+      
+      	(config.fields || []).forEach(function(key) {
+      		if (!Object.prototype.hasOwnProperty.call(obj, key)) return;
+      		var val = obj[key];
+      		if (Array.isArray(val)) {
+      			val.forEach(function(item) {
+      				children += pad + '  <' + xmlName(key) + '>' + xmlText(domainScalarValue(item, key, config)) + '</' + xmlName(key) + '>\\n';
+      			});
+      		} else if (val !== null && val !== undefined && typeof val !== 'object') {
+      			attrs += ' ' + xmlName(key) + '="' + xmlAttribute(domainScalarValue(val, key, config)) + '"';
+      		}
+      	});
+      
+      	(config.references || []).forEach(function(key) {
+      		if (!Object.prototype.hasOwnProperty.call(obj, key)) return;
+      		var ids = referenceIds(obj[key]);
+      		if (ids.length) attrs += ' ' + xmlName(key) + '="' + xmlAttribute(ids.join(' ')) + '"';
+      	});
+      
+      	(config.values || []).forEach(function(key) {
+      		var child = obj[key];
+      		if (child && child._type) {
+      			children += domainNodeToXMI(child, indent + 1, nsPrefix, xmlName(key), true);
+      		}
+      	});
+      
+      	(config.statements || []).forEach(function(key) {
+      		var list = Array.isArray(obj[key]) ? obj[key] : [];
+      		list.forEach(function(child) {
+      			if (child && child._type) {
+      				children += domainNodeToXMI(child, indent + 1, nsPrefix, xmlName(key), true);
+      			}
+      		});
+      	});
+      
+      	if (children) {
+      		return pad + '<' + tag + attrs + '>\\n' + children + pad + '</' + tag + '>\\n';
+      	} else {
+      		return pad + '<' + tag + attrs + '/>\\n';
+      	}
+      }
+      
+      function domainBlockConfig(type) {
+      	var blocks = (window.BLOCKLY_DOMAIN_CODEGEN && window.BLOCKLY_DOMAIN_CODEGEN.blocks) || {};
+      	return blocks[type] || { fields: [], fieldTypes: {}, references: [], values: [], statements: [] };
+      }
+      
+      function domainScalarValue(value, fieldName, config) {
+      	var type = config && config.fieldTypes ? config.fieldTypes[fieldName] : null;
+      	if (type === 'BOOLEAN') {
+      		if (value === true || value === 'TRUE' || value === 'true' || value === '1') return 'true';
+      		if (value === false || value === 'FALSE' || value === 'false' || value === '0') return 'false';
+      	}
+      	return value === null || value === undefined ? '' : String(value);
+      }
+      
+      function referenceIds(value) {
+      	if (Array.isArray(value)) {
+      		return value.map(function(item) { return String(item || '').trim(); }).filter(Boolean);
+      	}
+      	if (value === null || value === undefined || value === '') return [];
+      	return String(value).split(/[,\\n ]+/).map(function(item) { return item.trim(); }).filter(Boolean);
+      }
+      
+      function xmlName(value) {
+      	var text = String(value || 'Element').replace(/[^A-Za-z0-9_.-]/g, '_');
+      	return /^[A-Za-z_]/.test(text) ? text : '_' + text;
+      }
+      
+      function xmlText(value) {
+      	return String(value === null || value === undefined ? '' : value)
+      		.replace(/&/g, '&amp;')
+      		.replace(/</g, '&lt;')
+      		.replace(/>/g, '&gt;');
+      }
+      
+      function xmlAttribute(value) {
+      	return xmlText(value).replace(/"/g, '&quot;');
+      }
+      
+      """);
+      _builder.append("/* ── Auto-update ── */");
+      _builder.newLine();
+      _builder.append("workspace.addChangeListener(function(e) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (e.type !== Blockly.Events.UI) updateOutput();");
+      _builder.newLine();
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("setEditorMode('build', true);");
+      _builder.newLine();
+      _builder.append("updateOutput();");
+      _builder.newLine();
+      _xblockexpression = _builder.toString();
+    }
+    return _xblockexpression;
+  }
+
+  public String generateRuntimeScript(final EditorSpec spec) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("/* ═══ GENERIC AST RUNTIME ═══ */");
+    _builder.newLine();
+    _builder.append("var _astRunner = {");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("running: false, paused: false, stepping: false,");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("stepResolve: null, speed: 500, nodeCount: 0,");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("run: function() {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("var code;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("try {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("code = javascript.javascriptGenerator.workspaceToCode(workspace);");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("} catch(ex) { this.log(\'Generator error: \' + ex.message, \'err\'); return; }");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("if (!code || code.trim().length === 0) { showEditorMessage(\'Workspace is empty.\', \'warning\'); return; }");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("var model;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("try {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("var wrapped = \'[\' + code.replace(/,\\s*$/, \'\') + \']\';");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("wrapped = wrapped.replace(/,\\s*\\]/g, \']\');");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("model = JSON.parse(wrapped);");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("} catch(ex) { this.log(\'JSON parse error: \' + ex.message, \'err\'); return; }");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("this.nodeCount = 0;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("this.running = true; this.paused = false; this.stepping = false;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("document.getElementById(\'runtimeView\').innerHTML = \'\';");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("this.log(\'▶ Execution started (\' + model.length + \' root node\' + (model.length > 1 ? \'s\' : \'\') + \')\', \'info\');");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("var self = this;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("(async function() {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("for (var i = 0; i < model.length; i++) {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("if (!self.running) break;");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("await self.walkNode(model[i], 0);");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("self.running = false;");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("workspace.highlightBlock(null);");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("self.log(\'✓ Finished — visited \' + self.nodeCount + \' nodes\', \'done\');");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("})();");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("walkNode: async function(node, depth) {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("if (!node || typeof node !== \'object\' || !node._type || !this.running) return;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("this.nodeCount++;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("if (node._blockId) workspace.highlightBlock(node._blockId);");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("var attrs = [];");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("var childKeys = [];");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("for (var key in node) {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("if (key === \'_type\' || key === \'_blockId\') continue;");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("var v = node[key];");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("if (Array.isArray(v)) { childKeys.push(key); continue; }");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("if (v !== null && typeof v === \'object\' && v._type) { childKeys.push(key); continue; }");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("attrs.push(key + \'=\' + JSON.stringify(v));");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("var indent = \'\';");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("for (var d = 0; d < depth; d++) indent += \'  \';");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("this.log(indent + \'► \' + node._type + (attrs.length ? \'  (\' + attrs.join(\', \') + \')\' : \'\'), \'step\');");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("await this.waitStep();");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("for (var ci = 0; ci < childKeys.length; ci++) {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("var ck = childKeys[ci];");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("var cv = node[ck];");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("if (Array.isArray(cv)) {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("for (var j = 0; j < cv.length; j++) {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("if (!this.running) return;");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("await this.walkNode(cv[j], depth + 1);");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("} else if (cv && typeof cv === \'object\' && cv._type) {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("if (!this.running) return;");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("await this.walkNode(cv, depth + 1);");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("waitStep: function() {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("var self = this;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("if (this.stepping || this.paused) {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("return new Promise(function(r) { self.stepResolve = r; });");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("return new Promise(function(r) { setTimeout(r, self.speed); });");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("pause: function() { this.paused = true; },");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("resume: function() {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("this.paused = false; this.stepping = false;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("if (this.stepResolve) { this.stepResolve(); this.stepResolve = null; }");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("step: function() {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("this.stepping = true;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("if (this.stepResolve) { this.stepResolve(); this.stepResolve = null; }");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("stop: function() {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("this.running = false;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("if (this.stepResolve) { this.stepResolve(); this.stepResolve = null; }");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("workspace.highlightBlock(null);");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("this.log(\'⏹ Stopped\', \'info\');");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("log: function(msg, cls) {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("var el = document.getElementById(\'runtimeView\');");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("if (!el) return;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("var d = document.createElement(\'div\');");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("d.className = \'rt-\' + (cls || \'info\');");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("d.textContent = msg;");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("el.appendChild(d);");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("el.scrollTop = el.scrollHeight;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("};");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("function runModel() {");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("if (_astRunner.running && _astRunner.paused) { _astRunner.resume(); return; }");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("if (_astRunner.running) return;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("switchTab(\'runtime\');");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("_astRunner.run();");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("function pauseModel() { _astRunner.pause(); }");
+    _builder.newLine();
+    _builder.append("function stepModel() {");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("if (!_astRunner.running) { _astRunner.stepping = true; switchTab(\'runtime\'); _astRunner.run(); }");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("else { _astRunner.step(); }");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("function stopModel() { _astRunner.stop(); }");
+    _builder.newLine();
+    return _builder.toString();
+  }
+
+  public String esc(final String s) {
+    String _xblockexpression = null;
+    {
+      if ((s == null)) {
+        return "";
+      }
+      _xblockexpression = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;");
+    }
+    return _xblockexpression;
+  }
+
+  public String escapeJson(final String s) {
+    String _xblockexpression = null;
+    {
+      if ((s == null)) {
+        return "";
+      }
+      _xblockexpression = s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\'", "\\\'").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
+    }
+    return _xblockexpression;
+  }
+
+  public String toJsonString(final String s) {
+    String _xblockexpression = null;
+    {
+      if ((s == null)) {
+        return "\"\"";
+      }
+      String _escapeJson = this.escapeJson(s);
+      String _plus = ("\"" + _escapeJson);
+      _xblockexpression = (_plus + "\"");
+    }
+    return _xblockexpression;
+  }
+
+  public int parseNumberOrDefault(final String s, final int defaultVal) {
+    int _xblockexpression = (int) 0;
+    {
+      if (((s == null) || s.isEmpty())) {
+        return defaultVal;
+      }
+      int _xtrycatchfinallyexpression = (int) 0;
+      try {
+        _xtrycatchfinallyexpression = Integer.parseInt(s);
+      } catch (final Throwable _t) {
+        if (_t instanceof NumberFormatException) {
+          _xtrycatchfinallyexpression = defaultVal;
+        } else {
+          throw Exceptions.sneakyThrow(_t);
+        }
+      }
+      _xblockexpression = _xtrycatchfinallyexpression;
+    }
+    return _xblockexpression;
+  }
+}

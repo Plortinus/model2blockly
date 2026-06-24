@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: io.github.plortinus.model2blockly.ide
+Bundle-ManifestVersion: 2
+Bundle-Name: Model2Blockly IDE
+Bundle-Vendor: Xiaoyong Wang
+Bundle-Version: 1.0.7.qualifier
+Bundle-SymbolicName: io.github.plortinus.model2blockly.ide; singleton:=true
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: ., bin/
+Require-Bundle: io.github.plortinus.model2blockly,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Export-Package: io.github.plortinus.model2blockly.ide.contentassist.antlr.internal,
+ io.github.plortinus.model2blockly.ide.contentassist.antlr

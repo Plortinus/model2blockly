@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model2Blockly Eclipse Update Site</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --text: #17202a;
+      --muted: #5d6875;
+      --line: #d9dee7;
+      --accent: #1f6feb;
+      --accent-strong: #174ea6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    main {
+      width: min(820px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 7vw, 3.5rem);
+      line-height: 1;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    code {
+      overflow-wrap: anywhere;
+    }
+
+    .panel {
+      margin-top: 28px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .steps {
+      margin: 16px 0 0;
+      padding-left: 22px;
+      color: var(--muted);
+    }
+
+    .steps li {
+      margin: 8px 0;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .language-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--accent-strong);
+      text-decoration: underline;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      font-weight: 650;
+    }
+
+    .button:hover {
+      background: var(--accent-strong);
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .secondary {
+      background: #eef3fb;
+      color: var(--accent-strong);
+    }
+
+    .secondary:hover {
+      background: #e1ebfa;
+      color: var(--accent-strong);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Eclipse Update Site</h1>
+    <p>
+      Use this p2 repository URL in Eclipse:
+      <code>https://plortinus.github.io/model2blockly/update-site/</code>
+    </p>
+    <nav class="language-links" aria-label="Documentation languages">
+      <a class="button secondary" href="../docs/en/getting-started.html">English install guide</a>
+      <a class="button secondary" href="../docs/es/getting-started.html">Guía en español</a>
+      <a class="button secondary" href="../docs/zh/getting-started.html">中文安装指南</a>
+    </nav>
+
+    <section class="panel">
+      <h2>Installation</h2>
+      <ol class="steps">
+        <li>Open Eclipse.</li>
+        <li>Select <strong>Help</strong> -> <strong>Install New Software...</strong>.</li>
+        <li>Add the update site URL above as a software site.</li>
+        <li>Select the Model2Blockly feature and complete the installation wizard.</li>
+      </ol>
+      <p style="margin-top: 16px;">
+        Requirements: Eclipse running on JDK 21, with dependency resolution
+        enabled so Xtext and EMF can be installed from the configured Eclipse
+        update sites.
+      </p>
+      <p style="margin-top: 12px;">
+        If the install dialog shows no items, reload the site and clear
+        <strong>Group items by category</strong>. Browser directory listings are
+        not required; Eclipse reads <code>content.jar</code> and
+        <code>artifacts.jar</code> directly.
+      </p>
+      <p style="margin-top: 12px;">
+        If Model2Blockly is already installed and a newer build is not visible,
+        clear <strong>Hide items that are already installed</strong>, remove
+        stale Model2Blockly entries from <strong>Manage...</strong>, add this site
+        again, and reload.
+      </p>
+      <div class="actions">
+        <a class="button" href="../">Back to examples</a>
+        <a class="button secondary" href="content.jar">content.jar</a>
+        <a class="button secondary" href="artifacts.jar">artifacts.jar</a>
+        <a class="button secondary" href="category.xml">category.xml</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

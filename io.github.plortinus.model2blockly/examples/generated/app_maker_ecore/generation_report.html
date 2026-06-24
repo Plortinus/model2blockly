@@ -1,0 +1,1355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ecore to Blockly Report</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --text: #1f252d;
+  --muted: #5f6875;
+  --border: #d9dee5;
+  --header: #eef2f6;
+  --accent: #245a9c;
+  --ok: #176b42;
+  --warn: #8a5a00;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px 56px;
+}
+h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.2; }
+h2 {
+  margin: 30px 0 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  font-size: 19px;
+}
+.lead { max-width: 840px; color: var(--muted); margin: 4px 0; }
+.callout {
+  margin: 18px 0 22px;
+  padding: 14px 16px;
+  border: 1px solid #b9c7d8;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: #f2f6fb;
+}
+.callout h2 {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  font-size: 17px;
+}
+.callout ol { margin: 8px 0 0 22px; padding: 0; }
+.callout li { margin: 4px 0; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 20px 0 8px;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value {
+  margin-top: 4px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.table-wrap {
+  overflow-x: auto;
+  margin: 12px 0 22px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+table { width: 100%; border-collapse: collapse; min-width: 680px; }
+th, td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  vertical-align: top;
+  text-align: left;
+}
+th:last-child, td:last-child { border-right: 0; }
+tr:last-child td { border-bottom: 0; }
+th { background: var(--header); font-weight: 650; }
+.badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #eef1f4;
+  color: #223142;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ok { color: var(--ok); }
+.warn { color: var(--warn); }
+a { color: var(--accent); font-weight: 650; text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #eef1f4;
+  color: #173b63;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+.validation-preview-list {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 22px;
+}
+.validation-preview {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.validation-preview summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  background: var(--header);
+  font-weight: 650;
+}
+.validation-tree { padding: 10px 12px 14px; }
+.validation-node {
+  max-width: 760px;
+  margin: 6px 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+.validation-node-meta {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.validation-children {
+  margin-left: 18px;
+  padding-left: 12px;
+  border-left: 2px solid var(--border);
+}
+.validation-edge {
+  margin: 8px 0 2px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+</style>
+</head>
+<body>
+<main>
+<h1>Ecore to Blockly Report</h1>
+<p class="lead">Concise generation report for the Ecore input path.</p>
+<section class="stats">
+<div class="stat"><div class="label">Input</div><div class="value">io.github.plortinus.model2blockly/model/app_maker.ecore</div></div>
+<div class="stat"><div class="label">EPackage</div><div class="value">appmaker</div></div>
+<div class="stat"><div class="label">Blocks</div><div class="value">37</div></div>
+<div class="stat"><div class="label">Categories</div><div class="value">6</div></div>
+<div class="stat"><div class="label">Validations</div><div class="value">70</div></div>
+<div class="stat"><div class="label">Target</div><div class="value">html</div></div>
+</section>
+<h2>Generation Pipeline</h2>
+<div class="table-wrap"><table><thead><tr><th>Step</th><th>Artifact</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>1. Source model</td><td>.ecore</td><td>The selected model is adapted into the shared generator-facing model.</td></tr>
+<tr><td>2. Intermediate EMF model</td><td>EditorSpec</td><td>Both the DSL and Ecore routes normalize into the same model shape.</td></tr>
+<tr><td>3. Intermediate XMI</td><td><a href="intermediate/Appmaker_blocklyspec.xmi">intermediate/Appmaker_blocklyspec.xmi</a></td><td>The generator writes this XMI, reloads it, and validates the reloaded model.</td></tr>
+<tr><td>4. Blockly editor</td><td>html/*</td><td>HTML, JavaScript, validation runtime and report files are emitted from the reloaded EditorSpec model.</td></tr>
+<tr><td>5. Domain instance model</td><td>*_model.xmi</td><td>The generated editor can export user-created blocks as EMF-style XMI in the source domain namespace.</td></tr>
+</tbody></table></div>
+<h2>Generation Quality Summary</h2>
+<div class="table-wrap"><table><thead><tr><th>Check</th><th>Status</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Editor generated</td><td>✅ Yes</td><td>A standalone Blockly editor is available from this report.</td></tr>
+<tr><td>Sample model generated</td><td>✅ Yes</td><td><code>sample_model.json</code> and the <code>Load Sample</code> button are available.</td></tr>
+<tr><td>Sample import support</td><td>✅ Available</td><td>The generated editor embeds the sample model and can load it without file selection.</td></tr>
+<tr><td>Domain instance XMI export</td><td>✅ Available</td><td>The generated editor can export created models as EMF-style XMI using EPackage nsURI/nsPrefix metadata.</td></tr>
+<tr><td>Generated validations</td><td>✅ 70</td><td>Validation rules are generated into the editor runtime.</td></tr>
+<tr><td>Unsupported or partial Ecore constructs</td><td>✅ None detected</td><td>This input does not use the main constructs that remain partial or unsupported.</td></tr>
+<tr><td>EOperations</td><td>✅ None detected</td><td>No EOperations need a Blockly behavior mapping.</td></tr>
+<tr><td>Smoke test</td><td>▶ Optional</td><td>Run <code>node scripts/smoke-test-generated.mjs</code> from the repository root to load samples automatically in a browser.</td></tr>
+</tbody></table></div>
+<h2>Generated Output</h2>
+<div class="table-wrap"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><a href="html/Appmaker_blocks.js">html/Appmaker_blocks.js</a></td><td>✅ Blockly block definitions</td></tr>
+<tr><td><a href="html/Appmaker_toolbox.js">html/Appmaker_toolbox.js</a></td><td>✅ Classic HTML target artifact</td></tr>
+<tr><td><a href="html/Appmaker_generators.js">html/Appmaker_generators.js</a></td><td>✅ Classic HTML target artifact</td></tr>
+<tr><td><a href="html/Appmaker_validations.js">html/Appmaker_validations.js</a></td><td>✅ Validation logic</td></tr>
+<tr><td><a href="html/Appmaker_editor.html">html/Appmaker_editor.html</a></td><td>✅ Modular HTML editor</td></tr>
+<tr><td><a href="html/Appmaker_standalone.html">html/Appmaker_standalone.html</a></td><td>✅ Open this file to use the generated editor</td></tr>
+<tr><td><a href="html/validation_workspace.html">html/validation_workspace.html</a></td><td>✅ Editable Blockly validation workspace</td></tr>
+<tr><td><a href="html/validation_blocks.json">html/validation_blocks.json</a></td><td>✅ Visual validation block model</td></tr>
+<tr><td><a href="html/validation_runtime.js">html/validation_runtime.js</a></td><td>✅ Validation block expression runtime</td></tr>
+<tr><td><a href="html/sample_model.json">html/sample_model.json</a></td><td>✅ Example model for the Load Sample button and JSON import</td></tr>
+<tr><td><a href="intermediate/Appmaker_blocklyspec.xmi">intermediate/Appmaker_blocklyspec.xmi</a></td><td>✅ Formal EditorSpec EMF/XMI intermediate model reloaded before HTML generation</td></tr>
+<tr><td><a href="README.md">README.md</a></td><td>✅ Short instructions inside the output folder</td></tr>
+<tr><td><a href="generation_report.html">generation_report.html</a></td><td>✅ Concise human-readable report</td></tr>
+</tbody></table></div>
+<section class="callout">
+<h2>Recommended Next Steps for an Ecore Developer</h2>
+<ol>
+<li>Open the generated <code>*_standalone.html</code> file and create a small model.</li>
+<li>Check this report's EClass, EAttribute and EReference mappings.</li>
+<li>If the structure is correct but the blocks are hard to read, add only presentation annotations such as <code>source="blockly" message0</code>, <code>colour</code>, <code>category</code> or <code>tooltip</code>.</li>
+<li>If labels in reference dropdowns are not meaningful, add <code>source="ui" referenceLabelField=...</code>.</li>
+<li>Rerun the same Eclipse launch configuration and compare the new report.</li>
+</ol>
+</section>
+<h2>Metamodel to Blockly Mapping</h2>
+<div class="table-wrap"><table><thead><tr><th>EClass</th><th>Generated block</th><th>Role</th><th>Fields / references</th></tr></thead><tbody>
+<tr><td>App</td><td>✅ App</td><td>Root block</td><td>✅ 2 fields, 2 containments, 0 references</td></tr>
+<tr><td>DataSource</td><td>✅ DataSource</td><td>Typed statement block</td><td>✅ 4 fields, 0 containments, 0 references</td></tr>
+<tr><td>Page</td><td>✅ Page</td><td>Typed statement block</td><td>✅ 6 fields, 2 containments, 0 references</td></tr>
+<tr><td>Component</td><td>✅ Component</td><td>Abstract type</td><td>✅ 0 fields, 0 containments, 0 references</td></tr>
+<tr><td>TextLabel</td><td>✅ TextLabel</td><td>Typed statement block</td><td>✅ 2 fields, 0 containments, 0 references</td></tr>
+<tr><td>Button</td><td>✅ Button</td><td>Typed statement block</td><td>✅ 2 fields, 1 containments, 0 references</td></tr>
+<tr><td>TextInput</td><td>✅ TextInput</td><td>Typed statement block</td><td>✅ 5 fields, 0 containments, 0 references</td></tr>
+<tr><td>TextArea</td><td>✅ TextArea</td><td>Typed statement block</td><td>✅ 5 fields, 0 containments, 0 references</td></tr>
+<tr><td>ImageView</td><td>✅ ImageView</td><td>Typed statement block</td><td>✅ 2 fields, 0 containments, 0 references</td></tr>
+<tr><td>ListView</td><td>✅ ListView</td><td>Typed statement block</td><td>✅ 1 fields, 0 containments, 1 references</td></tr>
+<tr><td>ToggleSwitch</td><td>✅ ToggleSwitch</td><td>Typed statement block</td><td>✅ 3 fields, 0 containments, 0 references</td></tr>
+<tr><td>SelectInput</td><td>✅ SelectInput</td><td>Typed statement block</td><td>✅ 5 fields, 0 containments, 0 references</td></tr>
+<tr><td>CheckboxInput</td><td>✅ CheckboxInput</td><td>Typed statement block</td><td>✅ 3 fields, 0 containments, 0 references</td></tr>
+<tr><td>RadioGroup</td><td>✅ RadioGroup</td><td>Typed statement block</td><td>✅ 4 fields, 0 containments, 0 references</td></tr>
+<tr><td>NumberInput</td><td>✅ NumberInput</td><td>Typed statement block</td><td>✅ 6 fields, 0 containments, 0 references</td></tr>
+<tr><td>SliderInput</td><td>✅ SliderInput</td><td>Typed statement block</td><td>✅ 6 fields, 0 containments, 0 references</td></tr>
+<tr><td>DateInput</td><td>✅ DateInput</td><td>Typed statement block</td><td>✅ 4 fields, 0 containments, 0 references</td></tr>
+<tr><td>TimeInput</td><td>✅ TimeInput</td><td>Typed statement block</td><td>✅ 4 fields, 0 containments, 0 references</td></tr>
+<tr><td>FileUpload</td><td>✅ FileUpload</td><td>Typed statement block</td><td>✅ 4 fields, 0 containments, 0 references</td></tr>
+<tr><td>TableView</td><td>✅ TableView</td><td>Typed statement block</td><td>✅ 2 fields, 0 containments, 1 references</td></tr>
+<tr><td>Container</td><td>✅ Container</td><td>Typed statement block</td><td>✅ 3 fields, 1 containments, 0 references</td></tr>
+<tr><td>Card</td><td>✅ Card</td><td>Typed statement block</td><td>✅ 1 fields, 1 containments, 0 references</td></tr>
+<tr><td>Form</td><td>✅ Form</td><td>Typed statement block</td><td>✅ 1 fields, 2 containments, 1 references</td></tr>
+<tr><td>TabsView</td><td>✅ TabsView</td><td>Typed statement block</td><td>✅ 0 fields, 1 containments, 0 references</td></tr>
+<tr><td>TabPanel</td><td>✅ TabPanel</td><td>Typed statement block</td><td>✅ 1 fields, 1 containments, 0 references</td></tr>
+<tr><td>Modal</td><td>✅ Modal</td><td>Typed statement block</td><td>✅ 3 fields, 1 containments, 0 references</td></tr>
+<tr><td>Toast</td><td>✅ Toast</td><td>Typed statement block</td><td>✅ 1 fields, 0 containments, 0 references</td></tr>
+<tr><td>Divider</td><td>✅ Divider</td><td>Typed statement block</td><td>✅ 2 fields, 0 containments, 0 references</td></tr>
+<tr><td>Spacer</td><td>✅ Spacer</td><td>Typed statement block</td><td>✅ 1 fields, 0 containments, 0 references</td></tr>
+<tr><td>Action</td><td>✅ Action</td><td>Abstract type</td><td>✅ 0 fields, 0 containments, 0 references</td></tr>
+<tr><td>Navigate</td><td>✅ Navigate</td><td>Typed statement block</td><td>✅ 0 fields, 0 containments, 1 references</td></tr>
+<tr><td>Alert</td><td>✅ Alert</td><td>Typed statement block</td><td>✅ 0 fields, 0 containments, 0 references</td></tr>
+<tr><td>SubmitForm</td><td>✅ SubmitForm</td><td>Typed statement block</td><td>✅ 0 fields, 0 containments, 2 references</td></tr>
+<tr><td>SetInputValue</td><td>✅ SetInputValue</td><td>Typed statement block</td><td>✅ 0 fields, 0 containments, 1 references</td></tr>
+<tr><td>OpenUrl</td><td>✅ OpenUrl</td><td>Typed statement block</td><td>✅ 0 fields, 0 containments, 0 references</td></tr>
+<tr><td>TextExpression</td><td>✅ TextExpression</td><td>Abstract type</td><td>✅ 0 fields, 0 containments, 0 references</td></tr>
+<tr><td>TextLiteral</td><td>✅ TextLiteral</td><td>Expression/output block</td><td>✅ 1 fields, 0 containments, 0 references</td></tr>
+<tr><td>InputValue</td><td>✅ InputValue</td><td>Expression/output block</td><td>✅ 0 fields, 0 containments, 1 references</td></tr>
+<tr><td>DataField</td><td>✅ DataField</td><td>Expression/output block</td><td>✅ 1 fields, 0 containments, 0 references</td></tr>
+<tr><td>JoinText</td><td>✅ JoinText</td><td>Expression/output block</td><td>✅ 0 fields, 0 containments, 0 references</td></tr>
+</tbody></table></div>
+<h2>Ecore Coverage Matrix</h2>
+<p class="lead">This matrix describes how the current generator treats common Ecore constructs. It separates automatic conversion, partial support and future extension points.</p>
+<div class="table-wrap"><table><thead><tr><th>Ecore construct</th><th>Current Blockly conversion</th><th>Status</th><th>How to extend</th></tr></thead><tbody>
+<tr><td><code>EPackage.name/nsURI/nsPrefix</code></td><td>Editor domain name and XML/XMI namespace metadata</td><td>✅ Implemented</td><td>Already handled in <code>EcoreAdapter.fromEPackage</code></td></tr>
+<tr><td><code>EPackage.eSubpackages</code></td><td>Classifiers are collected recursively, but the generated editor uses one flat domain namespace</td><td>⚠️ Partial</td><td>Add package-scoped category prefixes or multi-domain output</td></tr>
+<tr><td><code>EAnnotation source=&quot;blockly&quot;</code> on <code>EPackage</code></td><td>Workspace options such as <code>workspace.renderer</code>, <code>workspace.grid.*</code>, <code>workspace.zoom.*</code>, <code>workspace.toolboxType</code></td><td>✅ Implemented</td><td>Add keys in <code>convertWorkspaceOptions</code> and <code>EditorSpec</code></td></tr>
+<tr><td><code>EAnnotation source=&quot;code&quot;</code> / <code>source=&quot;runtime&quot;</code> on <code>EPackage</code></td><td>Code export metadata and optional runtime kind</td><td>✅ Implemented</td><td>Extend package annotation readers and the HTML generator</td></tr>
+<tr><td><code>EClass.name</code></td><td>Concrete class becomes a Blockly block type</td><td>✅ Implemented</td><td>Already handled in <code>convertEClass</code></td></tr>
+<tr><td><code>EClass.abstract</code> / <code>interface</code></td><td>Not shown as a toolbox block; used as abstract type/category information</td><td>✅ Implemented</td><td>Already filtered through <code>getConcreteBlockTypes</code></td></tr>
+<tr><td><code>EClass.eSuperTypes</code></td><td>Used for typed connections and subtype-compatible references; generic and multiple-inheritance details are simplified</td><td>⚠️ Partial</td><td>Store full supertype closure in the intermediate model</td></tr>
+<tr><td><code>EClass.eOperations</code></td><td>Not translated into Blockly behavior or action blocks</td><td>❌ Not implemented</td><td>Design an operation-to-block/runtime mapping before adding code</td></tr>
+<tr><td><code>EAttribute</code> with primitive <code>EDataType</code></td><td>Mapped to text, number or checkbox fields</td><td>✅ Implemented</td><td>Extend <code>convertEAttribute</code> for more data type mappings</td></tr>
+<tr><td>Custom <code>EDataType</code></td><td>Falls back to text input</td><td>⚠️ Partial</td><td>Use <code>instanceClassName</code> or annotation keys to select a Blockly field</td></tr>
+<tr><td><code>EAttribute : EEnum</code> and <code>EEnumLiteral</code></td><td>Generated as a dropdown field</td><td>✅ Implemented</td><td>Already uses literal labels and values</td></tr>
+<tr><td><code>EAttribute.iD</code> / <code>EClass.eIDAttribute</code></td><td>Generated as a normal field, used as <code>_modelId</code>, used as the default reference label and checked for uniqueness</td><td>✅ Implemented</td><td>Extend exported XML/XMI if external ID-based references are needed</td></tr>
+<tr><td><code>EStructuralFeature.defaultValueLiteral</code></td><td>Used as the Blockly field default value</td><td>✅ Implemented</td><td>Already handled in <code>convertEAttribute</code></td></tr>
+<tr><td><code>ETypedElement.lowerBound/upperBound</code></td><td>Generates required and cardinality warnings</td><td>✅ Implemented</td><td>Add stricter Blockly connection checks if warnings are not enough</td></tr>
+<tr><td>Multi-valued <code>EAttribute</code></td><td>Rendered as a dedicated multi-value field with cardinality and uniqueness warnings</td><td>✅ Implemented</td><td>Add typed item editors if a domain needs richer list editing</td></tr>
+<tr><td><code>EStructuralFeature.derived/transient/volatile/changeable=false</code></td><td>Skipped from editable Blockly fields</td><td>✅ Deliberate skip</td><td>Add read-only inspector support if derived values must be shown</td></tr>
+<tr><td><code>EStructuralFeature.unsettable</code></td><td>Unset/set state is not represented</td><td>❌ Not implemented</td><td>Add tri-state field metadata and export support</td></tr>
+<tr><td><code>ETypedElement.ordered/unique</code></td><td>Order is naturally preserved for statement stacks and list values; uniqueness warnings are generated for multi-valued fields/references</td><td>⚠️ Partial</td><td>Add hard constraints if warnings are not strict enough</td></tr>
+<tr><td>Containment <code>EReference</code></td><td>Generated as <code>input_statement</code> with child type checks</td><td>✅ Implemented</td><td>Use <code>source=&quot;blockly&quot; check=...</code> to override accepted child type</td></tr>
+<tr><td>Non-containment <code>EReference</code></td><td>Generated as dynamic reference dropdown or multiselect</td><td>✅ Implemented</td><td>Use <code>source=&quot;ui&quot; referenceLabelField=...</code> to improve labels</td></tr>
+<tr><td><code>EReference</code> annotated as <code>type=input_value</code></td><td>Generated as Blockly <code>input_value</code>, optionally with <code>check</code> and <code>shadow</code></td><td>✅ Implemented</td><td>Already handled in <code>convertEClass</code></td></tr>
+<tr><td><code>EReference.eOpposite</code> / <code>container</code></td><td>Opposite non-containment references are recorded and synchronized in the generated reference-field runtime; containment/container opposites are still simplified</td><td>⚠️ Partial</td><td>Extend the synchronizer if container references must be exposed as editable fields</td></tr>
+<tr><td><code>EReference.resolveProxies</code> / <code>eKeys</code></td><td>Not represented in the Blockly editor</td><td>❌ Not implemented</td><td>Define reference identity and proxy-loading semantics for browser runtime</td></tr>
+<tr><td><code>EGenericType</code> / <code>ETypeParameter</code></td><td>Only the erased <code>eType</code> is effectively used</td><td>⚠️ Partial</td><td>Represent generic bindings in <code>EditorSpec</code></td></tr>
+<tr><td><code>EValidator</code>, OCL and validation delegates</td><td><code>source=&quot;validation&quot;</code> expressions are generated as runtime checks; a small OCL invariant subset can be translated</td><td>⚠️ Partial</td><td>Extend the OCL translator or plug in a dedicated validation engine for full OCL/EValidator coverage</td></tr>
+</tbody></table></div>
+<h2>Recommended Improvements</h2>
+<p class="lead">These recommendations are generated from the Ecore model. They are not errors; they indicate where a metamodel developer may want to add optional annotations or custom extensions.</p>
+<div class="table-wrap"><table><thead><tr><th>Priority</th><th>Finding</th><th>Recommended action</th></tr></thead><tbody>
+<tr><td>-</td><td>No immediate recommendations</td><td>The generated editor can be reviewed directly in the standalone HTML file.</td></tr>
+</tbody></table></div>
+<h2>Customization Hints</h2>
+<p class="lead">Use this section when the generated editor works but you want a more specific Blockly presentation. Structural information should stay in Ecore; add only the annotation keys needed for the desired UI effect.</p>
+<div class="table-wrap"><table><thead><tr><th>Desired result</th><th>Where to add it</th><th>Annotation keys</th></tr></thead><tbody>
+<tr><td>Change block text</td><td>App</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;App %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>App</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>App</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Make this block an output/value block</td><td>App</td><td><code>source=&quot;blockly&quot;</code>: <code>output=true</code> or <code>output=TypeName</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>App.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>App.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Override accepted child type</td><td>App.dataSources</td><td><code>source=&quot;blockly&quot;</code>: <code>check=DataSource</code></td></tr>
+<tr><td>Override accepted child type</td><td>App.pages</td><td><code>source=&quot;blockly&quot;</code>: <code>check=Page</code></td></tr>
+<tr><td>Change block text</td><td>DataSource</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;DataSource %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>DataSource</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>DataSource</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Make this block an output/value block</td><td>DataSource</td><td><code>source=&quot;blockly&quot;</code>: <code>output=true</code> or <code>output=TypeName</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>DataSource.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>DataSource.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>DataSource.url</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>DataSource.url</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>Page</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Page %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Page</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Page</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Make this block an output/value block</td><td>Page</td><td><code>source=&quot;blockly&quot;</code>: <code>output=true</code> or <code>output=TypeName</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>Page.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>Page.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>Page.route</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>Page.route</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>Page.backgroundColor</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>Page.backgroundColor</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Override accepted child type</td><td>Page.components</td><td><code>source=&quot;blockly&quot;</code>: <code>check=Component</code></td></tr>
+<tr><td>Override accepted child type</td><td>Page.onEnter</td><td><code>source=&quot;blockly&quot;</code>: <code>check=Action</code></td></tr>
+<tr><td>Change block text</td><td>Component</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Component %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Component</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Make this block an output/value block</td><td>Component</td><td><code>source=&quot;blockly&quot;</code>: <code>output=true</code> or <code>output=TypeName</code></td></tr>
+<tr><td>Change block text</td><td>TextLabel</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;TextLabel %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>TextLabel</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>TextLabel</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Override accepted child type</td><td>TextLabel.content</td><td><code>source=&quot;blockly&quot;</code>: <code>check=TextExpression</code></td></tr>
+<tr><td>Change block text</td><td>Button</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Button %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Button</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Button</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>Button.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>Button.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Override accepted child type</td><td>Button.onClick</td><td><code>source=&quot;blockly&quot;</code>: <code>check=Action</code></td></tr>
+<tr><td>Change block text</td><td>TextInput</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;TextInput %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>TextInput</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>TextInput</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TextInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TextInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TextInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TextInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TextInput.hint</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TextInput.hint</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>TextArea</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;TextArea %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>TextArea</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>TextArea</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TextArea.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TextArea.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TextArea.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TextArea.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TextArea.hint</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TextArea.hint</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Limit number range</td><td>TextArea.rows</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Change block text</td><td>ImageView</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;ImageView %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>ImageView</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>ImageView</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>ImageView.altText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>ImageView.altText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Override accepted child type</td><td>ImageView.url</td><td><code>source=&quot;blockly&quot;</code>: <code>check=TextExpression</code></td></tr>
+<tr><td>Change block text</td><td>ListView</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;ListView %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>ListView</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>ListView</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>ListView.emptyText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>ListView.emptyText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a value input instead of a dropdown</td><td>ListView.source</td><td><code>source=&quot;blockly&quot;</code>: <code>type=input_value</code>, optional <code>check=DataSource</code>, <code>shadow=BlockType</code></td></tr>
+<tr><td>Override accepted child type</td><td>ListView.itemTitle</td><td><code>source=&quot;blockly&quot;</code>: <code>check=TextExpression</code></td></tr>
+<tr><td>Change block text</td><td>ToggleSwitch</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;ToggleSwitch %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>ToggleSwitch</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>ToggleSwitch</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>ToggleSwitch.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>ToggleSwitch.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>ToggleSwitch.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>ToggleSwitch.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>SelectInput</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;SelectInput %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>SelectInput</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>SelectInput</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>SelectInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>SelectInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>SelectInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>SelectInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>SelectInput.optionsText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>SelectInput.optionsText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>SelectInput.initialValue</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>SelectInput.initialValue</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>CheckboxInput</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;CheckboxInput %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>CheckboxInput</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>CheckboxInput</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>CheckboxInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>CheckboxInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>CheckboxInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>CheckboxInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>RadioGroup</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;RadioGroup %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>RadioGroup</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>RadioGroup</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>RadioGroup.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>RadioGroup.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>RadioGroup.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>RadioGroup.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>RadioGroup.optionsText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>RadioGroup.optionsText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>RadioGroup.initialValue</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>RadioGroup.initialValue</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>NumberInput</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;NumberInput %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>NumberInput</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>NumberInput</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>NumberInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>NumberInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>NumberInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>NumberInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Limit number range</td><td>NumberInput.initialValue</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Limit number range</td><td>NumberInput.minValue</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Limit number range</td><td>NumberInput.maxValue</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Limit number range</td><td>NumberInput.stepValue</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Change block text</td><td>SliderInput</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;SliderInput %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>SliderInput</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>SliderInput</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>SliderInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>SliderInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>SliderInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>SliderInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Limit number range</td><td>SliderInput.initialValue</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Limit number range</td><td>SliderInput.minValue</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Limit number range</td><td>SliderInput.maxValue</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Limit number range</td><td>SliderInput.stepValue</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Change block text</td><td>DateInput</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;DateInput %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>DateInput</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>DateInput</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>DateInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>DateInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>DateInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>DateInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>DateInput.initialValue</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>DateInput.initialValue</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>TimeInput</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;TimeInput %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>TimeInput</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>TimeInput</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TimeInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TimeInput.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TimeInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TimeInput.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TimeInput.initialValue</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TimeInput.initialValue</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>FileUpload</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;FileUpload %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>FileUpload</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>FileUpload</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>FileUpload.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>FileUpload.name</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>FileUpload.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>FileUpload.labelText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>FileUpload.acceptTypes</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>FileUpload.acceptTypes</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>TableView</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;TableView %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>TableView</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>TableView</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TableView.columnsText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TableView.columnsText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TableView.emptyText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TableView.emptyText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a value input instead of a dropdown</td><td>TableView.source</td><td><code>source=&quot;blockly&quot;</code>: <code>type=input_value</code>, optional <code>check=DataSource</code>, <code>shadow=BlockType</code></td></tr>
+<tr><td>Change block text</td><td>Container</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Container %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Container</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Container</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Limit number range</td><td>Container.gap</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Limit number range</td><td>Container.padding</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Override accepted child type</td><td>Container.children</td><td><code>source=&quot;blockly&quot;</code>: <code>check=Component</code></td></tr>
+<tr><td>Change block text</td><td>Card</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Card %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Card</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Card</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>Card.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>Card.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Override accepted child type</td><td>Card.children</td><td><code>source=&quot;blockly&quot;</code>: <code>check=Component</code></td></tr>
+<tr><td>Change block text</td><td>Form</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Form %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Form</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Form</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>Form.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>Form.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a value input instead of a dropdown</td><td>Form.endpoint</td><td><code>source=&quot;blockly&quot;</code>: <code>type=input_value</code>, optional <code>check=DataSource</code>, <code>shadow=BlockType</code></td></tr>
+<tr><td>Override accepted child type</td><td>Form.children</td><td><code>source=&quot;blockly&quot;</code>: <code>check=Component</code></td></tr>
+<tr><td>Override accepted child type</td><td>Form.onSubmit</td><td><code>source=&quot;blockly&quot;</code>: <code>check=Action</code></td></tr>
+<tr><td>Change block text</td><td>TabsView</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;TabsView %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>TabsView</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>TabsView</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Override accepted child type</td><td>TabsView.panels</td><td><code>source=&quot;blockly&quot;</code>: <code>check=TabPanel</code></td></tr>
+<tr><td>Change block text</td><td>TabPanel</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;TabPanel %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>TabPanel</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>TabPanel</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Make this block an output/value block</td><td>TabPanel</td><td><code>source=&quot;blockly&quot;</code>: <code>output=true</code> or <code>output=TypeName</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TabPanel.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TabPanel.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Override accepted child type</td><td>TabPanel.children</td><td><code>source=&quot;blockly&quot;</code>: <code>check=Component</code></td></tr>
+<tr><td>Change block text</td><td>Modal</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Modal %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Modal</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Modal</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>Modal.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>Modal.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>Modal.triggerText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>Modal.triggerText</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Override accepted child type</td><td>Modal.children</td><td><code>source=&quot;blockly&quot;</code>: <code>check=Component</code></td></tr>
+<tr><td>Change block text</td><td>Toast</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Toast %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Toast</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Toast</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Override accepted child type</td><td>Toast.message</td><td><code>source=&quot;blockly&quot;</code>: <code>check=TextExpression</code></td></tr>
+<tr><td>Change block text</td><td>Divider</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Divider %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Divider</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Divider</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Limit number range</td><td>Divider.thickness</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>Divider.dividerColor</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>Divider.dividerColor</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>Spacer</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Spacer %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Spacer</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Spacer</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Limit number range</td><td>Spacer.size</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Change block text</td><td>Action</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Action %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Action</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Make this block an output/value block</td><td>Action</td><td><code>source=&quot;blockly&quot;</code>: <code>output=true</code> or <code>output=TypeName</code></td></tr>
+<tr><td>Change block text</td><td>Navigate</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Navigate %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Navigate</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Navigate</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a value input instead of a dropdown</td><td>Navigate.target</td><td><code>source=&quot;blockly&quot;</code>: <code>type=input_value</code>, optional <code>check=Page</code>, <code>shadow=BlockType</code></td></tr>
+<tr><td>Change block text</td><td>Alert</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Alert %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Alert</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Alert</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Override accepted child type</td><td>Alert.message</td><td><code>source=&quot;blockly&quot;</code>: <code>check=TextExpression</code></td></tr>
+<tr><td>Change block text</td><td>SubmitForm</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;SubmitForm %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>SubmitForm</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>SubmitForm</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a value input instead of a dropdown</td><td>SubmitForm.endpoint</td><td><code>source=&quot;blockly&quot;</code>: <code>type=input_value</code>, optional <code>check=DataSource</code>, <code>shadow=BlockType</code></td></tr>
+<tr><td>Use a value input instead of a dropdown</td><td>SubmitForm.successTarget</td><td><code>source=&quot;blockly&quot;</code>: <code>type=input_value</code>, optional <code>check=Page</code>, <code>shadow=BlockType</code></td></tr>
+<tr><td>Change block text</td><td>SetInputValue</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;SetInputValue %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>SetInputValue</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>SetInputValue</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a value input instead of a dropdown</td><td>SetInputValue.input</td><td><code>source=&quot;blockly&quot;</code>: <code>type=input_value</code>, optional <code>check=TextInput</code>, <code>shadow=BlockType</code></td></tr>
+<tr><td>Override accepted child type</td><td>SetInputValue.newValue</td><td><code>source=&quot;blockly&quot;</code>: <code>check=TextExpression</code></td></tr>
+<tr><td>Change block text</td><td>OpenUrl</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;OpenUrl %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>OpenUrl</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>OpenUrl</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Override accepted child type</td><td>OpenUrl.url</td><td><code>source=&quot;blockly&quot;</code>: <code>check=TextExpression</code></td></tr>
+<tr><td>Change block text</td><td>TextExpression</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;TextExpression %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>TextExpression</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Make this block an output/value block</td><td>TextExpression</td><td><code>source=&quot;blockly&quot;</code>: <code>output=true</code> or <code>output=TypeName</code></td></tr>
+<tr><td>Change block text</td><td>TextLiteral</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;TextLiteral %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>TextLiteral</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>TextLiteral</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>TextLiteral.content</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>TextLiteral.content</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>InputValue</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;InputValue %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>InputValue</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>InputValue</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a value input instead of a dropdown</td><td>InputValue.input</td><td><code>source=&quot;blockly&quot;</code>: <code>type=input_value</code>, optional <code>check=TextInput</code>, <code>shadow=BlockType</code></td></tr>
+<tr><td>Change block text</td><td>DataField</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;DataField %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>DataField</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>DataField</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>DataField.fieldName</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>DataField.fieldName</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Change block text</td><td>JoinText</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;JoinText %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>JoinText</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>JoinText</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Override accepted child type</td><td>JoinText.left</td><td><code>source=&quot;blockly&quot;</code>: <code>check=TextExpression</code></td></tr>
+<tr><td>Override accepted child type</td><td>JoinText.right</td><td><code>source=&quot;blockly&quot;</code>: <code>check=TextExpression</code></td></tr>
+<tr><td>Add ordering validation</td><td>EClass</td><td><code>source=&quot;validation&quot;</code>: <code>mustFollow=OtherBlockType</code></td></tr>
+<tr><td>Improve generated field presentation</td><td>EAttribute / EReference</td><td><code>source=&quot;ui&quot;</code>: <code>widget=slider</code>, <code>label=...</code>, <code>help=...</code>, <code>group=...</code>, <code>order=1</code>, <code>referenceLabelField=name</code></td></tr>
+</tbody></table></div>
+<h2>Validation Summary</h2>
+<div class="table-wrap"><table><thead><tr><th>Validation type</th><th>Count</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>MUST_FOLLOW</td><td>✅ 1</td><td>Ordering relation between block types</td></tr>
+<tr><td>CARDINALITY</td><td>✅ 12</td><td>Number of nested blocks in a statement input</td></tr>
+<tr><td>REQUIRED</td><td>✅ 45</td><td>Mandatory field or reference value</td></tr>
+<tr><td>UNIQUE</td><td>✅ 12</td><td>Duplicate values in ID fields or multi-valued fields/references</td></tr>
+</tbody></table></div>
+<h2>Visual Validation Blocks</h2>
+<p class="lead">These rules are also serialized in <code>validation_blocks.json</code> with Blockly JSON block definitions and Blockly-like block trees. The model prefers high-level custom validation blocks and preserves lower-level Blockly expressions when useful.</p>
+<div class="table-wrap"><table><thead><tr><th>Rule</th><th>Target</th><th>Validation</th><th>Visual block root</th></tr></thead><tbody>
+<tr><td>Navigate_after_Alert</td><td>Navigate</td><td>MUST_FOLLOW</td><td><code>validation_previous_block_is</code></td></tr>
+<tr><td>App_dataSources</td><td>App</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>App_pages</td><td>App</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>Page_components</td><td>Page</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>Page_onEnter</td><td>Page</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>Button_onClick</td><td>Button</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>Container_children</td><td>Container</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>Card_children</td><td>Card</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>Form_children</td><td>Form</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>Form_onSubmit</td><td>Form</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>TabsView_panels</td><td>TabsView</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>TabPanel_children</td><td>TabPanel</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>Modal_children</td><td>Modal</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>App_name_required</td><td>App</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>DataSource_name_required</td><td>DataSource</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>DataSource_url_required</td><td>DataSource</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Page_title_required</td><td>Page</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Page_route_required</td><td>Page</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Button_labelText_required</td><td>Button</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TextInput_name_required</td><td>TextInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TextInput_labelText_required</td><td>TextInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TextInput_hint_required</td><td>TextInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TextArea_name_required</td><td>TextArea</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TextArea_labelText_required</td><td>TextArea</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>ListView_source_required</td><td>ListView</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>ToggleSwitch_name_required</td><td>ToggleSwitch</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>ToggleSwitch_labelText_required</td><td>ToggleSwitch</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>SelectInput_name_required</td><td>SelectInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>SelectInput_labelText_required</td><td>SelectInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>SelectInput_optionsText_required</td><td>SelectInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>CheckboxInput_name_required</td><td>CheckboxInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>CheckboxInput_labelText_required</td><td>CheckboxInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>RadioGroup_name_required</td><td>RadioGroup</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>RadioGroup_labelText_required</td><td>RadioGroup</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>RadioGroup_optionsText_required</td><td>RadioGroup</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>NumberInput_name_required</td><td>NumberInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>NumberInput_labelText_required</td><td>NumberInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>SliderInput_name_required</td><td>SliderInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>SliderInput_labelText_required</td><td>SliderInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>DateInput_name_required</td><td>DateInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>DateInput_labelText_required</td><td>DateInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TimeInput_name_required</td><td>TimeInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TimeInput_labelText_required</td><td>TimeInput</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>FileUpload_name_required</td><td>FileUpload</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>FileUpload_labelText_required</td><td>FileUpload</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TableView_columnsText_required</td><td>TableView</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TableView_source_required</td><td>TableView</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Card_title_required</td><td>Card</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Form_title_required</td><td>Form</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TabPanel_title_required</td><td>TabPanel</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Modal_title_required</td><td>Modal</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Modal_triggerText_required</td><td>Modal</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Navigate_target_required</td><td>Navigate</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>SubmitForm_endpoint_required</td><td>SubmitForm</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>SetInputValue_input_required</td><td>SetInputValue</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>TextLiteral_content_required</td><td>TextLiteral</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>InputValue_input_required</td><td>InputValue</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>DataField_fieldName_required</td><td>DataField</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>DataSource_name_unique</td><td>DataSource</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>TextInput_name_unique</td><td>TextInput</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>TextArea_name_unique</td><td>TextArea</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>ToggleSwitch_name_unique</td><td>ToggleSwitch</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>SelectInput_name_unique</td><td>SelectInput</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>CheckboxInput_name_unique</td><td>CheckboxInput</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>RadioGroup_name_unique</td><td>RadioGroup</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>NumberInput_name_unique</td><td>NumberInput</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>SliderInput_name_unique</td><td>SliderInput</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>DateInput_name_unique</td><td>DateInput</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>TimeInput_name_unique</td><td>TimeInput</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>FileUpload_name_unique</td><td>FileUpload</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+</tbody></table></div>
+<div class="validation-preview-list">
+<details class="validation-preview" open>
+<summary>Navigate_after_Alert -> MUST_FOLLOW</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Navigate_after_Alert, target=Navigate, type=MUST_FOLLOW</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_previous_block_is</code><div class="validation-node-meta">TARGET=Navigate, TYPE=Alert</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_dataSources -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_dataSources, target=App, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=App, INPUT=dataSources, MIN=1, MAX=20</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_pages -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_pages, target=App, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=App, INPUT=pages, MIN=1, MAX=20</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Page_components -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Page_components, target=Page, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=Page, INPUT=components, MIN=1, MAX=40</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Page_onEnter -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Page_onEnter, target=Page, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=Page, INPUT=onEnter, MIN=0, MAX=10</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Button_onClick -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Button_onClick, target=Button, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=Button, INPUT=onClick, MIN=0, MAX=10</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Container_children -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Container_children, target=Container, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=Container, INPUT=children, MIN=0, MAX=20</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Card_children -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Card_children, target=Card, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=Card, INPUT=children, MIN=0, MAX=20</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Form_children -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Form_children, target=Form, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=Form, INPUT=children, MIN=0, MAX=20</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Form_onSubmit -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Form_onSubmit, target=Form, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=Form, INPUT=onSubmit, MIN=0, MAX=10</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TabsView_panels -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TabsView_panels, target=TabsView, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=TabsView, INPUT=panels, MIN=1, MAX=8</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TabPanel_children -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TabPanel_children, target=TabPanel, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=TabPanel, INPUT=children, MIN=0, MAX=20</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Modal_children -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Modal_children, target=Modal, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=Modal, INPUT=children, MIN=0, MAX=20</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_name_required, target=App, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=App, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>DataSource_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=DataSource_name_required, target=DataSource, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=DataSource, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>DataSource_url_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=DataSource_url_required, target=DataSource, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=DataSource, FIELD=url, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Page_title_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Page_title_required, target=Page, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Page, FIELD=title, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Page_route_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Page_route_required, target=Page, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Page, FIELD=route, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Button_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Button_labelText_required, target=Button, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Button, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TextInput_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TextInput_name_required, target=TextInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TextInput, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TextInput_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TextInput_labelText_required, target=TextInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TextInput, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TextInput_hint_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TextInput_hint_required, target=TextInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TextInput, FIELD=hint, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TextArea_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TextArea_name_required, target=TextArea, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TextArea, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TextArea_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TextArea_labelText_required, target=TextArea, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TextArea, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>ListView_source_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=ListView_source_required, target=ListView, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=ListView, FIELD=source, FIELD_KIND=reference</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>ToggleSwitch_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=ToggleSwitch_name_required, target=ToggleSwitch, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=ToggleSwitch, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>ToggleSwitch_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=ToggleSwitch_labelText_required, target=ToggleSwitch, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=ToggleSwitch, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>SelectInput_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=SelectInput_name_required, target=SelectInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=SelectInput, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>SelectInput_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=SelectInput_labelText_required, target=SelectInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=SelectInput, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>SelectInput_optionsText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=SelectInput_optionsText_required, target=SelectInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=SelectInput, FIELD=optionsText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>CheckboxInput_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=CheckboxInput_name_required, target=CheckboxInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=CheckboxInput, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>CheckboxInput_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=CheckboxInput_labelText_required, target=CheckboxInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=CheckboxInput, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>RadioGroup_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=RadioGroup_name_required, target=RadioGroup, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=RadioGroup, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>RadioGroup_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=RadioGroup_labelText_required, target=RadioGroup, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=RadioGroup, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>RadioGroup_optionsText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=RadioGroup_optionsText_required, target=RadioGroup, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=RadioGroup, FIELD=optionsText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>NumberInput_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=NumberInput_name_required, target=NumberInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=NumberInput, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>NumberInput_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=NumberInput_labelText_required, target=NumberInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=NumberInput, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>SliderInput_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=SliderInput_name_required, target=SliderInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=SliderInput, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>SliderInput_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=SliderInput_labelText_required, target=SliderInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=SliderInput, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>DateInput_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=DateInput_name_required, target=DateInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=DateInput, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>DateInput_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=DateInput_labelText_required, target=DateInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=DateInput, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TimeInput_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TimeInput_name_required, target=TimeInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TimeInput, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TimeInput_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TimeInput_labelText_required, target=TimeInput, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TimeInput, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>FileUpload_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=FileUpload_name_required, target=FileUpload, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=FileUpload, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>FileUpload_labelText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=FileUpload_labelText_required, target=FileUpload, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=FileUpload, FIELD=labelText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TableView_columnsText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TableView_columnsText_required, target=TableView, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TableView, FIELD=columnsText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TableView_source_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TableView_source_required, target=TableView, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TableView, FIELD=source, FIELD_KIND=reference</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Card_title_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Card_title_required, target=Card, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Card, FIELD=title, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Form_title_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Form_title_required, target=Form, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Form, FIELD=title, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TabPanel_title_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TabPanel_title_required, target=TabPanel, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TabPanel, FIELD=title, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Modal_title_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Modal_title_required, target=Modal, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Modal, FIELD=title, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Modal_triggerText_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Modal_triggerText_required, target=Modal, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Modal, FIELD=triggerText, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Navigate_target_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Navigate_target_required, target=Navigate, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Navigate, FIELD=target, FIELD_KIND=reference</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>SubmitForm_endpoint_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=SubmitForm_endpoint_required, target=SubmitForm, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=SubmitForm, FIELD=endpoint, FIELD_KIND=reference</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>SetInputValue_input_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=SetInputValue_input_required, target=SetInputValue, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=SetInputValue, FIELD=input, FIELD_KIND=reference</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TextLiteral_content_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TextLiteral_content_required, target=TextLiteral, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=TextLiteral, FIELD=content, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>InputValue_input_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=InputValue_input_required, target=InputValue, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=InputValue, FIELD=input, FIELD_KIND=reference</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>DataField_fieldName_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=DataField_fieldName_required, target=DataField, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=DataField, FIELD=fieldName, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>DataSource_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=DataSource_name_unique, target=DataSource, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=DataSource, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TextInput_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TextInput_name_unique, target=TextInput, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=TextInput, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TextArea_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TextArea_name_unique, target=TextArea, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=TextArea, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>ToggleSwitch_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=ToggleSwitch_name_unique, target=ToggleSwitch, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=ToggleSwitch, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>SelectInput_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=SelectInput_name_unique, target=SelectInput, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=SelectInput, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>CheckboxInput_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=CheckboxInput_name_unique, target=CheckboxInput, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=CheckboxInput, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>RadioGroup_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=RadioGroup_name_unique, target=RadioGroup, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=RadioGroup, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>NumberInput_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=NumberInput_name_unique, target=NumberInput, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=NumberInput, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>SliderInput_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=SliderInput_name_unique, target=SliderInput, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=SliderInput, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>DateInput_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=DateInput_name_unique, target=DateInput, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=DateInput, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>TimeInput_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=TimeInput_name_unique, target=TimeInput, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=TimeInput, FIELD=name</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>FileUpload_name_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=FileUpload_name_unique, target=FileUpload, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=FileUpload, FIELD=name</div></div>
+</div>
+</div>
+</details>
+</div>
+<h2>What To Check</h2>
+<div class="table-wrap"><table><thead><tr><th>Topic</th><th>Status</th></tr></thead><tbody>
+<tr><td>Skipped structural features</td><td>✅ None detected</td></tr>
+<tr><td>OCL / validation constraints</td><td>✅ No OCL or validation annotations detected</td></tr>
+<tr><td>EOperations</td><td>✅ No EOperations detected</td></tr>
+<tr><td>EOpposite</td><td>✅ No opposite references detected</td></tr>
+</tbody></table></div>
+</main>
+</body>
+</html>

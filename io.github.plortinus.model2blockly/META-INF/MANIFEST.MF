@@ -1,0 +1,39 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: io.github.plortinus.model2blockly
+Bundle-ManifestVersion: 2
+Bundle-Name: Model2Blockly Core
+Bundle-Vendor: Xiaoyong Wang
+Bundle-Version: 1.0.7.qualifier
+Bundle-SymbolicName: io.github.plortinus.model2blockly; singleton:=true
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: ., bin/
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.19.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.42.0",
+ org.eclipse.emf.common,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Export-Package: io.github.plortinus.model2blockly.services,
+ io.github.plortinus.model2blockly.validation,
+ io.github.plortinus.model2blockly.scoping,
+ io.github.plortinus.model2blockly.serializer,
+ io.github.plortinus.model2blockly.parser.antlr,
+ io.github.plortinus.model2blockly,
+ io.github.plortinus.model2blockly.model2Blockly,
+ io.github.plortinus.model2blockly.model2Blockly.util,
+ io.github.plortinus.model2blockly.model2Blockly.impl,
+ io.github.plortinus.model2blockly.blocklyspec,
+ io.github.plortinus.model2blockly.adapter,
+ io.github.plortinus.model2blockly.generator,
+ io.github.plortinus.model2blockly.intermediate,
+ io.github.plortinus.model2blockly.intermediate.blocklyspec,
+ io.github.plortinus.model2blockly.intermediate.blocklyspec.impl,
+ io.github.plortinus.model2blockly.intermediate.blocklyspec.util,
+ io.github.plortinus.model2blockly.validationpatch,
+ io.github.plortinus.model2blockly.standalone,
+ io.github.plortinus.model2blockly.naming,
+ io.github.plortinus.model2blockly.parser.antlr.internal
+Import-Package: org.apache.log4j

@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension
+		point="org.eclipse.ui.editors">
+		<editor
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+			contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+			default="true"
+			extensions="model2blockly"
+			id="io.github.plortinus.model2blockly.Model2Blockly"
+			name="Model2Blockly Editor">
+		</editor>
+	</extension>
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
+			commandId="org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclaration">
+			<activeWhen>
+				<reference
+					definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+		<handler
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
+			commandId="io.github.plortinus.model2blockly.Model2Blockly.validate">
+			<activeWhen>
+				<reference
+					definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+		<!-- copy qualified name -->
+		<handler
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
+			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName">
+			<activeWhen>
+				<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened" />
+			</activeWhen>
+		</handler>
+		<handler
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
+			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName">
+			<activeWhen>
+				<and>
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.XtextEditor.opened" />
+					<iterate>
+						<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
+					</iterate>
+				</and>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension point="org.eclipse.core.expressions.definitions">
+		<definition id="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened">
+			<and>
+				<reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
+				<with variable="activeEditor">
+					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
+						value="io.github.plortinus.model2blockly.Model2Blockly"
+						forcePluginActivation="true"/>
+				</with>
+			</and>
+		</definition>
+		<definition id="io.github.plortinus.model2blockly.Model2Blockly.XtextEditor.opened">
+			<and>
+				<reference definitionId="isXtextEditorActive"/>
+				<with variable="activeEditor">
+					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
+						value="io.github.plortinus.model2blockly.Model2Blockly"
+						forcePluginActivation="true"/>
+				</with>
+			</and>
+		</definition>
+		<definition id="io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection">
+			<iterate ifEmpty="false" operator="and">
+				<adapt type="org.eclipse.core.resources.IFile">
+					<or>
+						<test property="org.eclipse.core.resources.extension" value="ecore"/>
+						<test property="org.eclipse.core.resources.extension" value="model2blockly"/>
+					</or>
+				</adapt>
+			</iterate>
+		</definition>
+	</extension>
+	<extension
+			point="org.eclipse.ui.preferencePages">
+		<page
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="io.github.plortinus.model2blockly.Model2Blockly"
+			name="Model2Blockly">
+			<keywordReference id="io.github.plortinus.model2blockly.ui.keyword_Model2Blockly"/>
+		</page>
+		<page
+			category="io.github.plortinus.model2blockly.Model2Blockly"
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+			id="io.github.plortinus.model2blockly.Model2Blockly.coloring"
+			name="Syntax Coloring">
+			<keywordReference id="io.github.plortinus.model2blockly.ui.keyword_Model2Blockly"/>
+		</page>
+		<page
+			category="io.github.plortinus.model2blockly.Model2Blockly"
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
+			id="io.github.plortinus.model2blockly.Model2Blockly.templates"
+			name="Templates">
+			<keywordReference id="io.github.plortinus.model2blockly.ui.keyword_Model2Blockly"/>
+		</page>
+	</extension>
+	<extension
+			point="org.eclipse.ui.propertyPages">
+		<page
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="io.github.plortinus.model2blockly.Model2Blockly"
+			name="Model2Blockly">
+			<keywordReference id="io.github.plortinus.model2blockly.ui.keyword_Model2Blockly"/>
+			<enabledWhen>
+				<adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+			<filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+		</page>
+	</extension>
+	<extension
+		point="org.eclipse.ui.keywords">
+		<keyword
+			id="io.github.plortinus.model2blockly.ui.keyword_Model2Blockly"
+			label="Model2Blockly"/>
+	</extension>
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			description="Generate a Blockly editor through the shared BlocklyEditorSpec XMI pipeline from the selected .ecore or .model2blockly file"
+			id="io.github.plortinus.model2blockly.ui.generateBlocklyEditor"
+			name="Generate Blockly Editor">
+		</command>
+		<command
+			description="Apply edited validation_blocks JSON back to the selected .ecore or .model2blockly source file"
+			id="io.github.plortinus.model2blockly.ui.applyValidationPatch"
+			name="Apply Validation Blocks to Source">
+		</command>
+		<command
+			description="Trigger expensive validation"
+			id="io.github.plortinus.model2blockly.Model2Blockly.validate"
+			name="Validate">
+		</command>
+		<!-- copy qualified name -->
+		<command
+			id="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+			categoryId="org.eclipse.ui.category.edit"
+			description="Copy the qualified name for the selected element"
+			name="Copy Qualified Name">
+		</command>
+		<command
+			id="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName"
+			categoryId="org.eclipse.ui.category.edit"
+			description="Copy the qualified name for the selected element"
+			name="Copy Qualified Name">
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+			locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+			<menu
+				id="io.github.plortinus.model2blockly.ui.menu"
+				label="Model2Blockly">
+				<command
+					commandId="io.github.plortinus.model2blockly.ui.generateBlocklyEditor"
+					label="Generate Blockly Editor from Selection"
+					style="push"
+					tooltip="Generate Blockly editors, intermediate XMI, and generation_report.html from the selected file">
+					<visibleWhen checkEnabled="false">
+						<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection"/>
+					</visibleWhen>
+				</command>
+				<command
+					commandId="io.github.plortinus.model2blockly.ui.applyValidationPatch"
+					label="Apply Validation Blocks to Source"
+					style="push"
+					tooltip="Apply edited validation_blocks JSON back to the selected source file">
+					<visibleWhen checkEnabled="false">
+						<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection"/>
+					</visibleWhen>
+				</command>
+			</menu>
+		</menuContribution>
+		<menuContribution
+			locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+			<command
+				commandId="io.github.plortinus.model2blockly.ui.generateBlocklyEditor"
+				label="Generate Blockly Editor"
+				style="push"
+				tooltip="Generate Blockly editors, intermediate XMI, and generation_report.html">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection"/>
+				</visibleWhen>
+			</command>
+			<command
+				commandId="io.github.plortinus.model2blockly.ui.applyValidationPatch"
+				label="Apply Validation Blocks to Source"
+				style="push"
+				tooltip="Apply edited validation_blocks JSON back to the selected source file">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection"/>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		<menuContribution
+			locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=additions">
+			<command
+				commandId="io.github.plortinus.model2blockly.ui.generateBlocklyEditor"
+				label="Generate Blockly Editor"
+				style="push"
+				tooltip="Generate Blockly editors, intermediate XMI, and generation_report.html">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection"/>
+				</visibleWhen>
+			</command>
+			<command
+				commandId="io.github.plortinus.model2blockly.ui.applyValidationPatch"
+				label="Apply Validation Blocks to Source"
+				style="push"
+				tooltip="Apply edited validation_blocks JSON back to the selected source file">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection"/>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		<menuContribution
+			locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?after=additions">
+			<command
+				commandId="io.github.plortinus.model2blockly.ui.generateBlocklyEditor"
+				label="Generate Blockly Editor"
+				style="push"
+				tooltip="Generate Blockly editors, intermediate XMI, and generation_report.html">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection"/>
+				</visibleWhen>
+			</command>
+			<command
+				commandId="io.github.plortinus.model2blockly.ui.applyValidationPatch"
+				label="Apply Validation Blocks to Source"
+				style="push"
+				tooltip="Apply edited validation_blocks JSON back to the selected source file">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection"/>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		<menuContribution
+			locationURI="popup:#TextEditorContext?after=group.edit">
+			<command
+				commandId="io.github.plortinus.model2blockly.Model2Blockly.validate"
+				style="push"
+				tooltip="Trigger expensive validation">
+				<visibleWhen checkEnabled="false">
+					<reference
+						definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened">
+					</reference>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		<!-- copy qualified name -->
+		<menuContribution locationURI="popup:#TextEditorContext?after=copy">
+			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+				style="push" tooltip="Copy Qualified Name">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened" />
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		<menuContribution locationURI="menu:edit?after=copy">
+			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+				style="push" tooltip="Copy Qualified Name">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened" />
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		<menuContribution locationURI="popup:org.eclipse.xtext.ui.outline?after=additions">
+			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName"
+				style="push" tooltip="Copy Qualified Name">
+				<visibleWhen checkEnabled="false">
+					<and>
+						<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.XtextEditor.opened" />
+						<iterate>
+							<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
+						</iterate>
+					</and>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution
+			adaptable="true"
+			id="io.github.plortinus.model2blockly.ui.generateBlocklyEditor.ecore.popup"
+			nameFilter="*.ecore"
+			objectClass="org.eclipse.core.resources.IFile">
+			<action
+				class="io.github.plortinus.model2blockly.ui.handlers.GenerateBlocklyEditorAction"
+				enablesFor="1"
+				id="io.github.plortinus.model2blockly.ui.generateBlocklyEditor.ecore.action"
+				label="Generate Blockly Editor"
+				menubarPath="additions">
+			</action>
+		</objectContribution>
+		<objectContribution
+			adaptable="true"
+			id="io.github.plortinus.model2blockly.ui.generateBlocklyEditor.model2blockly.popup"
+			nameFilter="*.model2blockly"
+			objectClass="org.eclipse.core.resources.IFile">
+			<action
+				class="io.github.plortinus.model2blockly.ui.handlers.GenerateBlocklyEditorAction"
+				enablesFor="1"
+				id="io.github.plortinus.model2blockly.ui.generateBlocklyEditor.model2blockly.action"
+				label="Generate Blockly Editor"
+				menubarPath="additions">
+			</action>
+		</objectContribution>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
+			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened">
+					</reference>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="io.github.plortinus.model2blockly.ui.handlers.GenerateBlocklyEditorHandler"
+			commandId="io.github.plortinus.model2blockly.ui.generateBlocklyEditor">
+		</handler>
+		<handler
+			class="io.github.plortinus.model2blockly.ui.handlers.ApplyValidationPatchHandler"
+			commandId="io.github.plortinus.model2blockly.ui.applyValidationPatch">
+		</handler>
+		<handler
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
+			commandId="org.eclipse.xtext.ui.editor.FindReferences">
+			<activeWhen>
+				<reference
+					definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+		<content-type
+			base-type="org.eclipse.core.runtime.text"
+			file-extensions="model2blockly"
+			id="io.github.plortinus.model2blockly.Model2Blockly.contenttype"
+			name="Model2Blockly File"
+			priority="normal">
+		</content-type>
+	</extension>
+	<!-- adding resource factories -->
+	<extension
+		point="org.eclipse.emf.ecore.extension_parser">
+		<parser
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			type="model2blockly">
+		</parser>
+	</extension>
+	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+		<resourceServiceProvider
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+			uriExtension="model2blockly">
+		</resourceServiceProvider>
+	</extension>
+	<!-- marker definitions for io.github.plortinus.model2blockly.Model2Blockly -->
+	<extension
+			id="model2blockly.check.fast"
+			name="Model2Blockly Problem"
+			point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.xtext.ui.check.fast"/>
+		<persistent value="true"/>
+	</extension>
+	<extension
+			id="model2blockly.check.normal"
+			name="Model2Blockly Problem"
+			point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.xtext.ui.check.normal"/>
+		<persistent value="true"/>
+	</extension>
+	<extension
+			id="model2blockly.check.expensive"
+			name="Model2Blockly Problem"
+			point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.xtext.ui.check.expensive"/>
+		<persistent value="true"/>
+	</extension>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="io.github.plortinus.model2blockly.Model2Blockly"
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
+			id="io.github.plortinus.model2blockly.Model2Blockly.validator.preferencePage"
+			name="Errors/Warnings">
+			<keywordReference id="io.github.plortinus.model2blockly.ui.keyword_Model2Blockly"/>
+		</page>
+	</extension>
+	<extension point="org.eclipse.xtext.builder.participant">
+		<participant
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
+			fileExtensions="model2blockly"/>
+	</extension>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="io.github.plortinus.model2blockly.Model2Blockly"
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="io.github.plortinus.model2blockly.Model2Blockly.compiler.preferencePage"
+			name="Compiler">
+			<keywordReference id="io.github.plortinus.model2blockly.ui.keyword_Model2Blockly"/>
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.propertyPages">
+		<page
+			category="io.github.plortinus.model2blockly.Model2Blockly"
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="io.github.plortinus.model2blockly.Model2Blockly.compiler.propertyPage"
+			name="Compiler">
+			<keywordReference id="io.github.plortinus.model2blockly.ui.keyword_Model2Blockly"/>
+			<enabledWhen>
+				<adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+			<filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:#TextEditorContext?after=xtext.ui.openDeclaration">
+			<command
+				commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
+				id="io.github.plortinus.model2blockly.Model2Blockly.OpenGeneratedCode"
+				style="push">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened" />
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
+			commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand">
+			<activeWhen>
+				<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened" />
+			</activeWhen>
+		</handler>
+	</extension>
+	<!-- Quick Outline -->
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
+			commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
+			<activeWhen>
+				<reference
+					definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			description="Open the quick outline."
+			id="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+			name="Quick Outline">
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+			locationURI="popup:#TextEditorContext?after=group.open">
+			<command commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+				style="push"
+				tooltip="Open Quick Outline">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened"/>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<!-- quickfix marker resolution generator for io.github.plortinus.model2blockly.Model2Blockly -->
+	<extension
+			point="org.eclipse.ui.ide.markerResolution">
+		<markerResolutionGenerator
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="io.github.plortinus.model2blockly.ui.model2blockly.check.fast">
+			<attribute
+				name="FIXABLE_KEY"
+				value="true">
+			</attribute>
+		</markerResolutionGenerator>
+		<markerResolutionGenerator
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="io.github.plortinus.model2blockly.ui.model2blockly.check.normal">
+			<attribute
+				name="FIXABLE_KEY"
+				value="true">
+			</attribute>
+		</markerResolutionGenerator>
+		<markerResolutionGenerator
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="io.github.plortinus.model2blockly.ui.model2blockly.check.expensive">
+			<attribute
+				name="FIXABLE_KEY"
+				value="true">
+			</attribute>
+		</markerResolutionGenerator>
+	</extension>
+	<!-- Rename Refactoring -->
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
+			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
+			<activeWhen>
+				<reference
+					definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+			locationURI="popup:#TextEditorContext?after=group.edit">
+			<command commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
+				style="push">
+				<visibleWhen checkEnabled="false">
+					<reference
+						definitionId="io.github.plortinus.model2blockly.Model2Blockly.Editor.opened">
+					</reference>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="io.github.plortinus.model2blockly.Model2Blockly"
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+			id="io.github.plortinus.model2blockly.Model2Blockly.refactoring"
+			name="Refactoring">
+			<keywordReference id="io.github.plortinus.model2blockly.ui.keyword_Model2Blockly"/>
+		</page>
+	</extension>
+	<extension point="org.eclipse.compare.contentViewers">
+		<viewer id="io.github.plortinus.model2blockly.Model2Blockly.compare.contentViewers"
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+			extensions="model2blockly">
+		</viewer>
+		<contentTypeBinding
+			contentTypeId="io.github.plortinus.model2blockly.Model2Blockly.contenttype"
+			contentViewerId="io.github.plortinus.model2blockly.Model2Blockly.compare.contentViewers" />
+	</extension>
+	<extension point="org.eclipse.compare.contentMergeViewers">
+		<viewer id="io.github.plortinus.model2blockly.Model2Blockly.compare.contentMergeViewers"
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+			extensions="model2blockly" label="Model2Blockly Compare">
+		</viewer>
+		<contentTypeBinding
+			contentTypeId="io.github.plortinus.model2blockly.Model2Blockly.contenttype"
+			contentMergeViewerId="io.github.plortinus.model2blockly.Model2Blockly.compare.contentMergeViewers" />
+	</extension>
+	<extension point="org.eclipse.ui.editors.documentProviders">
+		<provider id="io.github.plortinus.model2blockly.Model2Blockly.editors.documentProviders"
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+			extensions="model2blockly">
+		</provider>
+	</extension>
+	<extension point="org.eclipse.team.core.fileTypes">
+		<fileTypes
+			extension="model2blockly"
+			type="text">
+		</fileTypes>
+	</extension>
+</plugin>
