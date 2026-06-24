@@ -32,4 +32,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: io.github.plortinus.model2blockly.ui.quickfix,
  io.github.plortinus.model2blockly.ui.internal,
  io.github.plortinus.model2blockly.ui.contentassist
-Bundle-Activator: io.github.plortinus.model2blockly.ui.internal.Model2BlocklyActivator
+Bundle-Activator: io.github.plortinus.model2blockly.ui.internal.Model2blocklyActivator

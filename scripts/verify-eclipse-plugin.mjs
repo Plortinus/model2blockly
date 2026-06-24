@@ -218,6 +218,9 @@ function checkFeatureAndUpdateSite() {
       for (const dependency of ['org.eclipse.xtext', 'org.eclipse.emf.common', 'org.eclipse.emf.ecore', 'org.eclipse.emf.ecore.xmi']) {
         assertIncludes(manifest, dependency, `${file} declares direct runtime dependency ${dependency}`);
       }
+      assertIncludes(manifest,
+        'Bundle-Activator: io.github.plortinus.model2blockly.ui.internal.Model2blocklyActivator',
+        `${file} declares the generated UI activator class with exact case`);
     }
   }
   const coreListing = execFileSync('unzip', ['-l', abs(pluginJars[0])], { encoding: 'utf8' });
@@ -291,6 +294,8 @@ function checkFeatureAndUpdateSite() {
   assertNotIncludes(packagedBlocklyGenerator, '#header{background:#4285f4',
     'Core update-site jar no longer contains the old blue header editor template');
   const uiListing = execFileSync('unzip', ['-l', abs(pluginJars[2])], { encoding: 'utf8' });
+  assertIncludes(uiListing, 'bin/io/github/plortinus/model2blockly/ui/internal/Model2blocklyActivator.class',
+    'UI update-site jar contains the exact Bundle-Activator class');
   assertIncludes(uiListing, 'bin/io/github/plortinus/model2blockly/ui/handlers/ApplyValidationPatchHandler.class',
     'UI update-site jar contains validation patch handler class');
   assertIncludes(uiListing, 'bin/io/github/plortinus/model2blockly/ui/handlers/GenerateBlocklyEditorHandler.class',
