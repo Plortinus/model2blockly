@@ -13,6 +13,12 @@
 package io.github.plortinus.model2blockly.generator;
 
 import com.google.common.collect.Iterators;
+import io.github.plortinus.model2blockly.adapter.DomainModelAdapter;
+import io.github.plortinus.model2blockly.blocklyspec.BlocklySpecDiagnostics;
+import io.github.plortinus.model2blockly.blocklyspec.BlocklySpecSourceMapper;
+import io.github.plortinus.model2blockly.intermediate.BlocklySpecXmiSerializer;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.EditorSpec;
+import io.github.plortinus.model2blockly.model2Blockly.DomainModel;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -22,12 +28,6 @@ import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
-import io.github.plortinus.model2blockly.adapter.DomainModelAdapter;
-import io.github.plortinus.model2blockly.model2Blockly.DomainModel;
-import io.github.plortinus.model2blockly.blocklyspec.BlocklySpecDiagnostics;
-import io.github.plortinus.model2blockly.blocklyspec.BlocklySpecSourceMapper;
-import io.github.plortinus.model2blockly.intermediate.BlocklySpecXmiSerializer;
-import io.github.plortinus.model2blockly.intermediate.blocklyspec.EditorSpec;
 
 @SuppressWarnings("all")
 public class Model2BlocklyGenerator extends AbstractGenerator {
@@ -44,7 +44,8 @@ public class Model2BlocklyGenerator extends AbstractGenerator {
         }
         final String sourceLabel = _string;
         final EditorSpec intermediateModel = DomainModelAdapter.toEditorSpec(domain);
-        BlocklySpecDiagnostics.assertValid(intermediateModel, sourceLabel, BlocklySpecSourceMapper.forDomainModel(domain, sourceLabel));
+        BlocklySpecDiagnostics.assertValid(intermediateModel, sourceLabel, 
+          BlocklySpecSourceMapper.forDomainModel(domain, sourceLabel));
         final String intermediateXmi = BlocklySpecXmiSerializer.toXmi(intermediateModel);
         final EditorSpec reloadedIntermediateModel = BlocklySpecXmiSerializer.fromXmiToEditorSpec(intermediateXmi);
         BlocklySpecDiagnostics.assertValid(reloadedIntermediateModel, (sourceLabel + " intermediate XMI"));
@@ -62,8 +63,13 @@ public class Model2BlocklyGenerator extends AbstractGenerator {
             generatedFiles.add(path);
           }
         }
+        URI _uRI_1 = resource.getURI();
+        String _string_1 = null;
+        if (_uRI_1!=null) {
+          _string_1=_uRI_1.toString();
+        }
         fsa.generateFile("generation_report.html", 
-          GenerationReportHtmlRenderer.renderModel2BlocklySummary(domain, reloadedIntermediateModel, _string, generatedFiles));
+          GenerationReportHtmlRenderer.renderModel2BlocklySummary(domain, reloadedIntermediateModel, _string_1, generatedFiles));
       }
     }
   }

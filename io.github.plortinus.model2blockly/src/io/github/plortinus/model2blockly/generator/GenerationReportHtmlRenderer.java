@@ -67,7 +67,7 @@ public final class GenerationReportHtmlRenderer {
 	public static String renderModel2BlocklySummary(DomainModel domain, EditorSpec spec,
 			String inputPath, Collection<String> generatedFiles) {
 		StringBuilder out = pageStart("Model2Blockly Generation Report");
-		out.append("<p class=\"lead\">Concise generation report for the textual .model2blockly input path.</p>\n");
+		out.append("<p class=\"lead\">Concise generation report for the textual .m2b input path.</p>\n");
 		out.append("<p class=\"lead\">Use this page to quickly check what was generated and which modelling decisions affect the editor.</p>\n");
 		appendStats(out, new String[][] {
 			{"Input", inputPath},
@@ -77,7 +77,7 @@ public final class GenerationReportHtmlRenderer {
 			{"Categories", String.valueOf(spec.getCategories().size())},
 			{"Validations", String.valueOf(spec.getValidations().size())}
 		});
-		appendGenerationPipeline(out, ".model2blockly", generatedFiles);
+		appendGenerationPipeline(out, ".m2b", generatedFiles);
 		appendDslQualitySummary(out, spec, generatedFiles);
 		appendGeneratedFiles(out, generatedFiles);
 		appendDslNextSteps(out);

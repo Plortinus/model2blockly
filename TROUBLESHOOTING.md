@@ -1,7 +1,5 @@
 # Troubleshooting
 
-Languages: **English** | [Español](docs/es/TROUBLESHOOTING.md) | [中文](docs/zh/TROUBLESHOOTING.md)
-
 Use this page when installation or generation does not behave as expected.
 
 ## Install dialog shows no items
@@ -25,7 +23,7 @@ https://plortinus.github.io/model2blockly/update-site/
 3. Click `Manage...`, remove any stale Model2Blockly site entry, add the URL
    again, and reload.
 4. Keep `Contact all update sites during install to find required software`
-   enabled so Eclipse can resolve Xtext and EMF dependencies.
+   enabled so Eclipse can resolve EMF dependencies.
 5. If you use a local update site, choose the repository folder:
 
 ```text
@@ -70,7 +68,7 @@ For maintainer-side release steps, use
 Checks:
 
 1. Select exactly one file.
-2. The selected file must end in `.model2blockly` or `.ecore`.
+2. The selected file must end in `.ecore`.
 3. Use Project Explorer, Package Explorer, or the top-level `Model2Blockly` menu.
 4. Confirm the plugin is installed in `Help -> About Eclipse IDE ->
    Installation Details`.
@@ -88,7 +86,6 @@ Examples:
 
 | Selected file | Output folder |
 | --- | --- |
-| `examples/app_maker.model2blockly` | `examples/app_maker_generated/` |
 | `model/app_maker.ecore` | `model/app_maker_generated/` |
 
 After generation, Eclipse refreshes the project and opens
@@ -113,7 +110,7 @@ Fix:
    repository.
 2. Restart Eclipse.
 3. Confirm the installed plugin version in `Installation Details`.
-4. Regenerate from the selected `.model2blockly` or `.ecore` file.
+4. Regenerate from the selected `.ecore` file.
 
 ## Intermediate XMI is missing or stale
 
@@ -130,38 +127,6 @@ model to generate the Blockly HTML/JavaScript files.
 If the output folder has HTML files but no intermediate XMI, or if the installed
 plugin does not mention the XMI pipeline, the installed plugin/update-site is
 stale. Rebuild and reinstall the local update site, then regenerate the editor.
-
-## `.model2blockly` generation fails
-
-Checks:
-
-1. Open the file in the Model2Blockly editor.
-2. Fix syntax errors reported by Xtext.
-3. Ensure the file starts with one `domain` declaration.
-4. Ensure referenced classes and categories exist.
-5. If a value input will not connect, the target class should usually be an
-   `output class`.
-
-If the message includes `INTERMEDIATE_MODEL_INVALID` or a location like
-`block[Page].components`, the DSL parsed successfully but failed the
-generator-facing `EditorSpec` checks. Fix the source model before rerunning
-generation.
-
-Common causes:
-
-| Message pattern | What to fix |
-| --- | --- |
-| `Shadow block type ... is not an output block` | Use an `output class` as the value-input shadow block |
-| `Duplicate feature/input name` | Rename one attribute, reference, containment, or value input inside the class |
-| `Reference label field ... does not exist` | Change `referenceLabelField` to an attribute/reference that exists on the target class |
-| `... does not exist` | Check spelling of the referenced class, category, field, input, or shadow block |
-| `Expression validation must define an expression` | Add an expression/OCL body or remove the empty validation rule |
-| `Unsupported OCL validation expression` | Rewrite the rule with the supported simple OCL subset or use `expression`/`js` |
-
-Useful references:
-
-- [`DSL_REFERENCE.md`](DSL_REFERENCE.md)
-- [`io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/Model2Blockly.xtext`](io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/Model2Blockly.xtext)
 
 ## `.ecore` generation fails
 
@@ -195,15 +160,6 @@ Checks:
    connection type.
 3. Add a label field so choices are readable:
 
-For `.model2blockly`:
-
-```model2blockly
-reference DataSource source required
-  widget reference-select referenceLabelField name
-```
-
-For `.ecore`:
-
 ```xml
 <eAnnotations source="ui">
   <details key="referenceLabelField" value="name"/>
@@ -213,15 +169,6 @@ For `.ecore`:
 ## Value blocks will not connect
 
 Checks:
-
-For `.model2blockly`:
-
-```model2blockly
-output class TextLiteral extends TextExpression ...
-value TextExpression content shadow TextLiteral
-```
-
-For `.ecore`:
 
 ```xml
 <eAnnotations source="blockly">
@@ -246,11 +193,11 @@ Generated validations come from:
 
 | Source | Validation |
 | --- | --- |
-| DSL `required` or Ecore `lowerBound >= 1` | Required field/reference |
-| DSL `contains [lower..upper]` or Ecore containment bounds | Statement input cardinality |
+| Ecore `lowerBound >= 1` | Required field/reference |
+| Ecore containment bounds | Statement input cardinality |
 | Ecore `iD=true` | Type-level uniqueness |
 | Ecore multi-valued unique fields/references | Value uniqueness |
-| DSL `constraint ... must follow ...` or Ecore `source="validation" mustFollow` | Previous-block rule |
+| Ecore `source="validation" mustFollow` | Previous-block rule |
 | Ecore validation/OCL annotations | Expression rule |
 
 Open `validation_workspace.html` in the generated `html/` folder to inspect
@@ -278,18 +225,18 @@ Useful checks:
 
 ```bash
 npm run verify:plugin
-npm run verify:dsl-validation
+npm run verify:domain-xmi
 npm run verify:patch
 npm run smoke
 ```
 
-The DSL validation bridge and validation patch checks need Eclipse plugins and
-JDK 21. The repository scripts use the default Eclipse.app installation on
-macOS; set these variables when your Eclipse installation lives elsewhere:
+The EMF domain XMI and validation patch checks need Eclipse plugins and JDK 21.
+The repository scripts use the default Eclipse.app installation on macOS; set
+these variables when your Eclipse installation lives elsewhere:
 
 ```bash
 export ECLIPSE_PLUGINS=/path/to/eclipse/plugins
 export JAVA_HOME=/path/to/jdk-21
-npm run verify:dsl-validation
+npm run verify:domain-xmi
 npm run verify:patch
 ```

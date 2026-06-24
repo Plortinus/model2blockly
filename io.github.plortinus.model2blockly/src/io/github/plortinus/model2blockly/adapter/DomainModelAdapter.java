@@ -19,7 +19,7 @@ import io.github.plortinus.model2blockly.intermediate.BlocklySpecModelMapper;
 import io.github.plortinus.model2blockly.intermediate.blocklyspec.EditorSpec;
 
 /**
- * Converts a DomainModel (from .model2blockly DSL) into the platform-independent
+ * Converts a DomainModel (from the .m2b DSL) into the platform-independent
  * BlocklyEditorSpec intermediate model.
  */
 public class DomainModelAdapter {

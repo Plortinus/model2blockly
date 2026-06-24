@@ -1,28 +1,17 @@
 /**
- * Code generator: BlocklyEditorSpec → Blockly (JSON + JS + HTML).
+ * Code generator: EditorSpec → Blockly (JSON + JS + HTML).
  * 
  * This generator is independent of the input source (DSL or Ecore).
- * It takes a BlocklyEditorSpec intermediate model and produces editor files:
+ * It takes an EditorSpec intermediate model and produces editor files:
  *   _blocks.js, _toolbox.js, _generators.js, _validations.js,
  *   _editor.html, _standalone.html, validation_workspace.html,
  *   validation_blocks.json, validation_runtime.js, sample_model.json
  */
 package io.github.plortinus.model2blockly.generator;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import org.eclipse.xtend2.lib.StringConcatenation;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Exceptions;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.ListExtensions;
-import io.github.plortinus.model2blockly.intermediate.blocklyspec.BlockTypeSpec;
 import io.github.plortinus.model2blockly.blocklyspec.BlocklyEditorSpec;
+import io.github.plortinus.model2blockly.intermediate.BlocklySpecModelMapper;
+import io.github.plortinus.model2blockly.intermediate.blocklyspec.BlockTypeSpec;
 import io.github.plortinus.model2blockly.intermediate.blocklyspec.CategorySpec;
 import io.github.plortinus.model2blockly.intermediate.blocklyspec.ConnectionType;
 import io.github.plortinus.model2blockly.intermediate.blocklyspec.DropdownOption;
@@ -34,7 +23,19 @@ import io.github.plortinus.model2blockly.intermediate.blocklyspec.StatementInput
 import io.github.plortinus.model2blockly.intermediate.blocklyspec.ValidationSpec;
 import io.github.plortinus.model2blockly.intermediate.blocklyspec.ValidationType;
 import io.github.plortinus.model2blockly.intermediate.blocklyspec.ValueInputSpec;
-import io.github.plortinus.model2blockly.intermediate.BlocklySpecModelMapper;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.ListExtensions;
 
 @SuppressWarnings("all")
 public class BlocklyCodeGenerator {
@@ -114,22 +115,22 @@ public class BlocklyCodeGenerator {
       }
       msgParts.add(_elvis);
       final LinkedHashMap<String, FieldSpec> fieldMap = CollectionLiterals.<String, FieldSpec>newLinkedHashMap();
-      List<FieldSpec> _fields = bt.getFields();
+      EList<FieldSpec> _fields = bt.getFields();
       for (final FieldSpec f : _fields) {
         fieldMap.put(f.getName(), f);
       }
       final LinkedHashMap<String, ReferenceFieldSpec> refMap = CollectionLiterals.<String, ReferenceFieldSpec>newLinkedHashMap();
-      List<ReferenceFieldSpec> _referenceFields = bt.getReferenceFields();
+      EList<ReferenceFieldSpec> _referenceFields = bt.getReferenceFields();
       for (final ReferenceFieldSpec r : _referenceFields) {
         refMap.put(r.getName(), r);
       }
       final LinkedHashMap<String, ValueInputSpec> viMap = CollectionLiterals.<String, ValueInputSpec>newLinkedHashMap();
-      List<ValueInputSpec> _valueInputs = bt.getValueInputs();
+      EList<ValueInputSpec> _valueInputs = bt.getValueInputs();
       for (final ValueInputSpec v : _valueInputs) {
         viMap.put(v.getName(), v);
       }
       final LinkedHashMap<String, StatementInputSpec> siMap = CollectionLiterals.<String, StatementInputSpec>newLinkedHashMap();
-      List<StatementInputSpec> _statementInputs = bt.getStatementInputs();
+      EList<StatementInputSpec> _statementInputs = bt.getStatementInputs();
       for (final StatementInputSpec s : _statementInputs) {
         siMap.put(s.getName(), s);
       }
@@ -143,19 +144,19 @@ public class BlocklyCodeGenerator {
         ArrayList<String> _xblockexpression_1 = null;
         {
           final ArrayList<String> fallback = new ArrayList<String>();
-          List<FieldSpec> _fields_1 = bt.getFields();
+          EList<FieldSpec> _fields_1 = bt.getFields();
           for (final FieldSpec f_1 : _fields_1) {
             fallback.add(f_1.getName());
           }
-          List<ReferenceFieldSpec> _referenceFields_1 = bt.getReferenceFields();
+          EList<ReferenceFieldSpec> _referenceFields_1 = bt.getReferenceFields();
           for (final ReferenceFieldSpec r_1 : _referenceFields_1) {
             fallback.add(r_1.getName());
           }
-          List<ValueInputSpec> _valueInputs_1 = bt.getValueInputs();
+          EList<ValueInputSpec> _valueInputs_1 = bt.getValueInputs();
           for (final ValueInputSpec v_1 : _valueInputs_1) {
             fallback.add(v_1.getName());
           }
-          List<StatementInputSpec> _statementInputs_1 = bt.getStatementInputs();
+          EList<StatementInputSpec> _statementInputs_1 = bt.getStatementInputs();
           for (final StatementInputSpec s_1 : _statementInputs_1) {
             fallback.add(s_1.getName());
           }
@@ -1653,7 +1654,7 @@ public class BlocklyCodeGenerator {
       for (final BlockTypeSpec b : blocks) {
         contentParts.add(this.blockToToolboxEntry(b, spec));
       }
-      List<CategorySpec> _children = cat.getChildren();
+      EList<CategorySpec> _children = cat.getChildren();
       for (final CategorySpec child : _children) {
         {
           final Function1<BlockTypeSpec, Boolean> _function = (BlockTypeSpec c) -> {
@@ -2116,50 +2117,56 @@ public class BlocklyCodeGenerator {
         _builder.newLineIfNotEmpty();
         _builder.append("  ");
         _builder.append("fieldTypes: {");
-        final Function1<FieldSpec, String> _functionFieldTypes = (FieldSpec it) -> {
+        final Function1<FieldSpec, String> _function_1 = (FieldSpec it) -> {
           String _escapeJson_5 = this.escapeJson(it.getName());
           String _plus = ("\'" + _escapeJson_5);
           String _plus_1 = (_plus + "\': \'");
+          String _xifexpression = null;
           FieldType _fieldType = it.getFieldType();
-          String _fieldTypeName = ((_fieldType != null) ? _fieldType.toString() : "TEXT");
-          String _plus_2 = (_plus_1 + _fieldTypeName);
+          boolean _tripleNotEquals_1 = (_fieldType != null);
+          if (_tripleNotEquals_1) {
+            _xifexpression = it.getFieldType().toString();
+          } else {
+            _xifexpression = "TEXT";
+          }
+          String _plus_2 = (_plus_1 + _xifexpression);
           return (_plus_2 + "\'");
         };
-        String _joinFieldTypes = IterableExtensions.join(ListExtensions.<FieldSpec, String>map(bt.getFields(), _functionFieldTypes), ", ");
-        _builder.append(_joinFieldTypes, "  ");
+        String _join_1 = IterableExtensions.join(ListExtensions.<FieldSpec, String>map(bt.getFields(), _function_1), ", ");
+        _builder.append(_join_1, "  ");
         _builder.append("},");
         _builder.newLineIfNotEmpty();
         _builder.append("  ");
         _builder.append("references: [");
-        final Function1<ReferenceFieldSpec, String> _function_1 = (ReferenceFieldSpec it) -> {
+        final Function1<ReferenceFieldSpec, String> _function_2 = (ReferenceFieldSpec it) -> {
           String _escapeJson_5 = this.escapeJson(it.getName());
           String _plus = ("\'" + _escapeJson_5);
           return (_plus + "\'");
         };
-        String _join_1 = IterableExtensions.join(ListExtensions.<ReferenceFieldSpec, String>map(bt.getReferenceFields(), _function_1), ", ");
-        _builder.append(_join_1, "  ");
-        _builder.append("],");
-        _builder.newLineIfNotEmpty();
-        _builder.append("  ");
-        _builder.append("values: [");
-        final Function1<ValueInputSpec, String> _function_2 = (ValueInputSpec it) -> {
-          String _escapeJson_5 = this.escapeJson(it.getName());
-          String _plus = ("\'" + _escapeJson_5);
-          return (_plus + "\'");
-        };
-        String _join_2 = IterableExtensions.join(ListExtensions.<ValueInputSpec, String>map(bt.getValueInputs(), _function_2), ", ");
+        String _join_2 = IterableExtensions.join(ListExtensions.<ReferenceFieldSpec, String>map(bt.getReferenceFields(), _function_2), ", ");
         _builder.append(_join_2, "  ");
         _builder.append("],");
         _builder.newLineIfNotEmpty();
         _builder.append("  ");
-        _builder.append("statements: [");
-        final Function1<StatementInputSpec, String> _function_3 = (StatementInputSpec it) -> {
+        _builder.append("values: [");
+        final Function1<ValueInputSpec, String> _function_3 = (ValueInputSpec it) -> {
           String _escapeJson_5 = this.escapeJson(it.getName());
           String _plus = ("\'" + _escapeJson_5);
           return (_plus + "\'");
         };
-        String _join_3 = IterableExtensions.join(ListExtensions.<StatementInputSpec, String>map(bt.getStatementInputs(), _function_3), ", ");
+        String _join_3 = IterableExtensions.join(ListExtensions.<ValueInputSpec, String>map(bt.getValueInputs(), _function_3), ", ");
         _builder.append(_join_3, "  ");
+        _builder.append("],");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.append("statements: [");
+        final Function1<StatementInputSpec, String> _function_4 = (StatementInputSpec it) -> {
+          String _escapeJson_5 = this.escapeJson(it.getName());
+          String _plus = ("\'" + _escapeJson_5);
+          return (_plus + "\'");
+        };
+        String _join_4 = IterableExtensions.join(ListExtensions.<StatementInputSpec, String>map(bt.getStatementInputs(), _function_4), ", ");
+        _builder.append(_join_4, "  ");
         _builder.append("]");
         _builder.newLineIfNotEmpty();
         _builder.append("}");
@@ -3164,7 +3171,7 @@ public class BlocklyCodeGenerator {
         _builder_1.append(" || block.id)");
         jsonParts.add(_builder_1.toString());
       }
-      List<FieldSpec> _fields = bt.getFields();
+      EList<FieldSpec> _fields = bt.getFields();
       for (final FieldSpec f : _fields) {
         StringConcatenation _builder_2 = new StringConcatenation();
         _builder_2.append(" ");
@@ -3177,7 +3184,7 @@ public class BlocklyCodeGenerator {
         _builder_2.append(")");
         jsonParts.add(_builder_2.toString());
       }
-      List<ReferenceFieldSpec> _referenceFields = bt.getReferenceFields();
+      EList<ReferenceFieldSpec> _referenceFields = bt.getReferenceFields();
       for (final ReferenceFieldSpec r : _referenceFields) {
         StringConcatenation _builder_3 = new StringConcatenation();
         _builder_3.append(" ");
@@ -3190,7 +3197,7 @@ public class BlocklyCodeGenerator {
         _builder_3.append(")");
         jsonParts.add(_builder_3.toString());
       }
-      List<ValueInputSpec> _valueInputs = bt.getValueInputs();
+      EList<ValueInputSpec> _valueInputs = bt.getValueInputs();
       for (final ValueInputSpec v : _valueInputs) {
         StringConcatenation _builder_4 = new StringConcatenation();
         _builder_4.append(" ");
@@ -3203,7 +3210,7 @@ public class BlocklyCodeGenerator {
         _builder_4.append("_code");
         jsonParts.add(_builder_4.toString());
       }
-      List<StatementInputSpec> _statementInputs = bt.getStatementInputs();
+      EList<StatementInputSpec> _statementInputs = bt.getStatementInputs();
       for (final StatementInputSpec s : _statementInputs) {
         {
           final String sn = s.getName();
@@ -5226,177 +5233,545 @@ public class BlocklyCodeGenerator {
   }
 
   public String editorCss() {
-    return """
-<style>
-:root{color-scheme:light;--bg:#f4f6f8;--surface:#fff;--panel:#fbfcfe;--text:#17202a;--muted:#5d6875;--line:#d9dee7;--accent:#1f6feb;--accent-strong:#174ea6;--success:#15803d;--warning:#8a5a00;--danger:#b42318}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;display:flex;flex-direction:column;height:100vh;min-height:0}
-button,summary{font:inherit}
-button{border:1px solid var(--line);background:#fff;color:var(--text);padding:7px 11px;border-radius:6px;cursor:pointer;font-weight:650;white-space:nowrap}
-button:hover,summary:hover{border-color:#b8c2cf;background:#f8fafc}
-button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-#header.appbar{background:var(--surface);border-bottom:1px solid var(--line);padding:10px 14px;display:grid;grid-template-columns:minmax(220px,auto) 1fr;gap:12px;align-items:center;box-shadow:0 1px 2px rgba(15,23,42,.04);z-index:2}
-.header-title{min-width:0}
-.header-kicker{margin:0 0 2px;color:var(--muted);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0}
-#header h1{margin:0;font-size:1.15rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.editor-mode-hint{margin-top:2px;color:var(--muted);font-size:.76rem}
-.header-buttons{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
-.toolbar-group{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-right:8px;border-right:1px solid var(--line)}
-.toolbar-group:last-child{padding-right:0;border-right:0}
-.command-button{min-height:34px}
-.button-primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.button-primary:hover{background:var(--accent-strong);border-color:var(--accent-strong)}
-.button-success{background:#ecfdf3;border-color:#bbf7d0;color:#166534}
-.button-danger{background:#fef2f2;border-color:#fecaca;color:var(--danger)}
-.mode-toggle{display:flex;gap:0;padding:2px;border:1px solid var(--line);border-radius:8px;background:#f8fafc}
-.mode-toggle button{border:0;background:transparent;color:var(--muted);padding:6px 9px;border-radius:6px}
-.mode-toggle button.active{background:var(--surface);color:var(--accent);box-shadow:0 1px 3px rgba(15,23,42,.12)}
-.toolbar-menu{position:relative}
-.toolbar-menu summary{list-style:none;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--text);padding:7px 11px;cursor:pointer;font-weight:650;white-space:nowrap}
-.toolbar-menu summary::-webkit-details-marker{display:none}
-.toolbar-menu-panel{position:absolute;right:0;top:calc(100% + 8px);min-width:230px;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 16px 34px rgba(15,23,42,.18);display:flex;flex-direction:column;gap:6px;z-index:20}
-.toolbar-menu-panel button{width:100%;text-align:left}
-.speed-control{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.82rem;padding:4px 2px}
-.speed-control input{width:90px}
-.editor-toast{position:fixed;right:16px;bottom:16px;max-width:min(420px,calc(100vw - 32px));padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);box-shadow:0 14px 36px rgba(15,23,42,.18);z-index:30;display:none}
-.editor-toast.visible{display:block}
-.editor-toast.error{border-color:#fecaca;background:#fef2f2;color:#991b1b}
-.editor-toast.warning{border-color:#fde68a;background:#fffbeb;color:#92400e}
-#main{display:grid;grid-template-columns:minmax(520px,1fr) minmax(360px,min(40vw,500px));gap:12px;flex:1;min-height:0;overflow:hidden;padding:12px}
-.workspace-shell,.inspector-panel{min-height:0;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.04)}
-.workspace-shell{display:flex;flex-direction:column}
-.workspace-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--panel)}
-.workspace-title{font-weight:700}
-.workspace-hint{color:var(--muted);font-size:.78rem}
-#blocklyDiv{flex:1 1 auto;min-height:0;height:100%}
-#outputPanel{display:flex;flex-direction:column;min-width:0}
-.panel-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 12px 6px}
-#outputPanel h2{margin:0;font-size:1rem;color:var(--text);line-height:1.2}
-.panel-subtitle{margin-top:2px;color:var(--muted);font-size:.76rem}
-#tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:0 10px;overflow-x:auto;scrollbar-width:thin}
-#tabs button{flex:0 0 auto;padding:8px 10px;border:0;background:#f1f4f8;color:#526071;border-radius:6px 6px 0 0}
-#tabs button.active{background:#fff;color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent)}
-body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
-.tab-content{flex:1;display:none;margin:0 10px 10px;padding:10px;overflow:auto;font-size:.85em;border:1px solid var(--line);border-top:0;border-radius:0 0 6px 6px;min-height:0}
-.tab-content.active{display:block}
-#modelView{background:#fff;font-family:Arial,sans-serif}
-#jsonView{background:#f5f5f5;font-family:monospace;white-space:pre-wrap}
-#runtimeView{background:#172033;color:#d4d4d4;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82em;white-space:pre-wrap}
-.model-node{margin:4px 0;padding:8px 12px;border-radius:6px;border-left:4px solid #4285f4}
-.model-node .node-type{font-weight:bold;font-size:.9em;color:#333}
-.model-node .node-attr{font-size:.8em;color:#666;margin-top:2px}
-.model-node .node-attr span{background:#e8f0fe;padding:1px 6px;border-radius:3px;margin-right:4px}
-.model-children{margin-left:16px;padding-left:8px;border-left:2px dashed #ccc}
-.validation-summary{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:.85em;color:#333}
-.validation-empty{color:#5f6368;text-align:center;margin-top:40px}
-.validation-list{display:flex;flex-direction:column;gap:8px}
-.validation-item{border:1px solid #f4b400;border-left:4px solid #f4b400;background:#fff8e1;border-radius:4px;padding:8px 10px;text-align:left;cursor:pointer;color:#3c4043}
-.validation-item:hover{background:#fff3c4}
-.validation-item-type{font-size:.75em;font-weight:bold;color:#8a5a00;margin-bottom:3px}
-.validation-item-message{font-size:.85em;line-height:1.35}
-#validationBlocksView{padding:0;background:#f5f7fb;overflow:hidden}
-#validationBlocksView iframe{width:100%;height:100%;min-height:520px;border:0;background:#fff}
-.reference-dialog-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;z-index:9999}
-.reference-dialog-panel{background:#fff;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.25);width:min(420px,calc(100vw - 32px));max-height:min(520px,calc(100vh - 32px));display:flex;flex-direction:column}
-.reference-dialog-title{font-weight:bold;color:#202124;padding:14px 16px;border-bottom:1px solid #e0e0e0}
-.reference-dialog-list{padding:8px 16px;overflow:auto}
-.reference-dialog-row{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:.9em;color:#333}
-.reference-dialog-row input{margin:0}
-.reference-dialog-empty{padding:18px 0;color:#777;text-align:center}
-.reference-dialog-textarea{margin:12px 16px 0;min-height:160px;resize:vertical;border:1px solid #dadce0;border-radius:4px;padding:8px;font:13px/1.4 monospace}
-.reference-dialog-actions{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid #e0e0e0}
-.reference-dialog-actions button{border:1px solid #dadce0;background:#fff;border-radius:4px;padding:7px 12px;cursor:pointer;font-weight:bold}
-.reference-dialog-actions .reference-dialog-primary{background:#1a73e8;border-color:#1a73e8;color:#fff}
-.rt-step{padding:2px 6px;border-bottom:1px solid #333}.rt-step:hover{background:#2a2a2a}
-.rt-done{padding:4px 6px;color:#4CAF50;font-weight:bold;border-top:1px solid #444}
-.rt-info{padding:2px 6px;color:#888;font-style:italic}
-.rt-err{padding:2px 6px;color:#f44336}
-@media (max-width:1040px){#header.appbar{grid-template-columns:1fr}.header-buttons{justify-content:flex-start}#main{grid-template-columns:1fr;overflow:auto}.workspace-shell{min-height:420px}.inspector-panel{min-height:420px;max-height:620px}}
-@media (max-width:560px){#header.appbar{padding:10px}.toolbar-group{width:100%;border-right:0;padding-right:0}.toolbar-group.primary-actions button{flex:1 1 auto}.mode-toggle{width:100%}.mode-toggle button{flex:1}.toolbar-menu{width:100%}.toolbar-menu summary{width:100%;text-align:center}.toolbar-menu-panel{position:static;margin-top:6px;box-shadow:none}#main{padding:8px}.workspace-shell{min-height:360px}.inspector-panel{min-height:420px;max-height:520px}}
-""" + AppMakerHtmlRuntimeGenerator.css() + """
-</style>
-""";
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<style>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(":root{color-scheme:light;--bg:#f4f6f8;--surface:#fff;--panel:#fbfcfe;--text:#17202a;--muted:#5d6875;--line:#d9dee7;--accent:#1f6feb;--accent-strong:#174ea6;--success:#15803d;--warning:#8a5a00;--danger:#b42318}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("*{box-sizing:border-box}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Arial,sans-serif;display:flex;flex-direction:column;height:100vh;min-height:0}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("button,summary{font:inherit}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("button{border:1px solid var(--line);background:#fff;color:var(--text);padding:7px 11px;border-radius:6px;cursor:pointer;font-weight:650;white-space:nowrap}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("button:hover,summary:hover{border-color:#b8c2cf;background:#f8fafc}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#header.appbar{background:var(--surface);border-bottom:1px solid var(--line);padding:10px 14px;display:grid;grid-template-columns:minmax(220px,auto) 1fr;gap:12px;align-items:center;box-shadow:0 1px 2px rgba(15,23,42,.04);z-index:2}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".header-title{min-width:0}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".header-kicker{margin:0 0 2px;color:var(--muted);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#header h1{margin:0;font-size:1.15rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".editor-mode-hint{margin-top:2px;color:var(--muted);font-size:.76rem}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".header-buttons{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".toolbar-group{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-right:8px;border-right:1px solid var(--line)}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".toolbar-group:last-child{padding-right:0;border-right:0}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".command-button{min-height:34px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".button-primary{background:var(--accent);border-color:var(--accent);color:#fff}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".button-primary:hover{background:var(--accent-strong);border-color:var(--accent-strong)}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".button-success{background:#ecfdf3;border-color:#bbf7d0;color:#166534}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".button-danger{background:#fef2f2;border-color:#fecaca;color:var(--danger)}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".mode-toggle{display:flex;gap:0;padding:2px;border:1px solid var(--line);border-radius:8px;background:#f8fafc}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".mode-toggle button{border:0;background:transparent;color:var(--muted);padding:6px 9px;border-radius:6px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".mode-toggle button.active{background:var(--surface);color:var(--accent);box-shadow:0 1px 3px rgba(15,23,42,.12)}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".toolbar-menu{position:relative}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".toolbar-menu summary{list-style:none;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--text);padding:7px 11px;cursor:pointer;font-weight:bold;white-space:nowrap}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".toolbar-menu summary::-webkit-details-marker{display:none}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".toolbar-menu-panel{position:absolute;right:0;top:calc(100% + 8px);min-width:230px;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 16px 34px rgba(15,23,42,.18);display:flex;flex-direction:column;gap:6px;z-index:20}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".toolbar-menu-panel button{width:100%;text-align:left}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".speed-control{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.82rem;padding:4px 2px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".speed-control input{width:90px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".editor-toast{position:fixed;right:16px;bottom:16px;max-width:min(420px,calc(100vw - 32px));padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);box-shadow:0 14px 36px rgba(15,23,42,.18);z-index:30;display:none}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".editor-toast.visible{display:block}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".editor-toast.error{border-color:#fecaca;background:#fef2f2;color:#991b1b}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".editor-toast.warning{border-color:#fde68a;background:#fffbeb;color:#92400e}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#main{display:grid;grid-template-columns:minmax(520px,1fr) minmax(360px,min(40vw,500px));gap:12px;flex:1;min-height:0;overflow:hidden;padding:12px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".workspace-shell,.inspector-panel{min-height:0;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.04)}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".workspace-shell{display:flex;flex-direction:column}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".workspace-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--panel)}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".workspace-title{font-weight:700}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".workspace-hint{color:var(--muted);font-size:.78rem}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#blocklyDiv{flex:1 1 auto;min-height:0;height:100%}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#outputPanel{display:flex;flex-direction:column;min-width:0}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".panel-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 12px 6px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#outputPanel h2{margin:0;font-size:1rem;color:var(--text);line-height:1.2}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".panel-subtitle{margin-top:2px;color:var(--muted);font-size:.76rem}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:0 10px;overflow-x:auto;scrollbar-width:thin}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#tabs button{flex:0 0 auto;padding:8px 10px;border:0;background:#f1f4f8;color:#526071;border-radius:6px 6px 0 0}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#tabs button.active{background:#fff;color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent)}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("body:not(.developer-mode) [data-developer-only=\"true\"]{display:none!important}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".tab-content{flex:1;display:none;margin:0 10px 10px;padding:10px;overflow:auto;font-size:.85em;border:1px solid var(--line);border-top:0;border-radius:0 0 6px 6px;min-height:0}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".tab-content.active{display:block}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#modelView{background:#fff;font-family:Arial,sans-serif}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#jsonView{background:#f5f5f5;font-family:monospace;white-space:pre-wrap}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#runtimeView{background:#172033;color:#d4d4d4;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82em;white-space:pre-wrap}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".model-node{margin:4px 0;padding:8px 12px;border-radius:6px;border-left:4px solid #4285f4}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".model-node .node-type{font-weight:bold;font-size:.9em;color:#333}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".model-node .node-attr{font-size:.8em;color:#666;margin-top:2px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".model-node .node-attr span{background:#e8f0fe;padding:1px 6px;border-radius:3px;margin-right:4px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".model-children{margin-left:16px;padding-left:8px;border-left:2px dashed #ccc}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".validation-summary{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:.85em;color:#333}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".validation-empty{color:#5f6368;text-align:center;margin-top:40px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".validation-list{display:flex;flex-direction:column;gap:8px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".validation-item{border:1px solid #f4b400;border-left:4px solid #f4b400;background:#fff8e1;border-radius:4px;padding:8px 10px;text-align:left;cursor:pointer;color:#3c4043}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".validation-item:hover{background:#fff3c4}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".validation-item-type{font-size:.75em;font-weight:bold;color:#8a5a00;margin-bottom:3px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".validation-item-message{font-size:.85em;line-height:1.35}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#validationBlocksView{padding:0;background:#f5f7fb;overflow:hidden}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("#validationBlocksView iframe{width:100%;height:100%;min-height:520px;border:0;background:#fff}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;z-index:9999}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-panel{background:#fff;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.25);width:min(420px,calc(100vw - 32px));max-height:min(520px,calc(100vh - 32px));display:flex;flex-direction:column}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-title{font-weight:bold;color:#202124;padding:14px 16px;border-bottom:1px solid #e0e0e0}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-list{padding:8px 16px;overflow:auto}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-row{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:.9em;color:#333}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-row input{margin:0}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-empty{padding:18px 0;color:#777;text-align:center}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-textarea{margin:12px 16px 0;min-height:160px;resize:vertical;border:1px solid #dadce0;border-radius:4px;padding:8px;font:13px/1.4 monospace}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-actions{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid #e0e0e0}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-actions button{border:1px solid #dadce0;background:#fff;border-radius:4px;padding:7px 12px;cursor:pointer;font-weight:bold}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".reference-dialog-actions .reference-dialog-primary{background:#1a73e8;border-color:#1a73e8;color:#fff}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".rt-step{padding:2px 6px;border-bottom:1px solid #333}.rt-step:hover{background:#2a2a2a}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".rt-done{padding:4px 6px;color:#4CAF50;font-weight:bold;border-top:1px solid #444}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".rt-info{padding:2px 6px;color:#888;font-style:italic}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(".rt-err{padding:2px 6px;color:#f44336}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@media (max-width: 1040px){");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("#header.appbar{grid-template-columns:1fr}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".header-buttons{justify-content:flex-start}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("#main{grid-template-columns:1fr;overflow:auto}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".workspace-shell{min-height:420px}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".inspector-panel{min-height:420px;max-height:620px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@media (max-width: 560px){");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("#header.appbar{padding:10px}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".toolbar-group{width:100%;border-right:0;padding-right:0}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".toolbar-group.primary-actions button{flex:1 1 auto}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".mode-toggle{width:100%}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".mode-toggle button{flex:1}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".toolbar-menu{width:100%}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".toolbar-menu summary{width:100%;text-align:center}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".toolbar-menu-panel{position:static;margin-top:6px;box-shadow:none}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("#main{padding:8px}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".workspace-shell{min-height:360px}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(".inspector-panel{min-height:420px;max-height:520px}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    String _css = AppMakerHtmlRuntimeGenerator.css();
+    _builder.append(_css, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("</style>");
+    _builder.newLine();
+    return _builder.toString();
   }
 
   public String editorHeaderHtml(final String title) {
-    return """
-<div id="header" class="appbar" data-generated-ui="2026-product">
-  <div class="header-title">
-    <div class="header-kicker">Blockly editor</div>
-    <h1>""" + this.esc(title) + """
-</h1>
-    <div id="editorModeHint" class="editor-mode-hint">Build mode</div>
-  </div>
-  <div class="header-buttons" role="toolbar" aria-label="Editor actions">
-    <div class="toolbar-group primary-actions">
-      <button class="button-primary command-button" onclick="loadSampleModel()">Load Sample</button>
-      <button class="command-button" onclick="saveWorkspace()">Save</button>
-      <button class="command-button" onclick="loadWorkspace()">Load</button>
-      <button class="command-button" onclick="exportJSON()">Export JSON</button>
-    </div>
-    <div class="toolbar-group">
-      <details class="toolbar-menu">
-        <summary>More</summary>
-        <div class="toolbar-menu-panel">
-          <button onclick="loadModelJSON()">Import Model JSON</button>
-          <button onclick="exportXMI()">Export XMI</button>
-          <button onclick="exportCode()">Export Code</button>
-          <button class="button-success" onclick="runModel()">Run Runtime</button>
-          <button onclick="pauseModel()">Pause Runtime</button>
-          <button onclick="stepModel()">Step Runtime</button>
-          <button class="button-danger" onclick="stopModel()">Stop Runtime</button>
-          <label class="speed-control">Speed
-            <input type="range" min="50" max="2000" value="500" step="50" oninput="_astRunner.speed=parseInt(this.value)">
-          </label>
-        </div>
-      </details>
-    </div>
-    <div class="toolbar-group">
-      <div class="mode-toggle" aria-label="Editor mode">
-        <button id="buildModeButton" type="button" class="active" onclick="setEditorMode('build')">Build</button>
-        <button id="developerModeButton" type="button" onclick="setEditorMode('developer')">Developer</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div id="editorToast" class="editor-toast" role="status" aria-live="polite"></div>
-""";
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<div id=\"header\" class=\"appbar\" data-generated-ui=\"2026-product\">");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("<div class=\"header-title\">");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<div class=\"header-kicker\">Blockly editor</div>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<h1>");
+    String _esc = this.esc(title);
+    _builder.append(_esc, "\t\t");
+    _builder.append("</h1>");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.append("<div id=\"editorModeHint\" class=\"editor-mode-hint\">Build mode</div>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<div class=\"header-buttons\" role=\"toolbar\" aria-label=\"Editor actions\">");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("<div class=\"toolbar-group primary-actions\">");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("<button class=\"button-primary command-button\" onclick=\"loadSampleModel()\">Load Sample</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("<button class=\"command-button\" onclick=\"saveWorkspace()\">Save</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("<button class=\"command-button\" onclick=\"loadWorkspace()\">Load</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("<button class=\"command-button\" onclick=\"exportJSON()\">Export JSON</button>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<div class=\"toolbar-group\">");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("<details class=\"toolbar-menu\">");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("<summary>More</summary>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("<div class=\"toolbar-menu-panel\">");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("<button onclick=\"loadModelJSON()\">Import Model JSON</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("<button onclick=\"exportXMI()\">Export XMI</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("<button onclick=\"exportCode()\">Export Code</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("<button class=\"button-success\" onclick=\"runModel()\">Run Runtime</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("<button onclick=\"pauseModel()\">Pause Runtime</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("<button onclick=\"stepModel()\">Step Runtime</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("<button class=\"button-danger\" onclick=\"stopModel()\">Stop Runtime</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("<label class=\"speed-control\">Speed");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("<input type=\"range\" min=\"50\" max=\"2000\" value=\"500\" step=\"50\" oninput=\"_astRunner.speed=parseInt(this.value)\">");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("</label>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("</details>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<div class=\"toolbar-group\">");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("<div class=\"mode-toggle\" aria-label=\"Editor mode\">");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("<button id=\"buildModeButton\" type=\"button\" class=\"active\" onclick=\"setEditorMode(\'build\')\">Build</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("<button id=\"developerModeButton\" type=\"button\" onclick=\"setEditorMode(\'developer\')\">Developer</button>");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("<div id=\"editorToast\" class=\"editor-toast\" role=\"status\" aria-live=\"polite\"></div>");
+    _builder.newLine();
+    return _builder.toString();
   }
 
   public String editorMainHtml(final EditorSpec spec) {
-    return """
-<div id="main">
-  <section class="workspace-shell" aria-label="Blockly workspace">
-    <div class="workspace-panel-header">
-      <div class="workspace-title">Workspace</div>
-      <div class="workspace-hint">Drag blocks here to build the model.</div>
-    </div>
-    <div id="blocklyDiv"></div>
-  </section>
-  <aside id="outputPanel" class="inspector-panel" aria-label="Generated model inspector">
-    <div class="panel-header">
-      <div>
-        <h2>Inspector</h2>
-        <div id="panelSubtitle" class="panel-subtitle">Model, preview and validation issues</div>
-      </div>
-    </div>
-    <div id="tabs">
-      <button class="active" data-tab="model" onclick="switchTab('model')">Model</button>
-      """ + AppMakerHtmlRuntimeGenerator.tabButton(spec) + """
-      <button data-tab="issues" onclick="switchTab('issues')">Issues <span id="issuesBadge"></span></button>
-      <button data-tab="json" data-developer-only="true" onclick="switchTab('json')">JSON</button>
-      <button data-tab="validationBlocks" data-developer-only="true" onclick="switchTab('validationBlocks')">Validation Blocks</button>
-      <button data-tab="runtime" data-developer-only="true" onclick="switchTab('runtime')">Runtime</button>
-    </div>
-    <div id="modelView" class="tab-content active"></div>
-    """ + AppMakerHtmlRuntimeGenerator.tabContent(spec) + """
-    <div id="jsonView" class="tab-content"></div>
-    <div id="issuesView" class="tab-content"></div>
-    <div id="validationBlocksView" class="tab-content"><iframe title="Visual validation Blockly workspace" src="validation_workspace.html"></iframe></div>
-    <div id="runtimeView" class="tab-content"></div>
-  </aside>
-</div>
-""";
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<div id=\"main\">");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("<section class=\"workspace-shell\" aria-label=\"Blockly workspace\">");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<div class=\"workspace-panel-header\">");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("<div class=\"workspace-title\">Workspace</div>");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("<div class=\"workspace-hint\">Drag blocks here to build the model.</div>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<div id=\"blocklyDiv\"></div>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("</section>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("<aside id=\"outputPanel\" class=\"inspector-panel\" aria-label=\"Generated model inspector\">");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<div class=\"panel-header\">");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("<div>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("<h2>Inspector</h2>");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("<div id=\"panelSubtitle\" class=\"panel-subtitle\">Model, preview and validation issues</div>");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("<div id=\"tabs\">");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<button class=\"active\" data-tab=\"model\" onclick=\"switchTab(\'model\')\">Model</button>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    String _tabButton = AppMakerHtmlRuntimeGenerator.tabButton(spec);
+    _builder.append(_tabButton, "\t\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.append("<button data-tab=\"issues\" onclick=\"switchTab(\'issues\')\">Issues <span id=\"issuesBadge\"></span></button>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<button data-tab=\"json\" data-developer-only=\"true\" onclick=\"switchTab(\'json\')\">JSON</button>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<button data-tab=\"validationBlocks\" data-developer-only=\"true\" onclick=\"switchTab(\'validationBlocks\')\">Validation Blocks</button>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<button data-tab=\"runtime\" data-developer-only=\"true\" onclick=\"switchTab(\'runtime\')\">Runtime</button>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("</div>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("<div id=\"modelView\" class=\"tab-content active\"></div>");
+    _builder.newLine();
+    _builder.append("\t");
+    String _tabContent = AppMakerHtmlRuntimeGenerator.tabContent(spec);
+    _builder.append(_tabContent, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.append("<div id=\"jsonView\" class=\"tab-content\"></div>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<div id=\"issuesView\" class=\"tab-content\"></div>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<div id=\"validationBlocksView\" class=\"tab-content\"><iframe title=\"Visual validation Blockly workspace\" src=\"validation_workspace.html\"></iframe></div>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<div id=\"runtimeView\" class=\"tab-content\"></div>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("</aside>");
+    _builder.newLine();
+    _builder.append("</div>");
+    _builder.newLine();
+    return _builder.toString();
   }
 
   public String editorBootstrapScript(final EditorSpec spec) {
@@ -5495,28 +5870,34 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
       _builder.newLine();
       _builder.append("var DEVELOPER_TABS = { json: true, validationBlocks: true, runtime: true };");
       _builder.newLine();
-      _builder.append("var currentEditorTab = 'model';");
+      _builder.append("var currentEditorTab = \'model\';");
       _builder.newLine();
       _builder.newLine();
       _builder.append("function showEditorMessage(message, type) {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var toast = document.getElementById('editorToast');");
+      _builder.append("var toast = document.getElementById(\'editorToast\');");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("if (!toast) { if (type === 'error') console.error(message); return; }");
+      _builder.append("if (!toast) { if (type === \'error\') console.error(message); return; }");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("toast.textContent = message;");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("toast.className = 'editor-toast visible' + (type ? ' ' + type : '');");
+      _builder.append("toast.className = \'editor-toast visible\' + (type ? \' \' + type : \'\');");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("window.clearTimeout(window.__editorToastTimer);");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("window.__editorToastTimer = window.setTimeout(function() { toast.className = 'editor-toast'; }, 4200);");
+      _builder.append("window.__editorToastTimer = window.setTimeout(function() {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("toast.className = \'editor-toast\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}, 4200);");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -5524,40 +5905,76 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
       _builder.append("function setEditorMode(mode, keepTab) {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var developer = mode === 'developer';");
+      _builder.append("var developer = mode === \'developer\';");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("document.body.classList.toggle('developer-mode', developer);");
+      _builder.append("document.body.classList.toggle(\'developer-mode\', developer);");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("document.body.classList.toggle('build-mode', !developer);");
+      _builder.append("document.body.classList.toggle(\'build-mode\', !developer);");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var buildButton = document.getElementById('buildModeButton');");
+      _builder.append("var buildButton = document.getElementById(\'buildModeButton\');");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var developerButton = document.getElementById('developerModeButton');");
+      _builder.append("var developerButton = document.getElementById(\'developerModeButton\');");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("if (buildButton) { buildButton.classList.toggle('active', !developer); buildButton.setAttribute('aria-pressed', String(!developer)); }");
+      _builder.append("if (buildButton) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("buildButton.classList.toggle(\'active\', !developer);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("buildButton.setAttribute(\'aria-pressed\', String(!developer));");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("if (developerButton) { developerButton.classList.toggle('active', developer); developerButton.setAttribute('aria-pressed', String(developer)); }");
+      _builder.append("}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var hint = document.getElementById('editorModeHint');");
+      _builder.append("if (developerButton) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("developerButton.classList.toggle(\'active\', developer);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("developerButton.setAttribute(\'aria-pressed\', String(developer));");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("if (hint) hint.textContent = developer ? 'Developer mode' : 'Build mode';");
+      _builder.append("}");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var subtitle = document.getElementById('panelSubtitle');");
+      _builder.append("var hint = document.getElementById(\'editorModeHint\');");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("if (subtitle) subtitle.textContent = developer ? 'Model, preview, JSON, runtime and validation internals' : 'Model, preview and validation issues';");
+      _builder.append("if (hint) hint.textContent = developer ? \'Developer mode\' : \'Build mode\';");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("if (!developer && !keepTab && DEVELOPER_TABS[currentEditorTab]) switchTab(document.querySelector('[data-tab=\"preview\"]') ? 'preview' : 'model');");
+      _builder.append("var subtitle = document.getElementById(\'panelSubtitle\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (subtitle) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("subtitle.textContent = developer");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("? \'Model, preview, JSON, runtime and validation internals\'");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append(": \'Model, preview and validation issues\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!developer && !keepTab && DEVELOPER_TABS[currentEditorTab]) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("switchTab(document.querySelector(\'[data-tab=\"preview\"]\') ? \'preview\' : \'model\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -5565,7 +5982,7 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
       _builder.append("function switchTab(tab) {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("if (DEVELOPER_TABS[tab]) setEditorMode('developer', true);");
+      _builder.append("if (DEVELOPER_TABS[tab]) setEditorMode(\'developer\', true);");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("currentEditorTab = tab;");
@@ -5583,28 +6000,10 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
       _builder.append("if (view) view.classList.add(\'active\');");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var btns = document.querySelectorAll(\'#tabs button\');");
+      _builder.append("var activeButton = document.querySelector(\'#tabs button[data-tab=\"\' + tab + \'\"]\');");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("for (var i = 0; i < btns.length; i++) {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("if (btns[i].getAttribute(\'onclick\') && btns[i].getAttribute(\'onclick\').indexOf(\"\'\" + tab + \"\'\") !== -1) {");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("btns[i].classList.add(\'active\'); break;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var activeButton = document.querySelector('#tabs button[data-tab=\"' + tab + '\"]');");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("if (activeButton) activeButton.classList.add('active');");
+      _builder.append("if (activeButton) activeButton.classList.add(\'active\');");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("if (tab === \'validationBlocks\' && typeof syncValidationBlocksFromFrame === \'function\') {");
@@ -5891,13 +6290,13 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
       _builder.append("\t\t\t\t");
       _builder.append("Blockly.svgResize(workspace);");
       _builder.newLine();
-      _builder.append("\t\t\t");
+      _builder.append("\t");
       _builder.append("} catch(err) {");
       _builder.newLine();
-      _builder.append("\t\t\t\t");
+      _builder.append("\t\t");
       _builder.append("showEditorMessage(\'Error loading workspace: \' + err.message, \'error\');");
       _builder.newLine();
-      _builder.append("\t\t\t");
+      _builder.append("\t");
       _builder.append("}");
       _builder.newLine();
       _builder.append("\t\t");
@@ -5955,13 +6354,13 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
       _builder.append("\t\t\t\t\t");
       _builder.append("importModelJSON(model);");
       _builder.newLine();
-      _builder.append("\t\t\t\t");
+      _builder.append("\t\t");
       _builder.append("} catch(err) {");
       _builder.newLine();
-      _builder.append("\t\t\t\t\t");
+      _builder.append("\t\t\t");
       _builder.append("showEditorMessage(\'Error importing model JSON: \' + err.message, \'error\');");
       _builder.newLine();
-      _builder.append("\t\t\t\t");
+      _builder.append("\t\t");
       _builder.append("}");
       _builder.newLine();
       _builder.append("\t\t\t");
@@ -5980,19 +6379,17 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
       _builder.append("}");
       _builder.newLine();
       _builder.newLine();
-      _builder.append("\t");
+      _builder.append("\t\t");
       _builder.append("function loadSampleModel() {");
       _builder.newLine();
-      _builder.append("\t\t");
       _builder.append("if (!window.BLOCKLY_SAMPLE_MODEL || window.BLOCKLY_SAMPLE_MODEL.length === 0) {");
       _builder.newLine();
-      _builder.append("\t\t\t");
+      _builder.append("\t");
       _builder.append("showEditorMessage(\'No sample model was generated for this domain.\', \'warning\');");
       _builder.newLine();
-      _builder.append("\t\t\t");
+      _builder.append("\t");
       _builder.append("return;");
       _builder.newLine();
-      _builder.append("\t\t");
       _builder.append("}");
       _builder.newLine();
       _builder.append("\t\t");
@@ -6460,17 +6857,35 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
       _builder.append("}");
       _builder.newLine();
       _builder.newLine();
-      _builder.append("""
-      	/* ── Export domain instance XMI (EMF/XMI style) ── */
-      	function exportXMI() {
-      		if (!confirmExportIfInvalid(workspace)) return;
-      		var model = getModelJSON();
-      		if (!model) { showEditorMessage('Workspace is empty.', 'warning'); return; }
-      	var xmi = modelToDomainXMI(model);
-      	var blob = new Blob([xmi], {type: 'application/xml'});
-      	var a = document.createElement('a');
-      	a.href = URL.createObjectURL(blob);
-      	a.download = '""");
+      _builder.append("\t");
+      _builder.append("/* ── Export domain instance XMI (EMF/XMI style) ── */");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("function exportXMI() {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!confirmExportIfInvalid(workspace)) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var model = getModelJSON();");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!model) { showEditorMessage(\'Workspace is empty.\', \'warning\'); return; }");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var xmi = modelToDomainXMI(model);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var blob = new Blob([xmi], {type: \'application/xml\'});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var a = document.createElement(\'a\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("a.href = URL.createObjectURL(blob);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("a.download = \'");
       String _elvis_6 = null;
       String _domainName_4 = spec.getDomainName();
       if (_domainName_4 != null) {
@@ -6479,13 +6894,15 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
         _elvis_6 = "model";
       }
       String _esc_2 = this.esc(_elvis_6);
-      _builder.append(_esc_2);
-      _builder.append("""
-      _model.xmi';
-      	a.click();
-      }
-      
-      """);
+      _builder.append(_esc_2, "\t");
+      _builder.append("_model.xmi\';");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("a.click();");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
       _builder.append("\t");
       _builder.append("/* ── Export generated domain code ── */");
       _builder.newLine();
@@ -6536,124 +6953,291 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
       _builder.append("}");
       _builder.newLine();
       _builder.newLine();
-      _builder.append("""
-      function modelToDomainXMI(model) {
-      	var nsURI = '""");
-      String _domainXmiNsUri = this.escapeJson(nsURI);
-      _builder.append(_domainXmiNsUri);
-      _builder.append("""
-      ';
-      	var nsPrefix = '""");
-      String _domainXmiNsPrefix = this.escapeJson(nsPrefix);
-      _builder.append(_domainXmiNsPrefix);
-      _builder.append("""
-      ';
-      	var roots = Array.isArray(model) ? model : [model];
-      	var xmi = '<?xml version="1.0" encoding="UTF-8"?>\\n';
-      	xmi += '<xmi:XMI xmi:version="2.0"';
-      	xmi += ' xmlns:xmi="http://www.omg.org/XMI"';
-      	xmi += ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
-      	xmi += ' xmlns:' + nsPrefix + '="' + xmlAttribute(nsURI) + '">\\n';
-      	roots.forEach(function(node) {
-      		xmi += domainNodeToXMI(node, 1, nsPrefix, nsPrefix + ':' + xmlName(node && node._type ? node._type : 'Element'), false);
-      	});
-      	xmi += '</xmi:XMI>';
-      	return xmi;
-      }
-      window.modelToDomainXMI = modelToDomainXMI;
-      
-      function domainNodeToXMI(obj, indent, nsPrefix, elementName, includeType) {
-      	if (!obj || typeof obj !== 'object') return '';
-      	var pad = '  '.repeat(indent);
-      	var type = obj._type || 'Element';
-      	var config = domainBlockConfig(type);
-      	var tag = elementName || (nsPrefix + ':' + xmlName(type));
-      	var attrs = '';
-      	var children = '';
-      
-      	if (includeType) attrs += ' xsi:type="' + nsPrefix + ':' + xmlName(type) + '"';
-      	if (obj._blockId) attrs += ' xmi:id="' + xmlAttribute(obj._blockId) + '"';
-      
-      	(config.fields || []).forEach(function(key) {
-      		if (!Object.prototype.hasOwnProperty.call(obj, key)) return;
-      		var val = obj[key];
-      		if (Array.isArray(val)) {
-      			val.forEach(function(item) {
-      				children += pad + '  <' + xmlName(key) + '>' + xmlText(domainScalarValue(item, key, config)) + '</' + xmlName(key) + '>\\n';
-      			});
-      		} else if (val !== null && val !== undefined && typeof val !== 'object') {
-      			attrs += ' ' + xmlName(key) + '="' + xmlAttribute(domainScalarValue(val, key, config)) + '"';
-      		}
-      	});
-      
-      	(config.references || []).forEach(function(key) {
-      		if (!Object.prototype.hasOwnProperty.call(obj, key)) return;
-      		var ids = referenceIds(obj[key]);
-      		if (ids.length) attrs += ' ' + xmlName(key) + '="' + xmlAttribute(ids.join(' ')) + '"';
-      	});
-      
-      	(config.values || []).forEach(function(key) {
-      		var child = obj[key];
-      		if (child && child._type) {
-      			children += domainNodeToXMI(child, indent + 1, nsPrefix, xmlName(key), true);
-      		}
-      	});
-      
-      	(config.statements || []).forEach(function(key) {
-      		var list = Array.isArray(obj[key]) ? obj[key] : [];
-      		list.forEach(function(child) {
-      			if (child && child._type) {
-      				children += domainNodeToXMI(child, indent + 1, nsPrefix, xmlName(key), true);
-      			}
-      		});
-      	});
-      
-      	if (children) {
-      		return pad + '<' + tag + attrs + '>\\n' + children + pad + '</' + tag + '>\\n';
-      	} else {
-      		return pad + '<' + tag + attrs + '/>\\n';
-      	}
-      }
-      
-      function domainBlockConfig(type) {
-      	var blocks = (window.BLOCKLY_DOMAIN_CODEGEN && window.BLOCKLY_DOMAIN_CODEGEN.blocks) || {};
-      	return blocks[type] || { fields: [], fieldTypes: {}, references: [], values: [], statements: [] };
-      }
-      
-      function domainScalarValue(value, fieldName, config) {
-      	var type = config && config.fieldTypes ? config.fieldTypes[fieldName] : null;
-      	if (type === 'BOOLEAN') {
-      		if (value === true || value === 'TRUE' || value === 'true' || value === '1') return 'true';
-      		if (value === false || value === 'FALSE' || value === 'false' || value === '0') return 'false';
-      	}
-      	return value === null || value === undefined ? '' : String(value);
-      }
-      
-      function referenceIds(value) {
-      	if (Array.isArray(value)) {
-      		return value.map(function(item) { return String(item || '').trim(); }).filter(Boolean);
-      	}
-      	if (value === null || value === undefined || value === '') return [];
-      	return String(value).split(/[,\\n ]+/).map(function(item) { return item.trim(); }).filter(Boolean);
-      }
-      
-      function xmlName(value) {
-      	var text = String(value || 'Element').replace(/[^A-Za-z0-9_.-]/g, '_');
-      	return /^[A-Za-z_]/.test(text) ? text : '_' + text;
-      }
-      
-      function xmlText(value) {
-      	return String(value === null || value === undefined ? '' : value)
-      		.replace(/&/g, '&amp;')
-      		.replace(/</g, '&lt;')
-      		.replace(/>/g, '&gt;');
-      }
-      
-      function xmlAttribute(value) {
-      	return xmlText(value).replace(/"/g, '&quot;');
-      }
-      
-      """);
+      _builder.append("function modelToDomainXMI(model) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var nsURI = \'");
+      String _escapeJson = this.escapeJson(nsURI);
+      _builder.append(_escapeJson, "\t");
+      _builder.append("\';");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("var nsPrefix = \'");
+      String _escapeJson_1 = this.escapeJson(nsPrefix);
+      _builder.append(_escapeJson_1, "\t");
+      _builder.append("\';");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("var roots = Array.isArray(model) ? model : [model];");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var xmi = \'<?xml version=\"1.0\" encoding=\"UTF-8\"?>\\n\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("xmi += \'<xmi:XMI xmi:version=\"2.0\"\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("xmi += \' xmlns:xmi=\"http://www.omg.org/XMI\"\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("xmi += \' xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("xmi += \' xmlns:\' + nsPrefix + \'=\"\' + xmlAttribute(nsURI) + \'\">\\n\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("roots.forEach(function(node) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("xmi += domainNodeToXMI(node, 1, nsPrefix, nsPrefix + \':\' + xmlName(node && node._type ? node._type : \'Element\'), false);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("xmi += \'</xmi:XMI>\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("return xmi;");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("window.modelToDomainXMI = modelToDomainXMI;");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function domainNodeToXMI(obj, indent, nsPrefix, elementName, includeType) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (!obj || typeof obj !== \'object\') return \'\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var pad = \'  \'.repeat(indent);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var type = obj._type || \'Element\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var config = domainBlockConfig(type);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var tag = elementName || (nsPrefix + \':\' + xmlName(type));");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var attrs = \'\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var children = \'\';");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (includeType) attrs += \' xsi:type=\"\' + nsPrefix + \':\' + xmlName(type) + \'\"\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (obj._blockId) attrs += \' xmi:id=\"\' + xmlAttribute(obj._blockId) + \'\"\';");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("(config.fields || []).forEach(function(key) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!Object.prototype.hasOwnProperty.call(obj, key)) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var val = obj[key];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (Array.isArray(val)) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("val.forEach(function(item) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("children += pad + \'  <\' + xmlName(key) + \'>\' + xmlText(domainScalarValue(item, key, config)) + \'</\' + xmlName(key) + \'>\\n\';");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("} else if (val !== null && val !== undefined && typeof val !== \'object\') {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("attrs += \' \' + xmlName(key) + \'=\"\' + xmlAttribute(domainScalarValue(val, key, config)) + \'\"\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("(config.references || []).forEach(function(key) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (!Object.prototype.hasOwnProperty.call(obj, key)) return;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var ids = referenceIds(obj[key]);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (ids.length) attrs += \' \' + xmlName(key) + \'=\"\' + xmlAttribute(ids.join(\' \')) + \'\"\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("(config.values || []).forEach(function(key) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var child = obj[key];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (child && child._type) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("children += domainNodeToXMI(child, indent + 1, nsPrefix, xmlName(key), true);");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("(config.statements || []).forEach(function(key) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("var list = Array.isArray(obj[key]) ? obj[key] : [];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("list.forEach(function(child) {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (child && child._type) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("children += domainNodeToXMI(child, indent + 1, nsPrefix, xmlName(key), true);");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (children) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return pad + \'<\' + tag + attrs + \'>\\n\' + children + pad + \'</\' + tag + \'>\\n\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("} else {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return pad + \'<\' + tag + attrs + \'/>\\n\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function domainBlockConfig(type) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var blocks = (window.BLOCKLY_DOMAIN_CODEGEN && window.BLOCKLY_DOMAIN_CODEGEN.blocks) || {};");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("return blocks[type] || { fields: [], fieldTypes: {}, references: [], values: [], statements: [] };");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function domainScalarValue(value, fieldName, config) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var type = config && config.fieldTypes ? config.fieldTypes[fieldName] : null;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (type === \'BOOLEAN\') {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (value === true || value === \'TRUE\' || value === \'true\' || value === \'1\') return \'true\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("if (value === false || value === \'FALSE\' || value === \'false\' || value === \'0\') return \'false\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("return value === null || value === undefined ? \'\' : String(value);");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function referenceIds(value) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (Array.isArray(value)) {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return value.map(function(item) { return String(item || \'\').trim(); }).filter(Boolean);");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("if (value === null || value === undefined || value === \'\') return [];");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("return String(value).split(/[,\\n ]+/).map(function(item) { return item.trim(); }).filter(Boolean);");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function xmlName(value) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var text = String(value || \'Element\').replace(/[^A-Za-z0-9_.-]/g, \'_\');");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("return /^[A-Za-z_]/.test(text) ? text : \'_\' + text;");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function xmlText(value) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("return String(value === null || value === undefined ? \'\' : value)");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append(".replace(/&/g, \'&amp;\')");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append(".replace(/</g, \'&lt;\')");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append(".replace(/>/g, \'&gt;\');");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("function xmlAttribute(value) {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("return xmlText(value).replace(/\"/g, \'&quot;\');");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
       _builder.append("/* ── Auto-update ── */");
       _builder.newLine();
       _builder.append("workspace.addChangeListener(function(e) {");
@@ -6663,7 +7247,7 @@ body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
       _builder.newLine();
       _builder.append("});");
       _builder.newLine();
-      _builder.append("setEditorMode('build', true);");
+      _builder.append("setEditorMode(\'build\', true);");
       _builder.newLine();
       _builder.append("updateOutput();");
       _builder.newLine();

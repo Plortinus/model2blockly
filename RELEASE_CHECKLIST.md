@@ -1,7 +1,5 @@
 # Release Checklist
 
-Languages: **English** | [Español](docs/es/RELEASE_CHECKLIST.md) | [中文](docs/zh/RELEASE_CHECKLIST.md)
-
 Use this checklist when publishing a new Model2Blockly Eclipse plugin/update-site
 build.
 
@@ -54,7 +52,7 @@ Run these before publishing:
 ```bash
 npm run verify:plugin
 npm run verify:docs
-npm run verify:dsl-validation
+npm run verify:domain-xmi
 npm run verify:patch
 npm run smoke
 ```
@@ -73,9 +71,9 @@ What these checks cover:
 | --- | --- |
 | `verify:plugin` | Bundle metadata, feature/update-site contents, generated examples, packaged classes, and packaged XMI-pipeline sources |
 | `verify:docs` | Trilingual documentation file presence, language switches, and relative links |
-| `verify:dsl-validation` | DSL editor/generator diagnostic bridge regression cases |
+| `verify:domain-xmi` | EMF load/validate check for the domain XMI exported by the Ecore-generated editor |
 | `verify:patch` | Validation Blockly-to-source patch dry-run/apply/regeneration flow |
-| `smoke` | Browser-level generated editor sanity checks for DSL and Ecore examples |
+| `smoke` | Browser-level generated editor sanity checks for generated examples |
 
 Do not publish if any command fails.
 
@@ -150,11 +148,8 @@ Do not choose the parent `io.github.plortinus.model2blockly.updatesite/` project
 
 After installing from the hosted update site in a clean Eclipse workspace:
 
-1. Import or create a project containing a `.model2blockly` file.
+1. Import or create a project containing an annotated `.ecore` file.
 2. Run `Generate Blockly Editor`.
 3. Confirm `generation_report.html` opens.
 4. Confirm the output contains `intermediate/*_blocklyspec.xmi`.
-5. Confirm invalid DSL models produce `Problems` markers instead of Java stack
-   traces.
-6. If testing Ecore, generate from `app_maker.ecore` and confirm the output
-   editor opens.
+5. Generate from `app_maker.ecore` and confirm the output editor opens.

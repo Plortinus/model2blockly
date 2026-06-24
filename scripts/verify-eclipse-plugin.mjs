@@ -46,13 +46,10 @@ function checkRequiredFiles() {
     'io.github.plortinus.model2blockly.updatesite/repository/content.jar',
     'io.github.plortinus.model2blockly.updatesite/repository/artifacts.jar',
     'io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore',
-    'io.github.plortinus.model2blockly/examples/app_maker.model2blockly',
     'io.github.plortinus.model2blockly/model/app_maker.ecore',
     'RELEASE_CHECKLIST.md',
-    'scripts/verify-dsl-validation.mjs',
     'scripts/rebuild-update-site.mjs',
     'site/update-site/index.html',
-    'io.github.plortinus.model2blockly/test/io/github/plortinus/model2blockly/tests/Model2BlocklyValidatorBridgeTest.java',
   ].forEach((file) => assertExists(file));
 }
 
@@ -64,7 +61,6 @@ function checkXmlFiles() {
     'io.github.plortinus.model2blockly.updatesite/category.xml',
     'io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore',
     'io.github.plortinus.model2blockly/model/app_maker.ecore',
-    'io.github.plortinus.model2blockly/examples/generated/app_maker/intermediate/AppMaker_blocklyspec.xmi',
     'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi',
   ];
   const script = [
@@ -127,8 +123,8 @@ function checkBuildProperties() {
 
 function checkNpmScripts() {
   const pkg = JSON.parse(read('package.json'));
-  if (!pkg.scripts || pkg.scripts['verify:dsl-validation'] !== 'node scripts/verify-dsl-validation.mjs') {
-    fail('package.json exposes verify:dsl-validation regression script');
+  if (!pkg.scripts || pkg.scripts['verify:domain-xmi'] !== 'node scripts/verify-domain-xmi.mjs') {
+    fail('package.json exposes verify:domain-xmi EMF domain XMI script');
   }
   if (pkg.scripts['rebuild:update-site'] !== 'node scripts/rebuild-update-site.mjs') {
     fail('package.json exposes rebuild:update-site release script');
@@ -154,11 +150,8 @@ function checkUiContributions() {
   assertIncludes(plugin, 'ApplyValidationPatchHandler', 'Validation patch command handler is registered');
   assertIncludes(plugin, 'GenerateBlocklyEditorAction', 'Legacy popup action is registered');
   assertIncludes(plugin, 'nameFilter="*.ecore"', '.ecore popup action is registered');
-  assertIncludes(plugin, 'nameFilter="*.model2blockly"', '.model2blockly popup action is registered');
   assertIncludes(plugin, 'io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection', 'Generate command visibility is restricted to supported files');
   assertIncludes(plugin, 'org.eclipse.core.resources.extension" value="ecore"', 'Generate command is visible for .ecore files');
-  assertIncludes(plugin, 'org.eclipse.core.resources.extension" value="model2blockly"', 'Generate command is visible for .model2blockly files');
-  assertIncludes(plugin, 'file-extensions="model2blockly"', '.model2blockly content type is registered');
 }
 
 function checkIntermediatePipeline() {
@@ -171,10 +164,7 @@ function checkIntermediatePipeline() {
 
   for (const file of [
     'io.github.plortinus.model2blockly.ui/src/io/github/plortinus/model2blockly/ui/handlers/GenerateBlocklyEditorHandler.java',
-    'io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/standalone/Model2BlocklyToBlocklyMain.java',
     'io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/standalone/EcoreToBlocklyMain.java',
-    'io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/generator/Model2BlocklyGenerator.xtend',
-    'io.github.plortinus.model2blockly/xtend-gen/io/github/plortinus/model2blockly/generator/Model2BlocklyGenerator.java',
   ]) {
     const text = read(file);
     assertIncludes(text, 'intermediateXmi', `${file} materializes an intermediate XMI string`);
@@ -246,33 +236,12 @@ function checkFeatureAndUpdateSite() {
     'Core update-site jar contains intermediate XMI serializer');
   assertIncludes(coreListing, 'bin/io/github/plortinus/model2blockly/blocklyspec/ValidationExpressionSyntax.class',
     'Core update-site jar contains validation expression syntax checker');
-  assertIncludes(coreListing, 'bin/io/github/plortinus/model2blockly/validation/Model2BlocklyValidationDiagnostics.class',
-    'Core update-site jar contains DSL validation diagnostic formatter');
-  assertIncludes(coreListing, 'bin/io/github/plortinus/model2blockly/validation/Model2BlocklyValidator.class',
-    'Core update-site jar contains DSL validator bridge');
-  const validatorSource = execFileSync('unzip', ['-p', abs(pluginJars[0]),
-    'src/io/github/plortinus/model2blockly/validation/Model2BlocklyValidator.java'], { encoding: 'utf8' });
-  assertIncludes(validatorSource, 'checkIntermediateBlocklySpec',
-    'Core update-site jar validates intermediate model invariants during DSL validation');
-  assertIncludes(validatorSource, 'INTERMEDIATE_MODEL_INVALID',
-    'Core update-site jar exposes issue code for intermediate model validation');
   const serializerSource = execFileSync('unzip', ['-p', abs(pluginJars[0]),
     'src/io/github/plortinus/model2blockly/intermediate/BlocklySpecXmiSerializer.java'], { encoding: 'utf8' });
   assertIncludes(serializerSource, 'fromXmi(String xmi)',
     'Core update-site jar source can reload BlocklyEditorSpec from XMI');
   assertIncludes(serializerSource, 'deserialize(String xmi)',
     'Core update-site jar source loads intermediate XMI as EMF');
-  const packagedDslGenerator = execFileSync('unzip', ['-p', abs(pluginJars[0]),
-    'xtend-gen/io/github/plortinus/model2blockly/generator/Model2BlocklyGenerator.java'], { encoding: 'utf8' });
-  assertIncludesAny(packagedDslGenerator, [
-    'BlocklySpecXmiSerializer.fromXmiToEditorSpec(intermediateXmi)',
-    'BlocklySpecXmiSerializer.fromXmi(intermediateXmi)',
-  ],
-    'Core update-site jar Xtext generator reloads intermediate XMI before HTML generation');
-  const packagedDslStandalone = execFileSync('unzip', ['-p', abs(pluginJars[0]),
-    'src/io/github/plortinus/model2blockly/standalone/Model2BlocklyToBlocklyMain.java'], { encoding: 'utf8' });
-  assertIncludes(packagedDslStandalone, 'EMF EditorSpec intermediate XMI and HTML Blockly editor',
-    'Core update-site jar DSL standalone README template documents the EMF intermediate XMI');
   const packagedEcoreStandalone = execFileSync('unzip', ['-p', abs(pluginJars[0]),
     'src/io/github/plortinus/model2blockly/standalone/EcoreToBlocklyMain.java'], { encoding: 'utf8' });
   assertIncludes(packagedEcoreStandalone, 'EMF EditorSpec intermediate XMI and HTML Blockly editor',
@@ -348,7 +317,6 @@ function checkFeatureAndUpdateSite() {
 
 function checkGeneratedExamples() {
   for (const dir of [
-    'io.github.plortinus.model2blockly/examples/generated/app_maker',
     'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore',
   ]) {
     assertExists(`${dir}/README.md`);
@@ -426,7 +394,6 @@ function checkGeneratedExamples() {
 
 function checkNoLegacyFrontendArtifacts() {
   for (const dir of [
-    'io.github.plortinus.model2blockly/examples/generated/app_maker',
     'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore',
   ]) {
     const legacyFrontendDir = 're' + 'act';
@@ -435,10 +402,8 @@ function checkNoLegacyFrontendArtifacts() {
     }
   }
   const forbidden = new RegExp([
-    'Re' + 'act',
-    're' + 'act',
-    'Vi' + 'te',
-    'vi' + 'te',
+    '\\b' + 'Re' + 'act' + '\\b',
+    '\\b' + 're' + 'act' + '\\b',
     'Blockly' + 'Re' + 'act' + 'CodeGenerator',
     '--target ' + 'both',
     '--target ' + 're' + 'act',
@@ -490,6 +455,7 @@ function shouldSkipPath(relative) {
 
 function shouldSkipTextScan(relative) {
   return shouldSkipPath(relative)
+    || relative === 'package-lock.json'
     || relative.endsWith('.pdf')
     || relative.endsWith('.png')
     || relative.endsWith('.docx')

@@ -66,7 +66,7 @@ public final class ValidationSourcePatcher {
 		String patched;
 		if ("ecore".equals(extension)) {
 			patched = patchEcore(sourceText, model, report, apply);
-		} else if ("model2blockly".equals(extension)) {
+		} else if ("m2b".equals(extension) || "model2blockly".equals(extension)) {
 			patched = patchModel2Blockly(sourceText, model, report, apply);
 		} else {
 			throw new IOException("Unsupported source extension: " + source);

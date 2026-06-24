@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620" role="img" aria-labelledby="title desc">
+  <title id="title">Model2Blockly system architecture</title>
+  <desc id="desc">Inputs flow through adapters into an intermediate EditorSpec model, then through the Blockly generator into HTML, JavaScript, reports and validation workspace artifacts.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#57606a"/>
+    </marker>
+    <style>
+      .bg { fill: #ffffff; }
+      .lane { fill: #f6f8fa; stroke: #d0d7de; stroke-width: 1.5; }
+      .box { fill: #ffffff; stroke: #8c959f; stroke-width: 1.5; rx: 10; }
+      .blue { stroke: #1f6feb; }
+      .green { stroke: #2da44e; }
+      .amber { stroke: #bf8700; }
+      .purple { stroke: #8250df; }
+      .red { stroke: #cf222e; }
+      .title { font: 700 24px Arial, sans-serif; fill: #24292f; }
+      .lane-title { font: 700 15px Arial, sans-serif; fill: #24292f; }
+      .label { font: 700 14px Arial, sans-serif; fill: #24292f; }
+      .text { font: 12px Arial, sans-serif; fill: #57606a; }
+      .small { font: 11px Arial, sans-serif; fill: #57606a; }
+      .arrow { stroke: #57606a; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .feedback { stroke: #cf222e; stroke-width: 2; fill: none; marker-end: url(#arrow); stroke-dasharray: 7 5; }
+    </style>
+  </defs>
+  <rect class="bg" x="0" y="0" width="1100" height="620"/>
+  <text class="title" x="40" y="48">Model2Blockly Architecture</text>
+  <text class="text" x="40" y="74">Two authoring routes share one intermediate EMF model and one Blockly generation backend.</text>
+
+  <rect class="lane" x="35" y="110" width="195" height="390" rx="16"/>
+  <text class="lane-title" x="60" y="140">Authoring inputs</text>
+  <rect class="box blue" x="60" y="170" width="145" height="86"/>
+  <text class="label" x="82" y="198">Text DSL</text>
+  <text class="text" x="82" y="222">*.m2b</text>
+  <text class="small" x="82" y="242">Xtext editor</text>
+  <rect class="box blue" x="60" y="292" width="145" height="90"/>
+  <text class="label" x="82" y="322">Annotated Ecore</text>
+  <text class="text" x="82" y="346">*.ecore</text>
+  <text class="small" x="82" y="366">EAnnotations</text>
+
+  <rect class="lane" x="270" y="110" width="195" height="390" rx="16"/>
+  <text class="lane-title" x="296" y="140">Adapters</text>
+  <rect class="box green" x="295" y="170" width="145" height="86"/>
+  <text class="label" x="316" y="198">DSL parser</text>
+  <text class="text" x="316" y="222">DomainModelAdapter</text>
+  <rect class="box green" x="295" y="292" width="145" height="90"/>
+  <text class="label" x="316" y="322">Ecore loader</text>
+  <text class="text" x="316" y="346">EcoreAdapter</text>
+
+  <rect class="lane" x="505" y="110" width="225" height="390" rx="16"/>
+  <text class="lane-title" x="532" y="140">Intermediate model</text>
+  <rect class="box amber" x="535" y="185" width="165" height="94"/>
+  <text class="label" x="567" y="214">EditorSpec</text>
+  <text class="text" x="567" y="238">Generated EMF model</text>
+  <text class="small" x="567" y="258">Blocks, fields, toolbox</text>
+  <rect class="box amber" x="535" y="318" width="165" height="96"/>
+  <text class="label" x="566" y="348">XMI + validation</text>
+  <text class="text" x="566" y="372">*_blocklyspec.xmi</text>
+  <text class="small" x="566" y="392">Reloaded before output</text>
+
+  <rect class="lane" x="770" y="110" width="140" height="390" rx="16"/>
+  <text class="lane-title" x="792" y="140">Generator</text>
+  <rect class="box purple" x="792" y="230" width="96" height="110"/>
+  <text class="label" x="807" y="258">Blockly</text>
+  <text class="label" x="807" y="278">generator</text>
+  <text class="small" x="807" y="304">HTML, JS,</text>
+  <text class="small" x="807" y="322">reports</text>
+
+  <rect class="lane" x="950" y="110" width="115" height="390" rx="16"/>
+  <text class="lane-title" x="965" y="140">Outputs</text>
+  <rect class="box red" x="965" y="170" width="85" height="70"/>
+  <text class="label" x="981" y="199">Editor</text>
+  <text class="small" x="979" y="220">HTML</text>
+  <rect class="box red" x="965" y="260" width="85" height="70"/>
+  <text class="label" x="988" y="288">JS</text>
+  <text class="small" x="978" y="309">Blocks</text>
+  <rect class="box red" x="965" y="350" width="85" height="70"/>
+  <text class="label" x="976" y="378">Report</text>
+  <text class="small" x="977" y="399">Diagnostics</text>
+
+  <path class="arrow" d="M205 213 H295"/>
+  <path class="arrow" d="M205 337 H295"/>
+  <path class="arrow" d="M440 213 C480 213 490 232 535 232"/>
+  <path class="arrow" d="M440 337 C480 337 490 366 535 366"/>
+  <path class="arrow" d="M618 279 V318"/>
+  <path class="arrow" d="M700 366 C742 366 750 286 792 286"/>
+  <path class="arrow" d="M888 286 C930 286 930 205 965 205"/>
+  <path class="arrow" d="M888 286 H965"/>
+  <path class="arrow" d="M888 286 C930 286 930 385 965 385"/>
+
+  <path class="feedback" d="M1008 420 C1008 545 132 545 132 382"/>
+  <text class="small" x="340" y="536">Optional feedback: Apply edited validation blocks back to DSL or Ecore source</text>
+</svg>

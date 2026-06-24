@@ -16,7 +16,6 @@ const options = {
 };
 
 const defaultTargets = [
-  'io.github.plortinus.model2blockly/examples/generated/app_maker',
   'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore',
 ];
 

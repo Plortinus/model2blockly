@@ -26,10 +26,12 @@
 
     body {
       margin: 0;
+      padding-top: 72px;
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.55;
+      scroll-padding-top: 88px;
     }
 
     main {
@@ -75,16 +77,63 @@
       word-break: break-word;
     }
 
-    .topbar {
+    .site-nav {
+      position: fixed;
+      z-index: 50;
+      top: 0;
+      right: 0;
+      left: 0;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .site-nav-inner {
+      width: min(1080px, calc(100% - 32px));
+      min-height: 72px;
+      margin: 0 auto;
       display: flex;
-      justify-content: flex-end;
-      margin-bottom: 32px;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-link {
+      color: var(--text);
+      font-size: 1.08rem;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .primary-nav {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      min-width: 0;
+      overflow-x: auto;
+    }
+
+    .nav-link {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: var(--muted);
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      background: var(--button-muted);
+      color: var(--accent-strong);
+      text-decoration: none;
     }
 
     .language-switcher {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      margin-left: auto;
     }
 
     .language-button {
@@ -314,14 +363,36 @@
     }
 
     @media (max-width: 760px) {
+      body {
+        padding-top: 122px;
+        scroll-padding-top: 138px;
+      }
+
+      .site-nav-inner {
+        min-height: 122px;
+        width: min(100% - 24px, 1080px);
+        flex-wrap: wrap;
+        align-content: center;
+        gap: 8px 12px;
+        padding: 8px 0;
+      }
+
+      .brand-link {
+        width: 100%;
+      }
+
+      .primary-nav {
+        order: 3;
+        width: 100%;
+      }
+
+      .language-switcher {
+        margin-left: 0;
+      }
+
       main {
         width: min(100% - 24px, 1080px);
         padding-top: 28px;
-      }
-
-      .topbar {
-        justify-content: flex-start;
-        margin-bottom: 24px;
       }
 
       .copy-row,
@@ -330,8 +401,8 @@
         grid-template-columns: 1fr;
       }
 
-      .button,
-      .language-button {
+      .actions .button,
+      .copy-row .button {
         width: 100%;
       }
 
@@ -343,28 +414,38 @@
   </style>
 </head>
 <body>
-  <main>
-    <div class="topbar">
-      <nav class="language-switcher" aria-label="Language">
+  <header class="site-nav">
+    <div class="site-nav-inner">
+      <a class="brand-link" href="#top">Model2Blockly</a>
+      <nav class="primary-nav" aria-label="Primary">
+        <a class="nav-link" href="#top" data-i18n="navHome">Home</a>
+        <a class="nav-link" href="#install" data-i18n="navInstall">Install</a>
+        <a class="nav-link" href="#resources-heading" data-i18n="navExamples">Examples</a>
+        <a class="nav-link" href="docs/en/index.html" data-link="docs" data-i18n="navDocs">Docs</a>
+        <a class="nav-link" href="https://github.com/Plortinus/model2blockly" data-i18n="navGithub">GitHub</a>
+      </nav>
+      <nav class="language-switcher" aria-label="Language" data-i18n-aria-label="languageLabel">
         <button class="language-button" type="button" data-language="en" aria-pressed="true">English</button>
         <button class="language-button" type="button" data-language="es" aria-pressed="false">Español</button>
         <button class="language-button" type="button" data-language="zh" aria-pressed="false">中文</button>
       </nav>
     </div>
+  </header>
 
+  <main id="top">
     <header class="hero">
       <h1>Model2Blockly</h1>
       <p class="intro" data-i18n="intro">
-        Generate Blockly editors from a textual DSL or annotated Ecore models.
+        Generate Blockly editors from annotated Ecore metamodels.
       </p>
       <div class="meta-row" aria-label="Project facts" data-i18n-aria-label="facts">
         <span class="meta version" data-i18n="version">Plugin 1.0.8.qualifier</span>
         <span class="meta requirement" data-i18n="jdk">Requires JDK 21</span>
-        <span class="meta" data-i18n="routes">DSL and Ecore routes</span>
+        <span class="meta" data-i18n="routes">Ecore and EMF pipeline</span>
       </div>
       <div class="actions">
         <a class="button" href="#install" data-i18n="installNow">Install plugin</a>
-        <a class="button secondary" href="app_maker/AppMaker_standalone.html" data-i18n="tryExample">Try generated editor</a>
+        <a class="button secondary" href="app_maker_ecore/Appmaker_standalone.html" data-i18n="tryExample">Try generated editor</a>
         <a class="button secondary" href="docs/en/index.html" data-link="docs" data-i18n="readDocs">Read docs</a>
       </div>
     </header>
@@ -373,7 +454,7 @@
       <div class="band-header">
         <h2 data-i18n="installTitle">Install in Eclipse</h2>
         <p data-i18n="installText">
-          Use this p2 update site in Help -> Install New Software. Keep dependency resolution enabled so Eclipse can install Xtext and EMF.
+          Use this p2 update site in Help -> Install New Software. Keep dependency resolution enabled so Eclipse can install the EMF dependencies.
         </p>
       </div>
       <div class="copy-row">
@@ -394,7 +475,7 @@
         <li class="step">
           <span class="step-number">3</span>
           <h3 data-i18n="installStepThreeTitle">Generate an editor</h3>
-          <p data-i18n="installStepThreeText">Right-click a .model2blockly or .ecore file and run Generate Blockly Editor.</p>
+          <p data-i18n="installStepThreeText">Right-click a .ecore file and run Generate Blockly Editor.</p>
         </li>
       </ol>
     </section>
@@ -402,13 +483,13 @@
     <section aria-labelledby="pipeline-heading">
       <div class="section-heading">
         <h2 id="pipeline-heading" data-i18n="pipelineTitle">Standard generation pipeline</h2>
-        <p data-i18n="pipelineText">Both input routes use the same formal intermediate model before the Blockly editor is emitted.</p>
+        <p data-i18n="pipelineText">The Ecore input is transformed into a formal EMF intermediate model before the Blockly editor is emitted.</p>
       </div>
       <div class="resource-grid">
         <article class="card">
           <div>
             <h3 data-i18n="pipelineInputTitle">1. Source model</h3>
-            <p data-i18n="pipelineInputText">Author a .model2blockly file or reuse an annotated Ecore metamodel.</p>
+            <p data-i18n="pipelineInputText">Reuse or create an annotated Ecore metamodel.</p>
           </div>
         </article>
         <article class="card">
@@ -426,7 +507,7 @@
         <article class="card">
           <div>
             <h3 data-i18n="pipelineInstanceTitle">4. Domain instance XMI</h3>
-            <p data-i18n="pipelineInstanceText">The generated editor exports user-created blocks as JSON or EMF-style XMI in the source domain namespace.</p>
+            <p data-i18n="pipelineInstanceText">The generated editor exports user-created blocks as JSON or domain XMI in the source namespace.</p>
           </div>
         </article>
       </div>
@@ -434,37 +515,37 @@
 
     <section aria-labelledby="route-heading">
       <div class="section-heading">
-        <h2 id="route-heading" data-i18n="routeTitle">Choose your modeling route</h2>
-        <p data-i18n="routeText">Both routes generate the same kind of Blockly editor. Pick the input model that matches your project.</p>
+        <h2 id="route-heading" data-i18n="routeTitle">Model-driven workflow</h2>
+        <p data-i18n="routeText">The project keeps Ecore as the source of truth and makes the generated EMF model visible before producing Blockly code.</p>
       </div>
       <div class="route-grid">
         <article class="card route-card">
           <div>
-            <h3 data-i18n="dslRouteTitle">Use .model2blockly when you want a concise text model</h3>
-            <p data-i18n="dslRouteText">Best for new models, hand-written examples, tutorials, and quick editor experiments.</p>
+            <h3 data-i18n="dslRouteTitle">Start from annotated Ecore</h3>
+            <p data-i18n="dslRouteText">Use EClass, EAttribute, EReference and EAnnotation metadata to describe the target block language.</p>
             <ul class="route-list">
-              <li data-i18n="dslPointOne">Readable syntax for classes, fields, inputs, and validation.</li>
-              <li data-i18n="dslPointTwo">Editor diagnostics report generator-facing issues before generation.</li>
+              <li data-i18n="dslPointOne">Preserves EMF concepts such as containment, bounds, IDs and references.</li>
+              <li data-i18n="dslPointTwo">Adds Blockly, UI, code and validation metadata through standard annotations.</li>
             </ul>
           </div>
           <div class="actions">
-            <a class="button" href="docs/en/dsl-reference.html" data-link="dslReference" data-i18n="openDslGuide">Open DSL guide</a>
-            <a class="button secondary" href="https://github.com/Plortinus/model2blockly/blob/main/io.github.plortinus.model2blockly/examples/app_maker.model2blockly" data-i18n="exampleModel">Example model</a>
+            <a class="button" href="docs/en/ecore-reference.html" data-link="ecoreReference" data-i18n="openDslGuide">Open Ecore guide</a>
+            <a class="button secondary" href="https://github.com/Plortinus/model2blockly/blob/main/io.github.plortinus.model2blockly/model/app_maker.ecore" data-i18n="exampleModel">AppMaker Ecore</a>
           </div>
         </article>
 
         <article class="card route-card">
           <div>
-            <h3 data-i18n="ecoreRouteTitle">Use Ecore when you already have an EMF metamodel</h3>
-            <p data-i18n="ecoreRouteText">Best for existing EMF projects or models that need Ecore IDs, opposites, packages, and annotations.</p>
+            <h3 data-i18n="ecoreRouteTitle">Inspect the EMF intermediate model</h3>
+            <p data-i18n="ecoreRouteText">The generator writes, reloads and validates EditorSpec XMI before emitting browser artifacts.</p>
             <ul class="route-list">
-              <li data-i18n="ecorePointOne">Uses standard EAnnotation metadata for Blockly, UI, code, and validation.</li>
-              <li data-i18n="ecorePointTwo">Preserves EMF concepts such as containment, bounds, IDs, and eOpposite.</li>
+              <li data-i18n="ecorePointOne">Makes the model-to-model boundary explicit and inspectable.</li>
+              <li data-i18n="ecorePointTwo">Keeps Blockly generation separate from source metamodel loading.</li>
             </ul>
           </div>
           <div class="actions">
-            <a class="button" href="docs/en/ecore-reference.html" data-link="ecoreReference" data-i18n="openEcoreGuide">Open Ecore guide</a>
-            <a class="button secondary" href="https://github.com/Plortinus/model2blockly/blob/main/io.github.plortinus.model2blockly/model/app_maker.ecore" data-i18n="ecoreExample">Ecore example</a>
+            <a class="button" href="docs/en/architecture.html" data-link="architecture" data-i18n="openEcoreGuide">Open architecture</a>
+            <a class="button secondary" href="docs/en/running-example.html" data-link="runningExample" data-i18n="ecoreExample">AppMaker case</a>
           </div>
         </article>
       </div>
@@ -479,11 +560,11 @@
         <article class="card">
           <div>
             <h3 data-i18n="examplesTitle">Generated examples</h3>
-            <p data-i18n="examplesText">Try the DSL and Ecore AppMaker editors and inspect validation blocks visually.</p>
+            <p data-i18n="examplesText">Try the Ecore-generated AppMaker editor and inspect validation blocks visually.</p>
           </div>
           <div class="actions">
-            <a class="button" href="app_maker/AppMaker_standalone.html" data-i18n="dslEditor">DSL editor</a>
-            <a class="button secondary" href="app_maker_ecore/Appmaker_standalone.html" data-i18n="ecoreEditor">Ecore editor</a>
+            <a class="button" href="app_maker_ecore/Appmaker_standalone.html" data-i18n="dslEditor">Open editor</a>
+            <a class="button secondary" href="docs/en/running-example.html" data-link="runningExample" data-i18n="ecoreEditor">AppMaker case</a>
           </div>
         </article>
 
@@ -493,15 +574,37 @@
             <p data-i18n="startText">Follow the first-generation path and learn where output folders and reports are written.</p>
           </div>
           <div class="actions">
-            <a class="button" href="docs/en/getting-started.html" data-link="gettingStarted" data-i18n="startTutorial">Start tutorial</a>
+            <a class="button" href="docs/en/user-guide.html" data-link="userGuide" data-i18n="userGuide">User guide</a>
+            <a class="button secondary" href="docs/en/getting-started.html" data-link="gettingStarted" data-i18n="startTutorial">Start tutorial</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div>
+            <h3 data-i18n="architectureTitle">Architecture</h3>
+            <p data-i18n="architectureText">Use the second documentation layer for diagrams, generation flow, output artifacts and implementation modules.</p>
+          </div>
+          <div class="actions">
+            <a class="button" href="docs/en/architecture.html" data-link="architecture" data-i18n="architecture">Architecture</a>
             <a class="button secondary" href="docs/en/troubleshooting.html" data-link="troubleshooting" data-i18n="troubleshooting">Troubleshooting</a>
           </div>
         </article>
 
         <article class="card">
           <div>
+            <h3 data-i18n="caseTitle">AppMaker example</h3>
+            <p data-i18n="caseText">Use the running example to inspect Ecore annotations, intermediate XMI, generated JavaScript, screenshots and reports.</p>
+          </div>
+          <div class="actions">
+            <a class="button" href="docs/en/running-example.html" data-link="runningExample" data-i18n="caseStudy">Open example</a>
+            <a class="button secondary" href="docs/en/docs.html" data-link="docMap" data-i18n="docMap">Documentation map</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div>
             <h3 data-i18n="referenceTitle">Reference docs</h3>
-            <p data-i18n="referenceText">Use the route-specific references for field widgets, Blockly mappings, validation, and code templates.</p>
+            <p data-i18n="referenceText">Use the references for Ecore annotations, field widgets, Blockly mappings, validation, and code templates.</p>
           </div>
           <div class="actions">
             <a class="button" href="docs/en/index.html" data-link="docs" data-i18n="docsHome">Docs home</a>
@@ -521,16 +624,22 @@
     const translations = {
       en: {
         pageTitle: 'Model2Blockly',
+        languageLabel: 'Language',
+        navHome: 'Home',
+        navInstall: 'Install',
+        navExamples: 'Examples',
+        navDocs: 'Docs',
+        navGithub: 'GitHub',
         facts: 'Project facts',
-        intro: 'Generate Blockly editors from a textual DSL or annotated Ecore models.',
+        intro: 'Generate Blockly editors from annotated Ecore metamodels.',
         version: 'Plugin 1.0.8.qualifier',
         jdk: 'Requires JDK 21',
-        routes: 'DSL and Ecore routes',
+        routes: 'Ecore and EMF pipeline',
         installNow: 'Install plugin',
         tryExample: 'Try generated editor',
         readDocs: 'Read docs',
         installTitle: 'Install in Eclipse',
-        installText: 'Use this p2 update site in Help -> Install New Software. Keep dependency resolution enabled so Eclipse can install Xtext and EMF.',
+        installText: 'Use this p2 update site in Help -> Install New Software. Keep dependency resolution enabled so Eclipse can install the EMF dependencies.',
         updateUrlLabel: 'Update site URL',
         copyUrl: 'Copy URL',
         copiedUrl: 'Copied',
@@ -539,66 +648,83 @@
         installStepTwoTitle: 'Restart Eclipse',
         installStepTwoText: 'After installation, restart and confirm the plugin version in Installation Details.',
         installStepThreeTitle: 'Generate an editor',
-        installStepThreeText: 'Right-click a .model2blockly or .ecore file and run Generate Blockly Editor.',
+        installStepThreeText: 'Right-click a .ecore file and run Generate Blockly Editor.',
         pipelineTitle: 'Standard generation pipeline',
-        pipelineText: 'Both input routes use the same formal intermediate model before the Blockly editor is emitted.',
+        pipelineText: 'The Ecore input is transformed into a formal EMF intermediate model before the Blockly editor is emitted.',
         pipelineInputTitle: '1. Source model',
-        pipelineInputText: 'Author a .model2blockly file or reuse an annotated Ecore metamodel.',
+        pipelineInputText: 'Reuse or create an annotated Ecore metamodel.',
         pipelineXmiTitle: '2. Intermediate XMI',
         pipelineXmiText: 'The model is converted to the generated EMF EditorSpec, written as intermediate/*_blocklyspec.xmi, then reloaded and validated.',
         pipelineOutputTitle: '3. Blockly editor',
         pipelineOutputText: 'The reloaded intermediate model generates Blockly blocks, toolbox, validation runtime, reports, and HTML.',
         pipelineInstanceTitle: '4. Domain instance XMI',
-        pipelineInstanceText: 'The generated editor exports user-created blocks as JSON or EMF-style XMI in the source domain namespace.',
-        routeTitle: 'Choose your modeling route',
-        routeText: 'Both routes generate the same kind of Blockly editor. Pick the input model that matches your project.',
-        dslRouteTitle: 'Use .model2blockly when you want a concise text model',
-        dslRouteText: 'Best for new models, hand-written examples, tutorials, and quick editor experiments.',
-        dslPointOne: 'Readable syntax for classes, fields, inputs, and validation.',
-        dslPointTwo: 'Editor diagnostics report generator-facing issues before generation.',
-        ecoreRouteTitle: 'Use Ecore when you already have an EMF metamodel',
-        ecoreRouteText: 'Best for existing EMF projects or models that need Ecore IDs, opposites, packages, and annotations.',
-        ecorePointOne: 'Uses standard EAnnotation metadata for Blockly, UI, code, and validation.',
-        ecorePointTwo: 'Preserves EMF concepts such as containment, bounds, IDs, and eOpposite.',
-        openDslGuide: 'Open DSL guide',
-        openEcoreGuide: 'Open Ecore guide',
-        exampleModel: 'Example model',
-        ecoreExample: 'Ecore example',
+        pipelineInstanceText: 'The generated editor exports user-created blocks as JSON or domain XMI in the source namespace.',
+        routeTitle: 'Model-driven workflow',
+        routeText: 'The project keeps Ecore as the source of truth and makes the generated EMF model visible before producing Blockly code.',
+        dslRouteTitle: 'Start from annotated Ecore',
+        dslRouteText: 'Use EClass, EAttribute, EReference and EAnnotation metadata to describe the target block language.',
+        dslPointOne: 'Preserves EMF concepts such as containment, bounds, IDs and references.',
+        dslPointTwo: 'Adds Blockly, UI, code and validation metadata through standard annotations.',
+        ecoreRouteTitle: 'Inspect the EMF intermediate model',
+        ecoreRouteText: 'The generator writes, reloads and validates EditorSpec XMI before emitting browser artifacts.',
+        ecorePointOne: 'Makes the model-to-model boundary explicit and inspectable.',
+        ecorePointTwo: 'Keeps Blockly generation separate from source metamodel loading.',
+        openDslGuide: 'Open Ecore guide',
+        openEcoreGuide: 'Open architecture',
+        exampleModel: 'AppMaker Ecore',
+        ecoreExample: 'AppMaker case',
         resourcesTitle: 'Common next steps',
         resourcesText: 'Open a generated editor first, then use the guides only when you need syntax, annotations, or troubleshooting.',
         examplesTitle: 'Generated examples',
-        examplesText: 'Try the DSL and Ecore AppMaker editors and inspect validation blocks visually.',
-        dslEditor: 'DSL editor',
-        ecoreEditor: 'Ecore editor',
+        examplesText: 'Try the Ecore-generated AppMaker editor and inspect validation blocks visually.',
+        dslEditor: 'Open editor',
+        ecoreEditor: 'AppMaker case',
         startTitle: 'Getting started',
         startText: 'Follow the first-generation path and learn where output folders and reports are written.',
+        userGuide: 'User guide',
         startTutorial: 'Start tutorial',
+        architectureTitle: 'Architecture',
+        architectureText: 'Use the second documentation layer for diagrams, generation flow, output artifacts and implementation modules.',
+        architecture: 'Architecture',
         troubleshooting: 'Troubleshooting',
+        caseTitle: 'AppMaker example',
+        caseText: 'Use the running example to inspect Ecore annotations, intermediate XMI, generated JavaScript, screenshots and reports.',
+        caseStudy: 'Open example',
+        docMap: 'Documentation map',
         referenceTitle: 'Reference docs',
-        referenceText: 'Use the route-specific references for field widgets, Blockly mappings, validation, and code templates.',
+        referenceText: 'Use the references for Ecore annotations, field widgets, Blockly mappings, validation, and code templates.',
         docsHome: 'Docs home',
         sourceCode: 'Source code',
         footerPrefix: 'Update site URL:',
         links: {
           docs: 'docs/en/index.html',
+          userGuide: 'docs/en/user-guide.html',
+          architecture: 'docs/en/architecture.html',
           gettingStarted: 'docs/en/getting-started.html',
           troubleshooting: 'docs/en/troubleshooting.html',
-          dslReference: 'docs/en/dsl-reference.html',
-          ecoreReference: 'docs/en/ecore-reference.html'
+          ecoreReference: 'docs/en/ecore-reference.html',
+          runningExample: 'docs/en/running-example.html',
+          docMap: 'docs/en/docs.html'
         }
       },
       es: {
         pageTitle: 'Model2Blockly',
+        languageLabel: 'Idioma',
+        navHome: 'Inicio',
+        navInstall: 'Instalar',
+        navExamples: 'Ejemplos',
+        navDocs: 'Docs',
+        navGithub: 'GitHub',
         facts: 'Datos del proyecto',
-        intro: 'Genere editores Blockly desde una DSL textual o modelos Ecore anotados.',
+        intro: 'Genere editores Blockly desde metamodelos Ecore anotados.',
         version: 'Plugin 1.0.8.qualifier',
         jdk: 'Requiere JDK 21',
-        routes: 'Rutas DSL y Ecore',
+        routes: 'Tubería Ecore y EMF',
         installNow: 'Instalar plugin',
         tryExample: 'Probar editor generado',
         readDocs: 'Leer documentación',
         installTitle: 'Instalar en Eclipse',
-        installText: 'Use este update site p2 en Help -> Install New Software. Mantenga activada la resolución de dependencias para que Eclipse instale Xtext y EMF.',
+        installText: 'Use este update site p2 en Help -> Install New Software. Mantenga activada la resolución de dependencias para que Eclipse instale EMF.',
         updateUrlLabel: 'URL del update site',
         copyUrl: 'Copiar URL',
         copiedUrl: 'Copiada',
@@ -607,66 +733,83 @@
         installStepTwoTitle: 'Reinicie Eclipse',
         installStepTwoText: 'Después de instalar, reinicie y confirme la versión en Installation Details.',
         installStepThreeTitle: 'Genere un editor',
-        installStepThreeText: 'Clic derecho en un archivo .model2blockly o .ecore y ejecute Generate Blockly Editor.',
+        installStepThreeText: 'Clic derecho en un archivo .ecore y ejecute Generate Blockly Editor.',
         pipelineTitle: 'Tuberia de generacion estandar',
-        pipelineText: 'Ambas rutas de entrada usan el mismo modelo intermedio formal antes de emitir el editor Blockly.',
+        pipelineText: 'La entrada Ecore se transforma en un modelo EMF intermedio formal antes de emitir el editor Blockly.',
         pipelineInputTitle: '1. Modelo fuente',
-        pipelineInputText: 'Escriba un archivo .model2blockly o reutilice un metamodelo Ecore anotado.',
+        pipelineInputText: 'Reutilice o cree un metamodelo Ecore anotado.',
         pipelineXmiTitle: '2. XMI intermedio',
         pipelineXmiText: 'El modelo se convierte al EditorSpec EMF generado, se escribe como intermediate/*_blocklyspec.xmi, se recarga y se valida.',
         pipelineOutputTitle: '3. Editor Blockly',
         pipelineOutputText: 'El modelo intermedio recargado genera bloques Blockly, toolbox, runtime de validacion, reportes y HTML.',
         pipelineInstanceTitle: '4. XMI de instancia',
-        pipelineInstanceText: 'El editor generado exporta los bloques creados por el usuario como JSON o XMI EMF-style en el namespace del dominio fuente.',
-        routeTitle: 'Elija la ruta de modelado',
-        routeText: 'Ambas rutas generan el mismo tipo de editor Blockly. Elija el modelo de entrada que encaje con su proyecto.',
-        dslRouteTitle: 'Use .model2blockly si quiere un modelo textual conciso',
-        dslRouteText: 'Mejor para modelos nuevos, ejemplos escritos a mano, tutoriales y pruebas rápidas.',
-        dslPointOne: 'Sintaxis legible para clases, campos, inputs y validación.',
-        dslPointTwo: 'Los diagnósticos del editor reportan problemas del generador antes de generar.',
-        ecoreRouteTitle: 'Use Ecore si ya tiene un metamodelo EMF',
-        ecoreRouteText: 'Mejor para proyectos EMF existentes o modelos que necesitan IDs, opposites, paquetes y anotaciones Ecore.',
-        ecorePointOne: 'Usa metadata EAnnotation estándar para Blockly, UI, código y validación.',
-        ecorePointTwo: 'Conserva conceptos EMF como containment, límites, IDs y eOpposite.',
-        openDslGuide: 'Abrir guía DSL',
-        openEcoreGuide: 'Abrir guía Ecore',
-        exampleModel: 'Modelo de ejemplo',
-        ecoreExample: 'Ejemplo Ecore',
+        pipelineInstanceText: 'El editor generado exporta los bloques creados por el usuario como JSON o XMI de dominio en el namespace fuente.',
+        routeTitle: 'Flujo dirigido por modelos',
+        routeText: 'El proyecto mantiene Ecore como fuente de verdad y hace visible el modelo EMF generado antes de producir código Blockly.',
+        dslRouteTitle: 'Partir de Ecore anotado',
+        dslRouteText: 'Use EClass, EAttribute, EReference y EAnnotation para describir el lenguaje de bloques objetivo.',
+        dslPointOne: 'Conserva conceptos EMF como containment, límites, IDs y referencias.',
+        dslPointTwo: 'Añade metadata Blockly, UI, código y validación mediante anotaciones estándar.',
+        ecoreRouteTitle: 'Inspeccionar el modelo EMF intermedio',
+        ecoreRouteText: 'El generador escribe, recarga y valida XMI EditorSpec antes de emitir artefactos de navegador.',
+        ecorePointOne: 'Hace explícito e inspeccionable el límite modelo a modelo.',
+        ecorePointTwo: 'Separa la generación Blockly de la carga del metamodelo fuente.',
+        openDslGuide: 'Abrir guía Ecore',
+        openEcoreGuide: 'Abrir arquitectura',
+        exampleModel: 'Ecore AppMaker',
+        ecoreExample: 'Caso AppMaker',
         resourcesTitle: 'Siguientes pasos comunes',
         resourcesText: 'Abra primero un editor generado; use las guías cuando necesite sintaxis, anotaciones o solución de problemas.',
         examplesTitle: 'Ejemplos generados',
-        examplesText: 'Pruebe los editores AppMaker DSL y Ecore e inspeccione visualmente los bloques de validación.',
-        dslEditor: 'Editor DSL',
-        ecoreEditor: 'Editor Ecore',
+        examplesText: 'Pruebe el editor AppMaker generado desde Ecore e inspeccione visualmente los bloques de validación.',
+        dslEditor: 'Abrir editor',
+        ecoreEditor: 'Caso AppMaker',
         startTitle: 'Primeros pasos',
         startText: 'Siga la ruta de primera generación y vea dónde se escriben las carpetas de salida y los informes.',
+        userGuide: 'Guía de uso',
         startTutorial: 'Empezar tutorial',
+        architectureTitle: 'Arquitectura',
+        architectureText: 'Use la segunda capa de documentación para diagramas, flujo de generación, artefactos y módulos de implementación.',
+        architecture: 'Arquitectura',
         troubleshooting: 'Solución de problemas',
+        caseTitle: 'Caso AppMaker',
+        caseText: 'Use el running example para revisar anotaciones Ecore, XMI intermedio, JavaScript generado, capturas e informes.',
+        caseStudy: 'Abrir caso',
+        docMap: 'Mapa de docs',
         referenceTitle: 'Referencias',
-        referenceText: 'Use las referencias por ruta para widgets, mapeos Blockly, validación y plantillas de código.',
+        referenceText: 'Use las referencias para anotaciones Ecore, widgets, mapeos Blockly, validación y plantillas de código.',
         docsHome: 'Inicio de docs',
         sourceCode: 'Código fuente',
         footerPrefix: 'URL del update site:',
         links: {
           docs: 'docs/es/index.html',
+          userGuide: 'docs/es/user-guide.html',
+          architecture: 'docs/es/architecture.html',
           gettingStarted: 'docs/es/getting-started.html',
           troubleshooting: 'docs/es/troubleshooting.html',
-          dslReference: 'docs/es/dsl-reference.html',
-          ecoreReference: 'docs/es/ecore-reference.html'
+          ecoreReference: 'docs/es/ecore-reference.html',
+          runningExample: 'docs/es/running-example.html',
+          docMap: 'docs/es/docs.html'
         }
       },
       zh: {
         pageTitle: 'Model2Blockly',
+        languageLabel: '语言',
+        navHome: '首页',
+        navInstall: '安装',
+        navExamples: '示例',
+        navDocs: '文档',
+        navGithub: 'GitHub',
         facts: '项目信息',
-        intro: '从文本 DSL 或带注解的 Ecore 模型生成 Blockly 编辑器。',
+        intro: '从带注解的 Ecore 元模型生成 Blockly 编辑器。',
         version: '插件版本 1.0.8.qualifier',
         jdk: '需要 JDK 21',
-        routes: '支持 DSL 和 Ecore',
+        routes: 'Ecore 和 EMF 流程',
         installNow: '安装插件',
         tryExample: '试用生成编辑器',
         readDocs: '阅读文档',
         installTitle: '在 Eclipse 中安装',
-        installText: '在 Help -> Install New Software 中使用这个 p2 update site。保持依赖解析开启，让 Eclipse 能安装 Xtext 和 EMF。',
+        installText: '在 Help -> Install New Software 中使用这个 p2 update site。保持依赖解析开启，让 Eclipse 能安装 EMF 依赖。',
         updateUrlLabel: 'Update site URL',
         copyUrl: '复制 URL',
         copiedUrl: '已复制',
@@ -675,52 +818,63 @@
         installStepTwoTitle: '重启 Eclipse',
         installStepTwoText: '安装后重启，并在 Installation Details 中确认插件版本。',
         installStepThreeTitle: '生成编辑器',
-        installStepThreeText: '右键 .model2blockly 或 .ecore 文件，执行 Generate Blockly Editor。',
+        installStepThreeText: '右键 .ecore 文件，执行 Generate Blockly Editor。',
         pipelineTitle: '标准生成流水线',
-        pipelineText: '两种输入都会先进入同一个正式中间模型，然后才生成 Blockly 编辑器。',
+        pipelineText: 'Ecore 输入会先转换成正式的 EMF 中间模型，然后才生成 Blockly 编辑器。',
         pipelineInputTitle: '1. 源模型',
-        pipelineInputText: '编写 .model2blockly 文件，或者复用带注解的 Ecore 元模型。',
+        pipelineInputText: '复用或创建带注解的 Ecore 元模型。',
         pipelineXmiTitle: '2. 中间 XMI',
         pipelineXmiText: '模型会转换成生成的 EMF EditorSpec，写入 intermediate/*_blocklyspec.xmi，再读回并验证。',
         pipelineOutputTitle: '3. Blockly 编辑器',
         pipelineOutputText: '读回后的中间模型会生成 Blockly blocks、toolbox、validation runtime、报告和 HTML。',
         pipelineInstanceTitle: '4. 领域实例 XMI',
-        pipelineInstanceText: '生成的编辑器可以把用户创建的 blocks 导出为 JSON，或导出为使用源领域命名空间的 EMF-style XMI。',
-        routeTitle: '选择建模路线',
-        routeText: '两条路线生成同一种 Blockly 编辑器。按你的项目现状选择输入模型。',
-        dslRouteTitle: '想要简洁文本模型时，用 .model2blockly',
-        dslRouteText: '适合新模型、手写示例、教程和快速编辑器实验。',
-        dslPointOne: '用可读语法描述 class、字段、输入和 validation。',
-        dslPointTwo: '编辑器会在生成前报告生成器相关的结构问题。',
-        ecoreRouteTitle: '已经有 EMF 元模型时，用 Ecore',
-        ecoreRouteText: '适合已有 EMF 项目，或需要 Ecore ID、opposite、package、注解的模型。',
-        ecorePointOne: '用标准 EAnnotation metadata 配置 Blockly、UI、代码和 validation。',
-        ecorePointTwo: '保留 containment、bounds、ID、eOpposite 等 EMF 概念。',
-        openDslGuide: '打开 DSL 指南',
-        openEcoreGuide: '打开 Ecore 指南',
-        exampleModel: '示例模型',
-        ecoreExample: 'Ecore 示例',
+        pipelineInstanceText: '生成的编辑器可以把用户创建的 blocks 导出为 JSON，或导出为使用源领域命名空间的领域 XMI。',
+        routeTitle: '模型驱动流程',
+        routeText: '项目以 Ecore 作为事实源，并在生成 Blockly 代码之前暴露生成的 EMF 中间模型。',
+        dslRouteTitle: '从带注解的 Ecore 开始',
+        dslRouteText: '使用 EClass、EAttribute、EReference 和 EAnnotation 描述目标块式语言。',
+        dslPointOne: '保留 containment、bounds、ID、reference 等 EMF 概念。',
+        dslPointTwo: '通过标准注解补充 Blockly、UI、代码和 validation 元数据。',
+        ecoreRouteTitle: '检查 EMF 中间模型',
+        ecoreRouteText: '生成器会先写出、读回并验证 EditorSpec XMI，然后才输出浏览器端产物。',
+        ecorePointOne: '让模型到模型转换边界显式可检查。',
+        ecorePointTwo: '把 Blockly 生成和源元模型加载分离。',
+        openDslGuide: '打开 Ecore 指南',
+        openEcoreGuide: '打开架构',
+        exampleModel: 'AppMaker Ecore',
+        ecoreExample: 'AppMaker 案例',
         resourcesTitle: '常用下一步',
         resourcesText: '先打开生成编辑器体验效果，需要语法、注解或排错时再看对应指南。',
         examplesTitle: '生成示例',
-        examplesText: '试用 DSL 和 Ecore 两个 AppMaker 编辑器，并用可视化方式查看 validation blocks。',
-        dslEditor: 'DSL 编辑器',
-        ecoreEditor: 'Ecore 编辑器',
+        examplesText: '试用从 Ecore 生成的 AppMaker 编辑器，并用可视化方式查看 validation blocks。',
+        dslEditor: '打开编辑器',
+        ecoreEditor: 'AppMaker 案例',
         startTitle: '入门',
         startText: '按第一次生成流程操作，了解输出目录和报告文件写在哪里。',
+        userGuide: '使用指南',
         startTutorial: '开始教程',
+        architectureTitle: '架构',
+        architectureText: '用第二层文档查看架构图、生成流程、输出产物和实现模块。',
+        architecture: '架构',
         troubleshooting: '排错指南',
+        caseTitle: 'AppMaker 案例',
+        caseText: '用 running example 检查 Ecore 注解、中间 XMI、生成 JavaScript、截图和报告。',
+        caseStudy: '打开案例',
+        docMap: '文档地图',
         referenceTitle: '参考文档',
-        referenceText: '按路线查看字段 widget、Blockly 映射、validation 和代码模板。',
+        referenceText: '查看 Ecore 注解、字段 widget、Blockly 映射、validation 和代码模板。',
         docsHome: '文档首页',
         sourceCode: '源码',
         footerPrefix: 'Update site URL：',
         links: {
           docs: 'docs/zh/index.html',
+          userGuide: 'docs/zh/user-guide.html',
+          architecture: 'docs/zh/architecture.html',
           gettingStarted: 'docs/zh/getting-started.html',
           troubleshooting: 'docs/zh/troubleshooting.html',
-          dslReference: 'docs/zh/dsl-reference.html',
-          ecoreReference: 'docs/zh/ecore-reference.html'
+          ecoreReference: 'docs/zh/ecore-reference.html',
+          runningExample: 'docs/zh/running-example.html',
+          docMap: 'docs/zh/docs.html'
         }
       }
     };

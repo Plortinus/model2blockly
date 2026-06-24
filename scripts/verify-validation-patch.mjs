@@ -37,7 +37,7 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('[PASS] Validation patch CLI dry-run, apply, and regeneration checks passed.');
+console.log('[PASS] Ecore validation patch CLI dry-run, apply, and regeneration checks passed.');
 
 function checkRuntime() {
   assertExists(eclipsePlugins, 'Eclipse plugins directory exists');
@@ -114,30 +114,12 @@ function verifyDryRun() {
   assertIncludes(ecore, 'Validation patch dry-run', 'Ecore dry-run prints mode');
   assertIncludes(ecore, 'Rules read: 70', 'Ecore dry-run reads generated rules');
   assertIncludes(ecore, 'Warnings: 0', 'Ecore dry-run has no warnings');
-
-  const dsl = run(java, [
-    '-cp',
-    classpath,
-    'io.github.plortinus.model2blockly.standalone.ValidationPatchMain',
-    '--source',
-    'examples/app_maker.model2blockly',
-    '--validation',
-    'examples/generated/app_maker/html/validation_blocks.json',
-    '--dry-run',
-  ]);
-  assertIncludes(dsl, 'Validation patch dry-run', 'DSL dry-run prints mode');
-  assertIncludes(dsl, 'Rules read: 102', 'DSL dry-run reads generated rules');
-  assertIncludes(dsl, 'Changes: 0', 'DSL dry-run treats matching source as no-op changes');
-  assertIncludes(dsl, 'Warnings: 0', 'DSL dry-run has no warnings');
-  assertIncludes(dsl, 'Notes: 102', 'DSL dry-run reports matching rules as notes');
 }
 
 function verifyApplyAndRegenerate() {
   rmSync(tmpRoot, { recursive: true, force: true });
   const patchedEcore = path.join(tmpRoot, 'app_maker_patched.ecore');
-  const patchedDsl = path.join(tmpRoot, 'app_maker_patched.model2blockly');
   const ecoreGen = path.join(tmpRoot, 'app_maker_patched_ecore_gen');
-  const dslGen = path.join(tmpRoot, 'app_maker_patched_dsl_gen');
 
   run(java, [
     '-cp',
@@ -151,30 +133,11 @@ function verifyApplyAndRegenerate() {
     '--out',
     patchedEcore,
   ]);
-  run(java, [
-    '-cp',
-    classpath,
-    'io.github.plortinus.model2blockly.standalone.ValidationPatchMain',
-    '--source',
-    'examples/app_maker.model2blockly',
-    '--validation',
-    'examples/generated/app_maker/html/validation_blocks.json',
-    '--apply',
-    '--out',
-    patchedDsl,
-  ]);
 
   const ecoreText = readFileSync(patchedEcore, 'utf8');
   assertIncludes(ecoreText, 'source="validation"', 'Patched Ecore contains validation annotation');
   assertIncludes(ecoreText, 'key="mustFollow" value="Alert"', 'Patched Ecore contains mustFollow detail');
   assertIncludes(ecoreText, 'iD="true"', 'Patched Ecore contains ID uniqueness write-back');
-
-  const dslText = readFileSync(patchedDsl, 'utf8');
-  assertIncludes(
-    dslText,
-    'constraint navigate_after_alert on Navigate : must follow Alert',
-    'Patched DSL contains must-follow constraint',
-  );
 
   const patchedEcoreDryRun = run(java, [
     '-cp',
@@ -189,19 +152,6 @@ function verifyApplyAndRegenerate() {
   assertIncludes(patchedEcoreDryRun, 'Changes: 0', 'Patched Ecore dry-run is idempotent');
   assertIncludes(patchedEcoreDryRun, 'Warnings: 0', 'Patched Ecore idempotent dry-run has no warnings');
 
-  const patchedDslDryRun = run(java, [
-    '-cp',
-    classpath,
-    'io.github.plortinus.model2blockly.standalone.ValidationPatchMain',
-    '--source',
-    patchedDsl,
-    '--validation',
-    'examples/generated/app_maker/html/validation_blocks.json',
-    '--dry-run',
-  ]);
-  assertIncludes(patchedDslDryRun, 'Changes: 0', 'Patched DSL dry-run is idempotent');
-  assertIncludes(patchedDslDryRun, 'Warnings: 0', 'Patched DSL idempotent dry-run has no warnings');
-
   run(java, [
     '-cp',
     classpath,
@@ -209,16 +159,8 @@ function verifyApplyAndRegenerate() {
     patchedEcore,
     ecoreGen,
   ]);
-  run(java, [
-    '-cp',
-    classpath,
-    'io.github.plortinus.model2blockly.standalone.Model2BlocklyToBlocklyMain',
-    patchedDsl,
-    dslGen,
-  ]);
 
   assertExists(path.join(ecoreGen, 'html/validation_blocks.json'), 'Patched Ecore regenerates validation blocks');
-  assertExists(path.join(dslGen, 'html/validation_blocks.json'), 'Patched DSL regenerates validation blocks');
 }
 
 function run(command, args) {

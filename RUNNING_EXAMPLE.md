@@ -1,12 +1,10 @@
 # Running Example: AppMaker
 
-Languages: **English** | [Español](docs/es/README.md) | [中文](docs/zh/README.md)
-
-This running example follows the same AppMaker domain through both supported
-input routes and into the generated Blockly editor. It is the example to use
-when explaining the proposal in the thesis because it shows the textual DSL
-route, the Ecore annotation route, the shared EMF intermediate model, and the
-final generated artifacts.
+This running example follows the AppMaker domain from an annotated Ecore
+metamodel into a generated Blockly editor. It shows the Ecore source model, the
+generated EMF intermediate model, the generated Blockly artifacts, and the
+domain XMI exported by the generated editor in one consistent technical
+example.
 
 ## Domain
 
@@ -19,42 +17,16 @@ model/code artifacts.
 Main source files:
 
 ```text
-io.github.plortinus.model2blockly/examples/app_maker.model2blockly
 io.github.plortinus.model2blockly/model/app_maker.ecore
 ```
 
-Generated editors:
+Generated editor:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker/html/AppMaker_standalone.html
 io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
 ```
 
-## Route A: Textual DSL
-
-The `.model2blockly` route is compact and is intended for authors who want to
-describe the domain and the editor-facing metadata in one textual model.
-
-```model2blockly
-domain AppMaker codeLanguage "javascript" codeFileExtension "js" runtimeKind "appMaker"
-
-category Pages label "Pages" colour 260
-category Components label "Components" colour 160
-
-class App category Pages colour 260 label "App" {
-  attribute name : string [1..1] default "Task Tracker" required
-    widget text uiLabel "App name" group "App" order 1
-  contains DataSource dataSources [1..20]
-    uiLabel "Data sources" group "Data" order 3
-  contains Page pages [1..20]
-    uiLabel "Pages" group "Pages" order 4
-}
-```
-
-The full example adds code templates, widgets, validation constraints, reference
-labels, value inputs, statement inputs, and toolbox categories.
-
-## Route B: Ecore With Annotations
+## Ecore With Annotations
 
 The `.ecore` route starts from a normal EMF metamodel. Standard `EAnnotation`
 entries add Blockly-specific metadata only where the structural Ecore model does
@@ -86,13 +58,12 @@ not already provide enough information.
 </ecore:EPackage>
 ```
 
-Use this route when the input already exists as EMF/Ecore, when Ecore
-cardinalities and IDs should remain the source of truth, or when preserving
-Ecore annotations is more important than a concise DSL syntax.
+This route keeps Ecore cardinalities, IDs, references and annotations as the
+source of truth.
 
 ## Shared EMF Intermediate Model
 
-Both routes are transformed to the same generated EMF metamodel:
+The Ecore source is transformed to the generated EMF intermediate metamodel:
 
 ```text
 io.github.plortinus.model2blockly/model/generated/BlocklyEditorSpec.genmodel
@@ -103,7 +74,7 @@ The root object is `EditorSpec`. It is serialized as XMI, read back, validated,
 and then passed to the Xtend/Java generators:
 
 ```text
-.model2blockly / .ecore
+annotated .ecore
   -> generated EMF EditorSpec
   -> intermediate/*_blocklyspec.xmi
   -> reload XMI as EditorSpec
@@ -114,7 +85,6 @@ and then passed to the Xtend/Java generators:
 Example intermediate files:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker/intermediate/AppMaker_blocklyspec.xmi
 io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi
 ```
 
@@ -129,27 +99,70 @@ report, and the intermediate XMI used for generation:
 
 ```text
 html/*_standalone.html
+html/*_editor.html
+html/*_blocks.js
+html/*_toolbox.js
+html/*_generators.js
+html/*_validations.js
 html/validation_workspace.html
+html/validation_blocks.json
+html/validation_runtime.js
 html/sample_model.json
 generation_report.html
 intermediate/*_blocklyspec.xmi
 ```
 
 The generated Blockly editor can export the user-created model as JSON and as
-EMF-style domain instance XMI. This exported `*_model.xmi` is different from
+domain instance XMI. This exported `*_model.xmi` is different from
 `intermediate/*_blocklyspec.xmi`: the intermediate XMI conforms to
 `BlocklyEditorSpec`, while the exported model XMI uses the AppMaker domain
-namespace. The editor does not currently perform a reverse transformation back
-into the original `.model2blockly` or `.ecore` source file.
+namespace. For the Ecore route, `npm run verify:domain-xmi` loads the exported
+sample XMI with EMF against `model/app_maker.ecore` and validates it with
+`Diagnostician`.
 
-## Thesis Evidence
+Validation rules have one extra workflow. `validation_workspace.html` displays
+the generated rules as Blockly blocks and can export
+`validation_blocks.edited.json`. The Eclipse command `Apply Validation Blocks
+to Source` applies supported validation-rule edits back to the selected
+`.ecore` file. This is an intentionally limited patch flow:
+it covers rules with a clear source representation, not a full reverse
+transformation from an arbitrary Blockly workspace back into the original
+domain source.
 
-For the thesis, this example supports these figures or tables:
+A representative generated code fragment for AppMaker is the `ListView`
+generator. It reads a dynamic reference and a value input from the block, then
+serializes them into the generated textual model output:
 
-- the `.model2blockly` AppMaker source excerpt;
-- the equivalent `.ecore` structure with `EAnnotation` metadata;
+```javascript
+javascript.javascriptGenerator.forBlock['ListView'] = function(block) {
+  var emptyText = block.getFieldValue('emptyText');
+  var source = block.getFieldValue('source');
+  var itemTitle =
+    javascript.javascriptGenerator.valueToCode(block, 'itemTitle', 0) || 'null';
+
+  return '{' +
+    '"_type": "ListView", ' +
+    '"_blockId": ' + JSON.stringify(block.id) + ', ' +
+    '"emptyText": ' + JSON.stringify(emptyText) + ', ' +
+    '"source": ' + JSON.stringify(source) + ', ' +
+    '"itemTitle": ' + itemTitle +
+  ' },\n';
+};
+```
+
+## Technical Traceability
+
+This example is useful when checking or documenting the generator because it
+connects:
+
+- the `.ecore` structure with `EAnnotation` metadata;
 - the `BlocklyEditorSpec` / `EditorSpec` intermediate metamodel;
 - the generated `intermediate/*_blocklyspec.xmi` file;
-- screenshots of the generated AppMaker editor and validation workspace;
-- a comparison table showing that both routes produce the same kind of Blockly
-  editor through the same intermediate model.
+- the EMF-loadable AppMaker domain XMI exported by the Ecore-generated editor;
+- the generated JavaScript block/code generator excerpt;
+- screenshots of the generated AppMaker editor, generation reports and
+  validation workspace.
+
+The checked-in generated examples live under `examples/generated/...` so they
+can be opened immediately from the repository. A fresh Eclipse generation from
+the source file writes a sibling folder such as `model/app_maker_generated/`.

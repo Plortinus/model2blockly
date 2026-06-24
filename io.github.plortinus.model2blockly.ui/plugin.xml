@@ -7,7 +7,7 @@
 			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
 			contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
 			default="true"
-			extensions="model2blockly"
+			extensions="m2b,model2blockly"
 			id="io.github.plortinus.model2blockly.Model2Blockly"
 			name="Model2Blockly Editor">
 		</editor>
@@ -79,6 +79,7 @@
 				<adapt type="org.eclipse.core.resources.IFile">
 					<or>
 						<test property="org.eclipse.core.resources.extension" value="ecore"/>
+						<test property="org.eclipse.core.resources.extension" value="m2b"/>
 						<test property="org.eclipse.core.resources.extension" value="model2blockly"/>
 					</or>
 				</adapt>
@@ -130,12 +131,12 @@
 	<extension
 		point="org.eclipse.ui.commands">
 		<command
-			description="Generate a Blockly editor through the shared BlocklyEditorSpec XMI pipeline from the selected .ecore or .model2blockly file"
+			description="Generate a Blockly editor through the shared BlocklyEditorSpec XMI pipeline from the selected .m2b, .model2blockly, or .ecore file"
 			id="io.github.plortinus.model2blockly.ui.generateBlocklyEditor"
 			name="Generate Blockly Editor">
 		</command>
 		<command
-			description="Apply edited validation_blocks JSON back to the selected .ecore or .model2blockly source file"
+			description="Apply edited validation_blocks JSON back to the selected .m2b, .model2blockly, or .ecore source file"
 			id="io.github.plortinus.model2blockly.ui.applyValidationPatch"
 			name="Apply Validation Blocks to Source">
 		</command>
@@ -318,6 +319,19 @@
 				menubarPath="additions">
 			</action>
 		</objectContribution>
+		<objectContribution
+			adaptable="true"
+			id="io.github.plortinus.model2blockly.ui.generateBlocklyEditor.m2b.popup"
+			nameFilter="*.m2b"
+			objectClass="org.eclipse.core.resources.IFile">
+			<action
+				class="io.github.plortinus.model2blockly.ui.handlers.GenerateBlocklyEditorAction"
+				enablesFor="1"
+				id="io.github.plortinus.model2blockly.ui.generateBlocklyEditor.m2b.action"
+				label="Generate Blockly Editor"
+				menubarPath="additions">
+			</action>
+		</objectContribution>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
@@ -351,7 +365,7 @@
 	<extension point="org.eclipse.core.contenttype.contentTypes">
 		<content-type
 			base-type="org.eclipse.core.runtime.text"
-			file-extensions="model2blockly"
+			file-extensions="m2b,model2blockly"
 			id="io.github.plortinus.model2blockly.Model2Blockly.contenttype"
 			name="Model2Blockly File"
 			priority="normal">
@@ -362,10 +376,18 @@
 		point="org.eclipse.emf.ecore.extension_parser">
 		<parser
 			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			type="m2b">
+		</parser>
+		<parser
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
 			type="model2blockly">
 		</parser>
 	</extension>
 	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+		<resourceServiceProvider
+			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+			uriExtension="m2b">
+		</resourceServiceProvider>
 		<resourceServiceProvider
 			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
 			uriExtension="model2blockly">
@@ -405,7 +427,7 @@
 	<extension point="org.eclipse.xtext.builder.participant">
 		<participant
 			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
-			fileExtensions="model2blockly"/>
+			fileExtensions="m2b,model2blockly"/>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
@@ -548,7 +570,7 @@
 	<extension point="org.eclipse.compare.contentViewers">
 		<viewer id="io.github.plortinus.model2blockly.Model2Blockly.compare.contentViewers"
 			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-			extensions="model2blockly">
+			extensions="m2b,model2blockly">
 		</viewer>
 		<contentTypeBinding
 			contentTypeId="io.github.plortinus.model2blockly.Model2Blockly.contenttype"
@@ -557,7 +579,7 @@
 	<extension point="org.eclipse.compare.contentMergeViewers">
 		<viewer id="io.github.plortinus.model2blockly.Model2Blockly.compare.contentMergeViewers"
 			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-			extensions="model2blockly" label="Model2Blockly Compare">
+			extensions="m2b,model2blockly" label="Model2Blockly Compare">
 		</viewer>
 		<contentTypeBinding
 			contentTypeId="io.github.plortinus.model2blockly.Model2Blockly.contenttype"
@@ -566,10 +588,14 @@
 	<extension point="org.eclipse.ui.editors.documentProviders">
 		<provider id="io.github.plortinus.model2blockly.Model2Blockly.editors.documentProviders"
 			class="io.github.plortinus.model2blockly.ui.Model2BlocklyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
-			extensions="model2blockly">
+			extensions="m2b,model2blockly">
 		</provider>
 	</extension>
 	<extension point="org.eclipse.team.core.fileTypes">
+		<fileTypes
+			extension="m2b"
+			type="text">
+		</fileTypes>
 		<fileTypes
 			extension="model2blockly"
 			type="text">

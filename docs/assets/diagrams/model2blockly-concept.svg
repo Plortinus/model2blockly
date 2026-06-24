@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560" role="img" aria-labelledby="title desc">
+  <title id="title">Model2Blockly concept</title>
+  <desc id="desc">Model files are transformed by the Model2Blockly Eclipse plugin into Blockly blocks.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="18" markerHeight="18" refX="15" refY="9" orient="auto">
+      <path d="M3,3 L16,9 L3,15 Z" fill="#475569"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+    <style>
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; filter: url(#shadow); }
+      .file { fill: #eff6ff; stroke: #2563eb; stroke-width: 2.5; }
+      .plugin { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 3; }
+      .blockly { fill: #ecfdf5; stroke: #16a34a; stroke-width: 3; }
+      .eclipse { fill: #4b2e83; }
+      .eclipse-deep { fill: #2f255f; }
+      .eclipse-mark { fill: #facc15; }
+      .eclipse-orange { fill: #ff9718; stroke: #ff9718; stroke-linejoin: round; }
+      .eclipse-stripe { fill: #f8fafc; stroke: #111827; stroke-width: 1; }
+      .block-green { fill: #22c55e; }
+      .block-purple { fill: #8b5cf6; }
+      .block-amber { fill: #d97706; }
+      .text { font: 700 26px Arial, sans-serif; fill: #111827; }
+      .code { font: 700 26px "Courier New", monospace; fill: #2563eb; }
+      .small { font: 700 18px Arial, sans-serif; fill: #475569; }
+      .arrow { stroke: #475569; stroke-width: 5; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="900" height="560" rx="34" fill="#f8fafc"/>
+
+  <g transform="translate(84 146)">
+    <rect class="card" x="0" y="0" width="220" height="268" rx="32"/>
+    <g transform="translate(46 52)">
+      <rect class="file" x="0" y="0" width="128" height="72" rx="18"/>
+      <path d="M94 0 L128 34 H94 Z" fill="#bfdbfe"/>
+      <text class="code" x="26" y="47">.m2b</text>
+    </g>
+    <g transform="translate(46 144)">
+      <rect class="file" x="0" y="0" width="128" height="72" rx="18"/>
+      <path d="M94 0 L128 34 H94 Z" fill="#bfdbfe"/>
+      <text class="code" x="16" y="47">.ecore</text>
+    </g>
+  </g>
+
+  <path class="arrow" d="M332 280 H402"/>
+
+  <g transform="translate(388 126)">
+    <rect class="plugin" x="0" y="0" width="180" height="308" rx="42"/>
+    <g transform="translate(5 76) scale(0.28)">
+      <path class="eclipse-orange" d="M104 10 C42 30 0 82 0 160 C0 250 72 314 160 314 C212 314 258 292 288 256 C330 248 354 214 372 166 C388 124 414 104 458 94 L458 84 C398 90 360 116 340 162 C318 214 288 244 240 250 C218 274 188 288 154 288 C82 288 24 236 24 160 C24 88 72 36 138 18 Z"/>
+      <circle class="eclipse-deep" cx="174" cy="160" r="148"/>
+      <circle cx="174" cy="194" r="86" fill="#443981"/>
+      <path class="eclipse-stripe" d="M36 116 H312 A140 140 0 0 1 324 132 H32 Z"/>
+      <path class="eclipse-stripe" d="M24 154 H330 A152 152 0 0 1 332 170 H24 Z"/>
+      <path class="eclipse-stripe" d="M34 192 H314 A140 140 0 0 1 306 208 H40 Z"/>
+      <path class="eclipse-orange" d="M438 72 L560 48 L566 72 L496 86 L502 112 L572 98 L578 124 L498 140 C472 150 438 152 426 134 L398 138 L394 104 L426 98 C426 84 430 76 438 72 Z"/>
+      <path class="eclipse-orange" d="M568 50 L602 44 L604 68 L572 74 Z"/>
+      <path class="eclipse-orange" d="M580 100 L612 94 L616 118 L584 124 Z"/>
+    </g>
+    <text class="small" x="62" y="258">Plugin</text>
+  </g>
+
+  <path class="arrow" d="M596 280 H666"/>
+
+  <g transform="translate(646 146)">
+    <rect class="card" x="0" y="0" width="220" height="268" rx="32"/>
+    <rect class="blockly" x="42" y="36" width="136" height="196" rx="32"/>
+    <text class="text" x="65" y="78">Blockly</text>
+    <g transform="translate(66 108)">
+      <rect class="block-green" x="0" y="0" width="88" height="38" rx="10"/>
+      <circle cx="34" cy="0" r="9" fill="#ecfdf5"/>
+      <rect class="block-purple" x="12" y="52" width="92" height="38" rx="10"/>
+      <circle cx="46" cy="52" r="9" fill="#ecfdf5"/>
+      <rect class="block-amber" x="-6" y="104" width="100" height="38" rx="10"/>
+      <circle cx="28" cy="104" r="9" fill="#ecfdf5"/>
+    </g>
+  </g>
+</svg>

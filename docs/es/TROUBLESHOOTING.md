@@ -1,7 +1,5 @@
 # Solución de problemas
 
-Idioma: [English](../../TROUBLESHOOTING.md) | **Español** | [中文](../zh/TROUBLESHOOTING.md)
-
 Use esta página cuando la instalación o la generación no se comporten como
 espera.
 
@@ -25,7 +23,7 @@ https://plortinus.github.io/model2blockly/update-site/
 3. Pulse `Manage...`, elimine entradas antiguas de Model2Blockly, agregue la URL
    otra vez y recargue.
 4. Mantenga activado `Contact all update sites during install to find required
-   software`, para que Eclipse pueda resolver Xtext y EMF.
+   software`, para que Eclipse pueda resolver EMF.
 5. Si usa un update site local, seleccione esta carpeta:
 
 ```text
@@ -66,7 +64,7 @@ io.github.plortinus.model2blockly.updatesite/repository/plugins/
 Comprobaciones:
 
 1. Seleccione exactamente un archivo.
-2. El archivo debe terminar en `.model2blockly` o `.ecore`.
+2. El archivo debe terminar en `.ecore`.
 3. Use Project Explorer, Package Explorer o el menu superior `Model2Blockly`.
 4. Revise `Help -> About Eclipse IDE -> Installation Details`.
 5. Reinicie Eclipse después de instalar o actualizar el plugin.
@@ -83,7 +81,6 @@ Ejemplos:
 
 | Archivo seleccionado | Carpeta de salida |
 | --- | --- |
-| `examples/app_maker.model2blockly` | `examples/app_maker_generated/` |
 | `model/app_maker.ecore` | `model/app_maker_generated/` |
 
 Si no ve la carpeta, refresque el proyecto en Eclipse.
@@ -110,7 +107,7 @@ Solución:
 3. Confirme la versión instalada en `Installation Details`.
 4. Si es una compilacion local, reconstruya el update site y confirme que el
    core jar contiene `io/github/plortinus/model2blockly/intermediate/blocklyspec/*`.
-5. Genere de nuevo desde el archivo `.model2blockly` o `.ecore` seleccionado.
+5. Genere de nuevo desde el archivo `.ecore` seleccionado.
 
 ## Falta el XMI intermedio o esta obsoleto
 
@@ -127,32 +124,6 @@ HTML/JavaScript de Blockly.
 Si hay HTML pero no existe ese XMI, el plugin instalado o el update site local
 siguen siendo antiguos. Reconstruya e instale el update site actual y genere de
 nuevo.
-
-## Falla la generación de `.model2blockly`
-
-Comprobaciones:
-
-1. Abra el archivo en el editor Model2Blockly.
-2. Corrija errores de sintaxis de Xtext.
-3. Asegure que el archivo empieza con una declaracion `domain`.
-4. Asegure que las clases y categorías referenciadas existen.
-5. Si un value input no conecta, la clase destino normalmente debe ser
-   `output class`.
-
-Si el mensaje incluye `INTERMEDIATE_MODEL_INVALID` o una ruta como
-`block[Page].components`, el DSL se parseo, pero fallo una regla estructural del
-modelo intermedio `EditorSpec`.
-
-Mensajes comunes:
-
-| Patron | Como corregir |
-| --- | --- |
-| `Shadow block type ... is not an output block` | Use un `output class` como shadow de un value input |
-| `Duplicate feature/input name` | Renombre un atributo, referencia, containment o value input dentro de la clase |
-| `Reference label field ... does not exist` | Cambie `referenceLabelField` a un campo existente en el tipo destino |
-| `... does not exist` | Revise nombres de clase, categoría, campo, input o shadow |
-| `Expression validation must define an expression` | Agregue expresión/OCL o elimine la regla vacía |
-| `Unsupported OCL validation expression` | Reescriba con el subconjunto OCL soportado o use `expression`/`js` |
 
 ## Falla la generación de `.ecore`
 
@@ -184,11 +155,6 @@ Comprobaciones:
    type.
 3. Agregue un campo de etiqueta:
 
-```model2blockly
-reference DataSource source required
-  widget reference-select referenceLabelField name
-```
-
 ```xml
 <eAnnotations source="ui">
   <details key="referenceLabelField" value="name"/>
@@ -196,13 +162,6 @@ reference DataSource source required
 ```
 
 ## Los value blocks no conectan
-
-En `.model2blockly`, use una clase de salida:
-
-```model2blockly
-output class TextLiteral extends TextExpression ...
-value TextExpression content shadow TextLiteral
-```
 
 En `.ecore`, marque la clase:
 
@@ -227,11 +186,11 @@ Las validaciones generadas vienen de:
 
 | Origen | Validacion |
 | --- | --- |
-| `required` o `lowerBound >= 1` | Campo o referencia obligatoria |
+| `lowerBound >= 1` | Campo o referencia obligatoria |
 | containment con limites | Cardinalidad de statement input |
 | `iD=true` | Unicidad por tipo |
 | campos/referencias multivaluados con `unique=true` | Unicidad de valores |
-| `constraint ... must follow ...` o `mustFollow` | Regla de bloque anterior |
+| `mustFollow` | Regla de bloque anterior |
 | anotaciones validation/OCL | Regla por expresión |
 
 Abra `html/validation_workspace.html` para inspeccionar las reglas como bloques.
@@ -241,7 +200,7 @@ Abra `html/validation_workspace.html` para inspeccionar las reglas como bloques.
 ```bash
 npm install
 npm run verify:plugin
-npm run verify:dsl-validation
+npm run verify:domain-xmi
 npm run verify:patch
 npm run smoke
 ```

@@ -33,7 +33,7 @@ public final class ValidationPatchMain {
 		return """
 			Usage:
 			  java io.github.plortinus.model2blockly.standalone.ValidationPatchMain \\
-			    --source <file.ecore|file.model2blockly> \\
+			    --source <file.ecore|file.m2b|file.model2blockly> \\
 			    --validation <validation_blocks.edited.json> \\
 			    [--dry-run|--apply] [--out <file>]
 

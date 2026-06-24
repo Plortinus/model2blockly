@@ -1,26 +1,28 @@
 # Model2Blockly
 
-Languages: **English** | [Español](docs/es/README.md) | [中文](docs/zh/README.md)
+Model2Blockly is an Eclipse-based model-driven generator for producing
+Blockly-based DSL editors from EMF metamodel-level descriptions. The main
+route follows the EMF workflow: load an Ecore metamodel, transform it into a
+generated EMF intermediate model, persist that model as XMI, and generate the
+browser editor from the reloaded model.
 
-Model2Blockly is an Eclipse/Xtext-based generator for producing Blockly editors
-from domain models. It supports two input routes:
-
-- a textual `.model2blockly` language;
-- annotated Ecore models.
-
-Both routes are transformed into a generated EMF `EditorSpec` instance that
-conforms to the shared `BlocklyEditorSpec` intermediate metamodel, serialized
-to `intermediate/*_blocklyspec.xmi`, reloaded from that XMI, and then generated
-into HTML/JavaScript Blockly editor artifacts. The generated editor can then
-export user-created blocks as a domain instance model in JSON or EMF-style XMI.
+The Ecore input is transformed into a generated EMF `EditorSpec` instance that
+conforms to the shared `BlocklyEditorSpec` intermediate metamodel. That model
+is serialized to `intermediate/*_blocklyspec.xmi`, reloaded from XMI,
+validated, and then generated into HTML/JavaScript Blockly editor artifacts.
+The generated editor can export user-created blocks as a domain instance model
+in JSON or XMI.
 
 This is a model-driven pipeline, not a direct source-to-HTML shortcut:
 
 ```text
-.model2blockly / .ecore
+annotated .ecore
+  -> EMF ResourceSet / EPackage
+  -> model-to-model transformation
   -> generated EMF EditorSpec
   -> intermediate/*_blocklyspec.xmi
-  -> reload XMI
+  -> reload and validate XMI
+  -> model-to-text generation
   -> generated Blockly HTML/JavaScript
   -> user-created domain instance JSON/XMI
 ```
@@ -30,17 +32,18 @@ There are two different XMI artifacts in the project:
 - `intermediate/*_blocklyspec.xmi` is an `EditorSpec` instance used inside the
   generator pipeline.
 - `*_model.xmi` exported from a generated Blockly editor is a domain instance
-  model using the source domain namespace.
+  model using the source domain namespace. The Ecore-based AppMaker export is
+  regression-checked by loading it with EMF against `app_maker.ecore`.
 
 ## Repository Layout
 
 ```text
 io.github.plortinus.model2blockly/           Core language, adapters, generators and examples
-io.github.plortinus.model2blockly.ide/       Xtext IDE support
+io.github.plortinus.model2blockly.ide/       Eclipse IDE support
 io.github.plortinus.model2blockly.ui/        Eclipse UI plugin
 io.github.plortinus.model2blockly.feature/   Eclipse feature definition
 io.github.plortinus.model2blockly.updatesite/ Eclipse p2 update site
-docs/                            Localized documentation
+docs/                            Localized documentation source for VitePress
 site/                            GitHub Pages landing page and update-site page
 .github/workflows/               GitHub Pages publishing workflow
 scripts/                          Verification helpers
@@ -48,41 +51,48 @@ scripts/                          Verification helpers
 
 ## Running Example
 
-The included AppMaker example is available through both supported routes:
+The included AppMaker case study is based on an annotated Ecore metamodel:
 
 ```text
-io.github.plortinus.model2blockly/examples/app_maker.model2blockly
 io.github.plortinus.model2blockly/model/app_maker.ecore
 ```
 
-Generated editors:
+Generated editor:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker/html/AppMaker_standalone.html
 io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
 ```
 
-See [Running Example: AppMaker](RUNNING_EXAMPLE.md) for the side-by-side DSL
-and Ecore routes, the generated EMF intermediate model, and the generated
-editor artifacts.
+See [Running Example: AppMaker](RUNNING_EXAMPLE.md) for the annotated Ecore
+source, the generated EMF intermediate model, and the generated editor
+artifacts. It points to the AppMaker Ecore annotations, intermediate XMI,
+generated JavaScript, screenshots, generation reports, exported domain XMI,
+and validation workspace.
 
 ## Documentation
 
-- [Documentation languages](docs/README.md) for English, Spanish and Chinese
+The hosted documentation at
+<https://plortinus.github.io/model2blockly/docs/en/> is built with VitePress from
+the Markdown files in this repository. The online docs use a fixed top
+navigation bar, language switcher, sidebars and local search while keeping the
+same source documents listed below.
+
+- [English documentation home](docs/en/README.md), with language switching to
+  [Español](docs/es/README.md) and [中文](docs/zh/README.md)
+- [User guide](docs/en/USER_GUIDE.md) for the simple installation, generation
+  and inspection path
+- [Architecture and implementation](docs/en/ARCHITECTURE.md) for the EMF/MDE
+  workflow, intermediate model, diagrams and implementation map
 - [Documentation map](DOCS.md) for choosing the right guide by task
-- [Running Example: AppMaker](RUNNING_EXAMPLE.md) for the thesis-style
-  end-to-end example
+- [Running Example: AppMaker](RUNNING_EXAMPLE.md) for the end-to-end technical
+  example, including source snippets, generated artifacts and screenshots
 - [Getting started](GETTING_STARTED.md) for generating your first editor
 - [Troubleshooting](TROUBLESHOOTING.md) for installation, generation and
   validation issues
 - [Release checklist](RELEASE_CHECKLIST.md) for rebuilding the update site,
   verifying it, and publishing GitHub Pages
-- [Model2Blockly Language Reference](DSL_REFERENCE.md) with Blockly field, toolbox,
-  workspace and code-generation mappings
 - [Ecore Annotation Reference](ECORE_REFERENCE.md) with supported EAnnotation
   sources, keys and Blockly mappings
-- [Xtext grammar](io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/Model2Blockly.xtext)
-- [AppMaker `.model2blockly` example](io.github.plortinus.model2blockly/examples/app_maker.model2blockly)
 - [AppMaker `.ecore` example](io.github.plortinus.model2blockly/model/app_maker.ecore)
 
 ## Eclipse Usage
@@ -97,7 +107,7 @@ io.github.plortinus.model2blockly.feature
 io.github.plortinus.model2blockly.updatesite
 ```
 
-The UI plugin contributes commands for selected `.model2blockly` and `.ecore`
+The UI plugin contributes commands for selected `.ecore`
 files:
 
 - `Generate Blockly Editor`
@@ -106,16 +116,22 @@ files:
 The bundles require JavaSE-21.
 
 Generation uses a shared generated EMF `EditorSpec` intermediate XMI model. For
-`.model2blockly` files, generator-facing structural problems are also reported by
-the Xtext editor before generation, for example duplicate block feature names,
-invalid value-input shadow blocks, unsupported OCL validation expressions, or
-invalid `referenceLabelField` settings. The Eclipse generate command adds
-problem markers to the source file when validation fails.
+For Ecore files, generator-facing structural problems are reported before
+generation, for example duplicate block feature names, invalid value-input
+shadow blocks, unsupported OCL validation expressions, or invalid
+`referenceLabelField` settings. The Eclipse generate command adds problem
+markers to the source file when validation fails.
 
 The Eclipse command and the standalone CLIs use the same path: they materialize
 the intermediate XMI, reload it, validate the reloaded model, and only then emit
 the Blockly editor files. If generation succeeds, the output folder contains
 the `intermediate/*_blocklyspec.xmi` file that was used for HTML generation.
+
+Generated validation rules are emitted both as executable JavaScript and as
+`html/validation_blocks.json` plus `html/validation_workspace.html`. The visual
+workspace can export `validation_blocks.edited.json`; the Eclipse command
+`Apply Validation Blocks to Source` applies supported validation-rule edits back
+to the selected `.ecore` source.
 
 ## Update Site
 
@@ -151,7 +167,7 @@ Requirements and troubleshooting:
 
 - Run Eclipse with JDK 21; the bundles require JavaSE-21.
 - Keep `Contact all update sites during install to find required software`
-  enabled so Eclipse can resolve Xtext and EMF dependencies.
+  enabled so Eclipse can resolve EMF dependencies.
 - If an older copy of the update site appears empty, clear
   `Group items by category` in the install dialog and reload the site.
 - The GitHub Pages workflow publishes the committed p2 repository. Rebuild and
@@ -177,14 +193,14 @@ npm run verify:plugin
 npm run smoke
 ```
 
-The DSL validation bridge and validation patch round-trip checks require
+The EMF domain XMI check and validation patch round-trip checks require
 Eclipse plugins and a Java 21 runtime. The scripts use the default Eclipse.app
-installation on macOS; set these variables when your Eclipse installation lives
-elsewhere:
+installation on macOS; set these variables when your Eclipse installation
+lives elsewhere:
 
 ```bash
 export ECLIPSE_PLUGINS=/path/to/eclipse/plugins
 export JAVA_HOME=/path/to/jdk-21
-npm run verify:dsl-validation
+npm run verify:domain-xmi
 npm run verify:patch
 ```

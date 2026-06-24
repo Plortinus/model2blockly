@@ -1,8 +1,6 @@
 # 发布检查清单
 
-语言：[English](../../RELEASE_CHECKLIST.md) | [Español](../es/RELEASE_CHECKLIST.md) | **中文**
-
-发布新的 Eclipse 插件和 update site 时使用这篇。完整英文清单在
+发布新的 Eclipse 插件和 update site 时使用下面的检查项。完整英文清单在
 [`../../RELEASE_CHECKLIST.md`](../../RELEASE_CHECKLIST.md)。
 
 ## 版本号
@@ -48,7 +46,7 @@ ECLIPSE=/path/to/eclipse npm run rebuild:update-site
 ```bash
 npm run verify:plugin
 npm run verify:docs
-npm run verify:dsl-validation
+npm run verify:domain-xmi
 npm run verify:patch
 npm run smoke
 ```
@@ -100,9 +98,8 @@ https://plortinus.github.io/model2blockly/update-site/
 
 ## 发布后冒烟检查
 
-1. 在干净 Eclipse workspace 里准备一个 `.model2blockly` 文件。
+1. 在干净 Eclipse workspace 里准备一个带注解的 `.ecore` 文件。
 2. 执行 `Generate Blockly Editor`。
 3. 确认 `generation_report.html` 打开。
 4. 确认输出里有 `intermediate/*_blocklyspec.xmi`。
-5. 确认无效 DSL 会在 `Problems` 中报错，而不是显示 Java stack trace。
-6. 如果测试 Ecore，从 `app_maker.ecore` 生成并确认编辑器能打开。
+5. 从 `app_maker.ecore` 生成并确认编辑器能打开。

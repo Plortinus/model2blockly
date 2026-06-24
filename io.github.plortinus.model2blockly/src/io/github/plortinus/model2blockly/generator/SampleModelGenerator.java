@@ -23,7 +23,7 @@ import io.github.plortinus.model2blockly.intermediate.blocklyspec.ValueInputSpec
 /**
  * Builds a small domain model that can be imported by the generated Blockly
  * editor. The sample is derived from EditorSpec, so both Ecore and
- * .model2blockly inputs get the same quick-start experience.
+ * .m2b inputs get the same quick-start experience.
  */
 public final class SampleModelGenerator {
 

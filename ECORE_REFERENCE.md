@@ -1,11 +1,8 @@
 # Ecore Annotation Reference
 
-Languages: **English** | [Español](docs/es/ECORE_REFERENCE.md) | [中文](docs/zh/ECORE_REFERENCE.md)
-
 Model2Blockly can generate Blockly editors directly from annotated Ecore
-metamodels. This route does not use `.model2blockly` keywords. It uses standard
-Ecore structure plus `EAnnotation` entries on packages, classes, attributes,
-and references.
+metamodels. It uses standard Ecore structure plus `EAnnotation` entries on
+packages, classes, attributes, and references.
 
 Use this document when authoring or reviewing `.ecore` files such as
 [`io.github.plortinus.model2blockly/model/app_maker.ecore`](io.github.plortinus.model2blockly/model/app_maker.ecore).
@@ -26,9 +23,6 @@ Implementation references:
   annotations you need.
 - If you need a specific annotation key, jump to package, class, attribute, or
   reference annotations.
-- If you are writing the textual DSL instead of Ecore, use
-  [`DSL_REFERENCE.md`](DSL_REFERENCE.md).
-
 ## Official References
 
 - [EMF `EAnnotation` Javadoc](https://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/ecore/EAnnotation.html) for the underlying Ecore annotation object. `EAnnotation` provides `source` and `details`, which this project uses as key/value metadata.
@@ -227,7 +221,7 @@ categories drive the toolbox.
 | `template` | Domain code template for this block |
 | `codeTemplate` | Alias for `template` |
 
-Template placeholders are the same as in `.model2blockly`:
+Template placeholders are used by the Blockly code generator:
 
 | Placeholder | Meaning |
 | --- | --- |
@@ -379,8 +373,8 @@ Supported UI keys:
 | `hidden` | Hidden metadata |
 | `variant` | Presentation metadata, for example `compact` |
 
-Current behavior matches the DSL route: field type is selected primarily from
-the Ecore type and `source="blockly"` overrides. Many `ui` keys are retained in
+Current behavior selects the field type primarily from the Ecore type and
+`source="blockly"` overrides. Many `ui` keys are retained in
 the intermediate model and reports, but not all are direct Blockly block JSON
 controls.
 
@@ -601,32 +595,11 @@ intermediate-model pipeline. The generator adapts the `EPackage`, serializes
 the `EditorSpec` to `intermediate/*_blocklyspec.xmi`, reloads that XMI,
 validates the reloaded model, and then emits the Blockly HTML/JavaScript files.
 
-Because `.ecore` is XMI rather than an Xtext language, these checks usually
-appear during generation instead of as live editor markers. When possible,
-diagnostics include the selected file and an Ecore URI fragment, plus the
-intermediate path such as `block[Task].assignee`.
-
-## When To Use Ecore Instead Of `.model2blockly`
-
-Use the Ecore route when:
-
-- your domain model already exists as `.ecore`;
-- you need native EMF package structure, subpackages, generated EMF code, or
-  existing `EAnnotation`-based models;
-- you want class/feature annotations that are closer to raw Blockly JSON;
-- you need full OCL or Java `EValidator` behavior beyond the generator's simple
-  expression/OCL subset.
-
-Use `.model2blockly` when you want a smaller hand-written textual language and do
-not need direct Ecore modeling features. The DSL supports the common Blockly
-metadata and validation surface: IDs, cardinalities, references, `message0`,
-`helpUrl`, image/label fields, uniqueness, expression validations, and simple
-OCL translation.
+When possible, diagnostics include the selected file and an Ecore URI fragment,
+plus the intermediate path such as `block[Task].assignee`.
 
 ## Related Files
 
-- DSL reference:
-  [`DSL_REFERENCE.md`](DSL_REFERENCE.md)
 - Ecore example:
   [`io.github.plortinus.model2blockly/model/app_maker.ecore`](io.github.plortinus.model2blockly/model/app_maker.ecore)
 - Generated Ecore example:

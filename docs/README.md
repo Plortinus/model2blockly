@@ -1,13 +1,20 @@
-# Model2Blockly Documentation Languages
+---
+title: Model2Blockly Documentation
+head:
+  - - meta
+    - http-equiv: refresh
+      content: 0; url=./en/
+---
 
-Choose a documentation language:
+<script setup>
+import { onMounted } from 'vue'
 
-| Language | Start here |
-| --- | --- |
-| English | [`docs/en/README.md`](en/README.md) |
-| Español | [`docs/es/README.md`](es/README.md) |
-| 中文 | [`docs/zh/README.md`](zh/README.md) |
+onMounted(() => {
+  const base = import.meta.env.BASE_URL || '/model2blockly/docs/'
+  window.location.replace(`${base}en/`)
+})
+</script>
 
-Detailed reference pages in English keep the most complete syntax tables and
-release checks. Spanish and Chinese pages are user-facing guides that link back
-to the matching detailed reference sections.
+# Model2Blockly Documentation
+
+Opening the English documentation...

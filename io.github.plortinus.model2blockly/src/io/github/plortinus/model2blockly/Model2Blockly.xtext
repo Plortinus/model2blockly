@@ -6,7 +6,7 @@
  * Las anotaciones opcionales (colour, label, category) permiten personalizar la
  * presentación sin necesidad de conocer Blockly.
  *
- * Flujo: .model2blockly → modelo EMF del DSL → EditorSpec EMF → XMI intermedio
+ * Flujo: .m2b → modelo EMF del DSL → EditorSpec EMF → XMI intermedio
  * → recarga y validación → Blockly (JSON + JS + HTML)
  */
 grammar io.github.plortinus.model2blockly.Model2Blockly with org.eclipse.xtext.common.Terminals

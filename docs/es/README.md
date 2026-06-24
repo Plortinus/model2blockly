@@ -1,56 +1,45 @@
-# Documentación de Model2Blockly
-
-Idioma: [English](../en/README.md) | **Español** | [中文](../zh/README.md)
-
-Model2Blockly genera editores Blockly desde dos tipos de modelo:
-
-- archivos textuales `.model2blockly`;
-- metamodelos Ecore anotados.
-
-Ambas rutas se transforman en una instancia EMF generada `EditorSpec`, conforme
-al metamodelo intermedio `BlocklyEditorSpec`, se serializan como
-`intermediate/*_blocklyspec.xmi`, se recargan desde ese XMI y despues se
-generan como archivos HTML y JavaScript de Blockly. El editor generado tambien
-puede exportar los bloques creados por el usuario como modelo de instancia del
-dominio en JSON/XMI.
-
-La cadena de generacion es model-driven:
-
-```text
-.model2blockly / .ecore -> EditorSpec EMF -> XMI intermedio -> Blockly HTML/JavaScript -> XMI de instancia
-```
-
-Hay dos usos distintos de XMI: `intermediate/*_blocklyspec.xmi` es una instancia
-de `EditorSpec` usada por el generador; el `*_model.xmi` exportado desde el
-editor generado es el modelo de instancia creado por el usuario.
-
-## Por donde empezar
-
-| Objetivo | Documento |
-| --- | --- |
-| Generar el primer editor | [`GETTING_STARTED.md`](GETTING_STARTED.md) |
-| Resolver problemas de instalación o generación | [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) |
-| Entender la sintaxis `.model2blockly` | [`DSL_REFERENCE.md`](DSL_REFERENCE.md) |
-| Entender las anotaciones Ecore | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md) |
-| Entender la tuberia XMI intermedia | [Vista general](../../README.md) |
-| Publicar una nueva versión del update site | [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) |
-
-## Referencias detalladas
-
-Las guías localizadas priorizan el flujo de uso y los conceptos principales.
-Las tablas completas de claves, sintaxis, opciones y mapeos de generación están
-en las referencias inglesas:
-
-- [Vista general del proyecto](../../README.md)
-- [Mapa de documentación](../../DOCS.md)
-- [Referencia DSL completa](../../DSL_REFERENCE.md)
-- [Referencia Ecore completa](../../ECORE_REFERENCE.md)
-
-Si una explicación no coincide con el comportamiento real, use la
-implementación actual como criterio final.
-
-## Enlaces públicos
-
-- Sitio del proyecto: <https://plortinus.github.io/model2blockly/>
-- Update site de Eclipse: <https://plortinus.github.io/model2blockly/update-site/>
-- Código fuente: <https://github.com/Plortinus/model2blockly>
+---
+layout: home
+hero:
+  name: Model2Blockly
+  text: Plugin de Eclipse para editores Blockly
+  tagline: Instale Model2Blockly en Eclipse, seleccione un metamodelo `.ecore` anotado y genere un editor DSL Blockly listo para el navegador.
+  image:
+    src: /assets/diagrams/model2blockly-concept.svg
+    alt: El plugin Eclipse Model2Blockly convierte metamodelos Ecore en editores Blockly
+  actions:
+    - theme: brand
+      text: Empezar
+      link: /es/user-guide
+    - theme: alt
+      text: Caso AppMaker
+      link: /es/running-example
+    - theme: alt
+      text: Instalar plugin
+      link: https://plortinus.github.io/model2blockly/update-site/
+features:
+  - title: Generar desde Ecore
+    details: Reutilice un metamodelo `.ecore` existente y añada anotaciones para etiquetas, colores, categorías, campos y validaciones Blockly.
+    link: /es/ecore-reference
+    linkText: Soporte Ecore
+  - title: Usar modelos EMF intermedios
+    details: Transforme el EPackage fuente en un modelo EditorSpec generado, persístalo como XMI, recárguelo y genere desde ese modelo.
+    link: /es/architecture
+    linkText: Arquitectura
+  - title: Crear páginas Blockly ejecutables
+    details: Genere toolbox, workspace, definiciones de bloques, generadores de código y páginas HTML standalone listas para navegador.
+    link: /es/running-example
+    linkText: Caso AppMaker
+  - title: Visualizar reglas de validación
+    details: Cree un workspace de validación donde campos obligatorios, cardinalidad, orden, referencias y expresiones simples aparecen como bloques.
+    link: /es/user-guide
+    linkText: Flujo de uso
+  - title: Exportar JSON, XMI y código
+    details: Guarde y cargue workspaces, y exporte modelos de usuario como JSON, XMI de dominio comprobable con EMF en la ruta Ecore, o código generado por plantillas.
+    link: /es/user-guide
+    linkText: Flujo de exportación
+  - title: Revisar informes y XMI
+    details: Cada generación escribe un informe y un XMI BlocklyEditorSpec para mantener visible la transformación de entrada a editor.
+    link: /es/architecture
+    linkText: Flujo de generación
+---

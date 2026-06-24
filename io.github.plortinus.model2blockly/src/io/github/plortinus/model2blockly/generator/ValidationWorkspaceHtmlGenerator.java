@@ -1198,7 +1198,7 @@ public final class ValidationWorkspaceHtmlGenerator {
       "",
       "=== Notes ===",
       "- These snippets are generated from the current validation Blockly workspace.",
-      "- Browser pages cannot directly rewrite local .ecore or .model2blockly files.",
+      "- Browser pages cannot directly rewrite local .m2b, .model2blockly, or .ecore files.",
       "- Use ValidationPatchMain or the Eclipse `Apply Validation Blocks to Source` command to write validation_blocks.edited.json back to source.",
       "- Comments mark source edits that must be applied to existing attributes, references, or DSL features."
     ].join("\\n");

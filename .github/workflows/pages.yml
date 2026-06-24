@@ -25,13 +25,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install documentation dependencies
+        run: npm install --no-audit --no-fund
+
       - name: Prepare static site
         run: |
           set -euo pipefail
           rm -rf _site
-          mkdir -p _site/app_maker _site/app_maker_ecore _site/update-site
+          mkdir -p _site/app_maker_ecore _site/update-site
           cp site/index.html _site/index.html
-          cp -R io.github.plortinus.model2blockly/examples/generated/app_maker/html/. _site/app_maker/
           cp -R io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/. _site/app_maker_ecore/
           npm run build:site-docs
           cp -R io.github.plortinus.model2blockly.updatesite/repository/. _site/update-site/

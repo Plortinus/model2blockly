@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="520" viewBox="0 0 1100 520" role="img" aria-labelledby="title desc">
+  <title id="title">Generated output artifacts</title>
+  <desc id="desc">A generated folder contains reports, intermediate XMI, browser HTML, Blockly JavaScript, validation files and sample data.</desc>
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .panel { fill: #f6f8fa; stroke: #d0d7de; stroke-width: 1.5; rx: 14; }
+      .file { fill: #ffffff; stroke: #8c959f; stroke-width: 1.2; rx: 8; }
+      .title { font: 700 24px Arial, sans-serif; fill: #24292f; }
+      .heading { font: 700 15px Arial, sans-serif; fill: #24292f; }
+      .label { font: 700 13px Arial, sans-serif; fill: #24292f; }
+      .text { font: 12px Arial, sans-serif; fill: #57606a; }
+      .path { font: 12px "Courier New", monospace; fill: #0969da; }
+    </style>
+  </defs>
+  <rect class="bg" width="1100" height="520"/>
+  <text class="title" x="40" y="48">Generated Output Folder</text>
+  <text class="path" x="40" y="76">&lt;source-name&gt;_generated/</text>
+
+  <rect class="panel" x="40" y="115" width="315" height="330"/>
+  <text class="heading" x="65" y="148">User-facing files</text>
+  <rect class="file" x="65" y="175" width="245" height="54"/>
+  <text class="label" x="85" y="198">html/*_standalone.html</text>
+  <text class="text" x="85" y="218">Open directly in a browser</text>
+  <rect class="file" x="65" y="245" width="245" height="54"/>
+  <text class="label" x="85" y="268">html/*_editor.html</text>
+  <text class="text" x="85" y="288">Embeddable editor page</text>
+  <rect class="file" x="65" y="315" width="245" height="54"/>
+  <text class="label" x="85" y="338">html/sample_model.json</text>
+  <text class="text" x="85" y="358">Data loaded by Load Sample</text>
+
+  <rect class="panel" x="392" y="115" width="315" height="330"/>
+  <text class="heading" x="417" y="148">Implementation evidence</text>
+  <rect class="file" x="417" y="175" width="245" height="54"/>
+  <text class="label" x="437" y="198">generation_report.html</text>
+  <text class="text" x="437" y="218">Inputs, inferred blocks, diagnostics</text>
+  <rect class="file" x="417" y="245" width="245" height="54"/>
+  <text class="label" x="437" y="268">intermediate/*_blocklyspec.xmi</text>
+  <text class="text" x="437" y="288">Formal generated EditorSpec</text>
+  <rect class="file" x="417" y="315" width="245" height="54"/>
+  <text class="label" x="437" y="338">exported *_model.xmi</text>
+  <text class="text" x="437" y="358">Domain instance model from editor</text>
+
+  <rect class="panel" x="745" y="115" width="315" height="330"/>
+  <text class="heading" x="770" y="148">Blockly runtime files</text>
+  <rect class="file" x="770" y="175" width="245" height="48"/>
+  <text class="label" x="790" y="204">html/*_blocks.js</text>
+  <rect class="file" x="770" y="235" width="245" height="48"/>
+  <text class="label" x="790" y="264">html/*_toolbox.js</text>
+  <rect class="file" x="770" y="295" width="245" height="48"/>
+  <text class="label" x="790" y="324">html/*_generators.js</text>
+  <rect class="file" x="770" y="355" width="245" height="48"/>
+  <text class="label" x="790" y="384">html/validation_workspace.html</text>
+
+  <text class="text" x="40" y="482">Read the report first, then inspect the intermediate XMI when documenting or debugging generation behavior.</text>
+</svg>

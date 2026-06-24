@@ -1,8 +1,6 @@
 # 排错指南
 
-语言：[English](../../TROUBLESHOOTING.md) | [Español](../es/TROUBLESHOOTING.md) | **中文**
-
-安装或生成结果不符合预期时，先看这篇。
+安装或生成结果不符合预期时，可以按症状定位问题。
 
 ## 安装列表为空
 
@@ -24,7 +22,7 @@ https://plortinus.github.io/model2blockly/update-site/
    `Group items by category`。
 3. 点 `Manage...`，删除旧的 Model2Blockly site，重新添加 URL 并刷新。
 4. 保持 `Contact all update sites during install to find required software`
-   勾选，这样 Eclipse 才能解析 Xtext 和 EMF 依赖。
+   勾选，这样 Eclipse 才能解析 EMF 依赖。
 5. 如果使用本地 update site，选择这个目录：
 
 ```text
@@ -65,7 +63,7 @@ io.github.plortinus.model2blockly.updatesite/repository/plugins/
 检查：
 
 1. 只选择一个文件。
-2. 文件扩展名必须是 `.model2blockly` 或 `.ecore`。
+2. 文件扩展名必须是 `.ecore`。
 3. 使用 Project Explorer、Package Explorer，或者顶部 `Model2Blockly` 菜单。
 4. 在 `Help -> About Eclipse IDE -> Installation Details` 里确认插件已安装。
 5. 安装或更新后重启 Eclipse。
@@ -82,7 +80,6 @@ Eclipse 命令会在被选文件旁边写一个同级目录：
 
 | 选择的文件 | 输出目录 |
 | --- | --- |
-| `examples/app_maker.model2blockly` | `examples/app_maker_generated/` |
 | `model/app_maker.ecore` | `model/app_maker_generated/` |
 
 如果没看到目录，手动 refresh Eclipse 项目。
@@ -107,7 +104,7 @@ Expected generated EditorSpec root, got ...
 3. 在 `Installation Details` 里确认安装版本。
 4. 如果是本地构建，重新运行 update site 构建，确认 core jar 里包含
    `io/github/plortinus/model2blockly/intermediate/blocklyspec/*`。
-5. 重新对选中的 `.model2blockly` 或 `.ecore` 文件执行生成。
+5. 重新对选中的 `.ecore` 文件执行生成。
 
 ## 缺少或没有更新中间 XMI
 
@@ -122,30 +119,6 @@ XMI 读回、桥接验证，然后才生成 Blockly HTML/JavaScript。
 
 如果输出里有 HTML 但没有这个 XMI，说明安装的插件或本地 update site 还是旧的。
 重新构建并安装当前 update site 后再生成。
-
-## `.model2blockly` 生成失败
-
-检查：
-
-1. 用 Model2Blockly 编辑器打开文件。
-2. 先修复 Xtext 语法错误。
-3. 文件开头必须有一个 `domain`。
-4. 被引用的 class 和 category 必须存在。
-5. 如果 value input 无法连接，目标类型通常应该是 `output class`。
-
-如果消息包含 `INTERMEDIATE_MODEL_INVALID` 或 `block[Page].components` 这样的路径，
-说明 DSL 已经能解析，但生成器需要的中间模型结构不合法。
-
-常见消息：
-
-| 消息模式 | 修复方式 |
-| --- | --- |
-| `Shadow block type ... is not an output block` | value input 的 shadow 要用 `output class` |
-| `Duplicate feature/input name` | 同一个 class 内的 attribute、reference、contains、value input 不能重名 |
-| `Reference label field ... does not exist` | 把 `referenceLabelField` 改成目标类型上真实存在的字段 |
-| `... does not exist` | 检查 class、category、field、input 或 shadow 的拼写 |
-| `Expression validation must define an expression` | 补上 expression/OCL，或者删除空 validation |
-| `Unsupported OCL validation expression` | 改成支持的简单 OCL 子集，或使用 `expression`/`js` |
 
 ## `.ecore` 生成失败
 
@@ -173,11 +146,6 @@ reference 字段列出的是 workspace 里已经存在的兼容 block。
 2. 确认引用目标类型和目标 block 类型或 connection type 兼容。
 3. 增加可读的 label 字段：
 
-```model2blockly
-reference DataSource source required
-  widget reference-select referenceLabelField name
-```
-
 ```xml
 <eAnnotations source="ui">
   <details key="referenceLabelField" value="name"/>
@@ -185,13 +153,6 @@ reference DataSource source required
 ```
 
 ## value block 不能连接
-
-`.model2blockly` 里目标类型要是 output：
-
-```model2blockly
-output class TextLiteral extends TextExpression ...
-value TextExpression content shadow TextLiteral
-```
 
 `.ecore` 里给 class 加 output 注解：
 
@@ -210,27 +171,27 @@ value TextExpression content shadow TextLiteral
 </eAnnotations>
 ```
 
-## validation 看起来不符合预期
+## 验证规则看起来不符合预期
 
-validation 的来源包括：
+验证规则的来源包括：
 
 | 来源 | 生成的规则 |
 | --- | --- |
-| `required` 或 `lowerBound >= 1` | 必填字段或必填引用 |
+| `lowerBound >= 1` | 必填字段或必填引用 |
 | 带上下界的 containment | statement input 数量限制 |
 | `iD=true` | 类型内唯一性 |
 | 多值字段或引用的 `unique=true` | 值唯一性 |
-| `constraint ... must follow ...` 或 `mustFollow` | 前置 block 规则 |
+| `mustFollow` | 前置 block 规则 |
 | validation/OCL 注解 | 表达式规则 |
 
-打开生成目录里的 `html/validation_workspace.html`，可以用 block 形式查看规则。
+打开生成目录里的 `html/validation_workspace.html`，可以用 Blockly 块的形式查看规则。
 
 ## 常用本地验证命令
 
 ```bash
 npm install
 npm run verify:plugin
-npm run verify:dsl-validation
+npm run verify:domain-xmi
 npm run verify:patch
 npm run smoke
 ```

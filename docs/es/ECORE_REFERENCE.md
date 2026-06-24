@@ -1,10 +1,8 @@
 # Referencia de anotaciones Ecore
 
-Idioma: [English](../../ECORE_REFERENCE.md) | **Español** | [中文](../zh/ECORE_REFERENCE.md)
-
-Model2Blockly también puede generar editores Blockly desde metamodelos Ecore
-anotados. Esta ruta no usa palabras clave `.model2blockly`; usa estructura Ecore
-normal y `EAnnotation` en paquetes, clases, atributos y referencias.
+Model2Blockly puede generar editores Blockly desde metamodelos Ecore anotados.
+La entrada usa estructura Ecore normal y `EAnnotation` en paquetes, clases,
+atributos y referencias.
 
 La ruta Ecore usa la misma tuberia intermedia: el `EPackage` se adapta al
 `EditorSpec` EMF generado, se escribe como

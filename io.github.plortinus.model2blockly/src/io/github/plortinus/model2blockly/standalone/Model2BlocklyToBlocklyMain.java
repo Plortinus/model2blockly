@@ -26,11 +26,13 @@ import io.github.plortinus.model2blockly.validation.Model2BlocklyValidationDiagn
 import com.google.inject.Injector;
 
 /**
- * Standalone entry point: reads a .model2blockly file and generates a complete
+ * Standalone entry point: reads a .m2b file and generates a complete
  * Blockly editor plus generation_report.html.
  *
  * Usage:
- *   java Model2BlocklyToBlocklyMain path/to/domain.model2blockly [output-dir]
+ *   java Model2BlocklyToBlocklyMain path/to/domain.m2b [output-dir]
+ *
+ * Legacy .model2blockly files are still supported.
  */
 public class Model2BlocklyToBlocklyMain {
 
@@ -94,7 +96,7 @@ public class Model2BlocklyToBlocklyMain {
 			System.exit(3);
 			return;
 		} catch (Exception e) {
-			System.err.println("Failed to load .model2blockly model: " + e.getMessage());
+			System.err.println("Failed to load .m2b model: " + e.getMessage());
 			e.printStackTrace();
 			System.exit(3);
 			return;
@@ -242,7 +244,7 @@ public class Model2BlocklyToBlocklyMain {
 				out.append(step++).append(". Open the generated HTML output.\n");
 			}
 		out.append("\n## Typical Iteration\n\n");
-		out.append("- Edit the `.model2blockly` source if the domain structure should change.\n");
+		out.append("- Edit the `.m2b` source if the domain structure should change.\n");
 		out.append("- Use labels, colours, widgets, `referenceLabelField`, `shadow` and `code` templates to improve the generated editor.\n");
 		out.append("- Rerun the same Eclipse launch configuration and reopen `generation_report.html`.\n");
 		return out.toString();

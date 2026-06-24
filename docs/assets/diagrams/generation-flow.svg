@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="380" viewBox="0 0 1100 380" role="img" aria-labelledby="title desc">
+  <title id="title">Model2Blockly generation flow</title>
+  <desc id="desc">The generation flow starts in Eclipse, converts source input to EditorSpec, writes and reloads XMI, validates it, then generates browser artifacts.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#57606a"/>
+    </marker>
+    <style>
+      .bg { fill: #ffffff; }
+      .step { fill: #ffffff; stroke: #1f6feb; stroke-width: 1.6; rx: 12; }
+      .check { fill: #fff8c5; stroke: #bf8700; stroke-width: 1.6; rx: 12; }
+      .out { fill: #f0fff4; stroke: #2da44e; stroke-width: 1.6; rx: 12; }
+      .title { font: 700 24px Arial, sans-serif; fill: #24292f; }
+      .num { font: 700 13px Arial, sans-serif; fill: #1f6feb; }
+      .label { font: 700 14px Arial, sans-serif; fill: #24292f; }
+      .text { font: 12px Arial, sans-serif; fill: #57606a; }
+      .arrow { stroke: #57606a; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .fail { stroke: #cf222e; stroke-width: 2; fill: none; marker-end: url(#arrow); stroke-dasharray: 7 5; }
+    </style>
+  </defs>
+  <rect class="bg" width="1100" height="380"/>
+  <text class="title" x="40" y="48">Generation Flow</text>
+  <text class="text" x="40" y="74">The same pipeline is used for both .m2b and annotated .ecore sources.</text>
+
+  <rect class="step" x="45" y="125" width="125" height="105"/>
+  <text class="num" x="65" y="154">1</text>
+  <text class="label" x="65" y="181">Select source</text>
+  <text class="text" x="65" y="204">Eclipse action</text>
+
+  <rect class="step" x="205" y="125" width="125" height="105"/>
+  <text class="num" x="225" y="154">2</text>
+  <text class="label" x="225" y="181">Parse or load</text>
+  <text class="text" x="225" y="204">DSL / Ecore</text>
+
+  <rect class="step" x="365" y="125" width="125" height="105"/>
+  <text class="num" x="385" y="154">3</text>
+  <text class="label" x="385" y="181">Adapt model</text>
+  <text class="text" x="385" y="204">Build EditorSpec</text>
+
+  <rect class="check" x="525" y="125" width="125" height="105"/>
+  <text class="num" x="545" y="154">4</text>
+  <text class="label" x="545" y="181">Write XMI</text>
+  <text class="text" x="545" y="204">intermediate/*</text>
+
+  <rect class="check" x="685" y="125" width="125" height="105"/>
+  <text class="num" x="705" y="154">5</text>
+  <text class="label" x="705" y="181">Reload + validate</text>
+  <text class="text" x="705" y="204">Fail fast if invalid</text>
+
+  <rect class="out" x="845" y="125" width="125" height="105"/>
+  <text class="num" x="865" y="154">6</text>
+  <text class="label" x="865" y="181">Generate files</text>
+  <text class="text" x="865" y="204">HTML, JS, report</text>
+
+  <rect class="out" x="515" y="275" width="260" height="62"/>
+  <text class="label" x="545" y="302">Diagnostics stop here</text>
+  <text class="text" x="545" y="323">Problems view + generation_report.html explain the issue.</text>
+
+  <path class="arrow" d="M170 178 H205"/>
+  <path class="arrow" d="M330 178 H365"/>
+  <path class="arrow" d="M490 178 H525"/>
+  <path class="arrow" d="M650 178 H685"/>
+  <path class="arrow" d="M810 178 H845"/>
+  <path class="fail" d="M748 230 C748 255 715 275 688 275"/>
+  <path class="fail" d="M588 230 C588 255 603 275 628 275"/>
+</svg>

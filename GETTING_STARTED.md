@@ -1,16 +1,15 @@
 # Getting started
 
-Languages: **English** | [Español](docs/es/GETTING_STARTED.md) | [中文](docs/zh/GETTING_STARTED.md)
-
 This tutorial walks through the fastest path from an installed plugin to a
 generated Blockly editor.
 
 ## What you will do
 
 1. Open a generated example to see the expected result.
-2. Generate a new editor from the `.model2blockly` example.
-3. Generate the equivalent editor from the `.ecore` example.
-4. Inspect the generated report and decide what to edit next.
+2. Generate a new editor from the `.ecore` example.
+3. Inspect the generated report, intermediate XMI and validation workspace.
+4. Optionally edit generated validation blocks and apply supported changes back
+   to the source.
 
 ## Prerequisites
 
@@ -57,7 +56,6 @@ Blockly blocks, so you can inspect what the generator produced.
 The repository includes generated AppMaker editors. Open one of these files:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker/html/AppMaker_standalone.html
 io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
 ```
 
@@ -77,42 +75,9 @@ The hosted examples are also linked from the project site:
 https://plortinus.github.io/model2blockly/
 ```
 
-## Generate from `.model2blockly`
-
-Use the textual route when you want to write a domain model by hand.
-
-1. In Eclipse, import or open this repository.
-2. In Project Explorer or Package Explorer, select:
-
-```text
-io.github.plortinus.model2blockly/examples/app_maker.model2blockly
-```
-
-3. Right-click the file and choose `Generate Blockly Editor`.
-4. Wait for Eclipse to finish generation.
-5. Eclipse should open:
-
-```text
-io.github.plortinus.model2blockly/examples/app_maker_generated/generation_report.html
-```
-
-6. Open the generated standalone editor:
-
-```text
-io.github.plortinus.model2blockly/examples/app_maker_generated/html/AppMaker_standalone.html
-```
-
-The output folder is always a sibling folder named:
-
-```text
-<input-file-name-without-extension>_generated
-```
-
-If generation fails, open the Eclipse `Problems` view and the selected
-`.model2blockly` file. Syntax/linking errors and generator-facing intermediate
-model errors are reported on the source file. Messages may include an internal
-path such as `block[Task].assignee`; that path names the generated `EditorSpec`
-element that could not be generated safely.
+These checked-in examples live under `examples/generated/...` so they are stable
+for documentation and GitHub Pages. When you generate from Eclipse yourself, the
+output is written next to the selected source file as `<name>_generated/`.
 
 ## Generate from `.ecore`
 
@@ -120,23 +85,30 @@ Use the Ecore route when you already have an EMF metamodel or want to model
 directly with EMF concepts such as packages, subpackages, `EAnnotation`,
 `EReference.eOpposite`, or existing generated EMF code.
 
-1. In Project Explorer or Package Explorer, select:
+1. In Eclipse, import or open this repository.
+2. In Project Explorer or Package Explorer, select:
 
 ```text
 io.github.plortinus.model2blockly/model/app_maker.ecore
 ```
 
-2. Right-click the file and choose `Generate Blockly Editor`.
-3. Eclipse should open:
+3. Right-click the file and choose `Generate Blockly Editor`.
+4. Eclipse should open:
 
 ```text
 io.github.plortinus.model2blockly/model/app_maker_generated/generation_report.html
 ```
 
-4. Open the generated standalone editor:
+5. Open the generated standalone editor:
 
 ```text
 io.github.plortinus.model2blockly/model/app_maker_generated/html/Appmaker_standalone.html
+```
+
+The output folder is always a sibling folder named:
+
+```text
+<input-file-name-without-extension>_generated
 ```
 
 ## Understand the output folder
@@ -154,6 +126,8 @@ Each generated folder contains:
 | `html/*_generators.js` | Generated code generators |
 | `html/*_validations.js` | Generated validation runtime hooks |
 | `html/validation_workspace.html` | Visual validation rule workspace |
+| `html/validation_blocks.json` | Validation rules serialized as Blockly-style block data |
+| `html/validation_runtime.js` | Runtime support for the validation workspace |
 | `html/sample_model.json` | Sample model for the generated editor |
 | `intermediate/*_blocklyspec.xmi` | Formal EMF/XMI intermediate model reloaded before HTML generation |
 
@@ -164,15 +138,14 @@ Do not confuse the two XMI roles: `intermediate/*_blocklyspec.xmi` is the
 generator's `EditorSpec` model, while `More -> Export XMI` in the generated
 editor writes a user-created domain instance model.
 
+To inspect validation rules visually, open `html/validation_workspace.html`.
+That page can export `validation_blocks.edited.json`. To apply supported rule
+edits back to the selected source, select the original `.ecore` file in
+Eclipse and run `Apply Validation Blocks to Source`.
+
 ## Make your first small edit
 
-For `.model2blockly`, try changing a label or colour:
-
-```model2blockly
-class Button extends Component category Components colour 160 label "Button"
-```
-
-For `.ecore`, try changing class annotation metadata:
+Try changing class annotation metadata in `.ecore`:
 
 ```xml
 <eAnnotations source="blockly">
@@ -190,7 +163,6 @@ toolbox categories, `inline`/`inputsInline`, field widgets, or code templates.
 
 | Need | Read |
 | --- | --- |
-| Textual DSL syntax | [`DSL_REFERENCE.md`](DSL_REFERENCE.md) |
 | Ecore annotations | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md) |
 | Common installation and generation issues | [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) |
 | Choosing the right document by task | [`DOCS.md`](DOCS.md) |

@@ -1,14 +1,15 @@
 # Documentation map
 
-Languages: **English** | [Español](docs/es/README.md) | [中文](docs/zh/README.md)
-
 Use this page to choose the right document for the task you are doing.
 
 ## Start here
 
 | Goal | Read |
 | --- | --- |
-| Choose a documentation language | [`docs/README.md`](docs/README.md) |
+| Browse the hosted documentation site | <https://plortinus.github.io/model2blockly/docs/en/> |
+| Open localized documentation | [`docs/en/README.md`](docs/en/README.md), [`docs/es/README.md`](docs/es/README.md), or [`docs/zh/README.md`](docs/zh/README.md) |
+| Use the plugin without implementation details | [`docs/en/USER_GUIDE.md`](docs/en/USER_GUIDE.md) |
+| Explain the architecture, diagrams and implementation | [`docs/en/ARCHITECTURE.md`](docs/en/ARCHITECTURE.md) |
 | Understand what this repository does | [`README.md`](README.md) |
 | Follow the complete AppMaker running example | [`RUNNING_EXAMPLE.md`](RUNNING_EXAMPLE.md) |
 | Generate your first editor | [`GETTING_STARTED.md`](GETTING_STARTED.md) |
@@ -16,26 +17,24 @@ Use this page to choose the right document for the task you are doing.
 | Install the Eclipse plugin | [`README.md`](README.md#update-site) |
 | Publish a new Eclipse plugin/update-site build | [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) |
 | Fix installation or generation issues | [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) |
-| Check the textual DSL syntax | [`DSL_REFERENCE.md`](DSL_REFERENCE.md) |
 | Check supported Ecore annotations | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md) |
-| Understand the intermediate XMI pipeline | [`README.md`](README.md), then [`DSL_REFERENCE.md`](DSL_REFERENCE.md#generated-output) or [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#practical-workflow) |
+| Understand the intermediate XMI pipeline | [`README.md`](README.md), then [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#practical-workflow) |
 
 ## Common tasks
 
 | Task | Best document | Why |
 | --- | --- | --- |
-| Generate an editor from `.model2blockly` | [`GETTING_STARTED.md`](GETTING_STARTED.md#generate-from-model2blockly), then [`DSL_REFERENCE.md`](DSL_REFERENCE.md#recommended-modeling-workflow) | The tutorial gives the Eclipse steps; the reference explains the model shape. |
 | Generate an editor from `.ecore` | [`GETTING_STARTED.md`](GETTING_STARTED.md#generate-from-ecore), then [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#practical-workflow) | The tutorial gives the Eclipse steps; the reference explains annotations and Ecore cardinalities. |
-| Decide between `.model2blockly` and `.ecore` | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#when-to-use-ecore-instead-of-model2blockly) | The Ecore reference lists the cases where Ecore has better coverage. |
-| Find what a field becomes in Blockly | [`DSL_REFERENCE.md`](DSL_REFERENCE.md#features) or [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#attribute-annotations) | These sections map project fields to Blockly fields and inputs. |
-| Configure toolbox categories | [`DSL_REFERENCE.md`](DSL_REFERENCE.md#categories-and-toolbox) or [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#class-annotations) | Category handling differs between the DSL and Ecore routes. |
-| Configure workspace options | [`DSL_REFERENCE.md`](DSL_REFERENCE.md#workspace-options) or [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#package-annotations) | Both routes pass options through to `Blockly.inject(...)`, but the syntax differs. |
-| Add code generation templates | [`DSL_REFERENCE.md`](DSL_REFERENCE.md#code-templates) or [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#sourcecode-on-eclass) | Templates use the same placeholders in both routes. |
-| Add validation rules | [`DSL_REFERENCE.md`](DSL_REFERENCE.md#constraints-and-validation) or [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#sourcevalidation-on-eclass) | DSL supports a small direct syntax; Ecore supports annotations and a small OCL subset. |
-| Inspect the formal generated model | [`GETTING_STARTED.md`](GETTING_STARTED.md#inspect-the-generated-output) | The `intermediate/*_blocklyspec.xmi` file is the EMF/XMI editor-spec model reloaded before HTML generation. |
+| Find what a field becomes in Blockly | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#attribute-annotations) | This section maps Ecore attributes to Blockly fields and inputs. |
+| Configure toolbox categories | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#class-annotations) | Categories are provided through Ecore annotations. |
+| Configure workspace options | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#package-annotations) | Workspace options pass through to `Blockly.inject(...)`. |
+| Add code generation templates | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#sourcecode-on-eclass) | Templates are stored in Ecore `code` annotations. |
+| Add validation rules | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#sourcevalidation-on-eclass) | Ecore supports validation annotations and a small OCL subset. |
+| Inspect or edit validation rules visually | [`GETTING_STARTED.md`](GETTING_STARTED.md#visual-walkthrough), then [`RUNNING_EXAMPLE.md`](RUNNING_EXAMPLE.md#generated-result) | Generated editors include `validation_workspace.html` and `validation_blocks.json`; supported edits can be applied back with `Apply Validation Blocks to Source`. |
+| Inspect the formal generated model | [`GETTING_STARTED.md`](GETTING_STARTED.md#understand-the-output-folder) | The `intermediate/*_blocklyspec.xmi` file is the EMF/XMI editor-spec model reloaded before HTML generation. |
 | Inspect the user-created domain instance model | Open a generated `*_standalone.html`, click `Load Sample`, then `More -> Export XMI` | The exported `*_model.xmi` is the domain instance model produced by the generated Blockly editor. |
-| Explain both DSL and Ecore routes in the thesis | [`RUNNING_EXAMPLE.md`](RUNNING_EXAMPLE.md), then [`DSL_REFERENCE.md`](DSL_REFERENCE.md) and [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md) | The running example keeps AppMaker consistent across the textual DSL, Ecore annotations, intermediate XMI, generated editor, and exported domain instance XMI. |
-| Understand DSL validation and generation diagnostics | [`DSL_REFERENCE.md`](DSL_REFERENCE.md#diagnostics-and-generation-safety), then [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md#model2blockly-generation-fails) | The reference explains which problems are caught in the editor; troubleshooting explains what to do when generation stops. |
+| Understand the system architecture | [`docs/en/ARCHITECTURE.md`](docs/en/ARCHITECTURE.md) | The architecture page includes the system diagram, generation flow diagram, output artifact diagram and code map. |
+| Understand Ecore generation diagnostics | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md#practical-workflow), then [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md#ecore-generation-fails) | The reference explains the mapping; troubleshooting explains what to do when generation stops. |
 | Rebuild and publish the update site | [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) | The release checklist lists version fields, rebuild commands, verification, GitHub Pages deployment, and user refresh steps. |
 | Diagnose an empty install site or stale generated editor | [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) | The troubleshooting guide is organized by symptom. |
 
@@ -43,21 +42,21 @@ Use this page to choose the right document for the task you are doing.
 
 - [`GETTING_STARTED.md`](GETTING_STARTED.md) is the first-generation tutorial.
   It is best for new users who want to see output quickly.
+- [`docs/en/USER_GUIDE.md`](docs/en/USER_GUIDE.md) is the user-facing entry
+  page for installation, generation, screenshots and result inspection.
 - [`RUNNING_EXAMPLE.md`](RUNNING_EXAMPLE.md) is the end-to-end AppMaker example
-  for explaining the proposal and collecting thesis screenshots.
+  for checking the Ecore route, intermediate model, generated code and
+  screenshots together.
+- [`docs/en/ARCHITECTURE.md`](docs/en/ARCHITECTURE.md) is the implementation
+  layer with architecture diagrams, generation flow and code responsibility map.
 - [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) is symptom-oriented. It is best
   when Eclipse install, generation, references, value inputs, or validation
   output does not match expectations.
-- [`DSL_REFERENCE.md#diagnostics-and-generation-safety`](DSL_REFERENCE.md#diagnostics-and-generation-safety)
-  explains how `.model2blockly` editor diagnostics, generation-time diagnostics,
-  and generated runtime validation differ.
 - [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) is the maintainer checklist
   for publishing a new p2 update site and telling users how to refresh Eclipse.
 
 ## Reference documents
 
-- [`DSL_REFERENCE.md`](DSL_REFERENCE.md) is a reference for the textual
-  `.model2blockly` language. It is best for users writing models by hand.
 - [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md) is a reference for annotated Ecore
   models. It is best for users who already have an Ecore metamodel or need EMF
   features such as IDs, `eOpposite`, Ecore cardinalities, or OCL-derived
@@ -68,10 +67,6 @@ Use this page to choose the right document for the task you are doing.
 When documentation and implementation differ, use the implementation as the
 final reference:
 
-- DSL grammar:
-  [`io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/Model2Blockly.xtext`](io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/Model2Blockly.xtext)
-- DSL adapter:
-  [`io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/DomainModelAdapter.java`](io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/DomainModelAdapter.java)
 - Ecore adapter:
   [`io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/EcoreAdapter.java`](io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/EcoreAdapter.java)
 - Generated intermediate EMF model:
@@ -82,17 +77,18 @@ final reference:
   [`io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/blocklyspec/BlocklyEditorSpecValidator.java`](io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/blocklyspec/BlocklyEditorSpecValidator.java)
 - Intermediate XMI serializer:
   [`io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/intermediate/BlocklySpecXmiSerializer.java`](io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/intermediate/BlocklySpecXmiSerializer.java)
-- DSL validation bridge:
-  [`io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/validation/Model2BlocklyValidator.java`](io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/validation/Model2BlocklyValidator.java)
 
 ## Documentation model
 
-The documentation follows a task-first structure:
+The documentation follows a task-first structure. The Markdown files remain the
+source of truth in GitHub, and `scripts/build-site-docs.mjs` renders them into a
+VitePress site with fixed navigation, sidebars, language switching and local
+search for GitHub Pages.
 
 1. Read the README for the repository overview and install URL.
 2. Use `GETTING_STARTED.md` to generate the first editor.
 3. Use `TROUBLESHOOTING.md` when something does not behave as expected.
-4. Use the route-specific reference only when authoring or debugging a model.
+4. Use the Ecore reference only when authoring or debugging a model.
 5. Use `generation_report.html` after each generation run to verify what the
    generator inferred.
 

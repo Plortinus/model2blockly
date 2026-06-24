@@ -3,6 +3,11 @@
  */
 package io.github.plortinus.model2blockly;
 
+import com.google.inject.Injector;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.resource.IResourceFactory;
+import org.eclipse.xtext.resource.IResourceServiceProvider;
+
 
 /**
  * Initialization support for running Xtext languages without Equinox extension registry.
@@ -11,5 +16,14 @@ public class Model2BlocklyStandaloneSetup extends Model2BlocklyStandaloneSetupGe
 
 	public static void doSetup() {
 		new Model2BlocklyStandaloneSetup().createInjectorAndDoEMFRegistration();
+	}
+
+	@Override
+	public void register(Injector injector) {
+		super.register(injector);
+		IResourceFactory resourceFactory = injector.getInstance(IResourceFactory.class);
+		IResourceServiceProvider serviceProvider = injector.getInstance(IResourceServiceProvider.class);
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("m2b", resourceFactory);
+		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("m2b", serviceProvider);
 	}
 }

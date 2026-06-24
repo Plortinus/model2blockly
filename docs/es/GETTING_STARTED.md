@@ -1,16 +1,16 @@
 # Primeros pasos
 
-Idioma: [English](../../GETTING_STARTED.md) | **Español** | [中文](../zh/GETTING_STARTED.md)
-
 Esta guía muestra el camino más corto desde el plugin instalado hasta un editor
 Blockly generado.
 
 ## Que va a hacer
 
 1. Abrir un ejemplo ya generado para ver el resultado esperado.
-2. Generar un editor desde el ejemplo `.model2blockly`.
-3. Generar el editor equivalente desde el ejemplo `.ecore`.
-4. Revisar el informe de generación para decidir que cambiar.
+2. Generar un editor desde el ejemplo `.ecore`.
+3. Revisar el informe de generación, el XMI intermedio y el workspace de
+   validaciones.
+4. Opcionalmente, editar bloques de validación generados y aplicar los cambios
+   soportados a la fuente.
 
 ## Requisitos
 
@@ -62,7 +62,6 @@ del modelo como bloques Blockly.
 El repositorio incluye editores AppMaker ya generados:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker/html/AppMaker_standalone.html
 io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
 ```
 
@@ -82,41 +81,9 @@ También puede abrir los ejemplos publicados:
 https://plortinus.github.io/model2blockly/
 ```
 
-## Generar desde `.model2blockly`
-
-Use esta ruta cuando quiera escribir el modelo de dominio a mano.
-
-1. Abra o importe este repositorio en Eclipse.
-2. Seleccione este archivo:
-
-```text
-io.github.plortinus.model2blockly/examples/app_maker.model2blockly
-```
-
-3. Clic derecho y elija `Generate Blockly Editor`.
-4. Espere a que termine la generación.
-5. Eclipse deberia abrir:
-
-```text
-io.github.plortinus.model2blockly/examples/app_maker_generated/generation_report.html
-```
-
-6. Abra el editor generado:
-
-```text
-io.github.plortinus.model2blockly/examples/app_maker_generated/html/AppMaker_standalone.html
-```
-
-La carpeta de salida se crea junto al archivo elegido y se llama:
-
-```text
-<nombre-del-archivo>_generated
-```
-
-Si falla, abra la vista `Problems` de Eclipse y el archivo `.model2blockly`.
-Los errores de sintaxis, referencias y reglas estructurales del generador se
-marcan sobre el archivo fuente. Un mensaje como `block[Task].assignee` apunta
-al elemento del modelo intermedio que no se pudo generar con seguridad.
+Estos ejemplos ya generados viven en `examples/generated/...` para que sean
+estables en la documentación y en GitHub Pages. Si genera desde Eclipse, la
+salida se escribe junto al archivo seleccionado como `<nombre>_generated/`.
 
 ## Generar desde `.ecore`
 
@@ -124,20 +91,21 @@ Use esta ruta si ya tiene un metamodelo EMF o quiere trabajar directamente con
 conceptos de EMF como `EPackage`, `EAnnotation`, `EReference.eOpposite` o código
 EMF existente.
 
-1. Seleccione:
+1. Abra o importe este repositorio en Eclipse.
+2. Seleccione:
 
 ```text
 io.github.plortinus.model2blockly/model/app_maker.ecore
 ```
 
-2. Clic derecho y elija `Generate Blockly Editor`.
-3. Eclipse deberia abrir:
+3. Clic derecho y elija `Generate Blockly Editor`.
+4. Eclipse deberia abrir:
 
 ```text
 io.github.plortinus.model2blockly/model/app_maker_generated/generation_report.html
 ```
 
-4. Abra:
+5. Abra:
 
 ```text
 io.github.plortinus.model2blockly/model/app_maker_generated/html/Appmaker_standalone.html
@@ -156,6 +124,8 @@ io.github.plortinus.model2blockly/model/app_maker_generated/html/Appmaker_standa
 | `html/*_generators.js` | Generadores de código |
 | `html/*_validations.js` | Hooks de validación |
 | `html/validation_workspace.html` | Reglas de validación como bloques |
+| `html/validation_blocks.json` | Reglas de validación serializadas como datos de bloques |
+| `html/validation_runtime.js` | Soporte runtime para el workspace de validaciones |
 | `html/sample_model.json` | Modelo de ejemplo |
 | `intermediate/*_blocklyspec.xmi` | Modelo intermedio EMF/XMI recargado antes de generar HTML |
 
@@ -167,13 +137,12 @@ instancia `EditorSpec` interna del generador, mientras que el `*_model.xmi`
 exportado por el editor es el modelo de instancia del dominio creado por el
 usuario.
 
+Para revisar reglas visualmente, abra `html/validation_workspace.html`. Esa
+pagina puede exportar `validation_blocks.edited.json`. Para aplicar cambios
+soportados a la fuente, seleccione el `.ecore` original en Eclipse y ejecute
+`Apply Validation Blocks to Source`.
+
 ## Primer cambio pequeno
-
-En `.model2blockly`, cambie una etiqueta o color:
-
-```model2blockly
-class Button extends Component category Components colour 160 label "Button"
-```
 
 En `.ecore`, cambie una anotacion:
 
@@ -191,7 +160,6 @@ Genere de nuevo y vuelva a abrir `generation_report.html`.
 
 | Necesidad | Documento |
 | --- | --- |
-| Sintaxis textual | [`DSL_REFERENCE.md`](DSL_REFERENCE.md) |
 | Anotaciones Ecore | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md) |
 | Problemas comunes | [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) |
 | Mapa completo en ingles | [`../../DOCS.md`](../../DOCS.md) |

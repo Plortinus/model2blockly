@@ -30,7 +30,7 @@ public final class Model2BlocklyValidationDiagnostics {
 	public static void throwIfSyntaxErrors(String sourceLabel, List<Resource.Diagnostic> errors) {
 		if (errors == null || errors.isEmpty()) return;
 		StringBuilder message = new StringBuilder();
-		message.append("Invalid .model2blockly syntax");
+		message.append("Invalid .m2b syntax");
 		if (!isBlank(sourceLabel)) message.append(" in ").append(sourceLabel);
 		message.append(".");
 		int limit = Math.min(errors.size(), 20);
@@ -54,7 +54,7 @@ public final class Model2BlocklyValidationDiagnostics {
 
 	public static String format(String sourceLabel, List<Issue> issues) {
 		StringBuilder message = new StringBuilder();
-		message.append("Invalid .model2blockly model");
+		message.append("Invalid .m2b model");
 		if (!isBlank(sourceLabel)) message.append(" in ").append(sourceLabel);
 		message.append(".");
 		int limit = Math.min(issues.size(), 20);

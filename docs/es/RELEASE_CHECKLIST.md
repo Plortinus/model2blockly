@@ -1,7 +1,5 @@
 # Checklist de publicación
 
-Idioma: [English](../../RELEASE_CHECKLIST.md) | **Español** | [中文](../zh/RELEASE_CHECKLIST.md)
-
 Use esta guía cuando publique una nueva versión del plugin Eclipse y del update
 site. La checklist inglesa completa está en
 [`../../RELEASE_CHECKLIST.md`](../../RELEASE_CHECKLIST.md).
@@ -49,7 +47,7 @@ ECLIPSE=/path/to/eclipse npm run rebuild:update-site
 ```bash
 npm run verify:plugin
 npm run verify:docs
-npm run verify:dsl-validation
+npm run verify:domain-xmi
 npm run verify:patch
 npm run smoke
 ```
@@ -104,11 +102,8 @@ https://plortinus.github.io/model2blockly/update-site/
 
 ## Smoke check posterior
 
-1. Prepare un archivo `.model2blockly` en un workspace limpio de Eclipse.
+1. Prepare un archivo `.ecore` anotado en un workspace limpio de Eclipse.
 2. Ejecute `Generate Blockly Editor`.
 3. Confirme que se abre `generation_report.html`.
 4. Confirme que la salida contiene `intermediate/*_blocklyspec.xmi`.
-5. Confirme que modelos DSL invalidos producen marcadores `Problems`, no stack
-   traces Java.
-6. Si prueba Ecore, genere desde `app_maker.ecore` y confirme que el editor se
-   abre.
+5. Genere desde `app_maker.ecore` y confirme que el editor se abre.
