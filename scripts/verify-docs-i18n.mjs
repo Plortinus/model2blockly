@@ -135,7 +135,7 @@ assertIncludes(generatedTroubleshooting, 'update-site', 'troubleshooting keeps p
 assertIncludes(generatedEsIndex, 'Genera editores Blockly desde Ecore anotado', 'Spanish home is generated from the current Ecore narrative');
 assertIncludes(generatedEsInstall, 'Instalar el plugin de Eclipse', 'Spanish install page is generated');
 assertIncludes(generatedEsArchitecture, 'Arquitectura', 'Spanish architecture page is generated');
-assertIncludes(generatedZhIndex, '从带注解的 Ecore 生成 Blockly 编辑器', 'Chinese home is generated from the current Ecore narrative');
+assertIncludes(generatedZhIndex, '基于 Ecore 的 Blockly 编辑器生成工具', 'Chinese home is generated from the current Ecore narrative');
 assertIncludes(generatedZhInstall, '安装 Eclipse 插件', 'Chinese install page is generated');
 assertIncludes(generatedZhArchitecture, '架构', 'Chinese architecture page is generated');
 
