@@ -3,7 +3,7 @@ Automatic-Module-Name: io.github.plortinus.model2blockly
 Bundle-ManifestVersion: 2
 Bundle-Name: Model2Blockly Core
 Bundle-Vendor: Xiaoyong Wang
-Bundle-Version: 1.0.8.qualifier
+Bundle-Version: 1.0.9.qualifier
 Bundle-SymbolicName: io.github.plortinus.model2blockly; singleton:=true
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: ., bin/

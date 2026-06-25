@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const pluginVersion = '1.0.8.qualifier';
+const pluginVersion = '1.0.9.qualifier';
 const failures = [];
 
 checkRequiredFiles();
