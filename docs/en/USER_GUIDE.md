@@ -6,18 +6,12 @@ from an annotated Ecore metamodel. The Xtext syntax remains available for
 
 ## Install the Eclipse Plugin
 
-Use the update site published by this repository:
+Follow the [install guide](./INSTALL.md) for the full Eclipse update-site
+workflow. The p2 repository URL is:
 
 ```text
 https://plortinus.github.io/model2blockly/update-site/
 ```
-
-In Eclipse:
-
-1. Open `Help` -> `Install New Software...`.
-2. Paste the update-site URL.
-3. Select the Model2Blockly feature and finish the installation.
-4. Restart Eclipse when prompted.
 
 The plugin contributes:
 

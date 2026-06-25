@@ -14,6 +14,7 @@ const repoUrl = 'https://github.com/Plortinus/model2blockly';
 const pages = [
   { source: 'docs/README.md', output: 'index.md' },
   { source: 'docs/en/README.md', output: 'en/index.md' },
+  { source: 'docs/en/INSTALL.md', output: 'en/install.md' },
   { source: 'docs/en/USER_GUIDE.md', output: 'en/user-guide.md' },
   { source: 'docs/en/ARCHITECTURE.md', output: 'en/architecture.md' },
   { source: 'docs/en/RUNNING_EXAMPLE.md', output: 'en/running-example.md' },
@@ -125,7 +126,6 @@ function writeVitePressConfig() {
 const base = process.env.MODEL2BLOCKLY_DOCS_BASE || ${JSON.stringify(docsBase)};
 
 const repoUrl = ${JSON.stringify(repoUrl)};
-const updateSite = 'https://plortinus.github.io/model2blockly/update-site/';
 const appMakerDemo = 'https://plortinus.github.io/model2blockly/app_maker_ecore/Appmaker_standalone.html';
 
 const sidebar = [
@@ -133,6 +133,7 @@ const sidebar = [
     text: 'Start',
     items: [
       { text: 'Overview', link: '/' },
+      { text: 'Install Plugin', link: '/en/install' },
       { text: 'User Guide', link: '/en/user-guide' },
       { text: 'AppMaker Case', link: '/en/running-example' },
     ],
@@ -167,6 +168,7 @@ export default defineConfig({
     siteTitle: 'Model2Blockly',
     nav: [
       { text: 'Home', link: '/' },
+      { text: 'Install', link: '/en/install' },
       { text: 'User Guide', link: '/en/user-guide' },
       { text: 'AppMaker Case', link: '/en/running-example' },
       { text: 'Architecture', link: '/en/architecture' },
@@ -175,7 +177,6 @@ export default defineConfig({
         { text: 'Troubleshooting', link: '/en/troubleshooting' },
         { text: 'Release checklist', link: '/en/release-checklist' },
       ] },
-      { text: 'Install', link: updateSite },
       { text: 'Demo', link: appMakerDemo },
     ],
     sidebar,

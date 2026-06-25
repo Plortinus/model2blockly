@@ -76,6 +76,7 @@ The hosted documentation is the VitePress site at
 files under `docs/` and published directly at the GitHub Pages root.
 
 - [VitePress home source](docs/README.md)
+- [Install guide](docs/en/INSTALL.md)
 - [User guide](docs/en/USER_GUIDE.md)
 - [Architecture](docs/en/ARCHITECTURE.md)
 - [AppMaker case](docs/en/RUNNING_EXAMPLE.md)

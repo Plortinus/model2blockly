@@ -8,11 +8,11 @@ Use this page to choose the right document for the task you are doing.
 | --- | --- |
 | Browse the hosted documentation site | <https://plortinus.github.io/model2blockly/> |
 | Open the VitePress home source | [`docs/README.md`](docs/README.md) |
+| Install the Eclipse plugin | [`docs/en/INSTALL.md`](docs/en/INSTALL.md) |
 | Use the plugin without implementation details | [`docs/en/USER_GUIDE.md`](docs/en/USER_GUIDE.md) |
 | Explain the architecture, diagrams and implementation | [`docs/en/ARCHITECTURE.md`](docs/en/ARCHITECTURE.md) |
 | Understand what this repository does | [`README.md`](README.md) |
 | Follow the complete AppMaker running example | [`docs/en/RUNNING_EXAMPLE.md`](docs/en/RUNNING_EXAMPLE.md) |
-| Install the Eclipse plugin | [`docs/en/USER_GUIDE.md`](docs/en/USER_GUIDE.md#install-the-eclipse-plugin) |
 | Publish a new Eclipse plugin/update-site build | [`docs/en/RELEASE_CHECKLIST.md`](docs/en/RELEASE_CHECKLIST.md) |
 | Fix installation or generation issues | [`docs/en/TROUBLESHOOTING.md`](docs/en/TROUBLESHOOTING.md) |
 | Check supported Ecore annotations | [`docs/en/ECORE_REFERENCE.md`](docs/en/ECORE_REFERENCE.md) |

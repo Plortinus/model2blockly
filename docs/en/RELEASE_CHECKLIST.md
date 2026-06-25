@@ -13,6 +13,7 @@ npm run verify:docs
 Confirm that:
 
 - `_site/index.html` is the VitePress home page;
+- `_site/en/install.html` exists;
 - `_site/en/user-guide.html` exists;
 - `_site/en/architecture.html` exists;
 - `_site/en/running-example.html` exists;

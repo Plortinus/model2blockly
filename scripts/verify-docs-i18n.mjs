@@ -11,6 +11,7 @@ const failures = [];
 const requiredFiles = [
   'docs/README.md',
   'docs/en/README.md',
+  'docs/en/INSTALL.md',
   'docs/en/USER_GUIDE.md',
   'docs/en/ARCHITECTURE.md',
   'docs/en/RUNNING_EXAMPLE.md',
@@ -41,6 +42,7 @@ execFileSync(process.execPath, ['scripts/build-site-docs.mjs', '--out', docsOutp
 for (const file of [
   'index.html',
   'en/index.html',
+  'en/install.html',
   'en/user-guide.html',
   'en/architecture.html',
   'en/running-example.html',
@@ -61,6 +63,7 @@ for (const file of [
 
 const generatedRootIndex = readGeneratedDoc('index.html');
 const generatedEnIndex = readGeneratedDoc('en/index.html');
+const generatedInstall = readGeneratedDoc('en/install.html');
 const generatedUserGuide = readGeneratedDoc('en/user-guide.html');
 const generatedArchitecture = readGeneratedDoc('en/architecture.html');
 const generatedCase = readGeneratedDoc('en/running-example.html');
@@ -74,6 +77,9 @@ assertNotIncludes(generatedRootIndex, 'Opening the English documentation', 'root
 assertNotIncludes(generatedRootIndex, '/model2blockly/docs/', 'root page no longer publishes under /docs/');
 
 assertIncludes(generatedEnIndex, 'Ecore is the main input', 'English home explains the current input route');
+assertIncludes(generatedInstall, 'Install the Eclipse Plugin', 'install page is generated');
+assertIncludes(generatedInstall, 'https://plortinus.github.io/model2blockly/update-site/', 'install page includes the update-site URL');
+assertIncludes(generatedInstall, 'Group items by category', 'install page includes the empty-list troubleshooting step');
 assertIncludes(generatedUserGuide, 'EcoreToBlocklyMain.java', 'user guide names the current Ecore standalone entry point');
 assertIncludes(generatedUserGuide, 'model/app_maker.ecore', 'user guide starts from the checked-in AppMaker Ecore source');
 assertIncludes(generatedUserGuide, 'Generate Blockly Editor', 'user guide documents the Eclipse command');

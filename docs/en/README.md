@@ -40,8 +40,8 @@ features:
     linkText: Use the workflow
   - title: Plugin install remains available
     details: The GitHub Pages site is now the VitePress documentation site. The Eclipse update site is still published as a functional install endpoint.
-    link: /update-site/
-    linkText: Install endpoint
+    link: /en/install
+    linkText: Install guide
 ---
 
 ## Current Project Shape
