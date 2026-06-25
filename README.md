@@ -76,13 +76,9 @@ The hosted documentation is the VitePress site at
 files under `docs/` and published directly at the GitHub Pages root.
 
 - [VitePress home source](docs/README.md)
-- [Install guide](docs/en/INSTALL.md)
-- [User guide](docs/en/USER_GUIDE.md)
-- [Architecture](docs/en/ARCHITECTURE.md)
-- [AppMaker case](docs/en/RUNNING_EXAMPLE.md)
-- [Ecore annotation reference](docs/en/ECORE_REFERENCE.md)
-- [Troubleshooting](docs/en/TROUBLESHOOTING.md)
-- [Release checklist](docs/en/RELEASE_CHECKLIST.md)
+- English docs under [`docs/en`](docs/en/README.md)
+- Spanish docs under [`docs/es`](docs/es/README.md)
+- Chinese docs under [`docs/zh`](docs/zh/README.md)
 - [AppMaker `.ecore` example](io.github.plortinus.model2blockly/model/app_maker.ecore)
 
 ## Eclipse Usage

@@ -1,26 +1,56 @@
 # Caso AppMaker
 
-AppMaker es el ejemplo principal de validación de Model2Blockly. El caso
-demuestra cómo generar un editor Blockly desde un metamodelo Ecore anotado.
+AppMaker es el caso de referencia de la ruta Ecore-first.
 
-![Editor AppMaker generado](../assets/screenshots/appmaker-editor.png)
+## Fuente y salida
 
-## Qué muestra el caso
-
-- La definición del editor en `.ecore` con anotaciones.
-- El XMI intermedio `intermediate/*_blocklyspec.xmi`.
-- Los archivos JavaScript generados para Blockly.
-- El XMI de instancia de dominio exportado por el editor generado.
-- El informe `generation_report.html`.
-- El workspace `validation_workspace.html`, usado para revisar reglas visuales.
-
-## Archivos que conviene revisar
-
-| Artefacto | Para qué sirve |
+| Elemento | Ruta |
 | --- | --- |
-| `io.github.plortinus.model2blockly/model/app_maker.ecore` | Entrada Ecore de AppMaker |
-| `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/` | Salida Blockly generada |
-| `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/generation_report.html` | Informe de generación |
-| `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/validation_workspace.html` | Workspace de validaciones |
+| Metamodelo fuente | `io.github.plortinus.model2blockly/model/app_maker.ecore` |
+| Salida generada | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore` |
+| Editor standalone | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html` |
+| Modelo intermedio | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi` |
+| Informe | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/generation_report.html` |
 
-La [descripción completa en inglés](../../RUNNING_EXAMPLE.md) mantiene más detalles de código, artefactos generados y criterios de validación.
+Demo pública:
+
+```text
+https://plortinus.github.io/model2blockly/app_maker_ecore/Appmaker_standalone.html
+```
+
+## Regenerar el ejemplo
+
+En Eclipse ejecuta:
+
+```text
+Generate AppMaker from Ecore.launch
+```
+
+Usa `EcoreToBlocklyMain` con:
+
+```text
+model/app_maker.ecore
+examples/generated/app_maker_ecore
+```
+
+## Qué inspeccionar
+
+1. `generation_report.html`
+2. `intermediate/Appmaker_blocklyspec.xmi`
+3. `html/Appmaker_standalone.html`
+4. `html/validation_workspace.html`
+5. `html/sample_model.json`
+
+## Comportamiento del editor
+
+El editor permite cargar el ejemplo, editar bloques, ver JSON/código, exportar
+JSON/XML/XMI de dominio, reportar validaciones y usar referencias dinámicas.
+
+## Smoke test
+
+```bash
+npm run smoke
+```
+
+El test abre el editor con Playwright, carga el ejemplo, comprueba validaciones
+y verifica la forma del XMI de dominio.

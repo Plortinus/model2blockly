@@ -1,209 +1,100 @@
 # Ecore 注解参考
 
-Model2Blockly 可以直接从带注解的 Ecore 元模型生成 Blockly 编辑器。输入使用标准 Ecore 结构，加上 `EAnnotation`。
+Ecore 路线不写注解也能工作，注解用于细化生成的 Blockly 编辑器。实现位于
+`EcoreAdapter.java`。
 
-Ecore 路线也会进入同一条中间模型流水线：`EPackage` 会被适配成生成的 EMF
-`EditorSpec`，写成 `intermediate/*_blocklyspec.xmi`，再从 XMI 读回后生成
-Blockly HTML/JavaScript。
+## 零注解推断
 
-完整 key 表和生成细节以英文参考为准：
-
-- [`../../ECORE_REFERENCE.md`](../../ECORE_REFERENCE.md)
-- 适配器：[`../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/EcoreAdapter.java`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/EcoreAdapter.java)
-- 示例：[`../../io.github.plortinus.model2blockly/model/app_maker.ecore`](../../io.github.plortinus.model2blockly/model/app_maker.ecore)
-
-## 注解长什么样
-
-XMI 中：
-
-```xml
-<eAnnotations source="blockly">
-  <details key="colour" value="260"/>
-  <details key="category" value="Pages"/>
-  <details key="tooltip" value="Root app model."/>
-</eAnnotations>
-```
-
-Eclipse Ecore tree editor 中对应：
-
-```text
-EAnnotation
-  source = blockly
-  details:
-    colour -> 260
-    category -> Pages
-    tooltip -> Root app model.
-```
-
-普通 XML 注释不会参与生成。生成 metadata 必须放在 `EAnnotation` 中。
-
-## 支持的 source
-
-| Source | 使用位置 | 作用 |
-| --- | --- | --- |
-| `blockly` | `EPackage`, `EClass`, `EAttribute`, `EReference` | Blockly 展示、字段覆盖、value input、workspace |
-| `ui` | `EClass`, `EAttribute`, `EReference` | 人类可读 label 和 UI metadata |
-| `code` | `EPackage`, `EClass` | 语言、扩展名、代码模板 |
-| `runtime` | `EPackage` | 可选运行时类型 |
-| `validation` | `EClass` | 语义规则和 must-follow |
-| `http://www.eclipse.org/emf/2002/Ecore` | `EClass` | EMF constraints 声明 |
-| `http://www.eclipse.org/emf/2002/Ecore/OCL` | `EClass` | 简单 OCL invariant body |
-| `http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot` | `EClass` | 简单 OCL invariant body |
-
-## 零注解映射
-
-Ecore 路线不加自定义注解也能工作，注解只是进一步控制生成结果。
-
-| Ecore | 生成结果 |
+| Ecore 元素 | 默认映射 |
 | --- | --- |
-| `EPackage.name` | domain/editor 名称 |
-| 具体 `EClass` | Blockly block |
-| `EClass.abstract=true` 或 `interface=true` | 抽象类型，不作为普通 block 显示 |
-| 第一个 `eSuperTypes` | 连接类型父类 |
-| `EAttribute : EString` | 文本字段 |
-| `EAttribute : EInt`, `ELong` 等 | 数字字段 |
-| `EAttribute : EBoolean` | checkbox |
-| `EAttribute : EEnum` | dropdown |
-| `EAttribute.lowerBound >= 1` | 必填验证 |
-| `EAttribute.iD=true` | ID 和唯一性验证 |
-| `EReference containment=true` | `input_statement` |
-| `EReference containment=false` | 动态 reference selector |
-| `EReference.eOpposite` | runtime 同步 metadata |
-| derived/transient/volatile/不可修改 feature | 跳过 |
+| `EPackage` | 编辑器 domain 名称、nsURI、nsPrefix。 |
+| 具体 `EClass` | Blockly 区块类型。 |
+| 抽象 `EClass` 或接口 | 抽象类型，不输出为具体 toolbox 区块。 |
+| supertype | 继承和连接类型。 |
+| `EAttribute:EString` | 文本字段。 |
+| `EAttribute:EInt`, `ELong`, `EShort`, `EBigInteger` | 整数字段。 |
+| `EAttribute:EFloat`, `EDouble`, `EBigDecimal` | 小数字段。 |
+| `EAttribute:EBoolean` | 复选框。 |
+| `EEnum` 属性 | 下拉字段。 |
+| containment `EReference` | statement input。 |
+| 非 containment `EReference` | 动态引用字段。 |
+| `lowerBound >= 1` | 必填验证。 |
+| 多值 unique feature | 重复值验证。 |
+| `iD` 属性 | 引用标签和 XMI 导出的身份字段。 |
 
-## package 注解
+## `source="blockly"` on `EPackage`
 
-workspace 和 toolbox：
-
-```xml
-<eAnnotations source="blockly">
-  <details key="workspace.renderer" value="zelos"/>
-  <details key="workspace.trashcan" value="true"/>
-  <details key="workspace.zoom.controls" value="true"/>
-  <details key="workspace.grid.spacing" value="20"/>
-  <details key="workspace.toolboxType" value="category"/>
-</eAnnotations>
-```
-
-代码 metadata：
-
-```xml
-<eAnnotations source="code">
-  <details key="language" value="javascript"/>
-  <details key="fileExtension" value="js"/>
-</eAnnotations>
-```
-
-runtime：
-
-```xml
-<eAnnotations source="runtime">
-  <details key="kind" value="appMaker"/>
-</eAnnotations>
-```
-
-## class 注解
-
-```xml
-<eAnnotations source="blockly">
-  <details key="message0" value="Page %1 route %2"/>
-  <details key="colour" value="260"/>
-  <details key="category" value="Pages"/>
-  <details key="tooltip" value="A navigable page."/>
-  <details key="helpUrl" value="https://example.com/page-help"/>
-  <details key="inputsInline" value="true"/>
-  <details key="output" value="true"/>
-</eAnnotations>
-```
-
-常用 key：
-
-| Key | 生成结果 |
+| key | 含义 |
 | --- | --- |
-| `message0` | block 文本布局 |
-| `colour` | block 颜色 |
-| `category` | toolbox 分类；`UI/Inputs` 会生成嵌套分类 |
-| `tooltip` | Blockly tooltip |
-| `helpUrl` | 帮助链接 |
-| `inputsInline` | `true` 或 `false` |
-| `output` | `true` 表示 value block，也可以填类型名做 typed output |
+| `workspace.toolboxType` | toolbox 类型。 |
+| `workspace.renderer` | 传给 `Blockly.inject` 的 renderer。 |
+| `workspace.zoom.controls` | 缩放控件。 |
+| `workspace.zoom.maxScale` | 最大缩放。 |
+| `workspace.grid.spacing` | 网格间距。 |
+| `workspace.grid.snap` | 网格吸附。 |
 
-人类可读 label：
+## `source="blockly"` on `EClass`
 
-```xml
-<eAnnotations source="ui">
-  <details key="label" value="Data source"/>
-</eAnnotations>
-```
+| key | 含义 |
+| --- | --- |
+| `message0` | 显式 Blockly message。 |
+| `colour` | 数字颜色。 |
+| `category` | toolbox 分类；用 `/` 表示嵌套分类。 |
+| `output` | 标记为 output block；可为 `true` 或类型名。 |
+| `inputsInline` | `true` 或 `false`。 |
+| `tooltip` | tooltip。 |
+| `helpUrl` | 帮助链接。 |
 
-代码模板：
+## `source="blockly"` on `EAttribute`
 
-```xml
-<eAnnotations source="code">
-  <details key="template" value="page(&quot;{{title}}&quot;, [&#10;{{statements:components}}&#10;]);"/>
-</eAnnotations>
-```
+| key | 含义 |
+| --- | --- |
+| `type` | `field_colour`、`field_angle`、`field_image`、`field_label`、`field_input`、`field_number`、`field_checkbox`。 |
+| `min` | 最小值。 |
+| `max` | 最大值。 |
+| `src` | 图片 URL。 |
+| `width` | 图片宽度。 |
+| `height` | 图片高度。 |
+| `alt` | 图片替代文本。 |
 
-## attribute 和 reference
+## `source="blockly"` on `EReference`
 
-attribute UI 注解：
+| key | 含义 |
+| --- | --- |
+| `type=input_value` | 生成 Blockly value input。 |
+| `check` | Blockly 类型检查。 |
+| `shadow` | shadow block 提示。 |
 
-```xml
-<eAnnotations source="ui">
-  <details key="label" value="Title"/>
-  <details key="group" value="Main"/>
-  <details key="order" value="1"/>
-</eAnnotations>
-```
+## `source="ui"`
 
-reference 作为 value input：
+在 `EClass` 上支持 `label`。
 
-```xml
-<eAnnotations source="blockly">
-  <details key="type" value="input_value"/>
-  <details key="check" value="Expression"/>
-  <details key="shadow" value="TextLiteral"/>
-</eAnnotations>
-```
+在 `EAttribute` 和 `EReference` 上支持 `widget`、`label`、`help`、
+`placeholder`、`group`、`variant`、`readonly`、`hidden`、`order`，引用还支持
+`referenceLabelField`。
 
-reference 下拉框 label：
+## `source="code"`
 
-```xml
-<eAnnotations source="ui">
-  <details key="referenceLabelField" value="name"/>
-</eAnnotations>
-```
+在 `EPackage` 上支持 `language` 和 `fileExtension`。
 
-## 验证规则和 OCL
+在 `EClass` 上支持 `template` 或 `codeTemplate`。
 
-验证规则可以来自 cardinality、ID、unique，也可以来自注解。
+## `source="runtime"`
 
-显式规则：
+在 `EPackage` 上支持 `kind`。
 
-```xml
-<eAnnotations source="validation">
-  <details key="mustFollow" value="Page"/>
-  <details key="message" value="Button must be inside a page."/>
-</eAnnotations>
-```
+## `source="validation"`
 
-简单 OCL：
+在 `EClass` 上：
 
-```xml
-<eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL">
-  <details key="HasName" value="not self.name.oclIsUndefined() and self.name.size() > 0"/>
-</eAnnotations>
-```
+| key | 含义 |
+| --- | --- |
+| `mustFollow` | 顺序验证，要求当前类型跟在某个前置类型后。 |
+| `expression`, `condition`, `js` | 表达式验证。 |
+| `message` | 默认诊断消息。 |
+| `expression.<name>`, `condition.<name>`, `js.<name>` | 命名表达式验证。 |
+| `message.<name>` | 命名验证消息。 |
+| `ocl`, `ocl.<name>` | 可翻译的 OCL 验证。 |
 
-当前只支持小 OCL 子集：`self.<feature>`、`size()`、`notEmpty()`、
-`isEmpty()`、`oclIsUndefined()`、比较，以及 `and`/`or`/`not`。
-高级 OCL 会在生成前报错。
-
-## 官方参考
-
-- EMF: <https://eclipse.dev/emf/>
-- `EAnnotation` Javadoc: <https://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/ecore/EAnnotation.html>
-- Blockly block JSON: <https://docs.blockly.com/guides/create-custom-blocks/define/structure-json/>
-- Blockly fields: <https://docs.blockly.com/guides/create-custom-blocks/fields/overview/>
-- Blockly workspace config: <https://docs.blockly.com/guides/configure/configuration_struct/>
-- Blockly code generation: <https://docs.blockly.com/guides/create-custom-blocks/code-generation/overview/>
+支持的 OCL 子集包括简单 feature 导航、`size()`、`notEmpty()`、`isEmpty()`、
+`oclIsUndefined()`、比较和布尔运算。

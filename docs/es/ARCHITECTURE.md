@@ -1,114 +1,106 @@
-# Arquitectura e implementación
+# Arquitectura
 
-Model2Blockly está organizado como una tubería de ingeniería dirigida por
-modelos. La ruta principal empieza en un metamodelo Ecore anotado, transforma
-el `EPackage` cargado por EMF en un modelo EMF generado `EditorSpec`, persiste
-ese modelo intermedio como XMI y genera el editor Blockly desde el modelo
-recargado.
+Model2Blockly se organiza alrededor de una ruta MDE documentada: Ecore anotado
+se transforma en un modelo EMF intermedio y después en salida Blockly estática.
 
-## Alineación con EMF/MDE
+La gramática Xtext sigue en el proyecto, pero es una capa auxiliar.
 
-El proyecto sigue el patrón básico de la
-[documentación de EMF](https://eclipse.dev/emf/docs.html): los metamodelos se
-definen como modelos Ecore, los metamodelos usados por el generador tienen
-`.genmodel` y API Java generada, las instancias se serializan como XMI y la
-generación se realiza desde modelos, no mediante concatenación ad hoc de texto.
-
-La cadena central de Model2Blockly es:
+## Flujo runtime
 
 ```text
-metamodelo Ecore anotado (.ecore)
-  -> EMF ResourceSet / EPackage
-  -> transformación modelo a modelo
-  -> modelo EMF generado EditorSpec
+.ecore anotado
+  -> EMF ResourceSet
+  -> EPackage
+  -> EcoreAdapter
+  -> modelo EMF EditorSpec
+  -> BlocklySpecXmiSerializer
   -> intermediate/*_blocklyspec.xmi
-  -> recarga y validación del XMI
-  -> generación modelo a texto
-  -> editor Blockly HTML/JavaScript
-  -> modelo de dominio creado por el usuario JSON/XMI
+  -> recarga XMI y diagnósticos
+  -> BlocklyCodeGenerator
+  -> artefactos HTML/JavaScript
 ```
-
-Los metamodelos internos se mantienen como artefactos EMF:
-
-```text
-io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.ecore
-io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.genmodel
-io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore
-io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel
-io.github.plortinus.model2blockly/emf-gen/
-```
-
-El DSL textual usa Xtext como sintaxis concreta sobre la sintaxis abstracta fija
-de `Model2Blockly.ecore`. La generación de Xtext escribe parser, servicios y
-código IDE en `src-gen`; las API EMF generadas para los metamodelos fijos viven
-en `emf-gen`, para que no se borren al regenerar la infraestructura del DSL.
-
-La ruta Ecore también puede operar dinámicamente sobre un `.ecore` de entrada,
-sin exigir generación de código Java para ese dominio. El `EPackage` de dominio
-se carga con EMF y se usa como modelo fuente de la transformación.
-
-## Arquitectura del sistema
-
-Model2Blockly se documenta como una ruta MDE: Ecore anotado se carga como
-`EPackage`, se transforma en el modelo generado `EditorSpec` y se entrega al
-backend de generación antes de escribir HTML y JavaScript.
-
-![Arquitectura de Model2Blockly](../assets/diagrams/system-architecture.svg)
-
-## Flujo de generación
-
-El generador escribe un XMI intermedio y lo vuelve a leer antes de generar HTML
-y JavaScript. Ese paso deja un modelo formal generado que se puede revisar,
-reproducir y depurar.
 
 ![Flujo de generación](../assets/diagrams/generation-flow.svg)
 
-## Artefactos generados
+## Módulos
 
-La carpeta generada separa archivos para usuarios, archivos de ejecución y
-archivos útiles para explicar o depurar el sistema.
+| Módulo | Rol |
+| --- | --- |
+| `io.github.plortinus.model2blockly` | Plugin núcleo: Xtext/EMF, adaptadores, modelo intermedio, generadores y entradas standalone. |
+| `io.github.plortinus.model2blockly.ui` | Integración UI de Eclipse: menús, comandos y parche de validación. |
+| `io.github.plortinus.model2blockly.ide` | Servicios IDE de Xtext para la sintaxis auxiliar. |
+| `io.github.plortinus.model2blockly.feature` | Empaquetado como feature de Eclipse. |
+| `io.github.plortinus.model2blockly.updatesite` | Repositorio p2 publicado. |
+| `docs` | Fuente de la documentación VitePress. |
+| `scripts` | Verificación y construcción del sitio/update-site. |
 
-![Artefactos generados](../assets/diagrams/output-artifacts.svg)
+## Código generado y escrito a mano
 
-## Límite entre núcleo y extensiones
-
-La contribución central es la tubería de metamodelo a editor Blockly:
-
-- entrada Ecore anotada;
-- modelo intermedio EMF generado `EditorSpec`;
-- serialización, recarga y validación del XMI intermedio;
-- generación de bloques, toolbox y editor Blockly;
-- un caso de estudio representativo, AppMaker.
-
-Las siguientes funciones son extensiones útiles, pero no el centro
-arquitectónico del proyecto:
-
-- exportación de código desde modelos de usuario;
-- workspace visual de reglas de validación;
-- empaquetado como update site de Eclipse;
-- vista previa específica de AppMaker en el navegador.
+| Directorio | Contenido |
+| --- | --- |
+| `src` | Implementación Java/Xtend escrita a mano. |
+| `src-gen` | Código generado por Xtext. |
+| `emf-gen` | APIs Java generadas por EMF para los metamodelos fijos. |
+| `xtend-gen` | Java generado desde Xtend. |
 
 ## Mapa de implementación
 
-| Responsabilidad | Implementación principal |
+| Responsabilidad | Archivo principal |
 | --- | --- |
-| Conversión Ecore a `EditorSpec` | [`EcoreAdapter.java`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/EcoreAdapter.java) |
-| XMI intermedio | [`BlocklySpecXmiSerializer.java`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/intermediate/BlocklySpecXmiSerializer.java) |
-| Validación intermedia | [`BlocklyEditorSpecValidator.java`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/blocklyspec/BlocklyEditorSpecValidator.java) |
-| Salida Blockly | [`BlocklyCodeGenerator.xtend`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/generator/BlocklyCodeGenerator.xtend) |
-| Orquestación de generación | [`Model2BlocklyGenerator.xtend`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/generator/Model2BlocklyGenerator.xtend) |
-| Carga y validación EMF del XMI de dominio exportado | [`verify-domain-xmi.mjs`](../../scripts/verify-domain-xmi.mjs) |
+| Ruta Ecore standalone | `standalone/EcoreToBlocklyMain.java` |
+| Conversión `EPackage` -> `EditorSpec` | `adapter/EcoreAdapter.java` |
+| Ruta textual auxiliar -> `EditorSpec` | `adapter/DomainModelAdapter.java` |
+| Serialización XMI intermedia | `intermediate/BlocklySpecXmiSerializer.java` |
+| Validación intermedia | `blocklyspec/BlocklyEditorSpecValidator.java` |
+| Generación Blockly | `generator/BlocklyCodeGenerator.xtend` |
+| Informe de generación | `generator/GenerationReportHtmlRenderer.java` |
+| Comando Eclipse | `ui/handlers/GenerateBlocklyEditorHandler.java` |
 
-## Notas de implementación
+## Modelo intermedio
 
-- El editor generado es dirigido por modelos: los bloques Blockly se derivan
-  del modelo fuente y no se escriben a mano.
-- El XMI intermedio no es un volcado de depuración; se recarga y valida antes
-  de generar la salida final.
-- El editor AppMaker generado desde Ecore exporta un XMI de dominio de ejemplo
-  que se comprueba con `npm run verify:domain-xmi`: el script carga
-  `app_maker.ecore`, registra su `EPackage` dinámico, lee el XMI exportado con
-  EMF y ejecuta `Diagnostician`.
-- El caso AppMaker muestra anotaciones Ecore, XMI intermedio, JavaScript
-  generado, capturas, informe de generación y workspace de validaciones en un
-  solo lugar.
+`EditorSpec` es el contrato entre el análisis del modelo fuente y la salida
+Blockly:
+
+```text
+Ruta Ecore:
+  EPackage -> EcoreAdapter -> EditorSpec
+
+Ruta textual auxiliar:
+  DomainModel -> DomainModelAdapter -> EditorSpec
+```
+
+El XMI `intermediate/*_blocklyspec.xmi` se escribe, se recarga y se valida antes
+de generar HTML.
+
+![Arquitectura del sistema](../assets/diagrams/system-architecture.svg)
+
+## Mapeo Ecore
+
+| Fuente Ecore | Significado generado |
+| --- | --- |
+| `EClass` | Tipo de bloque Blockly. |
+| `EClass` abstracta o interfaz | Tipo abstracto no emitido como bloque concreto. |
+| `EAttribute` | Campo Blockly. |
+| Atributo `EEnum` | Campo desplegable. |
+| `EReference` de contención | Entrada de sentencia y validación de contención. |
+| `EReference` no de contención | Campo de referencia dinámico. |
+| `lowerBound >= 1` | Validación de valor obligatorio. |
+| Feature múltiple única | Validación de duplicados. |
+| Atributo `iD` | Identidad para referencias y exportación XMI. |
+
+Las claves de anotación están en la [referencia Ecore](./ECORE_REFERENCE.md).
+
+## GitHub Pages
+
+GitHub Pages publica VitePress en:
+
+```text
+https://plortinus.github.io/model2blockly/
+```
+
+Después del build de VitePress, el workflow copia:
+
+| Ruta | Propósito |
+| --- | --- |
+| `/update-site/` | Endpoint p2 para instalar el plugin. |
+| `/app_maker_ecore/` | Editor AppMaker generado para inspección en navegador. |

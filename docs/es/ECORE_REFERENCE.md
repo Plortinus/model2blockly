@@ -1,212 +1,100 @@
 # Referencia de anotaciones Ecore
 
-Model2Blockly puede generar editores Blockly desde metamodelos Ecore anotados.
-La entrada usa estructura Ecore normal y `EAnnotation` en paquetes, clases,
-atributos y referencias.
+La ruta Ecore funciona sin anotaciones y usa `EAnnotation` opcionales para
+mejorar el editor Blockly. La implementación está en `EcoreAdapter.java`.
 
-La ruta Ecore usa la misma tuberia intermedia: el `EPackage` se adapta al
-`EditorSpec` EMF generado, se escribe como
-`intermediate/*_blocklyspec.xmi`, se recarga desde XMI y despues se genera el
-HTML/JavaScript de Blockly.
+## Inferencia sin anotaciones
 
-La referencia inglesa contiene las tablas completas de claves:
-
-- [`../../ECORE_REFERENCE.md`](../../ECORE_REFERENCE.md)
-- Adaptador: [`../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/EcoreAdapter.java`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/EcoreAdapter.java)
-- Ejemplo: [`../../io.github.plortinus.model2blockly/model/app_maker.ecore`](../../io.github.plortinus.model2blockly/model/app_maker.ecore)
-
-## Forma de una anotacion
-
-En XMI:
-
-```xml
-<eAnnotations source="blockly">
-  <details key="colour" value="260"/>
-  <details key="category" value="Pages"/>
-  <details key="tooltip" value="Root app model."/>
-</eAnnotations>
-```
-
-En el editor de árbol de Eclipse:
-
-```text
-EAnnotation
-  source = blockly
-  details:
-    colour -> 260
-    category -> Pages
-    tooltip -> Root app model.
-```
-
-Los comentarios XML normales no afectan a la generación. Use `EAnnotation`.
-
-## Sources soportados
-
-| Source | Donde se usa | Proposito |
-| --- | --- | --- |
-| `blockly` | `EPackage`, `EClass`, `EAttribute`, `EReference` | Presentacion Blockly, campos, value inputs, workspace |
-| `ui` | `EClass`, `EAttribute`, `EReference` | Labels y metadatos legibles |
-| `code` | `EPackage`, `EClass` | Lenguaje, extensión y plantillas de código |
-| `runtime` | `EPackage` | Variante runtime opcional |
-| `validation` | `EClass` | Reglas semanticas y must-follow |
-| `http://www.eclipse.org/emf/2002/Ecore` | `EClass` | Declaracion EMF de constraints |
-| `http://www.eclipse.org/emf/2002/Ecore/OCL` | `EClass` | Cuerpo OCL simple |
-| `http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot` | `EClass` | Cuerpo OCL simple |
-
-## Mapeo sin anotaciones
-
-La ruta Ecore funciona incluso sin anotaciones. Las anotaciones refinan el
-editor generado.
-
-| Ecore | Resultado |
+| Elemento Ecore | Mapeo por defecto |
 | --- | --- |
-| `EPackage.name` | Nombre del dominio/editor |
-| `EClass` concreto | Bloque Blockly |
-| `EClass.abstract=true` o `interface=true` | Tipo abstracto, no aparece como bloque normal |
-| primer `eSuperTypes` | Tipo padre para conexiones |
-| `EAttribute : EString` | Campo de texto |
-| `EAttribute : EInt`, `ELong`, etc. | Campo numerico |
-| `EAttribute : EBoolean` | Checkbox |
-| `EAttribute : EEnum` | Dropdown |
-| `EAttribute.lowerBound >= 1` | Validacion de requerido |
-| `EAttribute.iD=true` | Identificador y validación de unicidad |
-| `EReference containment=true` | `input_statement` |
-| `EReference containment=false` | Selector de referencia dinámico |
-| `EReference.eOpposite` | Metadata de sincronizacion runtime |
-| feature derived/transient/volatile/no changeable | Se omite |
+| `EPackage` | Nombre de dominio, nsURI y nsPrefix. |
+| `EClass` concreta | Tipo de bloque Blockly. |
+| `EClass` abstracta o interfaz | Tipo abstracto no emitido como bloque concreto. |
+| Supertipo | Herencia y tipo de conexión. |
+| `EAttribute:EString` | Campo de texto. |
+| `EAttribute:EInt`, `ELong`, `EShort`, `EBigInteger` | Campo entero. |
+| `EAttribute:EFloat`, `EDouble`, `EBigDecimal` | Campo decimal. |
+| `EAttribute:EBoolean` | Checkbox. |
+| Atributo `EEnum` | Dropdown. |
+| `EReference` de contención | Entrada de sentencia. |
+| `EReference` no de contención | Campo de referencia dinámico. |
+| `lowerBound >= 1` | Validación de obligatorio. |
+| Feature múltiple única | Validación de duplicados. |
+| Atributo `iD` | Identidad para referencias y exportación XMI. |
 
-## Anotaciones de paquete
+## `source="blockly"` en `EPackage`
 
-Workspace y toolbox:
-
-```xml
-<eAnnotations source="blockly">
-  <details key="workspace.renderer" value="zelos"/>
-  <details key="workspace.trashcan" value="true"/>
-  <details key="workspace.zoom.controls" value="true"/>
-  <details key="workspace.grid.spacing" value="20"/>
-  <details key="workspace.toolboxType" value="category"/>
-</eAnnotations>
-```
-
-Código:
-
-```xml
-<eAnnotations source="code">
-  <details key="language" value="javascript"/>
-  <details key="fileExtension" value="js"/>
-</eAnnotations>
-```
-
-Runtime:
-
-```xml
-<eAnnotations source="runtime">
-  <details key="kind" value="appMaker"/>
-</eAnnotations>
-```
-
-## Anotaciones de clase
-
-```xml
-<eAnnotations source="blockly">
-  <details key="message0" value="Page %1 route %2"/>
-  <details key="colour" value="260"/>
-  <details key="category" value="Pages"/>
-  <details key="tooltip" value="A navigable page."/>
-  <details key="helpUrl" value="https://example.com/page-help"/>
-  <details key="inputsInline" value="true"/>
-  <details key="output" value="true"/>
-</eAnnotations>
-```
-
-Claves frecuentes:
-
-| Key | Resultado |
+| Clave | Significado |
 | --- | --- |
-| `message0` | Layout textual del bloque |
-| `colour` | Color/hue del bloque |
-| `category` | Categoría del toolbox; `UI/Inputs` crea categorías anidadas |
-| `tooltip` | Tooltip Blockly |
-| `helpUrl` | URL de ayuda |
-| `inputsInline` | `true` o `false` |
-| `output` | `true` para bloque de valor, o nombre de tipo para output tipado |
+| `workspace.toolboxType` | Tipo de toolbox. |
+| `workspace.renderer` | Opción de `Blockly.inject`. |
+| `workspace.zoom.controls` | Opción anidada de zoom. |
+| `workspace.zoom.maxScale` | Escala máxima. |
+| `workspace.grid.spacing` | Espaciado de grid. |
+| `workspace.grid.snap` | Ajuste a grid. |
 
-Etiqueta humana:
+## `source="blockly"` en `EClass`
 
-```xml
-<eAnnotations source="ui">
-  <details key="label" value="Data source"/>
-</eAnnotations>
-```
+| Clave | Significado |
+| --- | --- |
+| `message0` | Mensaje Blockly explícito. |
+| `colour` | Color numérico del bloque. |
+| `category` | Categoría del toolbox; usa `/` para categorías anidadas. |
+| `output` | Marca el bloque como output; acepta `true` o un tipo. |
+| `inputsInline` | `true` o `false`. |
+| `tooltip` | Tooltip. |
+| `helpUrl` | URL de ayuda. |
 
-Plantilla de código:
+## `source="blockly"` en `EAttribute`
 
-```xml
-<eAnnotations source="code">
-  <details key="template" value="page(&quot;{{title}}&quot;, [&#10;{{statements:components}}&#10;]);"/>
-</eAnnotations>
-```
+| Clave | Significado |
+| --- | --- |
+| `type` | `field_colour`, `field_angle`, `field_image`, `field_label`, `field_input`, `field_number`, `field_checkbox`. |
+| `min` | Valor mínimo. |
+| `max` | Valor máximo. |
+| `src` | URL para imagen. |
+| `width` | Ancho de imagen. |
+| `height` | Alto de imagen. |
+| `alt` | Texto alternativo. |
 
-## Atributos y referencias
+## `source="blockly"` en `EReference`
 
-Anotacion de atributo:
+| Clave | Significado |
+| --- | --- |
+| `type=input_value` | Emite una entrada de valor Blockly. |
+| `check` | Tipo de comprobación de Blockly. |
+| `shadow` | Sugerencia de bloque shadow. |
 
-```xml
-<eAnnotations source="ui">
-  <details key="label" value="Title"/>
-  <details key="group" value="Main"/>
-  <details key="order" value="1"/>
-</eAnnotations>
-```
+## `source="ui"`
 
-Referencia como value input:
+En `EClass`: `label`.
 
-```xml
-<eAnnotations source="blockly">
-  <details key="type" value="input_value"/>
-  <details key="check" value="Expression"/>
-  <details key="shadow" value="TextLiteral"/>
-</eAnnotations>
-```
+En `EAttribute` y `EReference`: `widget`, `label`, `help`, `placeholder`,
+`group`, `variant`, `readonly`, `hidden`, `order` y `referenceLabelField` para
+referencias.
 
-Referencia dinamica:
+## `source="code"`
 
-```xml
-<eAnnotations source="ui">
-  <details key="referenceLabelField" value="name"/>
-</eAnnotations>
-```
+En `EPackage`: `language`, `fileExtension`.
 
-## Validacion y OCL
+En `EClass`: `template` o `codeTemplate`.
 
-Las validaciones se derivan de cardinalidades, IDs, unicidad y anotaciones.
-Para reglas explicitas:
+## `source="runtime"`
 
-```xml
-<eAnnotations source="validation">
-  <details key="mustFollow" value="Page"/>
-  <details key="message" value="Button must be inside a page."/>
-</eAnnotations>
-```
+En `EPackage`: `kind`.
 
-Para OCL basico:
+## `source="validation"`
 
-```xml
-<eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL">
-  <details key="HasName" value="not self.name.oclIsUndefined() and self.name.size() > 0"/>
-</eAnnotations>
-```
+En `EClass`:
 
-El subconjunto soportado es pequeno: `self.<feature>`, `size()`,
-`notEmpty()`, `isEmpty()`, `oclIsUndefined()`, comparaciones y
-`and`/`or`/`not`. OCL avanzado se rechaza antes de generar.
+| Clave | Significado |
+| --- | --- |
+| `mustFollow` | Validación de orden respecto a un tipo predecesor. |
+| `expression`, `condition`, `js` | Validación por expresión. |
+| `message` | Mensaje diagnóstico. |
+| `expression.<name>`, `condition.<name>`, `js.<name>` | Validación nombrada. |
+| `message.<name>` | Mensaje para validación nombrada. |
+| `ocl`, `ocl.<name>` | OCL traducible en el subconjunto soportado. |
 
-## Referencias oficiales
-
-- EMF: <https://eclipse.dev/emf/>
-- `EAnnotation` Javadoc: <https://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/ecore/EAnnotation.html>
-- Blockly block JSON: <https://docs.blockly.com/guides/create-custom-blocks/define/structure-json/>
-- Blockly fields: <https://docs.blockly.com/guides/create-custom-blocks/fields/overview/>
-- Blockly workspace config: <https://docs.blockly.com/guides/configure/configuration_struct/>
-- Blockly code generation: <https://docs.blockly.com/guides/create-custom-blocks/code-generation/overview/>
+El subconjunto OCL cubre navegación simple de features, `size()`, `notEmpty()`,
+`isEmpty()`, `oclIsUndefined()`, comparaciones y operadores booleanos.

@@ -8,6 +8,8 @@ Use this page to choose the right document for the task you are doing.
 | --- | --- |
 | Browse the hosted documentation site | <https://plortinus.github.io/model2blockly/> |
 | Open the VitePress home source | [`docs/README.md`](docs/README.md) |
+| Open Spanish documentation | [`docs/es/README.md`](docs/es/README.md) |
+| Open Chinese documentation | [`docs/zh/README.md`](docs/zh/README.md) |
 | Install the Eclipse plugin | [`docs/en/INSTALL.md`](docs/en/INSTALL.md) |
 | Use the plugin without implementation details | [`docs/en/USER_GUIDE.md`](docs/en/USER_GUIDE.md) |
 | Explain the architecture, diagrams and implementation | [`docs/en/ARCHITECTURE.md`](docs/en/ARCHITECTURE.md) |

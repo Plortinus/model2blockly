@@ -21,6 +21,22 @@ const pages = [
   { source: 'docs/en/ECORE_REFERENCE.md', output: 'en/ecore-reference.md' },
   { source: 'docs/en/TROUBLESHOOTING.md', output: 'en/troubleshooting.md' },
   { source: 'docs/en/RELEASE_CHECKLIST.md', output: 'en/release-checklist.md' },
+  { source: 'docs/es/README.md', output: 'es/index.md' },
+  { source: 'docs/es/INSTALL.md', output: 'es/install.md' },
+  { source: 'docs/es/USER_GUIDE.md', output: 'es/user-guide.md' },
+  { source: 'docs/es/ARCHITECTURE.md', output: 'es/architecture.md' },
+  { source: 'docs/es/RUNNING_EXAMPLE.md', output: 'es/running-example.md' },
+  { source: 'docs/es/ECORE_REFERENCE.md', output: 'es/ecore-reference.md' },
+  { source: 'docs/es/TROUBLESHOOTING.md', output: 'es/troubleshooting.md' },
+  { source: 'docs/es/RELEASE_CHECKLIST.md', output: 'es/release-checklist.md' },
+  { source: 'docs/zh/README.md', output: 'zh/index.md' },
+  { source: 'docs/zh/INSTALL.md', output: 'zh/install.md' },
+  { source: 'docs/zh/USER_GUIDE.md', output: 'zh/user-guide.md' },
+  { source: 'docs/zh/ARCHITECTURE.md', output: 'zh/architecture.md' },
+  { source: 'docs/zh/RUNNING_EXAMPLE.md', output: 'zh/running-example.md' },
+  { source: 'docs/zh/ECORE_REFERENCE.md', output: 'zh/ecore-reference.md' },
+  { source: 'docs/zh/TROUBLESHOOTING.md', output: 'zh/troubleshooting.md' },
+  { source: 'docs/zh/RELEASE_CHECKLIST.md', output: 'zh/release-checklist.md' },
 ];
 
 const pagesBySource = new Map(pages.map((page) => [normalize(page.source), page]));
@@ -128,11 +144,11 @@ const base = process.env.MODEL2BLOCKLY_DOCS_BASE || ${JSON.stringify(docsBase)};
 const repoUrl = ${JSON.stringify(repoUrl)};
 const appMakerDemo = 'https://plortinus.github.io/model2blockly/app_maker_ecore/Appmaker_standalone.html';
 
-const sidebar = [
+const enSidebar = [
   {
     text: 'Start',
     items: [
-      { text: 'Overview', link: '/' },
+      { text: 'Overview', link: '/en/' },
       { text: 'Install Plugin', link: '/en/install' },
       { text: 'User Guide', link: '/en/user-guide' },
       { text: 'AppMaker Case', link: '/en/running-example' },
@@ -154,9 +170,60 @@ const sidebar = [
   },
 ];
 
+const esSidebar = [
+  {
+    text: 'Inicio',
+    items: [
+      { text: 'Vista general', link: '/es/' },
+      { text: 'Instalar plugin', link: '/es/install' },
+      { text: 'Guía de uso', link: '/es/user-guide' },
+      { text: 'Caso AppMaker', link: '/es/running-example' },
+    ],
+  },
+  {
+    text: 'Diseño',
+    items: [
+      { text: 'Arquitectura', link: '/es/architecture' },
+      { text: 'Referencia Ecore', link: '/es/ecore-reference' },
+    ],
+  },
+  {
+    text: 'Operación',
+    items: [
+      { text: 'Solución de problemas', link: '/es/troubleshooting' },
+      { text: 'Checklist de publicación', link: '/es/release-checklist' },
+    ],
+  },
+];
+
+const zhSidebar = [
+  {
+    text: '开始',
+    items: [
+      { text: '概览', link: '/zh/' },
+      { text: '安装插件', link: '/zh/install' },
+      { text: '使用指南', link: '/zh/user-guide' },
+      { text: 'AppMaker 案例', link: '/zh/running-example' },
+    ],
+  },
+  {
+    text: '设计',
+    items: [
+      { text: '架构', link: '/zh/architecture' },
+      { text: 'Ecore 参考', link: '/zh/ecore-reference' },
+    ],
+  },
+  {
+    text: '运维',
+    items: [
+      { text: '故障排查', link: '/zh/troubleshooting' },
+      { text: '发布清单', link: '/zh/release-checklist' },
+    ],
+  },
+];
+
 export default defineConfig({
   base,
-  lang: 'en-US',
   title: 'Model2Blockly',
   description: 'Generate Blockly editors from annotated Ecore metamodels.',
   cleanUrls: false,
@@ -164,23 +231,79 @@ export default defineConfig({
   markdown: {
     lineNumbers: true,
   },
+  locales: {
+    en: {
+      label: 'English',
+      lang: 'en-US',
+      title: 'Model2Blockly',
+      description: 'Generate Blockly editors from annotated Ecore metamodels.',
+      themeConfig: {
+        nav: [
+          { text: 'Home', link: '/en/' },
+          { text: 'Install', link: '/en/install' },
+          { text: 'User Guide', link: '/en/user-guide' },
+          { text: 'AppMaker Case', link: '/en/running-example' },
+          { text: 'Architecture', link: '/en/architecture' },
+          { text: 'Reference', items: [
+            { text: 'Ecore annotations', link: '/en/ecore-reference' },
+            { text: 'Troubleshooting', link: '/en/troubleshooting' },
+            { text: 'Release checklist', link: '/en/release-checklist' },
+          ] },
+          { text: 'Demo', link: appMakerDemo },
+        ],
+        sidebar: enSidebar,
+        outline: { label: 'On this page', level: [2, 3] },
+      },
+    },
+    es: {
+      label: 'Español',
+      lang: 'es-ES',
+      title: 'Model2Blockly',
+      description: 'Genera editores Blockly desde metamodelos Ecore anotados.',
+      themeConfig: {
+        nav: [
+          { text: 'Inicio', link: '/es/' },
+          { text: 'Instalar', link: '/es/install' },
+          { text: 'Guía de uso', link: '/es/user-guide' },
+          { text: 'Caso AppMaker', link: '/es/running-example' },
+          { text: 'Arquitectura', link: '/es/architecture' },
+          { text: 'Referencia', items: [
+            { text: 'Anotaciones Ecore', link: '/es/ecore-reference' },
+            { text: 'Solución de problemas', link: '/es/troubleshooting' },
+            { text: 'Checklist de publicación', link: '/es/release-checklist' },
+          ] },
+          { text: 'Demo', link: appMakerDemo },
+        ],
+        sidebar: esSidebar,
+        outline: { label: 'En esta página', level: [2, 3] },
+      },
+    },
+    zh: {
+      label: '中文',
+      lang: 'zh-CN',
+      title: 'Model2Blockly',
+      description: '从带注解的 Ecore 元模型生成 Blockly 编辑器。',
+      themeConfig: {
+        nav: [
+          { text: '首页', link: '/zh/' },
+          { text: '安装', link: '/zh/install' },
+          { text: '使用指南', link: '/zh/user-guide' },
+          { text: 'AppMaker 案例', link: '/zh/running-example' },
+          { text: '架构', link: '/zh/architecture' },
+          { text: '参考', items: [
+            { text: 'Ecore 注解', link: '/zh/ecore-reference' },
+            { text: '故障排查', link: '/zh/troubleshooting' },
+            { text: '发布清单', link: '/zh/release-checklist' },
+          ] },
+          { text: '演示', link: appMakerDemo },
+        ],
+        sidebar: zhSidebar,
+        outline: { label: '本页目录', level: [2, 3] },
+      },
+    },
+  },
   themeConfig: {
     siteTitle: 'Model2Blockly',
-    nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Install', link: '/en/install' },
-      { text: 'User Guide', link: '/en/user-guide' },
-      { text: 'AppMaker Case', link: '/en/running-example' },
-      { text: 'Architecture', link: '/en/architecture' },
-      { text: 'Reference', items: [
-        { text: 'Ecore annotations', link: '/en/ecore-reference' },
-        { text: 'Troubleshooting', link: '/en/troubleshooting' },
-        { text: 'Release checklist', link: '/en/release-checklist' },
-      ] },
-      { text: 'Demo', link: appMakerDemo },
-    ],
-    sidebar,
-    outline: { label: 'On this page', level: [2, 3] },
     search: {
       provider: 'local',
     },

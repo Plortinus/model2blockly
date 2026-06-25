@@ -18,6 +18,22 @@ const requiredFiles = [
   'docs/en/ECORE_REFERENCE.md',
   'docs/en/TROUBLESHOOTING.md',
   'docs/en/RELEASE_CHECKLIST.md',
+  'docs/es/README.md',
+  'docs/es/INSTALL.md',
+  'docs/es/USER_GUIDE.md',
+  'docs/es/ARCHITECTURE.md',
+  'docs/es/RUNNING_EXAMPLE.md',
+  'docs/es/ECORE_REFERENCE.md',
+  'docs/es/TROUBLESHOOTING.md',
+  'docs/es/RELEASE_CHECKLIST.md',
+  'docs/zh/README.md',
+  'docs/zh/INSTALL.md',
+  'docs/zh/USER_GUIDE.md',
+  'docs/zh/ARCHITECTURE.md',
+  'docs/zh/RUNNING_EXAMPLE.md',
+  'docs/zh/ECORE_REFERENCE.md',
+  'docs/zh/TROUBLESHOOTING.md',
+  'docs/zh/RELEASE_CHECKLIST.md',
 ];
 
 const requiredAssets = [
@@ -49,6 +65,22 @@ for (const file of [
   'en/ecore-reference.html',
   'en/troubleshooting.html',
   'en/release-checklist.html',
+  'es/index.html',
+  'es/install.html',
+  'es/user-guide.html',
+  'es/architecture.html',
+  'es/running-example.html',
+  'es/ecore-reference.html',
+  'es/troubleshooting.html',
+  'es/release-checklist.html',
+  'zh/index.html',
+  'zh/install.html',
+  'zh/user-guide.html',
+  'zh/architecture.html',
+  'zh/running-example.html',
+  'zh/ecore-reference.html',
+  'zh/troubleshooting.html',
+  'zh/release-checklist.html',
   'assets/screenshots/appmaker-editor.png',
   'assets/screenshots/validation-workspace.png',
   'assets/diagrams/system-architecture.svg',
@@ -69,14 +101,21 @@ const generatedArchitecture = readGeneratedDoc('en/architecture.html');
 const generatedCase = readGeneratedDoc('en/running-example.html');
 const generatedEcoreReference = readGeneratedDoc('en/ecore-reference.html');
 const generatedTroubleshooting = readGeneratedDoc('en/troubleshooting.html');
+const generatedEsIndex = readGeneratedDoc('es/index.html');
+const generatedEsInstall = readGeneratedDoc('es/install.html');
+const generatedEsArchitecture = readGeneratedDoc('es/architecture.html');
+const generatedZhIndex = readGeneratedDoc('zh/index.html');
+const generatedZhInstall = readGeneratedDoc('zh/install.html');
+const generatedZhArchitecture = readGeneratedDoc('zh/architecture.html');
 
-assertIncludes(generatedRootIndex, 'VPHero', 'root page is the VitePress home page');
-assertIncludes(generatedRootIndex, 'Generate Blockly editors from annotated Ecore', 'root homepage explains the Ecore-first positioning');
-assertIncludes(generatedRootIndex, '/model2blockly/assets/diagrams/model2blockly-concept.svg', 'root homepage uses the VitePress asset base');
-assertNotIncludes(generatedRootIndex, 'Opening the English documentation', 'root page is not the old redirect page');
+assertIncludes(generatedRootIndex, 'Opening the English documentation', 'root page redirects to the English locale');
+assertIncludes(generatedRootIndex, '/model2blockly/es/', 'root page links to the Spanish locale');
+assertIncludes(generatedRootIndex, '/model2blockly/zh/', 'root page links to the Chinese locale');
 assertNotIncludes(generatedRootIndex, '/model2blockly/docs/', 'root page no longer publishes under /docs/');
 
 assertIncludes(generatedEnIndex, 'Ecore is the main input', 'English home explains the current input route');
+assertIncludes(generatedEnIndex, 'Español', 'English pages expose the Spanish language option');
+assertIncludes(generatedEnIndex, '中文', 'English pages expose the Chinese language option');
 assertIncludes(generatedInstall, 'Install the Eclipse Plugin', 'install page is generated');
 assertIncludes(generatedInstall, 'https://plortinus.github.io/model2blockly/update-site/', 'install page includes the update-site URL');
 assertIncludes(generatedInstall, 'Group items by category', 'install page includes the empty-list troubleshooting step');
@@ -93,6 +132,12 @@ assertIncludes(generatedEcoreReference, 'source=&quot;blockly&quot;', 'Ecore ref
 assertIncludes(generatedEcoreReference, 'source=&quot;validation&quot;', 'Ecore reference documents validation annotations');
 assertIncludes(generatedTroubleshooting, 'GitHub Actions', 'troubleshooting explains Pages source configuration');
 assertIncludes(generatedTroubleshooting, 'update-site', 'troubleshooting keeps plugin installation endpoint visible');
+assertIncludes(generatedEsIndex, 'Genera editores Blockly desde Ecore anotado', 'Spanish home is generated from the current Ecore narrative');
+assertIncludes(generatedEsInstall, 'Instalar el plugin de Eclipse', 'Spanish install page is generated');
+assertIncludes(generatedEsArchitecture, 'Arquitectura', 'Spanish architecture page is generated');
+assertIncludes(generatedZhIndex, '从带注解的 Ecore 生成 Blockly 编辑器', 'Chinese home is generated from the current Ecore narrative');
+assertIncludes(generatedZhInstall, '安装 Eclipse 插件', 'Chinese install page is generated');
+assertIncludes(generatedZhArchitecture, '架构', 'Chinese architecture page is generated');
 
 for (const file of listHtmlFiles(docsOutputDir)) {
   checkNoParagraphDirectlyInsideList(file);

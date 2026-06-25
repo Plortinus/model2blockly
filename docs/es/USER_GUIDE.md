@@ -1,42 +1,113 @@
 # Guía de uso
 
-El flujo básico de Model2Blockly es instalar el plugin de Eclipse, seleccionar
-un metamodelo Ecore anotado, generar un editor Blockly y abrir el resultado en
-el navegador.
+La ruta recomendada parte de un metamodelo Ecore anotado. La sintaxis Xtext
+para `.m2b` y `.model2blockly` sigue existiendo, pero es una ruta auxiliar.
 
-## Ruta recomendada
+## Instalar el plugin
 
-1. Instale Model2Blockly desde el update site de Eclipse.
-2. Genere el editor AppMaker desde `.ecore` anotado.
-3. Abra el editor generado y cargue el modelo de ejemplo.
-4. Revise el informe, el XMI intermedio `EditorSpec` y el workspace de
-   validaciones.
-5. Ejecute `npm run verify:domain-xmi` desde la raíz del
-   repositorio para comprobar que el XMI de dominio de ejemplo se carga y
-   valida con EMF contra `app_maker.ecore`.
+Consulta la [guía de instalación](./INSTALL.md). La URL p2 es:
 
-![Sección de instalación en el sitio del proyecto](../assets/screenshots/homepage-install-es.png)
+```text
+https://plortinus.github.io/model2blockly/update-site/
+```
 
-## Primeras páginas
+El plugin aporta:
 
-| Necesidad | Página |
+- editor Xtext para `.m2b` y `.model2blockly`;
+- comando `Generate Blockly Editor`;
+- comando `Apply Validation Blocks to Source`;
+- soporte de menú contextual para `.ecore`, `.m2b` y `.model2blockly`.
+
+## Generar desde Ecore
+
+La entrada de referencia es:
+
+```text
+io.github.plortinus.model2blockly/model/app_maker.ecore
+```
+
+En Eclipse:
+
+1. Importa los proyectos del plugin.
+2. Abre el proyecto `io.github.plortinus.model2blockly`.
+3. Selecciona `model/app_maker.ecore`.
+4. Haz clic derecho y elige `Generate Blockly Editor`.
+5. Abre `generation_report.html`.
+
+La misma ruta se implementa en:
+
+```text
+io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/standalone/EcoreToBlocklyMain.java
+```
+
+La configuración `Generate AppMaker from Ecore.launch` usa:
+
+```text
+model/app_maker.ecore
+examples/generated/app_maker_ecore
+```
+
+## Carpeta generada
+
+La salida AppMaker del repositorio está en:
+
+```text
+io.github.plortinus.model2blockly/examples/generated/app_maker_ecore
+```
+
+| Ruta | Propósito |
 | --- | --- |
-| Instalar el plugin y generar el primer editor | [Guía rápida](GETTING_STARTED.md) |
-| Ver el caso AppMaker | [Caso AppMaker](RUNNING_EXAMPLE.md) |
-| Resolver un problema de instalación o generación | [Solución de problemas](TROUBLESHOOTING.md) |
-| Entender el flujo MDE centrado en Ecore | [Arquitectura](ARCHITECTURE.md) |
+| `generation_report.html` | Informe legible del mapeo Ecore -> Blockly. |
+| `README.md` | Guía corta de la carpeta generada. |
+| `intermediate/Appmaker_blocklyspec.xmi` | Modelo EMF `EditorSpec` serializado. |
+| `html/Appmaker_standalone.html` | Editor autocontenido para navegador. |
+| `html/Appmaker_editor.html` | Página del editor que carga los assets generados. |
+| `html/Appmaker_blocks.js` | Definiciones Blockly. |
+| `html/Appmaker_toolbox.js` | Toolbox y categorías. |
+| `html/Appmaker_generators.js` | Exportación de código desde plantillas. |
+| `html/Appmaker_validations.js` | Validaciones runtime. |
+| `html/validation_workspace.html` | Workspace visual para reglas de validación. |
+| `html/validation_blocks.json` | Modelo de bloques de validación. |
+| `html/validation_runtime.js` | Runtime de validación. |
+| `html/sample_model.json` | Modelo cargado por `Load Sample`. |
 
-El editor AppMaker generado es la DSL de bloques orientada al usuario: toolbox,
-workspace, vista previa, carga del ejemplo y exportación XMI.
+## Usar el editor generado
+
+Abre:
+
+```text
+io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
+```
+
+Después:
+
+1. Pulsa `Load Sample`.
+2. Inspecciona los bloques.
+3. Edita el modelo.
+4. Exporta JSON, XML, XMI de dominio o código.
+5. Abre `validation_workspace.html` para ver las reglas como bloques Blockly.
 
 ![Editor AppMaker generado](../assets/screenshots/appmaker-editor.png)
 
-![Workspace de validaciones](../assets/screenshots/validation-workspace.png)
+![Workspace de validación](../assets/screenshots/validation-workspace.png)
 
-## Temas técnicos relacionados
+## Verificar la salida
 
-- [Arquitectura e implementación](ARCHITECTURE.md): flujo de generación,
-  modelo intermedio `EditorSpec`, recarga de XMI, módulos del generador y
-  artefactos de salida.
-- [Vista general](PROJECT.md): objetivos del plugin, rutas de entrada y
-  archivos comunes.
+Desde la raíz del repositorio:
+
+```bash
+npm run smoke
+npm run verify:domain-xmi
+npm run verify:plugin
+```
+
+| Comando | Qué valida |
+| --- | --- |
+| `npm run smoke` | Abre el editor AppMaker con Playwright, carga el ejemplo y comprueba el navegador. |
+| `npm run verify:domain-xmi` | Carga el XMI de dominio con EMF contra `app_maker.ecore`. |
+| `npm run verify:plugin` | Comprueba metadatos del plugin y la salida generada. |
+
+## Cuándo usar Xtext
+
+Usa `.m2b` o `.model2blockly` solo cuando necesites la sintaxis textual
+auxiliar. Ambas rutas normalizan a `EditorSpec` antes de generar.
