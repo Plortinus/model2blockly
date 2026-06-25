@@ -140,6 +140,11 @@ assertNotIncludes(generatedZhIndex, '文档导览', 'Chinese home should not sho
 assertNotIncludes(generatedZhIndex, '生成流程', 'Chinese home should not show the old generation flow section');
 assertNotIncludes(generatedZhIndex, '适用场景', 'Chinese home should not show the old use-case section');
 assertIncludes(generatedZhInstall, '安装 Eclipse 插件', 'Chinese install page is generated');
+assertNotIncludes(generatedZhInstall, '支持 JavaSE-21', 'Chinese install page should only show installation steps');
+assertNotIncludes(generatedZhInstall, '如果列表为空', 'Chinese install page should only show installation steps');
+assertNotIncludes(generatedZhInstall, '更新已有安装', 'Chinese install page should only show installation steps');
+assertNotIncludes(generatedZhInstall, '验证安装', 'Chinese install page should only show installation steps');
+assertNotIncludes(generatedZhInstall, '相关页面', 'Chinese install page should only show installation steps');
 assertIncludes(generatedZhArchitecture, '架构', 'Chinese architecture page is generated');
 
 for (const file of listHtmlFiles(docsOutputDir)) {
