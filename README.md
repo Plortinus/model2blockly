@@ -71,28 +71,17 @@ and validation workspace.
 
 ## Documentation
 
-The hosted documentation at
-<https://plortinus.github.io/model2blockly/docs/en/> is built with VitePress from
-the Markdown files in this repository. The online docs use a fixed top
-navigation bar, language switcher, sidebars and local search while keeping the
-same source documents listed below.
+The hosted documentation is the VitePress site at
+<https://plortinus.github.io/model2blockly/>. It is built from the Markdown
+files under `docs/` and published directly at the GitHub Pages root.
 
-- [English documentation home](docs/en/README.md), with language switching to
-  [Español](docs/es/README.md) and [中文](docs/zh/README.md)
-- [User guide](docs/en/USER_GUIDE.md) for the simple installation, generation
-  and inspection path
-- [Architecture and implementation](docs/en/ARCHITECTURE.md) for the EMF/MDE
-  workflow, intermediate model, diagrams and implementation map
-- [Documentation map](DOCS.md) for choosing the right guide by task
-- [Running Example: AppMaker](RUNNING_EXAMPLE.md) for the end-to-end technical
-  example, including source snippets, generated artifacts and screenshots
-- [Getting started](GETTING_STARTED.md) for generating your first editor
-- [Troubleshooting](TROUBLESHOOTING.md) for installation, generation and
-  validation issues
-- [Release checklist](RELEASE_CHECKLIST.md) for rebuilding the update site,
-  verifying it, and publishing GitHub Pages
-- [Ecore Annotation Reference](ECORE_REFERENCE.md) with supported EAnnotation
-  sources, keys and Blockly mappings
+- [VitePress home source](docs/README.md)
+- [User guide](docs/en/USER_GUIDE.md)
+- [Architecture](docs/en/ARCHITECTURE.md)
+- [AppMaker case](docs/en/RUNNING_EXAMPLE.md)
+- [Ecore annotation reference](docs/en/ECORE_REFERENCE.md)
+- [Troubleshooting](docs/en/TROUBLESHOOTING.md)
+- [Release checklist](docs/en/RELEASE_CHECKLIST.md)
 - [AppMaker `.ecore` example](io.github.plortinus.model2blockly/model/app_maker.ecore)
 
 ## Eclipse Usage
@@ -171,8 +160,8 @@ Requirements and troubleshooting:
 - If an older copy of the update site appears empty, clear
   `Group items by category` in the install dialog and reload the site.
 - The GitHub Pages workflow publishes the committed p2 repository. Rebuild and
-  verify it locally before pushing. It also renders the Markdown documentation
-  into hosted pages under `/docs/`.
+  verify it locally before pushing. It also renders the VitePress documentation
+  directly into the hosted site root.
 
 For release publishing, use the fixed checklist in
 [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md).

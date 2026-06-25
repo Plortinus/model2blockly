@@ -83,13 +83,12 @@ The hosted update site is published by `.github/workflows/pages.yml`.
 
 On push to `main`, the workflow:
 
-1. copies `site/index.html`;
-2. copies generated AppMaker editor assets;
-3. renders the Markdown documentation into `_site/docs/`;
-4. copies the committed `io.github.plortinus.model2blockly.updatesite/repository/` to
+1. builds the VitePress documentation directly into `_site/`;
+2. copies generated AppMaker editor assets to `_site/app_maker_ecore/`;
+3. copies the committed `io.github.plortinus.model2blockly.updatesite/repository/` to
    `_site/update-site/`;
-5. copies `category.xml` and `site/update-site/index.html`;
-6. deploys the result to GitHub Pages.
+4. copies `category.xml` and `site/update-site/index.html`;
+5. deploys the result to GitHub Pages.
 
 The workflow does not rebuild p2 metadata because the Eclipse p2 publisher is a
 local release dependency. Run `npm run rebuild:update-site` and the verification

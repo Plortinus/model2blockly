@@ -1,113 +1,131 @@
-# Architecture and Implementation
+# Architecture
 
-Model2Blockly is organized as a model-driven engineering pipeline. Its primary
-route starts from an annotated Ecore metamodel, transforms the loaded EMF
-`EPackage` into a generated EMF `EditorSpec` model, persists that intermediate
-model as XMI, and then generates the Blockly editor from the reloaded model.
+Model2Blockly is organized around one documented model-driven route:
+annotated Ecore to an EMF intermediate model to static Blockly output.
 
-## EMF/MDE workflow alignment
+The project still contains an Xtext grammar and a textual syntax, but that
+layer is auxiliary. It is useful for compact examples and compatibility, not
+the main AppMaker route.
 
-The project follows the standard EMF pattern described in the Eclipse
-[EMF documentation](https://eclipse.dev/emf/docs.html): metamodels are defined
-as Ecore models, generator-facing metamodels have `.genmodel` files and
-generated Java APIs, model instances are serialized as XMI, and generation is
-performed from models rather than from ad hoc text.
-
-For Model2Blockly, the core chain is:
+## Runtime Flow
 
 ```text
-annotated Ecore metamodel (.ecore)
-  -> EMF ResourceSet / EPackage
-  -> model-to-model transformation
-  -> generated EMF EditorSpec model
+annotated .ecore
+  -> EMF ResourceSet
+  -> EPackage
+  -> EcoreAdapter
+  -> EditorSpec EMF model
+  -> BlocklySpecXmiSerializer
   -> intermediate/*_blocklyspec.xmi
-  -> reload and validate XMI
-  -> model-to-text generation
-  -> Blockly HTML/JavaScript editor
-  -> user-created domain model JSON/XMI
+  -> XMI reload and diagnostics
+  -> BlocklyCodeGenerator
+  -> HTML/JavaScript artifacts
 ```
-
-The internal generation metamodels are kept as EMF artifacts:
-
-```text
-io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.ecore
-io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.genmodel
-io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore
-io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel
-io.github.plortinus.model2blockly/emf-gen/
-```
-
-The textual DSL is Xtext concrete syntax over the fixed
-`Model2Blockly.ecore` abstract syntax. Xtext generation writes parser, service
-and IDE code to `src-gen`; generated EMF APIs for the fixed metamodels live in
-`emf-gen` so they are not cleaned when the DSL infrastructure is regenerated.
-
-The Ecore route can also operate dynamically on a source `.ecore` file without
-requiring Java code generation for that source domain. The domain `EPackage` is
-loaded through EMF and used as the source model for the transformation.
-
-## System architecture
-
-Model2Blockly has one documented MDE route: annotated Ecore is loaded as an EMF
-`EPackage`, transformed into the generated `EditorSpec` model, and then used by
-the generation backend before HTML and JavaScript are written.
-
-![Model2Blockly system architecture](../assets/diagrams/system-architecture.svg)
-
-## Generation flow
-
-The generator writes an intermediate XMI file and reads it back before producing
-the browser artifacts. This makes the formal generated model visible,
-reproducible and easier to debug.
 
 ![Model2Blockly generation flow](../assets/diagrams/generation-flow.svg)
 
-## Output artifacts
+## Modules
 
-The generated folder is intentionally split between files for users, files for
-runtime execution and files that help explain or debug the generation.
+| Module | Role |
+| --- | --- |
+| `io.github.plortinus.model2blockly` | Core Xtext/EMF plugin, adapters, intermediate model, generators and standalone entry points. |
+| `io.github.plortinus.model2blockly.ui` | Eclipse UI contributions: editor integration, context menu commands and validation patch command. |
+| `io.github.plortinus.model2blockly.ide` | Xtext IDE services for the auxiliary textual syntax. |
+| `io.github.plortinus.model2blockly.feature` | Eclipse feature packaging. |
+| `io.github.plortinus.model2blockly.updatesite` | Published Eclipse update-site repository. |
+| `docs` | VitePress documentation source. |
+| `scripts` | Node-based verification and site/update-site build helpers. |
+
+## Generated and Handwritten Code
+
+The repository deliberately separates generated code by source:
+
+| Directory | Contents |
+| --- | --- |
+| `src` | Handwritten Java and Xtend implementation. |
+| `src-gen` | Xtext-generated parser, grammar access, setup and validation infrastructure. |
+| `emf-gen` | EMF-generated Java APIs for `Model2Blockly.ecore` and `BlocklyEditorSpec`. |
+| `xtend-gen` | Java generated from Xtend sources. |
+
+This matters because regenerating Xtext infrastructure should not delete the
+EMF APIs used by the intermediate model.
+
+## Core Implementation Map
+
+| Responsibility | Main file |
+| --- | --- |
+| Load `.ecore` and run the Ecore route | `standalone/EcoreToBlocklyMain.java` |
+| Convert `EPackage` to `EditorSpec` | `adapter/EcoreAdapter.java` |
+| Convert auxiliary Xtext model to `EditorSpec` | `adapter/DomainModelAdapter.java` |
+| Serialize/reload intermediate XMI | `intermediate/BlocklySpecXmiSerializer.java` |
+| Validate intermediate model | `blocklyspec/BlocklyEditorSpecValidator.java` and `blocklyspec/BlocklySpecDiagnostics.java` |
+| Generate Blockly files | `generator/BlocklyCodeGenerator.xtend` |
+| Generate sample model | `generator/SampleModelGenerator.java` |
+| Generate validation blocks/runtime | `generator/ValidationBlockModelGenerator.java`, `ValidationRuntimeGenerator.java`, `ValidationWorkspaceHtmlGenerator.java` |
+| Render mapping report | `generator/GenerationReportHtmlRenderer.java` |
+| Eclipse context-menu generation | `ui/handlers/GenerateBlocklyEditorHandler.java` |
+| Apply edited validation blocks back to source | `ui/handlers/ApplyValidationPatchHandler.java` and `validationpatch/ValidationSourcePatcher.java` |
+
+## Intermediate Model
+
+`EditorSpec` is the contract between source-model analysis and Blockly output.
+Both supported input routes produce this model:
+
+```text
+Ecore route:
+  EPackage -> EcoreAdapter -> EditorSpec
+
+Auxiliary textual route:
+  DomainModel -> DomainModelAdapter -> EditorSpec
+```
+
+The Ecore route writes `intermediate/*_blocklyspec.xmi`, reloads it and
+validates it before generating HTML. That XMI is not just a debug dump; it is
+part of the generation contract.
+
+![Model2Blockly system architecture](../assets/diagrams/system-architecture.svg)
+
+## Ecore Mapping
+
+The Ecore adapter infers useful Blockly structure without annotations:
+
+| Ecore source | Generated meaning |
+| --- | --- |
+| `EClass` | Blockly block type. |
+| Abstract `EClass` or interface | Abstract block type, not emitted as a concrete block. |
+| `EAttribute` | Blockly field. |
+| `EEnum` attribute | Dropdown field. |
+| Containment `EReference` | Statement input and containment validation. |
+| Non-containment `EReference` | Dynamic reference field. |
+| `lowerBound >= 1` | Required-field or required-reference validation. |
+| Multi-valued unique feature | Duplicate-value validation. |
+| `iD` attribute / `eIDAttribute` | Default identity field for references and XMI export. |
+
+Annotations refine that inferred result. The supported keys are documented in
+the [Ecore annotation reference](./ECORE_REFERENCE.md).
+
+## Output Artifacts
 
 ![Generated output artifacts](../assets/diagrams/output-artifacts.svg)
 
-## Core and extension boundary
+The generator produces static files. There is no runtime server requirement for
+the generated editor itself. The checked-in AppMaker output is used by the
+Playwright smoke test and by the domain-XMI verification script.
 
-The core contribution is the metamodel-to-Blockly editor pipeline:
+## GitHub Pages Structure
 
-- annotated Ecore input;
-- generated EMF `EditorSpec` intermediate model;
-- intermediate XMI serialization, reload and validation;
-- Blockly block/toolbox/editor generation;
-- one representative case study, AppMaker.
+GitHub Pages now publishes VitePress as the site root:
 
-The following features are useful extensions but are not the architectural
-center of the project:
+```text
+https://plortinus.github.io/model2blockly/
+```
 
-- generated code export from user models;
-- visual validation-rule workspace;
-- Eclipse update-site packaging;
-- AppMaker-specific browser preview.
+The workflow still copies functional artifacts after the VitePress build:
 
-## Implementation map
-
-| Responsibility | Main implementation |
+| Path | Purpose |
 | --- | --- |
-| Ecore annotations to `EditorSpec` conversion | [`EcoreAdapter.java`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/EcoreAdapter.java) |
-| Intermediate XMI persistence | [`BlocklySpecXmiSerializer.java`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/intermediate/BlocklySpecXmiSerializer.java) |
-| Intermediate validation | [`BlocklyEditorSpecValidator.java`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/blocklyspec/BlocklyEditorSpecValidator.java) |
-| Blockly HTML and JavaScript output | [`BlocklyCodeGenerator.xtend`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/generator/BlocklyCodeGenerator.xtend) |
-| End-to-end generation orchestration | [`Model2BlocklyGenerator.xtend`](../../io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/generator/Model2BlocklyGenerator.xtend) |
-| EMF load/validate check for exported domain XMI | [`verify-domain-xmi.mjs`](../../scripts/verify-domain-xmi.mjs) |
+| `/update-site/` | Eclipse update-site endpoint used by plugin installation. |
+| `/app_maker_ecore/` | Generated AppMaker HTML editor for browser inspection. |
 
-## Implementation Notes
-
-- The generated editor is model-driven: Blockly blocks are derived from the
-  source model instead of being hand-written.
-- The intermediate XMI file is not just a debug dump. It is reloaded and
-  validated before final output generation.
-- The Ecore-based AppMaker generated editor exports a sample domain XMI that is
-  checked by `npm run verify:domain-xmi`: the script loads `app_maker.ecore`,
-  registers its dynamic `EPackage`, loads the exported XMI with EMF and runs
-  `Diagnostician`.
-- The AppMaker example shows Ecore annotations, intermediate XMI, generated
-  JavaScript, screenshots, generation report and validation workspace in one
-  place.
+Those paths are not separate documentation systems; they are generated/runtime
+artifacts exposed next to the VitePress docs.

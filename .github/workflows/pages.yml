@@ -36,28 +36,9 @@ jobs:
       - name: Prepare static site
         run: |
           set -euo pipefail
-          rm -rf _site
-          mkdir -p _site/app_maker_ecore _site/update-site
-          cat > _site/index.html <<'HTML'
-          <!doctype html>
-          <html lang="en">
-            <head>
-              <meta charset="utf-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1">
-              <meta http-equiv="refresh" content="0; url=docs/en/">
-              <link rel="canonical" href="docs/en/">
-              <title>Model2Blockly Documentation</title>
-              <script>
-                window.location.replace('docs/en/');
-              </script>
-            </head>
-            <body>
-              <p><a href="docs/en/">Open the Model2Blockly documentation</a></p>
-            </body>
-          </html>
-          HTML
-          cp -R io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/. _site/app_maker_ecore/
           npm run build:site-docs
+          mkdir -p _site/app_maker_ecore _site/update-site
+          cp -R io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/. _site/app_maker_ecore/
           cp -R io.github.plortinus.model2blockly.updatesite/repository/. _site/update-site/
           cp io.github.plortinus.model2blockly.updatesite/category.xml _site/update-site/category.xml
           cp site/update-site/index.html _site/update-site/index.html
