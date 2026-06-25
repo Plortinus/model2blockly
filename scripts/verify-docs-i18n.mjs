@@ -136,6 +136,9 @@ assertIncludes(generatedEsIndex, 'Genera editores Blockly desde Ecore anotado', 
 assertIncludes(generatedEsInstall, 'Instalar el plugin de Eclipse', 'Spanish install page is generated');
 assertIncludes(generatedEsArchitecture, 'Arquitectura', 'Spanish architecture page is generated');
 assertIncludes(generatedZhIndex, '从 Ecore 生成可用的 Blockly 编辑器', 'Chinese home is generated from the current Ecore narrative');
+assertNotIncludes(generatedZhIndex, '文档导览', 'Chinese home should not show the old documentation guide section');
+assertNotIncludes(generatedZhIndex, '生成流程', 'Chinese home should not show the old generation flow section');
+assertNotIncludes(generatedZhIndex, '适用场景', 'Chinese home should not show the old use-case section');
 assertIncludes(generatedZhInstall, '安装 Eclipse 插件', 'Chinese install page is generated');
 assertIncludes(generatedZhArchitecture, '架构', 'Chinese architecture page is generated');
 
