@@ -2,62 +2,78 @@
 layout: home
 hero:
   name: Model2Blockly
-  text: 基于 Ecore 的 Blockly 编辑器生成工具
-  tagline: Model2Blockly 以 EMF Ecore 元模型为输入，通过可检查的 EditorSpec 中间模型生成可在浏览器运行的 Blockly 编辑器，并提供 Eclipse 插件与 standalone 两种使用方式。
+  text: 从 Ecore 生成可用的 Blockly 编辑器
+  tagline: 准备一个 EMF Ecore 元模型，安装 Eclipse 插件或运行 standalone 生成器，即可得到包含区块、工具箱、代码生成器、验证逻辑和示例数据的静态 Blockly 编辑器。
   image:
     src: /assets/diagrams/model2blockly-concept.svg
     alt: Model2Blockly 从 Ecore 元模型生成 EditorSpec 中间模型，再生成 Blockly HTML 编辑器
   actions:
     - theme: brand
-      text: 快速开始
-      link: /zh/user-guide
+      text: 查看在线示例
+      link: https://plortinus.github.io/model2blockly/app_maker_ecore/Appmaker_standalone.html
     - theme: alt
       text: 安装插件
       link: /zh/install
     - theme: alt
-      text: 示例项目
-      link: /zh/running-example
+      text: 用 Ecore 生成
+      link: /zh/user-guide
 features:
-  - title: 以 Ecore 为入口
-    details: 使用带注解的 .ecore 文件描述领域模型，并通过注解补充区块标签、分类、字段控件、验证规则和代码模板。
-    link: /zh/ecore-reference
-    linkText: Ecore 注解参考
-  - title: 可检查的中间模型
-    details: Ecore 会先转换为 EMF EditorSpec 模型并序列化为 XMI，便于检查、调试和复现实验结果。
-    link: /zh/architecture
-    linkText: 架构说明
-  - title: 静态 Blockly 编辑器
-    details: 生成结果包含区块定义、工具箱、代码生成器、standalone 编辑器、验证工作区、示例模型和生成报告。
+  - title: 先看生成效果
+    details: 打开 AppMaker 在线示例，直接体验生成后的 Blockly 编辑器、工具箱、验证按钮和示例模型。
     link: /zh/running-example
-    linkText: 查看示例
-  - title: Eclipse 与 standalone
-    details: 可以在 Eclipse 中通过上下文菜单生成编辑器，也可以使用 Java standalone 入口在命令行或自动化流程中运行生成器。
-    link: /zh/architecture
-    linkText: 查看运行方式
-  - title: 验证能力
-    details: 必填字段、包含关系基数、引用、唯一性以及部分表达式约束会转换为运行时检查和可视化验证区块。
-    link: /zh/user-guide
-    linkText: 使用流程
-  - title: 插件安装
-    details: Eclipse 插件通过 GitHub Pages 上的 update site 发布，安装后可以直接从 Ecore 文件触发 Blockly 编辑器生成。
+    linkText: 了解示例
+  - title: 在 Eclipse 中安装
+    details: 通过 GitHub Pages 上的 update site 安装插件，然后在 Ecore 文件上触发 Blockly 编辑器生成。
     link: /zh/install
     linkText: 安装指南
+  - title: 使用自己的 Ecore
+    details: 从 .ecore 元模型开始，按需添加 blockly 和 validation 注解，生成面向该领域模型的可视化编辑器。
+    link: /zh/ecore-reference
+    linkText: Ecore 注解参考
+  - title: 理解生成结果
+    details: 生成目录中包含 HTML、JavaScript、工具箱、验证工作区、示例模型、EditorSpec XMI 和生成报告。
+    link: /zh/running-example
+    linkText: 输出文件说明
+  - title: 排查安装和生成问题
+    details: 如果 Eclipse 找不到插件、update site 列表为空、生成文件缺失或 Pages 没有更新，可以从故障排查开始。
+    link: /zh/troubleshooting
+    linkText: 故障排查
+  - title: 了解内部架构
+    details: 当需要扩展生成器、解释论文中的技术路线或维护项目时，可以查看 Ecore、EditorSpec 和 Blockly 生成器之间的关系。
+    link: /zh/architecture
+    linkText: 架构说明
 ---
 
-## 文档导览
+## 推荐阅读路径
 
-这份文档围绕当前项目的 Ecore 主线组织：
+如果你是第一次访问这个项目，建议按下面的顺序阅读：
 
-- [快速开始](/zh/user-guide)：从示例 Ecore 模型生成 Blockly 编辑器。
-- [安装插件](/zh/install)：在 Eclipse 中配置 update site 并安装 Model2Blockly。
-- [AppMaker 示例](/zh/running-example)：查看仓库中的参考案例和生成结果。
-- [架构说明](/zh/architecture)：了解 Ecore、EditorSpec、代码生成器和输出文件之间的关系。
-- [Ecore 注解参考](/zh/ecore-reference)：查询可用注解及其生成效果。
-- [故障排查](/zh/troubleshooting)：处理安装、构建、生成和 GitHub Pages 发布问题。
+1. 打开 [AppMaker 示例](/zh/running-example)，先确认生成后的编辑器长什么样。
+2. 按 [安装指南](/zh/install) 在 Eclipse 中安装插件。
+3. 阅读 [使用指南](/zh/user-guide)，用示例 Ecore 或自己的 Ecore 生成编辑器。
+4. 需要自定义区块、字段、分类或验证规则时，查阅 [Ecore 注解参考](/zh/ecore-reference)。
+5. 如果生成结果不符合预期，再查看 [架构说明](/zh/architecture) 和 [故障排查](/zh/troubleshooting)。
 
-## 生成流程
+## 你需要准备什么
 
-Model2Blockly 的核心流程如下：
+最小输入是一个 EMF Ecore 元模型。为了让生成出的 Blockly 编辑器更贴合领域语言，可以在 Ecore 元素上添加注解：
+
+- `blockly` 注解用于控制区块名称、分类、字段显示、连接关系和代码生成模板。
+- `validation` 注解用于生成必填项、基数、引用、唯一性和部分表达式约束检查。
+- 如果只是想先验证流程，可以直接使用仓库中的 AppMaker 示例模型。
+
+## 你会得到什么
+
+一次生成会输出一个可直接发布或本地打开的静态编辑器。典型输出包括：
+
+- Blockly 区块定义和工具箱配置。
+- 浏览器中的 standalone 编辑器页面。
+- 运行时验证脚本和可视化验证工作区。
+- 示例模型、生成报告和可检查的 EditorSpec XMI 中间模型。
+
+## 生成流程概览
+
+生成器内部按下面的顺序处理模型：
 
 ```text
 annotated .ecore
@@ -69,12 +85,4 @@ annotated .ecore
   -> static HTML/JavaScript editor
 ```
 
-在这个流程中，Ecore 是主要输入；EditorSpec 是生成前的中间模型；最终输出是可以直接在浏览器中打开的 Blockly 编辑器。仓库中的 AppMaker 示例展示了完整生成结果：
-
-```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore
-```
-
-## 适用场景
-
-Model2Blockly 适合用于从领域元模型快速生成可视化建模编辑器。它尤其适合需要保留 Ecore/EMF 建模基础，同时希望把模型编辑体验发布为浏览器端 Blockly 界面的项目。
+普通使用者不需要手工编辑 EditorSpec。它主要用于调试、复现实验和解释生成过程。
