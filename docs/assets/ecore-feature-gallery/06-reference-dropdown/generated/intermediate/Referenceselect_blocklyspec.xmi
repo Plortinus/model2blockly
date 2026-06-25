@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Referenceselect" nsURI="https://plortinus.github.io/model2blockly/examples/referenceselect" nsPrefix="referenceselect" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Flow" label="Flow" colour="260"/>
+  <categories name="Actions" label="Actions" colour="30"/>
+  <blockTypes typeName="Flow" label="Flow" colour="260" categoryName="Flow" connectionType="NONE">
+    <orderedInputNames>pages</orderedInputNames>
+    <orderedInputNames>actions</orderedInputNames>
+    <statementInputs name="pages" checkType="Page" lowerBound="1" upperBound="3"/>
+    <statementInputs name="actions" checkType="Action" lowerBound="1" upperBound="3"/>
+  </blockTypes>
+  <blockTypes typeName="Page" label="Page" colour="260" categoryName="Flow" connectionType="TYPED" connectionTypeName="Page" idFieldName="name">
+    <orderedInputNames>name</orderedInputNames>
+    <fields name="name" defaultValue="home" id="true"/>
+  </blockTypes>
+  <blockTypes typeName="Action" label="Action" colour="30" categoryName="Actions" abstract="true" connectionType="TYPED" connectionTypeName="Action"/>
+  <blockTypes typeName="Navigate" label="Navigate" colour="30" categoryName="Actions" superTypeName="Action" connectionType="TYPED" connectionTypeName="Action" inputsInline="true">
+    <orderedInputNames>target</orderedInputNames>
+    <referenceFields name="target" targetTypeName="Page" required="true" lowerBound="1" uiWidget="reference-select" referenceLabelField="name"/>
+  </blockTypes>
+  <validations type="CARDINALITY" name="Flow_pages" ownerType="Flow" containmentName="pages" lowerBound="1" upperBound="3">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Flow"/>
+      <fields name="INPUT" value="pages"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="3"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="pages"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="pages"/>
+        <children kind="NUMBER_LITERAL" literal="3"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Flow_actions" ownerType="Flow" containmentName="actions" lowerBound="1" upperBound="3">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Flow"/>
+      <fields name="INPUT" value="actions"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="3"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="actions"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="actions"/>
+        <children kind="NUMBER_LITERAL" literal="3"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="REQUIRED" name="Navigate_target_required" ownerType="Navigate" fieldName="target" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Navigate"/>
+      <fields name="FIELD" value="target"/>
+      <fields name="FIELD_KIND" value="reference"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="target"/>
+  </validations>
+  <validations type="UNIQUE" name="Page_name_unique" ownerType="Page" fieldName="name" fieldKind="id">
+    <visualBlock blocklyBlockType="validation_type_field_unique">
+      <fields name="TYPE" value="Page"/>
+      <fields name="FIELD" value="name"/>
+    </visualBlock>
+    <visualExpression kind="TYPE_FIELD_UNIQUE" fieldName="name" typeName="Page"/>
+  </validations>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

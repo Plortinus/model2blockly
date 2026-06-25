@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>derived/transient/volatile features are ignored</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #f4f6f8;
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="generatedEditor" title="derived/transient/volatile features are ignored" src="generated/html/Ignoredfeatures_standalone.html"></iframe>
+  <script>
+    const frame = document.getElementById('generatedEditor');
+    frame.addEventListener('load', () => {
+      let attempts = 0;
+      const timer = window.setInterval(() => {
+        const win = frame.contentWindow;
+        if (!win || !win.document) return stopAfterLimit();
+        if (typeof win.loadSampleModel !== 'function' || !win.workspace) return stopAfterLimit();
+        focusGeneratedWorkspace(win);
+        window.clearInterval(timer);
+      }, 200);
+
+      function stopAfterLimit() {
+        attempts += 1;
+        if (attempts > 50) window.clearInterval(timer);
+      }
+    });
+
+    function focusGeneratedWorkspace(win) {
+      const doc = win.document;
+      if (!doc.getElementById('docsPreviewStyle')) {
+        const style = doc.createElement('style');
+        style.id = 'docsPreviewStyle';
+        style.textContent = [
+          '#header.appbar{display:none!important}',
+          '#main{display:block!important;padding:0!important;height:100vh!important;overflow:hidden!important}',
+          '.workspace-shell{height:100vh!important;border:0!important;border-radius:0!important;box-shadow:none!important}',
+          '.workspace-panel-header{display:none!important}',
+          '#outputPanel{display:none!important}',
+          '#blocklyDiv{height:100vh!important}',
+          '.blocklyToolboxDiv{font-size:12px!important}'
+        ].join('\n');
+        doc.head.appendChild(style);
+      }
+      try {
+        win.loadSampleModel();
+        [0, 150, 500].forEach((delay) => {
+          window.setTimeout(() => fitPreviewWorkspace(win), delay);
+        });
+      } catch (error) {
+        // Keep the generated editor visible even if sample import fails.
+      }
+    }
+
+    function fitPreviewWorkspace(win) {
+      if (!win.workspace) return;
+      if (win.workspace.setScale) win.workspace.setScale(0.72);
+      const topBlocks = win.workspace.getTopBlocks ? win.workspace.getTopBlocks(false) : [];
+      const firstBlock = topBlocks && topBlocks.length ? topBlocks[0] : null;
+      if (firstBlock && win.workspace.centerOnBlock) win.workspace.centerOnBlock(firstBlock.id);
+      if (win.Blockly && win.Blockly.svgResize) win.Blockly.svgResize(win.workspace);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="multirefopposite"
+    nsURI="https://plortinus.github.io/model2blockly/examples/multirefopposite"
+    nsPrefix="multirefopposite">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="Organization">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Organization"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="teams"
+        lowerBound="1" upperBound="-1" eType="#//Team" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="members"
+        lowerBound="1" upperBound="-1" eType="#//Member" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Team">
+    <eAnnotations source="blockly">
+      <details key="colour" value="200"/>
+      <details key="category" value="Organization"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="platform"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="members"
+        upperBound="-1" eType="#//Member" eOpposite="#//Member/team">
+      <eAnnotations source="ui">
+        <details key="referenceLabelField" value="name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Member">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="category" value="Organization"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="alice"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="team"
+        eType="#//Team" eOpposite="#//Team/members">
+      <eAnnotations source="ui">
+        <details key="referenceLabelField" value="name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+</ecore:EPackage>

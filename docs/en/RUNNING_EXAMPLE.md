@@ -1,21 +1,29 @@
 # AppMaker Case
 
-AppMaker is the checked-in reference case for the Ecore-first route.
+AppMaker is the checked-in reference case for the dual-input MDE workflow. The
+Ecore route and the `.m2b` route are both generated, committed and published so
+the two authoring styles can be inspected side by side.
 
 ## Source and Output
 
 | Item | Path |
 | --- | --- |
 | Source metamodel | `io.github.plortinus.model2blockly/model/app_maker.ecore` |
-| Generated output | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore` |
-| Standalone editor | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html` |
-| Intermediate model | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi` |
-| Mapping report | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/generation_report.html` |
+| Textual DSL source | `io.github.plortinus.model2blockly/examples/app_maker.m2b` |
+| Ecore generated output | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore` |
+| Ecore standalone editor | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html` |
+| Ecore intermediate model | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi` |
+| Ecore mapping report | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/generation_report.html` |
+| `.m2b` generated output | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl` |
+| `.m2b` standalone editor | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/html/Appmaker_standalone.html` |
+| `.m2b` intermediate model | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/intermediate/Appmaker_blocklyspec.xmi` |
+| `.m2b` mapping report | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/generation_report.html` |
 
-The public demo path is:
+The public demo paths are:
 
 ```text
 https://plortinus.github.io/model2blockly/app_maker_ecore/Appmaker_standalone.html
+https://plortinus.github.io/model2blockly/app_maker_dsl/Appmaker_standalone.html
 ```
 
 ## Rebuild the Example
@@ -37,6 +45,19 @@ with:
 ```text
 model/app_maker.ecore
 examples/generated/app_maker_ecore
+```
+
+For the textual route, run:
+
+```text
+Generate AppMaker from Model2Blockly.launch
+```
+
+It reads:
+
+```text
+examples/app_maker.m2b
+examples/generated/app_maker_dsl
 ```
 
 The generation sequence is:

@@ -148,6 +148,6 @@ io.github.plortinus.model2blockly/model/app_maker_generated/html/Appmaker_standa
 
 | 目标 | 文档 |
 | --- | --- |
-| Ecore 注解 | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md) |
+| Ecore 注解 | [`ECORE_TO_BLOCKLY_MAPPING.md`](ECORE_TO_BLOCKLY_MAPPING.md) |
 | 常见安装和生成问题 | [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) |
 | 英文完整文档地图 | [`../../DOCS.md`](../../DOCS.md) |

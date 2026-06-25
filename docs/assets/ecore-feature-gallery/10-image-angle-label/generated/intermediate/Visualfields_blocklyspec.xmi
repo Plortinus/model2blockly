@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Visualfields" nsURI="https://plortinus.github.io/model2blockly/examples/visualfields" nsPrefix="visualfields" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Fields" label="Fields" colour="45"/>
+  <blockTypes typeName="IconBadge" label="IconBadge" colour="45" categoryName="Fields" inputsInline="true">
+    <orderedInputNames>icon</orderedInputNames>
+    <orderedInputNames>rotation</orderedInputNames>
+    <orderedInputNames>caption</orderedInputNames>
+    <fields name="icon" fieldType="IMAGE" defaultValue="Blockly" imageUrl="https://developers.google.com/blockly/images/logos/logo_built_on.svg" imageWidth="32" imageHeight="32" imageAlt="Blockly" uiLabel="Icon"/>
+    <fields name="rotation" fieldType="ANGLE" defaultValue="45" uiLabel="Angle"/>
+    <fields name="caption" fieldType="LABEL" defaultValue="Preview only"/>
+  </blockTypes>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

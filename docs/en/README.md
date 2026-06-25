@@ -20,8 +20,8 @@ hero:
 features:
   - title: Ecore is the main input
     details: Select an Ecore file in Eclipse or run the Ecore standalone entry point. Optional annotations refine block labels, categories, widgets, validation and code templates.
-    link: /en/ecore-reference
-    linkText: Ecore annotation reference
+    link: /en/ecore-to-blockly-mapping
+    linkText: Ecore mapping rules
   - title: EditorSpec is the generation contract
     details: The source EPackage is transformed into a generated EMF EditorSpec model, serialized as XMI, reloaded and validated before HTML generation.
     link: /en/architecture

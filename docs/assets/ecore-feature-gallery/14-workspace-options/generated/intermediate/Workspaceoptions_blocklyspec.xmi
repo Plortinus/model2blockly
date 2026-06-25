@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Workspaceoptions" nsURI="https://plortinus.github.io/model2blockly/examples/workspaceoptions" nsPrefix="workspaceoptions" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Workspace" label="Workspace" colour="280"/>
+  <blockTypes typeName="Board" label="Board" colour="280" categoryName="Workspace" inputsInline="true">
+    <orderedInputNames>name</orderedInputNames>
+    <fields name="name" defaultValue="Grid board" required="true" lowerBound="1"/>
+  </blockTypes>
+  <validations type="REQUIRED" name="Board_name_required" ownerType="Board" fieldName="name" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Board"/>
+      <fields name="FIELD" value="name"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="name"/>
+  </validations>
+  <workspaceOptions key="grid" valueType="OBJECT">
+    <children key="snap" value="true" valueType="BOOLEAN"/>
+    <children key="spacing" value="24" valueType="INTEGER"/>
+    <children key="length" value="3" valueType="INTEGER"/>
+    <children key="colour" value="#d0d7de"/>
+  </workspaceOptions>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="startScale" value="0.8" valueType="INTEGER"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+</blocklyspec:EditorSpec>

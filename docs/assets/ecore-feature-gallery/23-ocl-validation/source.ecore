@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="oclvalidation"
+    nsURI="https://plortinus.github.io/model2blockly/examples/oclvalidation"
+    nsPrefix="oclvalidation">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="Checklist">
+    <eAnnotations source="blockly">
+      <details key="colour" value="20"/>
+      <details key="category" value="Validation"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="HasName HasItems"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="HasName" value="self.name-&gt;notEmpty()"/>
+      <details key="HasItems" value="self.items-&gt;size() &gt;= 1"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Launch"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="items"
+        upperBound="-1" eType="#//ChecklistItem" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="ChecklistItem">
+    <eAnnotations source="blockly">
+      <details key="colour" value="110"/>
+      <details key="category" value="Validation"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Review"/>
+  </eClassifiers>
+
+</ecore:EPackage>

@@ -43,5 +43,5 @@ io.github.plortinus.model2blockly.updatesite/category.xml
 
 ## GitHub Pages
 
-workflow 应构建 VitePress 到 `_site/`，复制 AppMaker 到 `_site/app_maker_ecore/`，
-复制 p2 仓库到 `_site/update-site/`，然后部署 `_site`。
+workflow 应构建 VitePress 到 `_site/`，复制 AppMaker 到 `_site/app_maker_ecore/`
+和 `_site/app_maker_dsl/`，复制 p2 仓库到 `_site/update-site/`，然后部署 `_site`。

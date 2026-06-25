@@ -1,0 +1,289 @@
+{
+  "format": "model2blockly.validationBlocks.v1",
+  "domain": "Zerodefaults",
+  "customBlockTypes": [
+    { "type": "validation_rule", "label": "Validation rule wrapper", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "wrapper", "expressionTemplate": "" } },
+    { "type": "validation_required_field", "label": "Validation rule: required field/reference", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "requiredField", "expressionTemplate": "has(\"${FIELD}\")" } },
+    { "type": "validation_statement_cardinality", "label": "Validation rule: statement input cardinality", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "statementCardinality", "expressionTemplate": "inputCount(\"${INPUT}\") within ${MIN}..${MAX}" } },
+    { "type": "validation_field_cardinality", "label": "Validation rule: multi-valued field/reference cardinality", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "fieldCardinality", "expressionTemplate": "fieldCount(\"${FIELD}\") within ${MIN}..${MAX}" } },
+    { "type": "validation_expression_rule", "label": "Validation rule: custom semantic expression", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "semanticExpression", "expressionTemplate": "${EXPRESSION}" } },
+    { "type": "validation_field_exists", "label": "Domain accessor: field/reference has a value", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "expressionNode", "expressionTemplate": "has(\"${FIELD}\")" } },
+    { "type": "validation_field_value", "label": "Domain accessor: field/reference value as text", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "expressionNode", "expressionTemplate": "value(\"${FIELD}\")" } },
+    { "type": "validation_field_number", "label": "Domain accessor: field value as number", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "expressionNode", "expressionTemplate": "number(\"${FIELD}\")" } },
+    { "type": "validation_field_count", "label": "Domain accessor: multi-valued field/reference count", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "expressionNode", "expressionTemplate": "fieldCount(\"${FIELD}\")" } },
+    { "type": "validation_field_unique", "label": "Domain accessor: multi-valued field/reference values are unique", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "fieldUnique", "expressionTemplate": "fieldUnique(\"${FIELD}\")" } },
+    { "type": "validation_type_field_unique", "label": "Domain accessor: field values are unique across a block type", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "typeFieldUnique", "expressionTemplate": "typeFieldUnique(\"${TYPE}\", \"${FIELD}\")" } },
+    { "type": "validation_input_count", "label": "Domain accessor: statement input child count", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "expressionNode", "expressionTemplate": "inputCount(\"${INPUT}\")" } },
+    { "type": "validation_previous_block_is", "label": "Domain accessor: previous block type", "generator": { "format": "model2blockly.validationGenerator.v1", "runtimeCheck": "previousBlockIs", "expressionTemplate": "previousBlockIs(\"${TYPE}\")" } }
+  ],
+  "blockDefinitions": [
+    {
+      "type": "validation_rule",
+      "message0": "rule %1",
+      "args0": [{"type": "field_input", "name": "NAME", "text": "validation"}],
+      "message1": "target %1 type %2",
+      "args1": [
+        {"type": "field_input", "name": "TARGET", "text": "-"},
+        {"type": "field_input", "name": "VALIDATION_TYPE", "text": "-"}
+      ],
+      "message2": "message %1",
+      "args2": [{"type": "field_input", "name": "MESSAGE", "text": ""}],
+      "message3": "condition %1",
+      "args3": [{"type": "input_value", "name": "CONDITION", "check": "Boolean"}],
+      "colour": 20,
+      "tooltip": "Generated validation rule",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_required_field",
+      "message0": "%1.%2 is required",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "message1": "kind %1",
+      "args1": [{"type": "field_input", "name": "FIELD_KIND", "text": "field"}],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks that a required field or reference has a value",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_statement_cardinality",
+      "message0": "%1.%2 children count",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "INPUT", "text": "children"}
+      ],
+      "message1": "min %1 max %2",
+      "args1": [
+        {"type": "field_input", "name": "MIN", "text": "0"},
+        {"type": "field_input", "name": "MAX", "text": "unbounded"}
+      ],
+      "output": "Boolean",
+      "colour": 260,
+      "tooltip": "Checks the number of child blocks in a statement input",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_cardinality",
+      "message0": "%1.%2 value count",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "message1": "kind %1 min %2 max %3",
+      "args1": [
+        {"type": "field_input", "name": "FIELD_KIND", "text": "field"},
+        {"type": "field_input", "name": "MIN", "text": "0"},
+        {"type": "field_input", "name": "MAX", "text": "unbounded"}
+      ],
+      "output": "Boolean",
+      "colour": 260,
+      "tooltip": "Checks the number of values in a multi-valued field or reference",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_expression_rule",
+      "message0": "%1 expression %2",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "EXPRESSION", "text": "true"}
+      ],
+      "message1": "expanded %1",
+      "args1": [{"type": "input_value", "name": "CONDITION", "check": "Boolean"}],
+      "output": "Boolean",
+      "colour": 0,
+      "tooltip": "Semantic expression validation, optionally expanded into lower-level blocks",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_exists",
+      "message0": "field %1 exists",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks whether a field or reference has a value",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_value",
+      "message0": "field %1 text",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "String",
+      "colour": 160,
+      "tooltip": "Reads a field value as text",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_number",
+      "message0": "field %1 number",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "Number",
+      "colour": 230,
+      "tooltip": "Reads a field value as a number",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_count",
+      "message0": "field %1 count",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "Number",
+      "colour": 260,
+      "tooltip": "Counts values in a multi-valued field or reference",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_unique",
+      "message0": "%1.%2 values unique",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "message1": "kind %1",
+      "args1": [{"type": "field_input", "name": "FIELD_KIND", "text": "field"}],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks that values inside a multi-valued field or reference are unique",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_type_field_unique",
+      "message0": "all %1 field %2 unique",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks that field values are unique across all blocks of a type",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_input_count",
+      "message0": "input %1 count",
+      "args0": [{"type": "field_input", "name": "INPUT", "text": "children"}],
+      "output": "Number",
+      "colour": 260,
+      "tooltip": "Counts child blocks in a statement input",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_previous_block_is",
+      "message0": "%1 previous block is %2",
+      "args0": [
+        {"type": "field_input", "name": "TARGET", "text": "target"},
+        {"type": "field_input", "name": "TYPE", "text": "Type"}
+      ],
+      "output": "Boolean",
+      "colour": 35,
+      "tooltip": "Checks the previous connected block type",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_custom",
+      "message0": "custom check %1",
+      "args0": [{"type": "field_input", "name": "VALUE", "text": ""}],
+      "output": "Boolean",
+      "colour": 0,
+      "tooltip": "Custom validation check",
+      "helpUrl": ""
+    }
+  ],
+  "rules": [
+    {
+      "name": "TaskBoard_tasks",
+      "validationType": "CARDINALITY",
+      "targetType": "TaskBoard",
+      "message": "TaskBoard.tasks has invalid cardinality.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "TaskBoard_tasks",
+          "TARGET": "TaskBoard",
+          "VALIDATION_TYPE": "CARDINALITY",
+          "MESSAGE": "TaskBoard.tasks has invalid cardinality."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_statement_cardinality",
+            "fields": {
+              "TYPE": "TaskBoard",
+              "INPUT": "tasks",
+              "MIN": "1",
+              "MAX": "unbounded"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "logic_compare",
+        "fields": { "OP": "GTE" },
+        "inputs": {
+          "A": {
+            "type": "validation_input_count",
+            "fields": { "INPUT": "tasks" }
+          },
+          "B": {
+            "type": "math_number",
+            "fields": { "NUM": "1" }
+          }
+        }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_statement_cardinality",
+        "runtimeCheck": "statementCardinality",
+        "runtimeExpression": "inputCount(\"tasks\") >= 1",
+        "parameters": {
+          "TYPE": "TaskBoard",
+          "INPUT": "tasks",
+          "MIN": "1",
+          "MAX": "unbounded"
+        }
+      }
+    },
+    {
+      "name": "Task_title_required",
+      "validationType": "REQUIRED",
+      "targetType": "Task",
+      "message": "Task.title is required.",
+      "blockTree": {
+        "type": "validation_rule",
+        "fields": {
+          "NAME": "Task_title_required",
+          "TARGET": "Task",
+          "VALIDATION_TYPE": "REQUIRED",
+          "MESSAGE": "Task.title is required."
+        },
+        "inputs": {
+          "CONDITION": {
+            "type": "validation_required_field",
+            "fields": {
+              "TYPE": "Task",
+              "FIELD": "title",
+              "FIELD_KIND": "attribute"
+            }
+          }
+        }
+      },
+      "expandedExpression": {
+        "type": "validation_field_exists",
+        "fields": { "FIELD": "title" }
+      },
+      "generator": {
+        "format": "model2blockly.validationGenerator.v1",
+        "source": "visualBlock",
+        "blockType": "validation_required_field",
+        "runtimeCheck": "requiredField",
+        "runtimeExpression": "has(\"title\")",
+        "parameters": {
+          "TYPE": "Task",
+          "FIELD": "title",
+          "FIELD_KIND": "attribute"
+        }
+      }
+    }
+  ]
+}

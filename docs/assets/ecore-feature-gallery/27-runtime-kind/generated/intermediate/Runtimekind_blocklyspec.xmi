@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Runtimekind" nsURI="https://plortinus.github.io/model2blockly/examples/runtimekind" nsPrefix="runtimekind" codeLanguage="text" codeFileExtension="txt" runtimeKind="appMaker">
+  <categories name="Pages" label="Pages" colour="260"/>
+  <blockTypes typeName="App" label="App" colour="260" categoryName="Pages" connectionType="NONE">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>pages</orderedInputNames>
+    <fields name="name" defaultValue="Runtime demo"/>
+    <statementInputs name="pages" checkType="Page"/>
+  </blockTypes>
+  <blockTypes typeName="Page" label="Page" colour="260" categoryName="Pages" connectionType="TYPED" connectionTypeName="Page" inputsInline="true">
+    <orderedInputNames>title</orderedInputNames>
+    <fields name="title" defaultValue="Home"/>
+  </blockTypes>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

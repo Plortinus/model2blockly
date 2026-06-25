@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="statementinput"
+    nsURI="https://plortinus.github.io/model2blockly/examples/statementinput"
+    nsPrefix="statementinput">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="Page">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Layout"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Home"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="components"
+        lowerBound="1" upperBound="4" eType="#//Component" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="Components"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Button" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Save"/>
+  </eClassifiers>
+
+</ecore:EPackage>

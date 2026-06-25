@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Multirefopposite" nsURI="https://plortinus.github.io/model2blockly/examples/multirefopposite" nsPrefix="multirefopposite" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Organization" label="Organization" colour="260"/>
+  <blockTypes typeName="Organization" label="Organization" colour="260" categoryName="Organization" connectionType="NONE">
+    <orderedInputNames>teams</orderedInputNames>
+    <orderedInputNames>members</orderedInputNames>
+    <statementInputs name="teams" checkType="Team" lowerBound="1"/>
+    <statementInputs name="members" checkType="Member" lowerBound="1"/>
+  </blockTypes>
+  <blockTypes typeName="Team" label="Team" categoryName="Organization" connectionType="TYPED" connectionTypeName="Team" inputsInline="true" idFieldName="name">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>members</orderedInputNames>
+    <fields name="name" defaultValue="platform" id="true"/>
+    <referenceFields name="members" targetTypeName="Member" upperBound="0" oppositeName="team" referenceLabelField="name"/>
+  </blockTypes>
+  <blockTypes typeName="Member" label="Member" colour="120" categoryName="Organization" connectionType="TYPED" connectionTypeName="Member" inputsInline="true" idFieldName="name">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>team</orderedInputNames>
+    <fields name="name" defaultValue="alice" id="true"/>
+    <referenceFields name="team" targetTypeName="Team" oppositeName="members" referenceLabelField="name"/>
+  </blockTypes>
+  <validations type="CARDINALITY" name="Organization_teams" ownerType="Organization" containmentName="teams" lowerBound="1">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Organization"/>
+      <fields name="INPUT" value="teams"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="unbounded"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="GTE">
+      <children kind="INPUT_COUNT" fieldName="teams"/>
+      <children kind="NUMBER_LITERAL" literal="1"/>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Organization_members" ownerType="Organization" containmentName="members" lowerBound="1">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Organization"/>
+      <fields name="INPUT" value="members"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="unbounded"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="GTE">
+      <children kind="INPUT_COUNT" fieldName="members"/>
+      <children kind="NUMBER_LITERAL" literal="1"/>
+    </visualExpression>
+  </validations>
+  <validations type="UNIQUE" name="Team_name_unique" ownerType="Team" fieldName="name" fieldKind="id">
+    <visualBlock blocklyBlockType="validation_type_field_unique">
+      <fields name="TYPE" value="Team"/>
+      <fields name="FIELD" value="name"/>
+    </visualBlock>
+    <visualExpression kind="TYPE_FIELD_UNIQUE" fieldName="name" typeName="Team"/>
+  </validations>
+  <validations type="UNIQUE" name="Team_members_unique" ownerType="Team" fieldName="members" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_field_unique">
+      <fields name="TYPE" value="Team"/>
+      <fields name="FIELD" value="members"/>
+      <fields name="FIELD_KIND" value="reference"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_UNIQUE" fieldName="members"/>
+  </validations>
+  <validations type="UNIQUE" name="Member_name_unique" ownerType="Member" fieldName="name" fieldKind="id">
+    <visualBlock blocklyBlockType="validation_type_field_unique">
+      <fields name="TYPE" value="Member"/>
+      <fields name="FIELD" value="name"/>
+    </visualBlock>
+    <visualExpression kind="TYPE_FIELD_UNIQUE" fieldName="name" typeName="Member"/>
+  </validations>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

@@ -1,113 +1,75 @@
 # 使用指南
 
-推荐路线从带注解的 Ecore 元模型开始。`.m2b` 和 `.model2blockly` 的 Xtext
-语法仍然存在，但它是辅助路线。
+本页说明安装 Model2Blockly 插件后，如何在 Eclipse 中使用它生成 Blockly
+编辑器。安装步骤见[安装指南](./INSTALL.md)。
 
-## 安装插件
+## 选择输入文件
 
-完整步骤见[安装指南](./INSTALL.md)。p2 仓库 URL：
+插件支持三类输入：
 
-```text
-https://plortinus.github.io/model2blockly/update-site/
-```
+| 输入 | 推荐程度 | 说明 |
+| --- | --- | --- |
+| `.ecore` | 推荐 | 标准 EMF 元模型，可用 Ecore 注解细化 Blockly 生成效果。 |
+| `.m2b` | 推荐 | Model2Blockly 文本 DSL，适合用简洁文本定义 Blockly 语言。 |
+| `.model2blockly` | 兼容 | 旧扩展名，功能等同于 `.m2b`。 |
 
-插件提供：
+AppMaker 案例同时提供：
 
-- `.m2b` 和 `.model2blockly` 的 Xtext 编辑器；
-- `Generate Blockly Editor` 命令；
-- `Apply Validation Blocks to Source` 命令；
-- `.ecore`、`.m2b`、`.model2blockly` 的右键菜单支持。
+- Ecore route：`io.github.plortinus.model2blockly/model/app_maker.ecore`
+- DSL route：`io.github.plortinus.model2blockly/examples/app_maker.m2b`
 
-## 从 Ecore 生成
+## 生成编辑器
 
-参考输入：
-
-```text
-io.github.plortinus.model2blockly/model/app_maker.ecore
-```
-
-在 Eclipse 中：
-
-1. 导入插件项目。
-2. 打开 `io.github.plortinus.model2blockly`。
-3. 选择 `model/app_maker.ecore`。
+1. 打开 Eclipse workspace。
+2. 打开包含 `.ecore` 或 `.m2b` 文件的项目。
+3. 在 Project Explorer 中选中目标源文件。
 4. 右键选择 `Generate Blockly Editor`。
-5. 打开生成的 `generation_report.html`。
+5. 等待生成完成。
 
-同一条 Ecore 路线由以下入口实现：
-
-```text
-io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/standalone/EcoreToBlocklyMain.java
-```
-
-`Generate AppMaker from Ecore.launch` 使用参数：
+生成完成后，插件会弹出提示，并在源文件旁边创建输出目录：
 
 ```text
-model/app_maker.ecore
-examples/generated/app_maker_ecore
+<源文件名>_generated
 ```
 
-## 生成目录
-
-AppMaker 生成结果：
+例如：
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore
+app_maker.ecore -> app_maker_generated
+app_maker.m2b -> app_maker_generated
 ```
 
-| 路径 | 作用 |
-| --- | --- |
-| `generation_report.html` | Ecore 到 Blockly 的映射报告。 |
-| `README.md` | 生成目录简要说明。 |
-| `intermediate/Appmaker_blocklyspec.xmi` | 序列化后的 EMF `EditorSpec` 中间模型。 |
-| `html/Appmaker_standalone.html` | 浏览器可直接打开的编辑器。 |
-| `html/Appmaker_editor.html` | 加载生成资源的编辑器页面。 |
-| `html/Appmaker_blocks.js` | Blockly 区块定义。 |
-| `html/Appmaker_toolbox.js` | 工具箱和分类结构。 |
-| `html/Appmaker_generators.js` | 模板驱动的代码导出。 |
-| `html/Appmaker_validations.js` | 用户模型运行时验证。 |
-| `html/validation_workspace.html` | 可视化验证规则工作区。 |
-| `html/validation_blocks.json` | 验证区块模型数据。 |
-| `html/validation_runtime.js` | 验证工作区运行时。 |
-| `html/sample_model.json` | `Load Sample` 加载的示例模型。 |
+## 查看结果
 
-## 使用生成编辑器
+进入生成目录后，优先打开：
 
-打开：
+1. `generation_report.html`：查看生成报告。
+2. `html/*_standalone.html`：打开浏览器中的 Blockly 编辑器。
+3. `html/validation_workspace.html`：查看生成的验证规则区块。
 
-```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
-```
+在 standalone 编辑器中，可以点击 `Load Sample` 加载示例模型，然后编辑
+Blockly 区块并导出 JSON、XML、domain XMI 或代码。
 
-然后：
+## 继续修改
 
-1. 点击 `Load Sample`。
-2. 查看 workspace 中的区块。
-3. 编辑模型。
-4. 导出 JSON、XML、domain XMI 或代码。
-5. 打开 `validation_workspace.html` 查看验证规则区块。
+如果生成结果不符合预期，回到 `.ecore` 或 `.m2b` 源文件修改模型定义，然后再次右键运行
+`Generate Blockly Editor`。插件会覆盖更新同一个生成目录。
 
-![生成的 AppMaker 编辑器](../assets/screenshots/appmaker-editor.png)
+常见调整方向：
 
-![验证工作区](../assets/screenshots/validation-workspace.png)
+- 修改 Ecore 类、属性、引用或包含关系。
+- 添加 `blockly` 注解调整区块名称、分类、颜色和字段显示。
+- 添加 `validation` 注解生成验证规则。
+- 添加 `code` 注解调整代码导出。
+- 在 `.m2b` 中修改 `class`、`attribute`、`contains`、`reference`、`value` 或 `validation`。
 
-## 验证输出
+注解写法见 [Ecore 到 Blockly 映射规则](./ECORE_TO_BLOCKLY_MAPPING.md)。文本 DSL 语法见
+[Model2Blockly 文本 DSL](./TEXTUAL_DSL.md)。
 
-在仓库根目录运行：
+## 其他命令
 
-```bash
-npm run smoke
-npm run verify:domain-xmi
-npm run verify:plugin
-```
+如果使用验证工作区编辑了验证规则，可以通过 `Apply Validation Blocks to Source`
+把规则片段应用回源文件。普通生成流程不需要使用这个命令。
 
-| 命令 | 验证内容 |
-| --- | --- |
-| `npm run smoke` | 用 Playwright 打开生成编辑器、加载示例并检查浏览器行为。 |
-| `npm run verify:domain-xmi` | 用 EMF 按 `app_maker.ecore` 加载导出的 domain XMI。 |
-| `npm run verify:plugin` | 检查插件元数据和生成示例。 |
-
-## 何时使用 Xtext
-
-只有在需要辅助文本语法时才使用 `.m2b` 或 `.model2blockly`。两条输入路线
-最终都会归一化到同一个 `EditorSpec`。
+如果右键菜单中没有 `Generate Blockly Editor`，请先确认插件安装完成并重启
+Eclipse，再查看[故障排查](./TROUBLESHOOTING.md)。

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="idreferencelabel"
+    nsURI="https://plortinus.github.io/model2blockly/examples/idreferencelabel"
+    nsPrefix="idreferencelabel">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="Library">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Library"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="authors"
+        lowerBound="1" upperBound="-1" eType="#//Author" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="books"
+        lowerBound="1" upperBound="-1" eType="#//Book" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Author">
+    <eAnnotations source="blockly">
+      <details key="colour" value="60"/>
+      <details key="category" value="Library"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="authorId" iD="true" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="author-1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="displayName"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Ada Lovelace"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Book">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="category" value="Library"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Notes"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="author"
+        lowerBound="1" eType="#//Author"/>
+  </eClassifiers>
+
+</ecore:EPackage>

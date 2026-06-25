@@ -1,6 +1,8 @@
 # Troubleshooting
 
-This page covers the current Ecore-first implementation.
+This page covers the current dual-input implementation: annotated `.ecore`
+metamodels and `.m2b` textual DSL files both generate Blockly editors through
+the shared `EditorSpec` pipeline.
 
 ## GitHub Pages Shows the Wrong Page
 

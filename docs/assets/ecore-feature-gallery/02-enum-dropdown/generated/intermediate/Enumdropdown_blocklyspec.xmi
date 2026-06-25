@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Enumdropdown" nsURI="https://plortinus.github.io/model2blockly/examples/enumdropdown" nsPrefix="enumdropdown" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Basics" label="Basics" colour="120"/>
+  <blockTypes typeName="Task" label="Task" colour="120" categoryName="Basics" inputsInline="true">
+    <orderedInputNames>priority</orderedInputNames>
+    <fields name="priority" fieldType="DROPDOWN" defaultValue="medium" uiLabel="Priority">
+      <options value="low" label="low"/>
+      <options value="medium" label="medium"/>
+      <options value="high" label="high"/>
+    </fields>
+  </blockTypes>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

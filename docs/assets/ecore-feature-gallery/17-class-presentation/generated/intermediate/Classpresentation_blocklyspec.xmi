@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Classpresentation" nsURI="https://plortinus.github.io/model2blockly/examples/classpresentation" nsPrefix="classpresentation" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Presentation" label="Presentation" colour="300"/>
+  <blockTypes typeName="Panel" label="Styled panel" colour="300" categoryName="Presentation" message0="panel %1 width %2" inputsInline="false" tooltip="A styled UI panel." helpUrl="https://developers.google.com/blockly">
+    <orderedInputNames>title</orderedInputNames>
+    <orderedInputNames>width</orderedInputNames>
+    <fields name="title" defaultValue="Settings"/>
+    <fields name="width" fieldType="INTEGER" defaultValue="480"/>
+  </blockTypes>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

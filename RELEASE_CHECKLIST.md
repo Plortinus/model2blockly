@@ -84,7 +84,8 @@ The hosted update site is published by `.github/workflows/pages.yml`.
 On push to `main`, the workflow:
 
 1. builds the VitePress documentation directly into `_site/`;
-2. copies generated AppMaker editor assets to `_site/app_maker_ecore/`;
+2. copies generated AppMaker editor assets to `_site/app_maker_ecore/` and
+   `_site/app_maker_dsl/`;
 3. copies the committed `io.github.plortinus.model2blockly.updatesite/repository/` to
    `_site/update-site/`;
 4. copies `category.xml` and `site/update-site/index.html`;

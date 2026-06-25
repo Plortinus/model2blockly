@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="runtimekind"
+    nsURI="https://plortinus.github.io/model2blockly/examples/runtimekind"
+    nsPrefix="runtimekind">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+  <eAnnotations source="runtime">
+    <details key="kind" value="appMaker"/>
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="App">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Pages"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Runtime demo"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pages"
+        upperBound="-1" eType="#//Page" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Page">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Pages"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Home"/>
+  </eClassifiers>
+
+</ecore:EPackage>

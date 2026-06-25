@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="outputblocks"
+    nsURI="https://plortinus.github.io/model2blockly/examples/outputblocks"
+    nsPrefix="outputblocks">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="Threshold">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Rules"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value"
+        lowerBound="1" eType="#//NumberExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="check" value="NumberExpression"/>
+        <details key="shadow" value="NumberLiteral"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="NumberExpression" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="true"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="NumberLiteral" eSuperTypes="#//NumberExpression">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="true"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="5"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Add" eSuperTypes="#//NumberExpression">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="NumberExpression"/>
+      <details key="message0" value="%1 + %2"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left"
+        lowerBound="1" eType="#//NumberExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="check" value="NumberExpression"/>
+        <details key="shadow" value="NumberLiteral"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right"
+        lowerBound="1" eType="#//NumberExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="check" value="NumberExpression"/>
+        <details key="shadow" value="NumberLiteral"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+</ecore:EPackage>

@@ -1,23 +1,24 @@
 # Arquitectura
 
-Model2Blockly se organiza alrededor de una ruta MDE documentada: Ecore anotado
-se transforma en un modelo EMF intermedio y después en salida Blockly estática.
-
-La gramática Xtext sigue en el proyecto, pero es una capa auxiliar.
+Model2Blockly se organiza como una cadena MDE con dos entradas. Los
+metamodelos Ecore anotados y los modelos textuales `.m2b` se transforman al
+mismo modelo intermedio EMF `EditorSpec`; después, el generador Xtend produce
+los artefactos Blockly estáticos.
 
 ## Flujo runtime
 
 ```text
-.ecore anotado
-  -> EMF ResourceSet
-  -> EPackage
-  -> EcoreAdapter
-  -> modelo EMF EditorSpec
-  -> BlocklySpecXmiSerializer
-  -> intermediate/*_blocklyspec.xmi
-  -> recarga XMI y diagnósticos
-  -> BlocklyCodeGenerator
-  -> artefactos HTML/JavaScript
+.ecore anotado                    DSL textual .m2b
+  -> EPackage                       -> DomainModel
+  -> EcoreAdapter                   -> DomainModelAdapter
+          \                         /
+           \                       /
+            -> modelo EMF EditorSpec
+            -> BlocklySpecXmiSerializer
+            -> intermediate/*_blocklyspec.xmi
+            -> recarga XMI y diagnósticos
+            -> BlocklyCodeGenerator
+            -> artefactos HTML/JavaScript
 ```
 
 ![Flujo de generación](../assets/diagrams/generation-flow.svg)
@@ -49,7 +50,7 @@ La gramática Xtext sigue en el proyecto, pero es una capa auxiliar.
 | --- | --- |
 | Ruta Ecore standalone | `standalone/EcoreToBlocklyMain.java` |
 | Conversión `EPackage` -> `EditorSpec` | `adapter/EcoreAdapter.java` |
-| Ruta textual auxiliar -> `EditorSpec` | `adapter/DomainModelAdapter.java` |
+| Ruta DSL textual -> `EditorSpec` | `adapter/DomainModelAdapter.java` |
 | Serialización XMI intermedia | `intermediate/BlocklySpecXmiSerializer.java` |
 | Validación intermedia | `blocklyspec/BlocklyEditorSpecValidator.java` |
 | Generación Blockly | `generator/BlocklyCodeGenerator.xtend` |
@@ -65,7 +66,7 @@ Blockly:
 Ruta Ecore:
   EPackage -> EcoreAdapter -> EditorSpec
 
-Ruta textual auxiliar:
+Ruta DSL textual:
   DomainModel -> DomainModelAdapter -> EditorSpec
 ```
 
@@ -88,7 +89,7 @@ de generar HTML.
 | Feature múltiple única | Validación de duplicados. |
 | Atributo `iD` | Identidad para referencias y exportación XMI. |
 
-Las claves de anotación están en la [referencia Ecore](./ECORE_REFERENCE.md).
+Las claves de anotación están en el [mapeo de Ecore a Blockly](./ECORE_TO_BLOCKLY_MAPPING.md).
 
 ## GitHub Pages
 
@@ -103,4 +104,5 @@ Después del build de VitePress, el workflow copia:
 | Ruta | Propósito |
 | --- | --- |
 | `/update-site/` | Endpoint p2 para instalar el plugin. |
-| `/app_maker_ecore/` | Editor AppMaker generado para inspección en navegador. |
+| `/app_maker_ecore/` | Editor AppMaker generado desde Ecore anotado. |
+| `/app_maker_dsl/` | Editor AppMaker generado desde el DSL textual `.m2b`. |

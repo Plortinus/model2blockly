@@ -1,0 +1,16 @@
+[
+  {
+    "_type": "TaskBoard",
+    "_blockId": "sample_TaskBoard_1",
+    "name": "Sprint board",
+    "tasks": [
+      {
+        "_type": "Task",
+        "_blockId": "sample_Task_1",
+        "title": "Write docs",
+        "done": "false",
+        "priority": "medium"
+      }
+    ]
+  }
+]

@@ -19,7 +19,7 @@ valida y finalmente genera los archivos del editor Blockly.
 
 - [Guía rápida](GETTING_STARTED.md)
 - [Caso AppMaker](RUNNING_EXAMPLE.md)
-- [Referencia Ecore](ECORE_REFERENCE.md)
+- [Mapeo de Ecore a Blockly](ECORE_TO_BLOCKLY_MAPPING.md)
 - [Solución de problemas](TROUBLESHOOTING.md)
 
 La [vista general completa en inglés](../../README.md) mantiene los detalles técnicos del repositorio.

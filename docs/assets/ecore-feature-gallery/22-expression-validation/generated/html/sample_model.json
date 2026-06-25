@@ -1,0 +1,9 @@
+[
+  {
+    "_type": "Range",
+    "_blockId": "sample_Range_1",
+    "label": "Allowed range",
+    "min": "0",
+    "max": "10"
+  }
+]

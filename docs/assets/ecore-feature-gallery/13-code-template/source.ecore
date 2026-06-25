@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="codetemplate"
+    nsURI="https://plortinus.github.io/model2blockly/examples/codetemplate"
+    nsPrefix="codetemplate">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+  <eAnnotations source="code">
+    <details key="language" value="JavaScript"/>
+    <details key="fileExtension" value="js"/>
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="ApiCall">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="fetch(&quot;{{url}}&quot;, { method: &quot;{{method}}&quot; });"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="/api/tasks">
+      <eAnnotations source="ui">
+        <details key="label" value="URL"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="method"
+        eType="#//HttpMethod" defaultValueLiteral="GET">
+      <eAnnotations source="ui">
+        <details key="label" value="Method"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="HttpMethod">
+    <eLiterals name="GET" literal="GET"/>
+    <eLiterals name="POST" literal="POST"/>
+    <eLiterals name="PUT" literal="PUT"/>
+  </eClassifiers>
+
+</ecore:EPackage>

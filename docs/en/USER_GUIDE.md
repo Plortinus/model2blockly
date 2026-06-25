@@ -1,8 +1,8 @@
 # User Guide
 
-This guide follows the current implementation. The recommended route starts
-from an annotated Ecore metamodel. The Xtext syntax remains available for
-`.m2b` and `.model2blockly` files, but it is an auxiliary route.
+This guide follows the current dual-input implementation. Model2Blockly can
+generate from annotated `.ecore` metamodels or from `.m2b` textual DSL files.
+The longer `.model2blockly` extension remains as a legacy alias.
 
 ## Install the Eclipse Plugin
 

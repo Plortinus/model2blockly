@@ -1,0 +1,12 @@
+[
+  {
+    "_type": "Dashboard",
+    "_blockId": "sample_Dashboard_1",
+    "title": "Metrics"
+  },
+  {
+    "_type": "Chart",
+    "_blockId": "sample_Chart_1",
+    "series": "revenue"
+  }
+]

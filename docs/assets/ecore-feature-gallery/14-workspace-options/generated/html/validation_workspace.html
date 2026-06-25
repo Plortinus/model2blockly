@@ -1,0 +1,1560 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workspaceoptions Visual Validation Workspace</title>
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+  <style>
+  :root {
+    color-scheme: light;
+    --bg: #f5f7fb;
+    --surface: #ffffff;
+    --surface-alt: #fbfcff;
+    --line: #d9e0ea;
+    --text: #1f2937;
+    --muted: #667085;
+    --accent: #0f766e;
+    --accent-soft: #d9f2ee;
+    --logic: #4f46e5;
+    --warning: #a16207;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  .topbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 18px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow {
+    margin-bottom: 4px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+  h1,
+  h2 {
+    margin: 0;
+    letter-spacing: 0;
+  }
+  h1 {
+    font-size: 24px;
+    line-height: 1.2;
+  }
+  h2 {
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  .meta {
+    flex: 0 0 auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface-alt);
+    padding: 8px 12px;
+    color: var(--muted);
+    font-weight: 650;
+  }
+  .top-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  button {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    padding: 8px 10px;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  button:hover,
+  button:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .layout {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    min-height: 0;
+  }
+  .workspace-shell {
+    min-width: 0;
+    padding: 16px;
+  }
+  #validationBlockly {
+    width: 100%;
+    height: calc(100vh - 115px);
+    min-height: 560px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .side-panel {
+    border-left: 1px solid var(--line);
+    background: var(--surface-alt);
+    padding: 18px;
+    overflow: auto;
+  }
+  .side-panel section + section {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .rule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .rule-item {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    padding: 10px;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .rule-item:hover,
+  .rule-item:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .rule-name {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .rule-meta {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .empty-state {
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+    padding: 12px;
+    color: var(--muted);
+    background: var(--surface);
+  }
+  .block-type-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .block-type-list li {
+    border-left: 3px solid var(--logic);
+    padding: 4px 0 4px 10px;
+  }
+  .export-preview,
+  .source-preview {
+    max-height: 280px;
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    padding: 10px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 12px;
+  }
+  @media (max-width: 900px) {
+    .topbar {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    #validationBlockly {
+      height: 62vh;
+      min-height: 420px;
+    }
+    .side-panel {
+      border-top: 1px solid var(--line);
+      border-left: 0;
+    }
+  }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">Visual validation</div>
+      <h1>Workspaceoptions Visual Validation Workspace</h1>
+    </div>
+    <div class="top-actions">
+      <button id="copyJson" type="button">Copy JSON</button>
+      <button id="importJson" type="button">Import JSON</button>
+      <button id="downloadJson" type="button">Download JSON</button>
+      <button id="downloadWorkspace" type="button">Download Workspace</button>
+      <button id="downloadRuntime" type="button">Download Runtime</button>
+      <button id="downloadSource" type="button">Download Source Snippets</button>
+      <button id="resetWorkspace" type="button">Reset</button>
+      <input id="importJsonFile" type="file" accept="application/json,.json" hidden>
+      <div class="meta" id="ruleCount">0 rules</div>
+    </div>
+  </header>
+  <main class="layout">
+    <section class="workspace-shell" aria-label="Validation Blockly workspace">
+      <div id="validationBlockly"></div>
+    </section>
+    <aside class="side-panel">
+      <section>
+        <h2>Rules</h2>
+        <div id="ruleList" class="rule-list"></div>
+      </section>
+      <section>
+        <h2>Domain Accessors</h2>
+        <ul id="blockTypeList" class="block-type-list"></ul>
+      </section>
+      <section>
+        <h2>Export Preview</h2>
+        <pre id="exportPreview" class="export-preview"></pre>
+      </section>
+      <section>
+        <h2>Source Snippets</h2>
+        <pre id="sourcePreview" class="source-preview"></pre>
+      </section>
+    </aside>
+  </main>
+  <script>
+const VALIDATION_BLOCK_MODEL = JSON.parse("{\n  \"format\": \"model2blockly.validationBlocks.v1\",\n  \"domain\": \"Workspaceoptions\",\n  \"customBlockTypes\": [\n    { \"type\": \"validation_rule\", \"label\": \"Validation rule wrapper\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"wrapper\", \"expressionTemplate\": \"\" } },\n    { \"type\": \"validation_required_field\", \"label\": \"Validation rule: required field/reference\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"requiredField\", \"expressionTemplate\": \"has(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_statement_cardinality\", \"label\": \"Validation rule: statement input cardinality\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"statementCardinality\", \"expressionTemplate\": \"inputCount(\\\"${INPUT}\\\") within ${MIN}..${MAX}\" } },\n    { \"type\": \"validation_field_cardinality\", \"label\": \"Validation rule: multi-valued field/reference cardinality\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"fieldCardinality\", \"expressionTemplate\": \"fieldCount(\\\"${FIELD}\\\") within ${MIN}..${MAX}\" } },\n    { \"type\": \"validation_expression_rule\", \"label\": \"Validation rule: custom semantic expression\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"semanticExpression\", \"expressionTemplate\": \"${EXPRESSION}\" } },\n    { \"type\": \"validation_field_exists\", \"label\": \"Domain accessor: field/reference has a value\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"expressionNode\", \"expressionTemplate\": \"has(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_field_value\", \"label\": \"Domain accessor: field/reference value as text\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"expressionNode\", \"expressionTemplate\": \"value(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_field_number\", \"label\": \"Domain accessor: field value as number\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"expressionNode\", \"expressionTemplate\": \"number(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_field_count\", \"label\": \"Domain accessor: multi-valued field/reference count\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"expressionNode\", \"expressionTemplate\": \"fieldCount(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_field_unique\", \"label\": \"Domain accessor: multi-valued field/reference values are unique\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"fieldUnique\", \"expressionTemplate\": \"fieldUnique(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_type_field_unique\", \"label\": \"Domain accessor: field values are unique across a block type\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"typeFieldUnique\", \"expressionTemplate\": \"typeFieldUnique(\\\"${TYPE}\\\", \\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_input_count\", \"label\": \"Domain accessor: statement input child count\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"expressionNode\", \"expressionTemplate\": \"inputCount(\\\"${INPUT}\\\")\" } },\n    { \"type\": \"validation_previous_block_is\", \"label\": \"Domain accessor: previous block type\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"previousBlockIs\", \"expressionTemplate\": \"previousBlockIs(\\\"${TYPE}\\\")\" } }\n  ],\n  \"blockDefinitions\": [\n    {\n      \"type\": \"validation_rule\",\n      \"message0\": \"rule %1\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"NAME\", \"text\": \"validation\"}],\n      \"message1\": \"target %1 type %2\",\n      \"args1\": [\n        {\"type\": \"field_input\", \"name\": \"TARGET\", \"text\": \"-\"},\n        {\"type\": \"field_input\", \"name\": \"VALIDATION_TYPE\", \"text\": \"-\"}\n      ],\n      \"message2\": \"message %1\",\n      \"args2\": [{\"type\": \"field_input\", \"name\": \"MESSAGE\", \"text\": \"\"}],\n      \"message3\": \"condition %1\",\n      \"args3\": [{\"type\": \"input_value\", \"name\": \"CONDITION\", \"check\": \"Boolean\"}],\n      \"colour\": 20,\n      \"tooltip\": \"Generated validation rule\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_required_field\",\n      \"message0\": \"%1.%2 is required\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}\n      ],\n      \"message1\": \"kind %1\",\n      \"args1\": [{\"type\": \"field_input\", \"name\": \"FIELD_KIND\", \"text\": \"field\"}],\n      \"output\": \"Boolean\",\n      \"colour\": 145,\n      \"tooltip\": \"Checks that a required field or reference has a value\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_statement_cardinality\",\n      \"message0\": \"%1.%2 children count\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"INPUT\", \"text\": \"children\"}\n      ],\n      \"message1\": \"min %1 max %2\",\n      \"args1\": [\n        {\"type\": \"field_input\", \"name\": \"MIN\", \"text\": \"0\"},\n        {\"type\": \"field_input\", \"name\": \"MAX\", \"text\": \"unbounded\"}\n      ],\n      \"output\": \"Boolean\",\n      \"colour\": 260,\n      \"tooltip\": \"Checks the number of child blocks in a statement input\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_cardinality\",\n      \"message0\": \"%1.%2 value count\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}\n      ],\n      \"message1\": \"kind %1 min %2 max %3\",\n      \"args1\": [\n        {\"type\": \"field_input\", \"name\": \"FIELD_KIND\", \"text\": \"field\"},\n        {\"type\": \"field_input\", \"name\": \"MIN\", \"text\": \"0\"},\n        {\"type\": \"field_input\", \"name\": \"MAX\", \"text\": \"unbounded\"}\n      ],\n      \"output\": \"Boolean\",\n      \"colour\": 260,\n      \"tooltip\": \"Checks the number of values in a multi-valued field or reference\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_expression_rule\",\n      \"message0\": \"%1 expression %2\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"EXPRESSION\", \"text\": \"true\"}\n      ],\n      \"message1\": \"expanded %1\",\n      \"args1\": [{\"type\": \"input_value\", \"name\": \"CONDITION\", \"check\": \"Boolean\"}],\n      \"output\": \"Boolean\",\n      \"colour\": 0,\n      \"tooltip\": \"Semantic expression validation, optionally expanded into lower-level blocks\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_exists\",\n      \"message0\": \"field %1 exists\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}],\n      \"output\": \"Boolean\",\n      \"colour\": 145,\n      \"tooltip\": \"Checks whether a field or reference has a value\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_value\",\n      \"message0\": \"field %1 text\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}],\n      \"output\": \"String\",\n      \"colour\": 160,\n      \"tooltip\": \"Reads a field value as text\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_number\",\n      \"message0\": \"field %1 number\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}],\n      \"output\": \"Number\",\n      \"colour\": 230,\n      \"tooltip\": \"Reads a field value as a number\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_count\",\n      \"message0\": \"field %1 count\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}],\n      \"output\": \"Number\",\n      \"colour\": 260,\n      \"tooltip\": \"Counts values in a multi-valued field or reference\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_unique\",\n      \"message0\": \"%1.%2 values unique\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}\n      ],\n      \"message1\": \"kind %1\",\n      \"args1\": [{\"type\": \"field_input\", \"name\": \"FIELD_KIND\", \"text\": \"field\"}],\n      \"output\": \"Boolean\",\n      \"colour\": 145,\n      \"tooltip\": \"Checks that values inside a multi-valued field or reference are unique\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_type_field_unique\",\n      \"message0\": \"all %1 field %2 unique\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}\n      ],\n      \"output\": \"Boolean\",\n      \"colour\": 145,\n      \"tooltip\": \"Checks that field values are unique across all blocks of a type\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_input_count\",\n      \"message0\": \"input %1 count\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"INPUT\", \"text\": \"children\"}],\n      \"output\": \"Number\",\n      \"colour\": 260,\n      \"tooltip\": \"Counts child blocks in a statement input\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_previous_block_is\",\n      \"message0\": \"%1 previous block is %2\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TARGET\", \"text\": \"target\"},\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"}\n      ],\n      \"output\": \"Boolean\",\n      \"colour\": 35,\n      \"tooltip\": \"Checks the previous connected block type\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_custom\",\n      \"message0\": \"custom check %1\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"VALUE\", \"text\": \"\"}],\n      \"output\": \"Boolean\",\n      \"colour\": 0,\n      \"tooltip\": \"Custom validation check\",\n      \"helpUrl\": \"\"\n    }\n  ],\n  \"rules\": [\n    {\n      \"name\": \"Board_name_required\",\n      \"validationType\": \"REQUIRED\",\n      \"targetType\": \"Board\",\n      \"message\": \"Board.name is required.\",\n      \"blockTree\": {\n        \"type\": \"validation_rule\",\n        \"fields\": {\n          \"NAME\": \"Board_name_required\",\n          \"TARGET\": \"Board\",\n          \"VALIDATION_TYPE\": \"REQUIRED\",\n          \"MESSAGE\": \"Board.name is required.\"\n        },\n        \"inputs\": {\n          \"CONDITION\": {\n            \"type\": \"validation_required_field\",\n            \"fields\": {\n              \"TYPE\": \"Board\",\n              \"FIELD\": \"name\",\n              \"FIELD_KIND\": \"attribute\"\n            }\n          }\n        }\n      },\n      \"expandedExpression\": {\n        \"type\": \"validation_field_exists\",\n        \"fields\": { \"FIELD\": \"name\" }\n      },\n      \"generator\": {\n        \"format\": \"model2blockly.validationGenerator.v1\",\n        \"source\": \"visualBlock\",\n        \"blockType\": \"validation_required_field\",\n        \"runtimeCheck\": \"requiredField\",\n        \"runtimeExpression\": \"has(\\\"name\\\")\",\n        \"parameters\": {\n          \"TYPE\": \"Board\",\n          \"FIELD\": \"name\",\n          \"FIELD_KIND\": \"attribute\"\n        }\n      }\n    }\n  ]\n}\n");
+(function() {
+  const FALLBACK_BUILTIN_BLOCKS = [
+    {
+      "type": "logic_compare",
+      "message0": "%1 %2 %3",
+      "args0": [
+        {"type": "input_value", "name": "A"},
+        {"type": "field_dropdown", "name": "OP", "options": [["=", "EQ"], ["!=", "NEQ"], ["<", "LT"], ["<=", "LTE"], [">", "GT"], [">=", "GTE"]]},
+        {"type": "input_value", "name": "B"}
+      ],
+      "inputsInline": true,
+      "output": "Boolean",
+      "colour": 210,
+      "tooltip": "Compare two validation values",
+      "helpUrl": ""
+    },
+    {
+      "type": "logic_operation",
+      "message0": "%1 %2 %3",
+      "args0": [
+        {"type": "input_value", "name": "A", "check": "Boolean"},
+        {"type": "field_dropdown", "name": "OP", "options": [["and", "AND"], ["or", "OR"]]},
+        {"type": "input_value", "name": "B", "check": "Boolean"}
+      ],
+      "inputsInline": true,
+      "output": "Boolean",
+      "colour": 210,
+      "tooltip": "Combine validation checks",
+      "helpUrl": ""
+    },
+    {
+      "type": "logic_negate",
+      "message0": "not %1",
+      "args0": [{"type": "input_value", "name": "BOOL", "check": "Boolean"}],
+      "output": "Boolean",
+      "colour": 210,
+      "tooltip": "Negate a validation check",
+      "helpUrl": ""
+    },
+    {
+      "type": "logic_boolean",
+      "message0": "%1",
+      "args0": [{"type": "field_dropdown", "name": "BOOL", "options": [["true", "TRUE"], ["false", "FALSE"]]}],
+      "output": "Boolean",
+      "colour": 210,
+      "tooltip": "Boolean value",
+      "helpUrl": ""
+    },
+    {
+      "type": "math_number",
+      "message0": "%1",
+      "args0": [{"type": "field_number", "name": "NUM", "value": 0}],
+      "output": "Number",
+      "colour": 230,
+      "tooltip": "Number value",
+      "helpUrl": ""
+    },
+    {
+      "type": "text",
+      "message0": "%1",
+      "args0": [{"type": "field_input", "name": "TEXT", "text": ""}],
+      "output": "String",
+      "colour": 160,
+      "tooltip": "Text value",
+      "helpUrl": ""
+    }
+  ];
+
+  const VALIDATION_ACCESSOR_BLOCKS = [
+    {
+      "type": "validation_rule",
+      "message0": "rule %1",
+      "args0": [{"type": "field_input", "name": "NAME", "text": "validation"}],
+      "message1": "target %1 type %2",
+      "args1": [
+        {"type": "field_input", "name": "TARGET", "text": "-"},
+        {"type": "field_input", "name": "VALIDATION_TYPE", "text": "-"}
+      ],
+      "message2": "message %1",
+      "args2": [{"type": "field_input", "name": "MESSAGE", "text": ""}],
+      "message3": "condition %1",
+      "args3": [{"type": "input_value", "name": "CONDITION", "check": "Boolean"}],
+      "colour": 20,
+      "tooltip": "Generated validation rule",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_required_field",
+      "message0": "%1.%2 is required",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "message1": "kind %1",
+      "args1": [{"type": "field_input", "name": "FIELD_KIND", "text": "field"}],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks that a required field or reference has a value",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_statement_cardinality",
+      "message0": "%1.%2 children count",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "INPUT", "text": "children"}
+      ],
+      "message1": "min %1 max %2",
+      "args1": [
+        {"type": "field_input", "name": "MIN", "text": "0"},
+        {"type": "field_input", "name": "MAX", "text": "unbounded"}
+      ],
+      "output": "Boolean",
+      "colour": 260,
+      "tooltip": "Checks the number of child blocks in a statement input",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_cardinality",
+      "message0": "%1.%2 value count",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "message1": "kind %1 min %2 max %3",
+      "args1": [
+        {"type": "field_input", "name": "FIELD_KIND", "text": "field"},
+        {"type": "field_input", "name": "MIN", "text": "0"},
+        {"type": "field_input", "name": "MAX", "text": "unbounded"}
+      ],
+      "output": "Boolean",
+      "colour": 260,
+      "tooltip": "Checks the number of values in a multi-valued field or reference",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_expression_rule",
+      "message0": "%1 expression %2",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "EXPRESSION", "text": "true"}
+      ],
+      "message1": "expanded %1",
+      "args1": [{"type": "input_value", "name": "CONDITION", "check": "Boolean"}],
+      "output": "Boolean",
+      "colour": 0,
+      "tooltip": "Semantic expression validation, optionally expanded into lower-level blocks",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_exists",
+      "message0": "field %1 exists",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks whether a field or reference has a value",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_value",
+      "message0": "field %1 text",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "String",
+      "colour": 160,
+      "tooltip": "Reads a field value as text",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_number",
+      "message0": "field %1 number",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "Number",
+      "colour": 230,
+      "tooltip": "Reads a field value as a number",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_count",
+      "message0": "field %1 count",
+      "args0": [{"type": "field_input", "name": "FIELD", "text": "field"}],
+      "output": "Number",
+      "colour": 260,
+      "tooltip": "Counts values in a multi-valued field or reference",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_field_unique",
+      "message0": "%1.%2 values unique",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "message1": "kind %1",
+      "args1": [{"type": "field_input", "name": "FIELD_KIND", "text": "field"}],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks that values inside a multi-valued field or reference are unique",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_type_field_unique",
+      "message0": "all %1 field %2 unique",
+      "args0": [
+        {"type": "field_input", "name": "TYPE", "text": "Type"},
+        {"type": "field_input", "name": "FIELD", "text": "field"}
+      ],
+      "output": "Boolean",
+      "colour": 145,
+      "tooltip": "Checks that field values are unique across all blocks of a type",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_input_count",
+      "message0": "input %1 count",
+      "args0": [{"type": "field_input", "name": "INPUT", "text": "children"}],
+      "output": "Number",
+      "colour": 260,
+      "tooltip": "Counts child blocks in a statement input",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_previous_block_is",
+      "message0": "%1 previous block is %2",
+      "args0": [
+        {"type": "field_input", "name": "TARGET", "text": "target"},
+        {"type": "field_input", "name": "TYPE", "text": "Type"}
+      ],
+      "output": "Boolean",
+      "colour": 35,
+      "tooltip": "Checks the previous connected block type",
+      "helpUrl": ""
+    },
+    {
+      "type": "validation_custom",
+      "message0": "custom check %1",
+      "args0": [{"type": "field_input", "name": "VALUE", "text": ""}],
+      "output": "Boolean",
+      "colour": 0,
+      "tooltip": "Custom validation check",
+      "helpUrl": ""
+    }
+  ];
+
+  const VALIDATION_TOOLBOX = {
+    "kind": "categoryToolbox",
+    "contents": [
+      {
+        "kind": "category",
+        "name": "Rules",
+        "colour": "20",
+        "contents": [
+          {"kind": "block", "type": "validation_rule"},
+          {"kind": "block", "type": "validation_required_field"},
+          {"kind": "block", "type": "validation_statement_cardinality"},
+          {"kind": "block", "type": "validation_field_cardinality"},
+          {"kind": "block", "type": "validation_expression_rule"},
+          {"kind": "block", "type": "validation_field_unique"},
+          {"kind": "block", "type": "validation_type_field_unique"},
+          {"kind": "block", "type": "validation_previous_block_is"}
+        ]
+      },
+      {
+        "kind": "category",
+        "name": "Logic",
+        "colour": "210",
+        "contents": [
+          {"kind": "block", "type": "logic_compare"},
+          {"kind": "block", "type": "logic_operation"},
+          {"kind": "block", "type": "logic_negate"},
+          {"kind": "block", "type": "logic_boolean"}
+        ]
+      },
+      {
+        "kind": "category",
+        "name": "Accessors",
+        "colour": "145",
+        "contents": [
+          {"kind": "block", "type": "validation_field_exists"},
+          {"kind": "block", "type": "validation_field_value"},
+          {"kind": "block", "type": "validation_field_number"},
+          {"kind": "block", "type": "validation_field_count"},
+          {"kind": "block", "type": "validation_input_count"}
+        ]
+      },
+      {
+        "kind": "category",
+        "name": "Literals",
+        "colour": "230",
+        "contents": [
+          {"kind": "block", "type": "math_number"},
+          {"kind": "block", "type": "text"}
+        ]
+      }
+	    ]
+	  };
+
+	  let activeValidationBlockModel = VALIDATION_BLOCK_MODEL;
+
+	  function boot() {
+	    if (!window.Blockly) {
+	      showError("Blockly library failed to load.");
+	      return;
+	    }
+
+	    defineMissingJsonBlocks(FALLBACK_BUILTIN_BLOCKS);
+	    defineMissingJsonBlocks(validationBlockDefinitions(VALIDATION_BLOCK_MODEL));
+	    defineUnknownModelBlocks(VALIDATION_BLOCK_MODEL);
+
+    const workspace = Blockly.inject("validationBlockly", {
+      toolbox: VALIDATION_TOOLBOX,
+      readOnly: false,
+      scrollbars: true,
+      trashcan: true,
+      zoom: {
+        controls: true,
+        wheel: true,
+        startScale: 0.88,
+        maxScale: 1.4,
+        minScale: 0.35,
+        scaleSpeed: 1.1
+      },
+      move: {
+        scrollbars: true,
+        drag: true,
+        wheel: true
+      }
+    });
+
+    loadValidationBlockModel(workspace, VALIDATION_BLOCK_MODEL);
+    renderRuleList(workspace);
+    renderBlockTypes();
+    updateRuleCount(workspace);
+    updateExportPreview(workspace);
+    bindActions(workspace);
+    workspace.addChangeListener(function(event) {
+      if (event && event.isUiEvent) return;
+      renderRuleList(workspace);
+      updateRuleCount(workspace);
+      updateExportPreview(workspace);
+      scheduleNotifyParentValidationModel(workspace);
+    });
+    notifyParentValidationModel(workspace);
+    resizeWorkspace(workspace);
+    window.addEventListener("resize", function() {
+      resizeWorkspace(workspace);
+    });
+  }
+
+  function defineMissingJsonBlocks(definitions) {
+    const missing = definitions.filter(function(definition) {
+      return !Blockly.Blocks[definition.type];
+    });
+    if (missing.length > 0) {
+      Blockly.defineBlocksWithJsonArray(missing);
+    }
+  }
+
+  function validationBlockDefinitions(model) {
+    const sourceModel = model || activeValidationBlockModel || VALIDATION_BLOCK_MODEL;
+    const definitions = Array.isArray(sourceModel.blockDefinitions) && sourceModel.blockDefinitions.length > 0
+      ? sourceModel.blockDefinitions
+      : (Array.isArray(VALIDATION_BLOCK_MODEL.blockDefinitions) && VALIDATION_BLOCK_MODEL.blockDefinitions.length > 0
+        ? VALIDATION_BLOCK_MODEL.blockDefinitions
+        : VALIDATION_ACCESSOR_BLOCKS);
+    return definitions.map(cloneJsonObject);
+  }
+
+  function cloneJsonObject(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function defineUnknownModelBlocks(model) {
+    const types = new Set();
+    ((model || VALIDATION_BLOCK_MODEL).rules || []).forEach(function(rule) {
+      collectBlockTypes(rule.blockTree, types);
+    });
+    types.forEach(function(type) {
+      if (!type || Blockly.Blocks[type]) return;
+      Blockly.Blocks[type] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField(type)
+            .appendField(new Blockly.FieldTextInput(""), "VALUE");
+          this.setOutput(true, null);
+          this.setColour(0);
+          this.setTooltip("Custom validation block");
+        }
+      };
+    });
+  }
+
+  function collectBlockTypes(node, types) {
+    if (!node || !node.type) return;
+    types.add(node.type);
+    Object.keys(node.inputs || {}).forEach(function(inputName) {
+      collectBlockTypes(node.inputs[inputName], types);
+    });
+  }
+
+  function loadValidationBlockModel(workspace, model) {
+    const sourceModel = model || VALIDATION_BLOCK_MODEL;
+    activeValidationBlockModel = sourceModel;
+    defineMissingJsonBlocks(validationBlockDefinitions(sourceModel));
+    defineUnknownModelBlocks(sourceModel);
+    const state = workspaceStateFromModel(sourceModel);
+    if (state && loadBlocklyWorkspaceState(workspace, state)) {
+      return true;
+    }
+    workspace.clear();
+    loadValidationRules(workspace, sourceModel);
+    return true;
+  }
+
+  function workspaceStateFromModel(model) {
+    if (!model || typeof model !== "object") return null;
+    if (model.workspaceState) return model.workspaceState;
+    if (model.blocks || model.variables || model.procedures || model.workspaceComments) return model;
+    return null;
+  }
+
+  function loadBlocklyWorkspaceState(workspace, state) {
+    if (!Blockly.serialization || !Blockly.serialization.workspaces || !Blockly.serialization.workspaces.load) {
+      return false;
+    }
+    try {
+      workspace.clear();
+      Blockly.serialization.workspaces.load(state, workspace, { recordUndo: false });
+      return true;
+    } catch (error) {
+      console.warn("Could not load Blockly workspace state; falling back to validation block tree.", error);
+      workspace.clear();
+      return false;
+    }
+  }
+
+  function loadValidationRules(workspace, model) {
+    const sourceModel = model || VALIDATION_BLOCK_MODEL;
+    const xml = createXmlElement("xml");
+    const ids = [];
+    (sourceModel.rules || []).forEach(function(rule, index) {
+      if (!rule.blockTree) return;
+      const block = blockToDom(rule.blockTree);
+      const id = "validation_rule_" + index;
+      block.setAttribute("id", id);
+      block.setAttribute("x", "24");
+      block.setAttribute("y", String(24 + index * 220));
+      xml.appendChild(block);
+      ids.push(id);
+    });
+    if (ids.length > 0) {
+      Blockly.Xml.domToWorkspace(xml, workspace);
+      if (workspace.cleanUp) workspace.cleanUp();
+    }
+    return ids;
+  }
+
+  function blockToDom(node) {
+    const block = createXmlElement("block");
+    block.setAttribute("type", node.type || "validation_custom");
+    Object.keys(node.fields || {}).forEach(function(fieldName) {
+      const field = createXmlElement("field");
+      field.setAttribute("name", fieldName);
+      field.textContent = node.fields[fieldName] == null ? "" : String(node.fields[fieldName]);
+      block.appendChild(field);
+    });
+    Object.keys(node.inputs || {}).forEach(function(inputName) {
+      const child = node.inputs[inputName];
+      if (!child) return;
+      const value = createXmlElement("value");
+      value.setAttribute("name", inputName);
+      value.appendChild(blockToDom(child));
+      block.appendChild(value);
+    });
+    return block;
+  }
+
+  function createXmlElement(name) {
+    if (Blockly.utils && Blockly.utils.xml && Blockly.utils.xml.createElement) {
+      return Blockly.utils.xml.createElement(name);
+    }
+    return document.createElement(name);
+  }
+
+  function currentValidationRuleBlocks(workspace) {
+    return workspace.getTopBlocks(true).filter(function(block) {
+      return block.type === "validation_rule";
+    });
+  }
+
+  function workspaceToValidationBlockModel(workspace) {
+    const sourceModel = activeValidationBlockModel || VALIDATION_BLOCK_MODEL;
+    const rules = currentValidationRuleBlocks(workspace).map(function(block) {
+      return ruleBlockToModel(block);
+    });
+    return {
+      format: sourceModel.format || VALIDATION_BLOCK_MODEL.format || "model2blockly.validationBlocks.v1",
+      domain: sourceModel.domain || VALIDATION_BLOCK_MODEL.domain || "domain",
+      customBlockTypes: sourceModel.customBlockTypes || VALIDATION_BLOCK_MODEL.customBlockTypes || [],
+      blockDefinitions: validationBlockDefinitions(sourceModel),
+      workspaceState: blocklyWorkspaceState(workspace),
+      rules: rules
+    };
+  }
+
+  function blocklyWorkspaceState(workspace) {
+    if (Blockly.serialization && Blockly.serialization.workspaces && Blockly.serialization.workspaces.save) {
+      return Blockly.serialization.workspaces.save(workspace);
+    }
+    return null;
+  }
+
+  function validationWorkspaceStateJson(workspace) {
+    const state = blocklyWorkspaceState(workspace);
+    return JSON.stringify(state || {}, null, 2);
+  }
+
+  function ruleBlockToModel(block) {
+    const blockTree = blockToModelNode(block);
+    const condition = blockTree.inputs ? blockTree.inputs.CONDITION : null;
+    return {
+      name: fieldValue(block, "NAME") || "validation",
+      validationType: fieldValue(block, "VALIDATION_TYPE"),
+      targetType: fieldValue(block, "TARGET"),
+      message: fieldValue(block, "MESSAGE"),
+      blockTree: blockTree,
+      generator: ruleGenerator(condition)
+    };
+  }
+
+  function ruleGenerator(condition) {
+    return {
+      format: "model2blockly.validationGenerator.v1",
+      source: "workspace",
+      blockType: condition && condition.type ? condition.type : "",
+      runtimeCheck: runtimeCheckForBlockType(condition && condition.type),
+      runtimeExpression: blockTreeToRuntimeExpression(condition),
+      parameters: condition && condition.fields ? condition.fields : {}
+    };
+  }
+
+  function blockToModelNode(block) {
+    const node = { type: block.type };
+    const fields = {};
+    const inputs = {};
+    block.inputList.forEach(function(input) {
+      input.fieldRow.forEach(function(field) {
+        if (!field.name) return;
+        const value = block.getFieldValue(field.name);
+        if (value !== null && value !== undefined) fields[field.name] = String(value);
+      });
+      if (!input.name || !input.connection) return;
+      const child = input.connection.targetBlock();
+      if (child) inputs[input.name] = blockToModelNode(child);
+    });
+    if (Object.keys(fields).length > 0) node.fields = fields;
+    if (Object.keys(inputs).length > 0) node.inputs = inputs;
+    return node;
+  }
+
+  function fieldValue(block, name) {
+    const value = block && block.getFieldValue ? block.getFieldValue(name) : "";
+    return value === null || value === undefined ? "" : String(value);
+  }
+
+  function blockTreeToRuntimeExpression(node) {
+    if (!node || !node.type) return "";
+    const fields = node.fields || {};
+    const inputs = node.inputs || {};
+    switch (node.type) {
+      case "validation_rule":
+        return blockTreeToRuntimeExpression(inputs.CONDITION);
+      case "validation_required_field":
+        return "has(" + quoteExpressionString(fields.FIELD) + ")";
+      case "validation_statement_cardinality":
+        return rangeExpression("inputCount(" + quoteExpressionString(fields.INPUT) + ")", fields.MIN, fields.MAX);
+      case "validation_field_cardinality":
+        return rangeExpression("fieldCount(" + quoteExpressionString(fields.FIELD) + ")", fields.MIN, fields.MAX);
+      case "validation_expression_rule":
+        return blockTreeToRuntimeExpression(inputs.CONDITION) || String(fields.EXPRESSION || "");
+      case "validation_field_exists":
+        return "has(" + quoteExpressionString(fields.FIELD) + ")";
+      case "validation_field_value":
+        return "value(" + quoteExpressionString(fields.FIELD) + ")";
+      case "validation_field_number":
+        return "number(" + quoteExpressionString(fields.FIELD) + ")";
+      case "validation_field_count":
+        return "fieldCount(" + quoteExpressionString(fields.FIELD) + ")";
+      case "validation_field_unique":
+        return "fieldUnique(" + quoteExpressionString(fields.FIELD) + ")";
+      case "validation_type_field_unique":
+        return "typeFieldUnique(" + quoteExpressionString(fields.TYPE) + ", " + quoteExpressionString(fields.FIELD) + ")";
+      case "validation_input_count":
+        return "inputCount(" + quoteExpressionString(fields.INPUT) + ")";
+      case "validation_previous_block_is":
+        return "previousBlockIs(" + quoteExpressionString(fields.TYPE) + ")";
+      case "logic_compare":
+        return joinCompareExpression(blockTreeToRuntimeExpression(inputs.A), fields.OP, blockTreeToRuntimeExpression(inputs.B));
+      case "logic_operation":
+        return joinLogicExpression(blockTreeToRuntimeExpression(inputs.A), fields.OP, blockTreeToRuntimeExpression(inputs.B));
+      case "logic_negate":
+        return "!(" + (blockTreeToRuntimeExpression(inputs.BOOL) || "false") + ")";
+      case "logic_boolean":
+        return fields.BOOL === "FALSE" ? "false" : "true";
+      case "math_number":
+        return normalizedNumber(fields.NUM);
+      case "text":
+        return quoteExpressionString(fields.TEXT);
+      default:
+        return String(fields.VALUE || fields.EXPRESSION || "");
+    }
+  }
+
+  function runtimeCheckForBlockType(type) {
+    if (type === "validation_required_field") return "requiredField";
+    if (type === "validation_statement_cardinality") return "statementCardinality";
+    if (type === "validation_field_cardinality") return "fieldCardinality";
+    if (type === "validation_field_unique") return "fieldUnique";
+    if (type === "validation_type_field_unique") return "typeFieldUnique";
+    if (type === "validation_previous_block_is") return "previousBlockIs";
+    if (type === "validation_expression_rule") return "semanticExpression";
+    if (type) return "expressionNode";
+    return "custom";
+  }
+
+  function joinCompareExpression(left, operator, right) {
+    return (left || "undefined") + " " + compareOperator(operator) + " " + (right || "undefined");
+  }
+
+  function joinLogicExpression(left, operator, right) {
+    const op = operator === "OR" ? "||" : "&&";
+    return "(" + (left || "true") + ") " + op + " (" + (right || "true") + ")";
+  }
+
+  function compareOperator(operator) {
+    if (operator === "NEQ") return "!==";
+    if (operator === "GTE") return ">=";
+    if (operator === "LTE") return "<=";
+    if (operator === "GT") return ">";
+    if (operator === "LT") return "<";
+    return "===";
+  }
+
+  function rangeExpression(accessor, min, max) {
+    const lower = positiveBound(min) ? accessor + " >= " + Number(min) : "";
+    const upper = finiteUpperBound(max) ? accessor + " <= " + Number(max) : "";
+    if (lower && upper) return lower + " && " + upper;
+    if (lower) return lower;
+    if (upper) return upper;
+    return "true";
+  }
+
+  function positiveBound(value) {
+    const parsed = Number(value || 0);
+    return Number.isFinite(parsed) && parsed > 0;
+  }
+
+  function finiteUpperBound(value) {
+    if (value === null || value === undefined || String(value).trim() === "") return false;
+    if (String(value).toLowerCase() === "unbounded") return false;
+    const parsed = Number(value);
+    return Number.isFinite(parsed) && parsed > 0;
+  }
+
+  function normalizedNumber(value) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? String(parsed) : "0";
+  }
+
+  function quoteExpressionString(value) {
+    return JSON.stringify(value === null || value === undefined ? "" : String(value));
+  }
+
+  function generateValidationRuntimeRules(model = VALIDATION_BLOCK_MODEL) {
+    const rules = (model && Array.isArray(model.rules)) ? model.rules : [];
+    return rules.map(function(rule) {
+      const runtimeExpression = ruleRuntimeExpression(rule);
+      return {
+        name: rule && rule.name ? rule.name : "validation",
+        validationType: rule && rule.validationType ? rule.validationType : "",
+        targetType: rule && rule.targetType ? rule.targetType : "",
+        message: rule && rule.message ? rule.message : "",
+        runtimeCheck: runtimeCheckForRule(rule),
+        runtimeExpression: runtimeExpression,
+        runtimeFunctionBody: runtimeExpressionToFunctionBody(runtimeExpression)
+      };
+    });
+  }
+
+  function compileValidationBlockModel(model = VALIDATION_BLOCK_MODEL) {
+    return generateValidationRuntimeRules(model);
+  }
+
+  function runtimeExpressionToFunctionBody(expression) {
+    const text = String(expression || "").trim();
+    return text ? "return Boolean(" + text + ");" : "return true;";
+  }
+
+  function createValidationAccessors(block, workspace) {
+    function value(name) {
+      const raw = block && block.getFieldValue ? block.getFieldValue(name) : "";
+      if (raw === null || raw === undefined) return "";
+      return String(raw).trim();
+    }
+    function number(name) {
+      const parsed = Number(value(name));
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+    function fieldCount(name) {
+      return fieldValuesFromRaw(value(name)).length;
+    }
+    function inputCount(name) {
+      let count = 0;
+      let child = block && block.getInputTargetBlock ? block.getInputTargetBlock(name) : null;
+      while (child) {
+        count += 1;
+        child = child.getNextBlock ? child.getNextBlock() : null;
+      }
+      return count;
+    }
+    function has(name) {
+      return fieldCount(name) > 0 && value(name) !== "";
+    }
+    function includes(name, item) {
+      return fieldValuesFromRaw(value(name)).includes(String(item));
+    }
+    function fieldUnique(name) {
+      return duplicateValues(fieldValuesFromRaw(value(name))).length === 0;
+    }
+    function typeFieldUnique(type, name) {
+      if (!workspace || !workspace.getAllBlocks || !block) return true;
+      const current = value(name);
+      if (!current) return true;
+      let count = 0;
+      workspace.getAllBlocks(false).forEach(function(candidate) {
+        if (!candidate || candidate.type !== type || !candidate.getFieldValue) return;
+        const raw = candidate.getFieldValue(name);
+        const candidateValue = raw === null || raw === undefined ? "" : String(raw).trim();
+        if (candidateValue === current) count += 1;
+      });
+      return count <= 1;
+    }
+    function previousBlockIs(type) {
+      const previous = block && block.getPreviousBlock ? block.getPreviousBlock() : null;
+      return Boolean(previous && previous.type === type);
+    }
+    return {
+      value: value,
+      number: number,
+      has: has,
+      includes: includes,
+      fieldCount: fieldCount,
+      inputCount: inputCount,
+      fieldUnique: fieldUnique,
+      typeFieldUnique: typeFieldUnique,
+      previousBlockIs: previousBlockIs,
+      size: fieldCount
+    };
+  }
+
+  function evaluateRuntimeExpression(block, workspace, expression) {
+    const text = String(expression || "").trim();
+    if (!text) return { ok: true };
+    const accessors = createValidationAccessors(block, workspace);
+    try {
+      const fn = new Function(
+        "value",
+        "number",
+        "has",
+        "includes",
+        "fieldCount",
+        "inputCount",
+        "fieldUnique",
+        "typeFieldUnique",
+        "previousBlockIs",
+        "size",
+        "block",
+        "workspace",
+        "return Boolean(" + text + ");"
+      );
+      return {
+        ok: Boolean(fn(
+          accessors.value,
+          accessors.number,
+          accessors.has,
+          accessors.includes,
+          accessors.fieldCount,
+          accessors.inputCount,
+          accessors.fieldUnique,
+          accessors.typeFieldUnique,
+          accessors.previousBlockIs,
+          accessors.size,
+          block,
+          workspace
+        ))
+      };
+    } catch (error) {
+      return { ok: false, error: error && error.message ? error.message : String(error) };
+    }
+  }
+
+  function ruleRuntimeExpression(rule) {
+    if (!rule) return "";
+    const fromTree = blockTreeToRuntimeExpression(rule.blockTree);
+    if (fromTree) return fromTree;
+    if (rule.generator && rule.generator.runtimeExpression) return rule.generator.runtimeExpression;
+    return rule.runtimeExpression || "";
+  }
+
+  function runtimeCheckForRule(rule) {
+    if (rule && rule.generator && rule.generator.runtimeCheck) return rule.generator.runtimeCheck;
+    const root = rule && rule.blockTree ? rule.blockTree : null;
+    const condition = root && root.type === "validation_rule" && root.inputs ? root.inputs.CONDITION : root;
+    return runtimeCheckForBlockType(condition && condition.type);
+  }
+
+  function fieldValuesFromRaw(raw) {
+    if (raw === null || raw === undefined || raw === "") return [];
+    return String(raw)
+      .split(/[,\n]/)
+      .map(function(part) { return part.trim(); })
+      .filter(function(part) { return part.length > 0; });
+  }
+
+  function duplicateValues(values) {
+    const seen = new Set();
+    const duplicates = new Set();
+    values.forEach(function(value) {
+      if (seen.has(value)) duplicates.add(value);
+      seen.add(value);
+    });
+    return Array.from(duplicates);
+  }
+
+  function validationRuntimeJs(workspace) {
+    const modelJson = JSON.stringify(workspaceToValidationBlockModel(workspace), null, 2);
+    const runtimeFunctions = [
+      generateValidationRuntimeRules,
+      compileValidationBlockModel,
+      blockTreeToRuntimeExpression,
+      runtimeExpressionToFunctionBody,
+      createValidationAccessors,
+      evaluateRuntimeExpression,
+      ruleRuntimeExpression,
+      runtimeCheckForRule,
+      runtimeCheckForBlockType,
+      joinCompareExpression,
+      joinLogicExpression,
+      compareOperator,
+      rangeExpression,
+      positiveBound,
+      finiteUpperBound,
+      normalizedNumber,
+      quoteExpressionString,
+      fieldValuesFromRaw,
+      duplicateValues
+    ].map(function(fn) { return fn.toString(); }).join("\n\n");
+    return [
+      "// Validation block runtime generated from validation_workspace.html.",
+      "(function(root) {",
+      "  const VALIDATION_BLOCK_MODEL = " + modelJson.replace(/\n/g, "\n  ") + ";",
+      "",
+      indentRuntimeSource(runtimeFunctions, "  "),
+      "",
+      "  const api = {",
+      "    VALIDATION_BLOCK_MODEL: VALIDATION_BLOCK_MODEL,",
+      "    blockTreeToRuntimeExpression: blockTreeToRuntimeExpression,",
+      "    compileValidationBlockModel: compileValidationBlockModel,",
+      "    createValidationAccessors: createValidationAccessors,",
+      "    evaluateRuntimeExpression: evaluateRuntimeExpression,",
+      "    generateValidationRuntimeRules: generateValidationRuntimeRules,",
+      "    runtimeExpressionToFunctionBody: runtimeExpressionToFunctionBody",
+      "  };",
+      "",
+      "  root.BLOCKLY_VALIDATION_BLOCK_MODEL = VALIDATION_BLOCK_MODEL;",
+      "  root.Model2BlocklyValidationRuntime = api;",
+      "  if (typeof module !== \"undefined\" && module.exports) module.exports = api;",
+      "})(typeof window !== \"undefined\" ? window : globalThis);",
+      ""
+    ].join("\n");
+  }
+
+  function indentRuntimeSource(text, prefix) {
+    return String(text || "").split("\n").map(function(line) {
+      return line ? prefix + line : line;
+    }).join("\n");
+  }
+
+  function validationJson(workspace) {
+    return JSON.stringify(workspaceToValidationBlockModel(workspace), null, 2);
+  }
+
+  function validationSourceSnippets(workspace) {
+    const model = workspaceToValidationBlockModel(workspace);
+    const ecore = [];
+    const dsl = [];
+    (model.rules || []).forEach(function(rule) {
+      appendRuleSourceSnippets(rule, ecore, dsl);
+    });
+    if (!ecore.length) ecore.push("No Ecore snippets can be derived from the current validation blocks.");
+    if (!dsl.length) dsl.push("No Model2Blockly snippets can be derived from the current validation blocks.");
+    return [
+      "Validation source snippets for " + (model.domain || "domain"),
+      "",
+      "=== Ecore ===",
+      ecore.join("\n\n"),
+      "",
+      "=== Model2Blockly Source ===",
+      dsl.join("\n\n"),
+      "",
+      "=== Notes ===",
+      "- These snippets are generated from the current validation Blockly workspace.",
+      "- Browser pages cannot directly rewrite local .m2b, .model2blockly, or .ecore files.",
+      "- Use ValidationPatchMain or the Eclipse `Apply Validation Blocks to Source` command to write validation_blocks.edited.json back to source.",
+      "- Comments mark source edits that must be applied to existing attributes, references, or DSL features."
+    ].join("\n");
+  }
+
+  function appendRuleSourceSnippets(rule, ecore, dsl) {
+    if (!rule) return;
+    const condition = ruleCondition(rule);
+    const params = ruleParameters(rule, condition);
+    const name = sourceRuleName(rule);
+    const target = firstText(rule.targetType, params.TARGET, params.TYPE, blockTreeField(rule.blockTree, "TARGET"));
+    const validationType = firstText(rule.validationType, blockTreeField(rule.blockTree, "VALIDATION_TYPE")).toUpperCase();
+
+    if (validationType === "MUST_FOLLOW" || (condition && condition.type === "validation_previous_block_is")) {
+      const predecessor = firstText(params.TYPE, params.PREDECESSOR);
+      if (target && predecessor) {
+        ecore.push(ecoreAnnotationSnippet(target, [{ key: "mustFollow", value: predecessor }]));
+        dsl.push("constraint " + name + " on " + target + " : must follow " + predecessor);
+      }
+      return;
+    }
+
+    if (validationType === "REQUIRED" || (condition && condition.type === "validation_required_field")) {
+      const owner = firstText(target, params.TYPE);
+      const field = params.FIELD || "";
+      const kind = params.FIELD_KIND || "feature";
+      if (owner && field) {
+        ecore.push("<!-- Set lowerBound=\"1\" on " + kind + " " + owner + "." + field + " -->");
+        dsl.push("// Add `required` to " + owner + "." + field + " in the DSL " + kind + " declaration.");
+      }
+      return;
+    }
+
+    if (validationType === "CARDINALITY" || (condition && condition.type === "validation_statement_cardinality")) {
+      const owner = firstText(target, params.TYPE);
+      const input = params.INPUT || "";
+      if (owner && input) {
+        ecore.push("<!-- Set lowerBound=\"" + sourceBound(params.MIN, "0") + "\" and upperBound=\"" + ecoreUpperBound(params.MAX) + "\" on containment reference " + owner + "." + input + " -->");
+        dsl.push("// Update containment " + owner + "." + input + " as: contains <ContainedType> " + input + " [" + sourceBound(params.MIN, "0") + ".." + dslUpperBound(params.MAX) + "]");
+      }
+      return;
+    }
+
+    if (validationType === "FIELD_CARDINALITY" || (condition && condition.type === "validation_field_cardinality")) {
+      const owner = firstText(target, params.TYPE);
+      const field = params.FIELD || "";
+      const kind = params.FIELD_KIND || "feature";
+      if (owner && field) {
+        ecore.push("<!-- Set lowerBound=\"" + sourceBound(params.MIN, "0") + "\" and upperBound=\"" + ecoreUpperBound(params.MAX) + "\" on " + kind + " " + owner + "." + field + " -->");
+        dsl.push("// Update " + owner + "." + field + " as: attribute/reference <Type> " + field + " [" + sourceBound(params.MIN, "0") + ".." + dslUpperBound(params.MAX) + "]");
+      }
+      return;
+    }
+
+    if (validationType === "UNIQUE" || (condition && (condition.type === "validation_field_unique" || condition.type === "validation_type_field_unique"))) {
+      const owner = firstText(target, params.TYPE);
+      const field = params.FIELD || "";
+      if (owner && field) {
+        if (condition && condition.type === "validation_type_field_unique") {
+          ecore.push("<!-- Mark " + owner + "." + field + " as an ID attribute, or keep this as a validation annotation if it is semantic uniqueness. -->");
+        } else {
+          ecore.push("<!-- Set unique=\"true\" on multi-valued feature " + owner + "." + field + " -->");
+        }
+        dsl.push(condition && condition.type === "validation_type_field_unique"
+          ? "// Add `modelId unique` to " + owner + "." + field + "."
+          : "// Add `unique` to " + owner + "." + field + ".");
+      }
+      return;
+    }
+
+    const runtimeExpression = firstText(rule.runtimeExpression, rule.generator && rule.generator.runtimeExpression, blockTreeToRuntimeExpression(condition));
+    if (validationType === "EXPRESSION" || runtimeExpression) {
+      if (target && runtimeExpression) {
+        const details = [
+          { key: "expression." + name, value: runtimeExpression }
+        ];
+        if (rule.message) details.push({ key: "message." + name, value: rule.message });
+        ecore.push(ecoreAnnotationSnippet(target, details));
+        dsl.push("validation " + dslValidationName(name, target) + " on " + target
+          + " : expression " + quoteExpressionString(runtimeExpression)
+          + (rule.message ? " errorMessage " + quoteExpressionString(rule.message) : ""));
+      }
+    }
+  }
+
+  function ruleCondition(rule) {
+    const tree = rule && rule.blockTree ? rule.blockTree : null;
+    if (tree && tree.type === "validation_rule" && tree.inputs) return tree.inputs.CONDITION || null;
+    return tree;
+  }
+
+  function ruleParameters(rule, condition) {
+    const params = {};
+    Object.assign(params, rule && rule.generator && rule.generator.parameters ? rule.generator.parameters : {});
+    Object.assign(params, condition && condition.fields ? condition.fields : {});
+    return params;
+  }
+
+  function blockTreeField(node, name) {
+    return node && node.fields ? node.fields[name] : "";
+  }
+
+  function sourceRuleName(rule) {
+    return String((rule && rule.name) || "validation").replace(/[^A-Za-z0-9_]/g, "_") || "validation";
+  }
+
+  function firstText() {
+    for (let i = 0; i < arguments.length; i++) {
+      const value = arguments[i];
+      if (value !== null && value !== undefined && String(value).trim() !== "") return String(value).trim();
+    }
+    return "";
+  }
+
+  function sourceBound(value, fallback) {
+    const text = firstText(value, fallback);
+    return text.toLowerCase() === "unbounded" ? "-1" : text;
+  }
+
+  function ecoreUpperBound(value) {
+    const text = firstText(value, "-1");
+    return text.toLowerCase() === "unbounded" ? "-1" : text;
+  }
+
+  function dslUpperBound(value) {
+    const text = firstText(value, "0");
+    if (text === "-1" || text === "0" || text.toLowerCase() === "unbounded" || text === "*") return "0";
+    return text;
+  }
+
+  function dslValidationName(name, target) {
+    const raw = firstText(name, "validation");
+    const prefix = target ? target + "_" : "";
+    const trimmed = prefix && raw.indexOf(prefix) === 0 ? raw.substring(prefix.length) : raw;
+    return trimmed.replace(/[^A-Za-z0-9_]/g, "_") || "validation";
+  }
+
+  function ecoreAnnotationSnippet(targetType, details) {
+    const lines = [
+      "<!-- Paste inside EClass " + xmlText(targetType) + " -->",
+      "<eAnnotations source=\"validation\">"
+    ];
+    details.forEach(function(detail) {
+      lines.push("  <details key=\"" + xmlAttribute(detail.key) + "\" value=\"" + xmlAttribute(detail.value) + "\"/>");
+    });
+    lines.push("</eAnnotations>");
+    return lines.join("\n");
+  }
+
+  function xmlText(value) {
+    return String(value == null ? "" : value).replace(/[<>&]/g, function(ch) {
+      return ch === "<" ? "&lt;" : ch === ">" ? "&gt;" : "&amp;";
+    });
+  }
+
+  function xmlAttribute(value) {
+    return xmlText(value).replace(/"/g, "&quot;");
+  }
+
+  function updateExportPreview(workspace) {
+    const preview = document.getElementById("exportPreview");
+    if (preview) preview.textContent = validationJson(workspace);
+    const sourcePreview = document.getElementById("sourcePreview");
+    if (sourcePreview) sourcePreview.textContent = validationSourceSnippets(workspace);
+  }
+
+  function refreshValidationWorkspaceUi(workspace) {
+    renderRuleList(workspace);
+    updateRuleCount(workspace);
+    updateExportPreview(workspace);
+    scheduleNotifyParentValidationModel(workspace);
+  }
+
+  let notifyParentTimer = 0;
+
+  function scheduleNotifyParentValidationModel(workspace) {
+    window.clearTimeout(notifyParentTimer);
+    notifyParentTimer = window.setTimeout(function() {
+      notifyParentValidationModel(workspace);
+    }, 120);
+  }
+
+  function notifyParentValidationModel(workspace) {
+    if (!window.parent || window.parent === window) return;
+    try {
+      const model = workspaceToValidationBlockModel(workspace);
+      window.parent.postMessage({
+        type: "model2blockly.validationModelChanged",
+        model: model,
+        ruleCount: Array.isArray(model.rules) ? model.rules.length : 0
+      }, "*");
+    } catch (error) {
+      console.warn("Could not notify parent validation model.", error);
+    }
+  }
+
+  function importValidationJsonFile(workspace, input) {
+    const file = input.files && input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function() {
+      try {
+        const parsed = JSON.parse(String(reader.result || "{}"));
+        loadValidationBlockModel(workspace, parsed);
+        refreshValidationWorkspaceUi(workspace);
+      } catch (error) {
+        window.alert("Could not import validation JSON: " + (error && error.message ? error.message : error));
+      } finally {
+        input.value = "";
+      }
+    };
+    reader.onerror = function() {
+      window.alert("Could not read validation JSON file.");
+      input.value = "";
+    };
+    reader.readAsText(file);
+  }
+
+  function bindActions(workspace) {
+    const copyButton = document.getElementById("copyJson");
+    const importButton = document.getElementById("importJson");
+    const importInput = document.getElementById("importJsonFile");
+    const downloadButton = document.getElementById("downloadJson");
+    const workspaceButton = document.getElementById("downloadWorkspace");
+    const runtimeButton = document.getElementById("downloadRuntime");
+    const sourceButton = document.getElementById("downloadSource");
+    const resetButton = document.getElementById("resetWorkspace");
+    if (copyButton) {
+      copyButton.addEventListener("click", function() {
+        const json = validationJson(workspace);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(json).then(function() {
+            flashButton(copyButton, "Copied");
+          }).catch(function() {
+            window.prompt("Copy validation JSON", json);
+          });
+        } else {
+          window.prompt("Copy validation JSON", json);
+        }
+      });
+    }
+    if (downloadButton) {
+      downloadButton.addEventListener("click", function() {
+        downloadText("validation_blocks.edited.json", validationJson(workspace));
+      });
+    }
+    if (importButton && importInput) {
+      importButton.addEventListener("click", function() {
+        importInput.click();
+      });
+      importInput.addEventListener("change", function() {
+        importValidationJsonFile(workspace, importInput);
+      });
+    }
+    if (workspaceButton) {
+      workspaceButton.addEventListener("click", function() {
+        downloadText("validation_workspace.state.json", validationWorkspaceStateJson(workspace));
+      });
+    }
+    if (runtimeButton) {
+      runtimeButton.addEventListener("click", function() {
+        downloadText("validation_runtime.edited.js", validationRuntimeJs(workspace), "application/javascript;charset=utf-8");
+      });
+    }
+    if (sourceButton) {
+      sourceButton.addEventListener("click", function() {
+        downloadText("validation_source_snippets.txt", validationSourceSnippets(workspace), "text/plain;charset=utf-8");
+      });
+    }
+    if (resetButton) {
+      resetButton.addEventListener("click", function() {
+        loadValidationBlockModel(workspace, VALIDATION_BLOCK_MODEL);
+        refreshValidationWorkspaceUi(workspace);
+      });
+    }
+    window.workspaceToValidationBlockModel = function() {
+      return workspaceToValidationBlockModel(workspace);
+    };
+    window.loadValidationBlockModel = function(model) {
+      loadValidationBlockModel(workspace, model);
+      refreshValidationWorkspaceUi(workspace);
+    };
+    window.validationBlocksJson = function() {
+      return validationJson(workspace);
+    };
+    window.validationWorkspaceState = function() {
+      return blocklyWorkspaceState(workspace);
+    };
+    window.validationRuntimeJs = function() {
+      return validationRuntimeJs(workspace);
+    };
+    window.validationSourceSnippets = function() {
+      return validationSourceSnippets(workspace);
+    };
+  }
+
+  function downloadText(filename, text, mimeType) {
+    const blob = new Blob([text], { type: mimeType || "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  function flashButton(button, label) {
+    const original = button.textContent;
+    button.textContent = label;
+    window.setTimeout(function() {
+      button.textContent = original;
+    }, 1200);
+  }
+
+  function renderRuleList(workspace) {
+    const container = document.getElementById("ruleList");
+    container.textContent = "";
+    const ruleBlocks = currentValidationRuleBlocks(workspace);
+    if (ruleBlocks.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "empty-state";
+      empty.textContent = "No validation rules were generated.";
+      container.appendChild(empty);
+      return;
+    }
+    ruleBlocks.forEach(function(block) {
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = "rule-item";
+      item.dataset.blockId = block.id || "";
+
+      const name = document.createElement("span");
+      name.className = "rule-name";
+      name.textContent = fieldValue(block, "NAME") || "validation";
+      item.appendChild(name);
+
+      const meta = document.createElement("span");
+      meta.className = "rule-meta";
+      meta.textContent = [fieldValue(block, "TARGET") || "-", fieldValue(block, "VALIDATION_TYPE") || "-"].join(" / ");
+      item.appendChild(meta);
+
+      item.addEventListener("click", function() {
+        const blockId = item.dataset.blockId;
+        if (!blockId || !workspace.getBlockById(blockId)) return;
+        if (workspace.centerOnBlock) workspace.centerOnBlock(blockId);
+      });
+      container.appendChild(item);
+    });
+  }
+
+  function renderBlockTypes() {
+    const list = document.getElementById("blockTypeList");
+    list.textContent = "";
+    const sourceModel = activeValidationBlockModel || VALIDATION_BLOCK_MODEL;
+    const customBlockTypes = sourceModel.customBlockTypes || VALIDATION_BLOCK_MODEL.customBlockTypes || [];
+    customBlockTypes.forEach(function(blockType) {
+      const item = document.createElement("li");
+      const code = document.createElement("code");
+      code.textContent = blockType.type || "validation_block";
+      item.appendChild(code);
+      if (blockType.label) {
+        item.appendChild(document.createTextNode(" - " + blockType.label));
+      }
+      list.appendChild(item);
+    });
+  }
+
+  function updateRuleCount(workspace) {
+    const count = currentValidationRuleBlocks(workspace).length;
+    const suffix = count === 1 ? " rule" : " rules";
+    document.getElementById("ruleCount").textContent = count + suffix;
+  }
+
+  function resizeWorkspace(workspace) {
+    if (Blockly.svgResize) Blockly.svgResize(workspace);
+    if (workspace.resize) workspace.resize();
+  }
+
+  function showError(message) {
+    const container = document.getElementById("validationBlockly");
+    container.textContent = message;
+    container.className = "empty-state";
+  }
+
+  boot();
+})();
+  </script>
+</body>
+</html>

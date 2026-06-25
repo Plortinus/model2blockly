@@ -1,25 +1,24 @@
 # Architecture
 
-Model2Blockly is organized around one documented model-driven route:
-annotated Ecore to an EMF intermediate model to static Blockly output.
-
-The project still contains an Xtext grammar and a textual syntax, but that
-layer is auxiliary. It is useful for compact examples and compatibility, not
-the main AppMaker route.
+Model2Blockly is organized as a dual-input MDE toolchain. Annotated Ecore
+metamodels and `.m2b` textual DSL models are both transformed into the same
+EMF `EditorSpec` intermediate model, then the Xtend generator produces static
+Blockly output.
 
 ## Runtime Flow
 
 ```text
-annotated .ecore
-  -> EMF ResourceSet
-  -> EPackage
-  -> EcoreAdapter
-  -> EditorSpec EMF model
-  -> BlocklySpecXmiSerializer
-  -> intermediate/*_blocklyspec.xmi
-  -> XMI reload and diagnostics
-  -> BlocklyCodeGenerator
-  -> HTML/JavaScript artifacts
+annotated .ecore                    .m2b textual DSL
+  -> EPackage                         -> DomainModel
+  -> EcoreAdapter                     -> DomainModelAdapter
+          \                           /
+           \                         /
+            -> EditorSpec EMF model
+            -> BlocklySpecXmiSerializer
+            -> intermediate/*_blocklyspec.xmi
+            -> XMI reload and diagnostics
+            -> BlocklyCodeGenerator
+            -> HTML/JavaScript artifacts
 ```
 
 ![Model2Blockly generation flow](../assets/diagrams/generation-flow.svg)
@@ -102,7 +101,7 @@ The Ecore adapter infers useful Blockly structure without annotations:
 | `iD` attribute / `eIDAttribute` | Default identity field for references and XMI export. |
 
 Annotations refine that inferred result. The supported keys are documented in
-the [Ecore annotation reference](./ECORE_REFERENCE.md).
+the [Ecore to Blockly mapping](./ECORE_TO_BLOCKLY_MAPPING.md).
 
 ## Output Artifacts
 
@@ -125,7 +124,8 @@ The workflow still copies functional artifacts after the VitePress build:
 | Path | Purpose |
 | --- | --- |
 | `/update-site/` | Eclipse update-site endpoint used by plugin installation. |
-| `/app_maker_ecore/` | Generated AppMaker HTML editor for browser inspection. |
+| `/app_maker_ecore/` | AppMaker editor generated from annotated Ecore. |
+| `/app_maker_dsl/` | AppMaker editor generated from the `.m2b` textual DSL. |
 
 Those paths are not separate documentation systems; they are generated/runtime
 artifacts exposed next to the VitePress docs.

@@ -1,7 +1,8 @@
 # Guía de uso
 
-La ruta recomendada parte de un metamodelo Ecore anotado. La sintaxis Xtext
-para `.m2b` y `.model2blockly` sigue existiendo, pero es una ruta auxiliar.
+Model2Blockly puede generar desde metamodelos `.ecore` anotados o desde
+modelos textuales `.m2b`. La extensión larga `.model2blockly` se mantiene como
+alias de compatibilidad.
 
 ## Instalar el plugin
 

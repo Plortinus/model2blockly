@@ -17,6 +17,7 @@ const options = {
 
 const defaultTargets = [
   'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore',
+  'io.github.plortinus.model2blockly/examples/generated/app_maker_dsl',
 ];
 
 const positional = [];
@@ -221,15 +222,20 @@ async function testTarget(browser, baseUrl, target, opts) {
     const previewButton = page.getByRole('button', { name: 'Preview', exact: true });
     if (await previewButton.count()) {
       await previewButton.click();
-      await page.waitForFunction(() => {
+      const strictPreview = target.name.includes('ecore');
+      await page.waitForFunction((strict) => {
         const preview = document.getElementById('previewView');
-        return Boolean(preview?.querySelector('.app-preview-page input'))
-          && Boolean(preview?.querySelector('.app-preview-button'))
-          && Boolean(preview?.querySelector('.app-preview-list'))
-          && Boolean(preview?.querySelector('select'))
-          && Boolean(preview?.querySelector('table'))
-          && Boolean(preview?.querySelector('dialog'));
-      }, null, { timeout: 10000 });
+        if (!preview) return false;
+        const basicPreview = Boolean(preview.querySelector('.app-preview-page'))
+          && Boolean(preview.querySelector('input, textarea'))
+          && Boolean(preview.querySelector('.app-preview-button, button'))
+          && Boolean(preview.querySelector('.app-preview-list'));
+        if (!basicPreview) return false;
+        if (!strict) return true;
+        return Boolean(preview.querySelector('select'))
+          && Boolean(preview.querySelector('table'))
+          && Boolean(preview.querySelector('dialog'));
+      }, strictPreview, { timeout: 10000 });
       result.preview = await page.evaluate(() => {
         const preview = document.getElementById('previewView');
         return {
@@ -281,9 +287,10 @@ async function testTarget(browser, baseUrl, target, opts) {
         const iframe = document.querySelector('#validationBlocksView iframe');
         return iframe?.contentWindow?.validationSourceSnippets?.() || '';
       });
+      const expectedMustFollow = target.name.includes('ecore') ? 'must follow Alert' : 'must follow TextLabel';
       if (!sourceSnippets.includes('=== Ecore ===')
         || !sourceSnippets.includes('=== Model2Blockly Source ===')
-        || !sourceSnippets.includes('must follow Alert')
+        || !sourceSnippets.includes(expectedMustFollow)
         || !sourceSnippets.includes('<eAnnotations source="validation">')) {
         throw new Error('Validation source snippets were not generated as expected.');
       }

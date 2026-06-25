@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="valueinput"
+    nsURI="https://plortinus.github.io/model2blockly/examples/valueinput"
+    nsPrefix="valueinput">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="TextLabel">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="Components"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="content"
+        lowerBound="1" eType="#//TextExpression" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="shadow" value="TextLiteral"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="Text"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TextExpression" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="true"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TextLiteral" eSuperTypes="#//TextExpression">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="true"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="content"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Hello"/>
+  </eClassifiers>
+
+</ecore:EPackage>

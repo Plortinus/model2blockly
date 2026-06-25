@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ecore to Blockly Report</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --text: #1f252d;
+  --muted: #5f6875;
+  --border: #d9dee5;
+  --header: #eef2f6;
+  --accent: #245a9c;
+  --ok: #176b42;
+  --warn: #8a5a00;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px 56px;
+}
+h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.2; }
+h2 {
+  margin: 30px 0 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  font-size: 19px;
+}
+.lead { max-width: 840px; color: var(--muted); margin: 4px 0; }
+.callout {
+  margin: 18px 0 22px;
+  padding: 14px 16px;
+  border: 1px solid #b9c7d8;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: #f2f6fb;
+}
+.callout h2 {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  font-size: 17px;
+}
+.callout ol { margin: 8px 0 0 22px; padding: 0; }
+.callout li { margin: 4px 0; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 20px 0 8px;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value {
+  margin-top: 4px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.table-wrap {
+  overflow-x: auto;
+  margin: 12px 0 22px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+table { width: 100%; border-collapse: collapse; min-width: 680px; }
+th, td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  vertical-align: top;
+  text-align: left;
+}
+th:last-child, td:last-child { border-right: 0; }
+tr:last-child td { border-bottom: 0; }
+th { background: var(--header); font-weight: 650; }
+.badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #eef1f4;
+  color: #223142;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ok { color: var(--ok); }
+.warn { color: var(--warn); }
+a { color: var(--accent); font-weight: 650; text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #eef1f4;
+  color: #173b63;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+.validation-preview-list {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 22px;
+}
+.validation-preview {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.validation-preview summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  background: var(--header);
+  font-weight: 650;
+}
+.validation-tree { padding: 10px 12px 14px; }
+.validation-node {
+  max-width: 760px;
+  margin: 6px 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+.validation-node-meta {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.validation-children {
+  margin-left: 18px;
+  padding-left: 12px;
+  border-left: 2px solid var(--border);
+}
+.validation-edge {
+  margin: 8px 0 2px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+</style>
+</head>
+<body>
+<main>
+<h1>Ecore to Blockly Report</h1>
+<p class="lead">Concise generation report for the Ecore input path.</p>
+<section class="stats">
+<div class="stat"><div class="label">Input</div><div class="value">../docs/assets/ecore-feature-gallery/17-class-presentation/source.ecore</div></div>
+<div class="stat"><div class="label">EPackage</div><div class="value">classpresentation</div></div>
+<div class="stat"><div class="label">Blocks</div><div class="value">1</div></div>
+<div class="stat"><div class="label">Categories</div><div class="value">1</div></div>
+<div class="stat"><div class="label">Validations</div><div class="value">0</div></div>
+<div class="stat"><div class="label">Target</div><div class="value">html</div></div>
+</section>
+<h2>Generation Pipeline</h2>
+<div class="table-wrap"><table><thead><tr><th>Step</th><th>Artifact</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>1. Source model</td><td>.ecore</td><td>The selected model is adapted into the shared generator-facing model.</td></tr>
+<tr><td>2. Intermediate EMF model</td><td>EditorSpec</td><td>Both the DSL and Ecore routes normalize into the same model shape.</td></tr>
+<tr><td>3. Intermediate XMI</td><td><a href="intermediate/Classpresentation_blocklyspec.xmi">intermediate/Classpresentation_blocklyspec.xmi</a></td><td>The generator writes this XMI, reloads it, and validates the reloaded model.</td></tr>
+<tr><td>4. Blockly editor</td><td>html/*</td><td>HTML, JavaScript, validation runtime and report files are emitted from the reloaded EditorSpec model.</td></tr>
+<tr><td>5. Domain instance model</td><td>*_model.xmi</td><td>The generated editor can export user-created blocks as EMF-style XMI in the source domain namespace.</td></tr>
+</tbody></table></div>
+<h2>Generation Quality Summary</h2>
+<div class="table-wrap"><table><thead><tr><th>Check</th><th>Status</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Editor generated</td><td>✅ Yes</td><td>A standalone Blockly editor is available from this report.</td></tr>
+<tr><td>Sample model generated</td><td>✅ Yes</td><td><code>sample_model.json</code> and the <code>Load Sample</code> button are available.</td></tr>
+<tr><td>Sample import support</td><td>✅ Available</td><td>The generated editor embeds the sample model and can load it without file selection.</td></tr>
+<tr><td>Domain instance XMI export</td><td>✅ Available</td><td>The generated editor can export created models as EMF-style XMI using EPackage nsURI/nsPrefix metadata.</td></tr>
+<tr><td>Generated validations</td><td>⚠️ None</td><td>No cardinality, required, uniqueness or expression validations were generated.</td></tr>
+<tr><td>Unsupported or partial Ecore constructs</td><td>✅ None detected</td><td>This input does not use the main constructs that remain partial or unsupported.</td></tr>
+<tr><td>EOperations</td><td>✅ None detected</td><td>No EOperations need a Blockly behavior mapping.</td></tr>
+<tr><td>Smoke test</td><td>▶ Optional</td><td>Run <code>node scripts/smoke-test-generated.mjs</code> from the repository root to load samples automatically in a browser.</td></tr>
+</tbody></table></div>
+<h2>Generated Output</h2>
+<div class="table-wrap"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><a href="html/Classpresentation_blocks.js">html/Classpresentation_blocks.js</a></td><td>✅ Blockly block definitions</td></tr>
+<tr><td><a href="html/Classpresentation_toolbox.js">html/Classpresentation_toolbox.js</a></td><td>✅ Classic HTML target artifact</td></tr>
+<tr><td><a href="html/Classpresentation_generators.js">html/Classpresentation_generators.js</a></td><td>✅ Classic HTML target artifact</td></tr>
+<tr><td><a href="html/Classpresentation_validations.js">html/Classpresentation_validations.js</a></td><td>✅ Validation logic</td></tr>
+<tr><td><a href="html/Classpresentation_editor.html">html/Classpresentation_editor.html</a></td><td>✅ Modular HTML editor</td></tr>
+<tr><td><a href="html/Classpresentation_standalone.html">html/Classpresentation_standalone.html</a></td><td>✅ Open this file to use the generated editor</td></tr>
+<tr><td><a href="html/validation_workspace.html">html/validation_workspace.html</a></td><td>✅ Editable Blockly validation workspace</td></tr>
+<tr><td><a href="html/validation_blocks.json">html/validation_blocks.json</a></td><td>✅ Visual validation block model</td></tr>
+<tr><td><a href="html/validation_runtime.js">html/validation_runtime.js</a></td><td>✅ Validation block expression runtime</td></tr>
+<tr><td><a href="html/sample_model.json">html/sample_model.json</a></td><td>✅ Example model for the Load Sample button and JSON import</td></tr>
+<tr><td><a href="intermediate/Classpresentation_blocklyspec.xmi">intermediate/Classpresentation_blocklyspec.xmi</a></td><td>✅ Formal EditorSpec EMF/XMI intermediate model reloaded before HTML generation</td></tr>
+<tr><td><a href="README.md">README.md</a></td><td>✅ Short instructions inside the output folder</td></tr>
+<tr><td><a href="generation_report.html">generation_report.html</a></td><td>✅ Concise human-readable report</td></tr>
+</tbody></table></div>
+<section class="callout">
+<h2>Recommended Next Steps for an Ecore Developer</h2>
+<ol>
+<li>Open the generated <code>*_standalone.html</code> file and create a small model.</li>
+<li>Check this report's EClass, EAttribute and EReference mappings.</li>
+<li>If the structure is correct but the blocks are hard to read, add only presentation annotations such as <code>source="blockly" message0</code>, <code>colour</code>, <code>category</code> or <code>tooltip</code>.</li>
+<li>If labels in reference dropdowns are not meaningful, add <code>source="ui" referenceLabelField=...</code>.</li>
+<li>Rerun the same Eclipse launch configuration and compare the new report.</li>
+</ol>
+</section>
+<h2>Metamodel to Blockly Mapping</h2>
+<div class="table-wrap"><table><thead><tr><th>EClass</th><th>Generated block</th><th>Role</th><th>Fields / references</th></tr></thead><tbody>
+<tr><td>Panel</td><td>✅ Panel</td><td>Statement block</td><td>✅ 2 fields, 0 containments, 0 references</td></tr>
+</tbody></table></div>
+<h2>Ecore Coverage Matrix</h2>
+<p class="lead">This matrix describes how the current generator treats common Ecore constructs. It separates automatic conversion, partial support and future extension points.</p>
+<div class="table-wrap"><table><thead><tr><th>Ecore construct</th><th>Current Blockly conversion</th><th>Status</th><th>How to extend</th></tr></thead><tbody>
+<tr><td><code>EPackage.name/nsURI/nsPrefix</code></td><td>Editor domain name and XML/XMI namespace metadata</td><td>✅ Implemented</td><td>Already handled in <code>EcoreAdapter.fromEPackage</code></td></tr>
+<tr><td><code>EPackage.eSubpackages</code></td><td>Classifiers are collected recursively, but the generated editor uses one flat domain namespace</td><td>⚠️ Partial</td><td>Add package-scoped category prefixes or multi-domain output</td></tr>
+<tr><td><code>EAnnotation source=&quot;blockly&quot;</code> on <code>EPackage</code></td><td>Workspace options such as <code>workspace.renderer</code>, <code>workspace.grid.*</code>, <code>workspace.zoom.*</code>, <code>workspace.toolboxType</code></td><td>✅ Implemented</td><td>Add keys in <code>convertWorkspaceOptions</code> and <code>EditorSpec</code></td></tr>
+<tr><td><code>EAnnotation source=&quot;code&quot;</code> / <code>source=&quot;runtime&quot;</code> on <code>EPackage</code></td><td>Code export metadata and optional runtime kind</td><td>✅ Implemented</td><td>Extend package annotation readers and the HTML generator</td></tr>
+<tr><td><code>EClass.name</code></td><td>Concrete class becomes a Blockly block type</td><td>✅ Implemented</td><td>Already handled in <code>convertEClass</code></td></tr>
+<tr><td><code>EClass.abstract</code> / <code>interface</code></td><td>Not shown as a toolbox block; used as abstract type/category information</td><td>✅ Implemented</td><td>Already filtered through <code>getConcreteBlockTypes</code></td></tr>
+<tr><td><code>EClass.eSuperTypes</code></td><td>Used for typed connections and subtype-compatible references; generic and multiple-inheritance details are simplified</td><td>⚠️ Partial</td><td>Store full supertype closure in the intermediate model</td></tr>
+<tr><td><code>EClass.eOperations</code></td><td>Not translated into Blockly behavior or action blocks</td><td>❌ Not implemented</td><td>Design an operation-to-block/runtime mapping before adding code</td></tr>
+<tr><td><code>EAttribute</code> with primitive <code>EDataType</code></td><td>Mapped to text, number or checkbox fields</td><td>✅ Implemented</td><td>Extend <code>convertEAttribute</code> for more data type mappings</td></tr>
+<tr><td>Custom <code>EDataType</code></td><td>Falls back to text input</td><td>⚠️ Partial</td><td>Use <code>instanceClassName</code> or annotation keys to select a Blockly field</td></tr>
+<tr><td><code>EAttribute : EEnum</code> and <code>EEnumLiteral</code></td><td>Generated as a dropdown field</td><td>✅ Implemented</td><td>Already uses literal labels and values</td></tr>
+<tr><td><code>EAttribute.iD</code> / <code>EClass.eIDAttribute</code></td><td>Generated as a normal field, used as <code>_modelId</code>, used as the default reference label and checked for uniqueness</td><td>✅ Implemented</td><td>Extend exported XML/XMI if external ID-based references are needed</td></tr>
+<tr><td><code>EStructuralFeature.defaultValueLiteral</code></td><td>Used as the Blockly field default value</td><td>✅ Implemented</td><td>Already handled in <code>convertEAttribute</code></td></tr>
+<tr><td><code>ETypedElement.lowerBound/upperBound</code></td><td>Generates required and cardinality warnings</td><td>✅ Implemented</td><td>Add stricter Blockly connection checks if warnings are not enough</td></tr>
+<tr><td>Multi-valued <code>EAttribute</code></td><td>Rendered as a dedicated multi-value field with cardinality and uniqueness warnings</td><td>✅ Implemented</td><td>Add typed item editors if a domain needs richer list editing</td></tr>
+<tr><td><code>EStructuralFeature.derived/transient/volatile/changeable=false</code></td><td>Skipped from editable Blockly fields</td><td>✅ Deliberate skip</td><td>Add read-only inspector support if derived values must be shown</td></tr>
+<tr><td><code>EStructuralFeature.unsettable</code></td><td>Unset/set state is not represented</td><td>❌ Not implemented</td><td>Add tri-state field metadata and export support</td></tr>
+<tr><td><code>ETypedElement.ordered/unique</code></td><td>Order is naturally preserved for statement stacks and list values; uniqueness warnings are generated for multi-valued fields/references</td><td>⚠️ Partial</td><td>Add hard constraints if warnings are not strict enough</td></tr>
+<tr><td>Containment <code>EReference</code></td><td>Generated as <code>input_statement</code> with child type checks</td><td>✅ Implemented</td><td>Use <code>source=&quot;blockly&quot; check=...</code> to override accepted child type</td></tr>
+<tr><td>Non-containment <code>EReference</code></td><td>Generated as dynamic reference dropdown or multiselect</td><td>✅ Implemented</td><td>Use <code>source=&quot;ui&quot; referenceLabelField=...</code> to improve labels</td></tr>
+<tr><td><code>EReference</code> annotated as <code>type=input_value</code></td><td>Generated as Blockly <code>input_value</code>, optionally with <code>check</code> and <code>shadow</code></td><td>✅ Implemented</td><td>Already handled in <code>convertEClass</code></td></tr>
+<tr><td><code>EReference.eOpposite</code> / <code>container</code></td><td>Opposite non-containment references are recorded and synchronized in the generated reference-field runtime; containment/container opposites are still simplified</td><td>⚠️ Partial</td><td>Extend the synchronizer if container references must be exposed as editable fields</td></tr>
+<tr><td><code>EReference.resolveProxies</code> / <code>eKeys</code></td><td>Not represented in the Blockly editor</td><td>❌ Not implemented</td><td>Define reference identity and proxy-loading semantics for browser runtime</td></tr>
+<tr><td><code>EGenericType</code> / <code>ETypeParameter</code></td><td>Only the erased <code>eType</code> is effectively used</td><td>⚠️ Partial</td><td>Represent generic bindings in <code>EditorSpec</code></td></tr>
+<tr><td><code>EValidator</code>, OCL and validation delegates</td><td><code>source=&quot;validation&quot;</code> expressions are generated as runtime checks; a small OCL invariant subset can be translated</td><td>⚠️ Partial</td><td>Extend the OCL translator or plug in a dedicated validation engine for full OCL/EValidator coverage</td></tr>
+</tbody></table></div>
+<h2>Recommended Improvements</h2>
+<p class="lead">These recommendations are generated from the Ecore model. They are not errors; they indicate where a metamodel developer may want to add optional annotations or custom extensions.</p>
+<div class="table-wrap"><table><thead><tr><th>Priority</th><th>Finding</th><th>Recommended action</th></tr></thead><tbody>
+<tr><td>-</td><td>No immediate recommendations</td><td>The generated editor can be reviewed directly in the standalone HTML file.</td></tr>
+</tbody></table></div>
+<h2>Customization Hints</h2>
+<p class="lead">Use this section when the generated editor works but you want a more specific Blockly presentation. Structural information should stay in Ecore; add only the annotation keys needed for the desired UI effect.</p>
+<div class="table-wrap"><table><thead><tr><th>Desired result</th><th>Where to add it</th><th>Annotation keys</th></tr></thead><tbody>
+<tr><td>Change block text</td><td>Panel</td><td><code>source=&quot;blockly&quot;</code>: <code>message0=&quot;Panel %1 ...&quot;</code></td></tr>
+<tr><td>Change colour / category / tooltip</td><td>Panel</td><td><code>source=&quot;blockly&quot;</code>: <code>colour=210</code>, <code>category=App/Screens</code>, <code>tooltip=...</code>, <code>helpUrl=...</code></td></tr>
+<tr><td>Show fields in one line</td><td>Panel</td><td><code>source=&quot;blockly&quot;</code>: <code>inputsInline=true</code></td></tr>
+<tr><td>Make this block an output/value block</td><td>Panel</td><td><code>source=&quot;blockly&quot;</code>: <code>output=true</code> or <code>output=TypeName</code></td></tr>
+<tr><td>Use a specialised Blockly field</td><td>Panel.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_colour</code>, <code>type=field_image</code>, or <code>type=field_label</code></td></tr>
+<tr><td>Configure image field</td><td>Panel.title</td><td><code>source=&quot;blockly&quot;</code>: <code>type=field_image</code>, <code>src=...</code>, <code>width=40</code>, <code>height=40</code>, <code>alt=...</code></td></tr>
+<tr><td>Limit number range</td><td>Panel.width</td><td><code>source=&quot;blockly&quot;</code>: <code>min=1</code>, <code>max=100</code></td></tr>
+<tr><td>Add ordering validation</td><td>EClass</td><td><code>source=&quot;validation&quot;</code>: <code>mustFollow=OtherBlockType</code></td></tr>
+<tr><td>Improve generated field presentation</td><td>EAttribute / EReference</td><td><code>source=&quot;ui&quot;</code>: <code>widget=slider</code>, <code>label=...</code>, <code>help=...</code>, <code>group=...</code>, <code>order=1</code>, <code>referenceLabelField=name</code></td></tr>
+</tbody></table></div>
+<h2>Validation Summary</h2>
+<div class="table-wrap"><table><thead><tr><th>Validation type</th><th>Count</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>-</td><td>⚠️ 0</td><td>No generated validation rules</td></tr>
+</tbody></table></div>
+<h2>Visual Validation Blocks</h2>
+<p class="lead">These rules are also serialized in <code>validation_blocks.json</code> with Blockly JSON block definitions and Blockly-like block trees. The model prefers high-level custom validation blocks and preserves lower-level Blockly expressions when useful.</p>
+<div class="table-wrap"><table><thead><tr><th>Rule</th><th>Target</th><th>Validation</th><th>Visual block root</th></tr></thead><tbody>
+<tr><td>-</td><td>-</td><td>⚠️ none</td><td>No visual validation block generated yet.</td></tr>
+</tbody></table></div>
+<h2>What To Check</h2>
+<div class="table-wrap"><table><thead><tr><th>Topic</th><th>Status</th></tr></thead><tbody>
+<tr><td>Skipped structural features</td><td>✅ None detected</td></tr>
+<tr><td>OCL / validation constraints</td><td>✅ No OCL or validation annotations detected</td></tr>
+<tr><td>EOperations</td><td>✅ No EOperations detected</td></tr>
+<tr><td>EOpposite</td><td>✅ No opposite references detected</td></tr>
+</tbody></table></div>
+</main>
+</body>
+</html>

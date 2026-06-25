@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Appmaker" nsURI="http://www.example.org/appmaker" nsPrefix="appmaker" toolboxType="categoryToolbox" codeLanguage="javascript" codeFileExtension="js" runtimeKind="appMaker">
+  <categories name="Pages" label="Pages" colour="260"/>
+  <categories name="Data" label="Data" colour="210"/>
+  <categories name="Components" label="Components" colour="160"/>
+  <categories name="Layout" label="Layout" colour="120"/>
+  <categories name="Actions" label="Actions" colour="20"/>
+  <categories name="Expressions" label="Expressions" colour="45"/>
+  <blockTypes typeName="App" label="App" colour="260" categoryName="Pages" connectionType="NONE" inputsInline="true" tooltip="Root low-code app model containing data sources and pages.">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>theme</orderedInputNames>
+    <orderedInputNames>dataSources</orderedInputNames>
+    <orderedInputNames>pages</orderedInputNames>
+    <fields name="name" defaultValue="Task Tracker" required="true" uiWidget="text" uiLabel="App name" uiGroup="App" uiOrder="1" uiVariant="default"/>
+    <fields name="theme" fieldType="DROPDOWN" defaultValue="light" uiWidget="text" uiLabel="Theme" uiGroup="App" uiOrder="2" uiVariant="default">
+      <options value="light" label="light"/>
+      <options value="dark" label="dark"/>
+      <options value="system" label="system"/>
+    </fields>
+    <statementInputs name="dataSources" checkType="DataSource" lowerBound="1" upperBound="20" uiWidget="text" uiLabel="Data sources" uiGroup="Data" uiOrder="3" uiVariant="default"/>
+    <statementInputs name="pages" checkType="Page" lowerBound="1" upperBound="20" uiWidget="text" uiLabel="Pages" uiGroup="Pages" uiOrder="4" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="DataSource" label="Data source" colour="210" categoryName="Data" connectionType="TYPED" connectionTypeName="DataSource" inputsInline="true" tooltip="HTTP data source that components and actions can reference." idFieldName="name">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>url</orderedInputNames>
+    <orderedInputNames>method</orderedInputNames>
+    <orderedInputNames>cacheEnabled</orderedInputNames>
+    <fields name="name" defaultValue="tasks" required="true" id="true" uiWidget="text" uiLabel="Name" uiGroup="Data" uiOrder="1" uiVariant="default"/>
+    <fields name="url" defaultValue="https://example.com/api/tasks" required="true" uiWidget="text" uiLabel="URL" uiGroup="Data" uiOrder="2" uiVariant="default"/>
+    <fields name="method" fieldType="DROPDOWN" defaultValue="get" uiWidget="text" uiLabel="Method" uiGroup="Data" uiOrder="3" uiVariant="default">
+      <options value="get" label="get"/>
+      <options value="post" label="post"/>
+      <options value="put" label="put"/>
+      <options value="delete" label="delete"/>
+    </fields>
+    <fields name="cacheEnabled" fieldType="BOOLEAN" defaultValue="true" uiWidget="checkbox" uiLabel="Cache" uiGroup="Data" uiOrder="4" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="Page" label="Page" colour="260" categoryName="Pages" connectionType="TYPED" connectionTypeName="Page" inputsInline="true" tooltip="A navigable page with design settings, components and optional lifecycle actions.">
+    <orderedInputNames>title</orderedInputNames>
+    <orderedInputNames>route</orderedInputNames>
+    <orderedInputNames>layout</orderedInputNames>
+    <orderedInputNames>navigationStyle</orderedInputNames>
+    <orderedInputNames>backgroundColor</orderedInputNames>
+    <orderedInputNames>scrollable</orderedInputNames>
+    <orderedInputNames>components</orderedInputNames>
+    <orderedInputNames>onEnter</orderedInputNames>
+    <fields name="title" defaultValue="Home" required="true" uiWidget="text" uiLabel="Title" uiGroup="Page" uiOrder="1" uiVariant="default"/>
+    <fields name="route" defaultValue="/home" required="true" uiWidget="text" uiLabel="Route" uiGroup="Page" uiOrder="2" uiVariant="default"/>
+    <fields name="layout" fieldType="DROPDOWN" defaultValue="column" uiWidget="text" uiLabel="Layout" uiGroup="Design" uiOrder="3" uiVariant="default">
+      <options value="column" label="column"/>
+      <options value="row" label="row"/>
+      <options value="grid" label="grid"/>
+      <options value="tabs" label="tabs"/>
+    </fields>
+    <fields name="navigationStyle" fieldType="DROPDOWN" defaultValue="standard" uiWidget="text" uiLabel="Navigation" uiGroup="Design" uiOrder="4" uiVariant="default">
+      <options value="standard" label="standard"/>
+      <options value="none" label="none"/>
+      <options value="bottomTabs" label="bottomTabs"/>
+      <options value="drawer" label="drawer"/>
+    </fields>
+    <fields name="backgroundColor" fieldType="COLOUR" defaultValue="#ffffff" uiWidget="color" uiLabel="Background" uiGroup="Design" uiOrder="5" uiVariant="default"/>
+    <fields name="scrollable" fieldType="BOOLEAN" defaultValue="true" uiWidget="checkbox" uiLabel="Scrollable" uiGroup="Design" uiOrder="6" uiVariant="default"/>
+    <statementInputs name="components" checkType="Component" lowerBound="1" upperBound="40" uiWidget="text" uiLabel="Components" uiGroup="Components" uiOrder="7" uiVariant="default"/>
+    <statementInputs name="onEnter" checkType="Action" upperBound="10" uiWidget="text" uiLabel="On enter" uiGroup="Actions" uiOrder="8" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="Component" label="Component" colour="160" categoryName="Components" abstract="true" connectionType="TYPED" connectionTypeName="Component" inputsInline="true" tooltip="Abstract base class for page components."/>
+  <blockTypes typeName="TextLabel" label="Text" colour="160" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="true" tooltip="Static or computed text component.">
+    <orderedInputNames>content</orderedInputNames>
+    <orderedInputNames>textStyle</orderedInputNames>
+    <orderedInputNames>alignment</orderedInputNames>
+    <fields name="textStyle" fieldType="DROPDOWN" defaultValue="body" uiWidget="text" uiLabel="Variant" uiGroup="Text" uiOrder="2" uiVariant="default">
+      <options value="title" label="title"/>
+      <options value="subtitle" label="subtitle"/>
+      <options value="body" label="body"/>
+      <options value="caption" label="caption"/>
+    </fields>
+    <fields name="alignment" fieldType="DROPDOWN" defaultValue="start" uiWidget="text" uiLabel="Align" uiGroup="Text" uiOrder="3" uiVariant="default">
+      <options value="start" label="start"/>
+      <options value="center" label="center"/>
+      <options value="end" label="end"/>
+    </fields>
+    <valueInputs name="content" checkType="TextExpression" shadowBlockType="TextLiteral" uiWidget="expression-slot" uiLabel="Text" uiGroup="Text" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="Button" label="Button" colour="160" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="true" tooltip="Button component with click actions.">
+    <orderedInputNames>labelText</orderedInputNames>
+    <orderedInputNames>style</orderedInputNames>
+    <orderedInputNames>onClick</orderedInputNames>
+    <fields name="labelText" defaultValue="Save" required="true" uiWidget="text" uiLabel="Label" uiGroup="Button" uiOrder="1" uiVariant="default"/>
+    <fields name="style" fieldType="DROPDOWN" defaultValue="primary" uiWidget="text" uiLabel="Style" uiGroup="Button" uiOrder="2" uiVariant="default">
+      <options value="primary" label="primary"/>
+      <options value="secondary" label="secondary"/>
+      <options value="danger" label="danger"/>
+      <options value="ghost" label="ghost"/>
+    </fields>
+    <statementInputs name="onClick" checkType="Action" upperBound="10" uiWidget="text" uiLabel="On click" uiGroup="Actions" uiOrder="3" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="TextInput" label="Text input" colour="160" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="true" tooltip="Text input field." idFieldName="name">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>labelText</orderedInputNames>
+    <orderedInputNames>hint</orderedInputNames>
+    <orderedInputNames>inputType</orderedInputNames>
+    <orderedInputNames>mandatory</orderedInputNames>
+    <fields name="name" defaultValue="taskTitle" required="true" id="true" uiWidget="text" uiLabel="Name" uiGroup="Input" uiOrder="1" uiVariant="default"/>
+    <fields name="labelText" defaultValue="Task title" required="true" uiWidget="text" uiLabel="Label" uiGroup="Input" uiOrder="2" uiVariant="default"/>
+    <fields name="hint" defaultValue="Write a task" required="true" uiWidget="text" uiLabel="Hint" uiGroup="Input" uiOrder="3" uiVariant="default"/>
+    <fields name="inputType" fieldType="DROPDOWN" defaultValue="plainText" uiWidget="text" uiLabel="Type" uiGroup="Input" uiOrder="4" uiVariant="default">
+      <options value="plainText" label="plainText"/>
+      <options value="email" label="email"/>
+      <options value="password" label="password"/>
+      <options value="numeric" label="numeric"/>
+    </fields>
+    <fields name="mandatory" fieldType="BOOLEAN" defaultValue="false" uiWidget="checkbox" uiLabel="Required" uiGroup="Input" uiOrder="5" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="ImageView" label="Image" colour="160" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="true" tooltip="Image component with URL expression.">
+    <orderedInputNames>url</orderedInputNames>
+    <orderedInputNames>altText</orderedInputNames>
+    <orderedInputNames>fit</orderedInputNames>
+    <fields name="altText" defaultValue="Image" required="true" uiWidget="text" uiLabel="Alt text" uiGroup="Image" uiOrder="2" uiVariant="default"/>
+    <fields name="fit" fieldType="DROPDOWN" defaultValue="cover" uiWidget="text" uiLabel="Fit" uiGroup="Image" uiOrder="3" uiVariant="default">
+      <options value="cover" label="cover"/>
+      <options value="contain" label="contain"/>
+      <options value="fill" label="fill"/>
+    </fields>
+    <valueInputs name="url" checkType="TextExpression" shadowBlockType="TextLiteral" uiWidget="expression-slot" uiLabel="URL" uiGroup="Image" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="ListView" label="List" colour="160" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="true" tooltip="List component fed by a data source.">
+    <orderedInputNames>source</orderedInputNames>
+    <orderedInputNames>itemTitle</orderedInputNames>
+    <orderedInputNames>emptyText</orderedInputNames>
+    <fields name="emptyText" defaultValue="No items" required="true" uiWidget="text" uiLabel="Empty text" uiGroup="Data" uiOrder="3" uiVariant="default"/>
+    <referenceFields name="source" targetTypeName="DataSource" required="true" uiWidget="reference-select" uiLabel="Source" uiGroup="Data" uiOrder="1" uiVariant="default" referenceLabelField="name"/>
+    <valueInputs name="itemTitle" checkType="TextExpression" shadowBlockType="DataField" uiWidget="expression-slot" uiLabel="Item title" uiGroup="Data" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="Container" label="Container" colour="120" categoryName="Layout" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="true" tooltip="Layout container for child components.">
+    <orderedInputNames>layout</orderedInputNames>
+    <orderedInputNames>gap</orderedInputNames>
+    <orderedInputNames>padding</orderedInputNames>
+    <orderedInputNames>children</orderedInputNames>
+    <fields name="layout" fieldType="DROPDOWN" defaultValue="column" uiWidget="text" uiLabel="Layout" uiGroup="Layout" uiOrder="1" uiVariant="default">
+      <options value="column" label="column"/>
+      <options value="row" label="row"/>
+      <options value="wrap" label="wrap"/>
+    </fields>
+    <fields name="gap" fieldType="INTEGER" defaultValue="12" min="0" max="64" uiWidget="number" uiLabel="Gap" uiGroup="Layout" uiOrder="2" uiVariant="default"/>
+    <fields name="padding" fieldType="INTEGER" defaultValue="16" min="0" max="96" uiWidget="number" uiLabel="Padding" uiGroup="Layout" uiOrder="3" uiVariant="default"/>
+    <statementInputs name="children" checkType="Component" lowerBound="1" upperBound="40" uiWidget="text" uiLabel="Children" uiGroup="Components" uiOrder="4" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="Form" label="Form" colour="120" categoryName="Layout" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="true" tooltip="Form component with fields and submit actions.">
+    <orderedInputNames>title</orderedInputNames>
+    <orderedInputNames>endpoint</orderedInputNames>
+    <orderedInputNames>children</orderedInputNames>
+    <orderedInputNames>onSubmit</orderedInputNames>
+    <fields name="title" defaultValue="New task" required="true" uiWidget="text" uiLabel="Title" uiGroup="Form" uiOrder="1" uiVariant="default"/>
+    <statementInputs name="children" checkType="Component" lowerBound="1" upperBound="30" uiWidget="text" uiLabel="Fields" uiGroup="Form" uiOrder="3" uiVariant="default"/>
+    <statementInputs name="onSubmit" checkType="Action" upperBound="10" uiWidget="text" uiLabel="On submit" uiGroup="Actions" uiOrder="4" uiVariant="default"/>
+    <referenceFields name="endpoint" targetTypeName="DataSource" uiWidget="reference-select" uiLabel="Endpoint" uiGroup="Data" uiOrder="2" uiVariant="default" referenceLabelField="name"/>
+  </blockTypes>
+  <blockTypes typeName="Action" label="Action" colour="20" categoryName="Actions" abstract="true" connectionType="TYPED" connectionTypeName="Action" inputsInline="true" tooltip="Abstract base class for event actions."/>
+  <blockTypes typeName="Navigate" label="Navigate" colour="20" categoryName="Actions" superTypeName="Action" connectionType="TYPED" connectionTypeName="Action" inputsInline="true" tooltip="Navigate to another page.">
+    <orderedInputNames>target</orderedInputNames>
+    <referenceFields name="target" targetTypeName="Page" required="true" uiWidget="reference-select" uiLabel="Target" uiGroup="Navigation" uiOrder="1" uiVariant="default" referenceLabelField="title"/>
+  </blockTypes>
+  <blockTypes typeName="Alert" label="Alert" colour="20" categoryName="Actions" superTypeName="Action" connectionType="TYPED" connectionTypeName="Action" inputsInline="true" tooltip="Show a message.">
+    <orderedInputNames>message</orderedInputNames>
+    <valueInputs name="message" checkType="TextExpression" shadowBlockType="TextLiteral" uiWidget="expression-slot" uiLabel="Message" uiGroup="Alert" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="SubmitForm" label="Submit form" colour="20" categoryName="Actions" superTypeName="Action" connectionType="TYPED" connectionTypeName="Action" inputsInline="true" tooltip="Submit a form to a data source.">
+    <orderedInputNames>endpoint</orderedInputNames>
+    <orderedInputNames>successTarget</orderedInputNames>
+    <referenceFields name="endpoint" targetTypeName="DataSource" required="true" uiWidget="reference-select" uiLabel="Endpoint" uiGroup="Data" uiOrder="1" uiVariant="default" referenceLabelField="name"/>
+    <referenceFields name="successTarget" targetTypeName="Page" uiWidget="reference-select" uiLabel="Success page" uiGroup="Navigation" uiOrder="2" uiVariant="default" referenceLabelField="title"/>
+  </blockTypes>
+  <blockTypes typeName="TextExpression" label="Text expression" colour="45" categoryName="Expressions" abstract="true" inputsInline="true" tooltip="Abstract expression that returns text."/>
+  <blockTypes typeName="TextLiteral" label="Text literal" colour="45" categoryName="Expressions" superTypeName="TextExpression" connectionType="OUTPUT_TYPED" outputType="TextExpression" inputsInline="true" tooltip="Constant text expression.">
+    <orderedInputNames>content</orderedInputNames>
+    <fields name="content" defaultValue="Hello" required="true" uiWidget="text" uiLabel="Text" uiGroup="Expression" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="InputValue" label="Input value" colour="45" categoryName="Expressions" superTypeName="TextExpression" connectionType="OUTPUT_TYPED" outputType="TextExpression" inputsInline="true" tooltip="Value read from an input component.">
+    <orderedInputNames>input</orderedInputNames>
+    <referenceFields name="input" targetTypeName="TextInput" required="true" uiWidget="reference-select" uiLabel="Input" uiGroup="Expression" uiOrder="1" uiVariant="default" referenceLabelField="name"/>
+  </blockTypes>
+  <blockTypes typeName="DataField" label="Data field" colour="45" categoryName="Expressions" superTypeName="TextExpression" connectionType="OUTPUT_TYPED" outputType="TextExpression" inputsInline="true" tooltip="Field read from the current data row.">
+    <orderedInputNames>fieldName</orderedInputNames>
+    <fields name="fieldName" defaultValue="title" required="true" uiWidget="text" uiLabel="Field" uiGroup="Expression" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="JoinText" label="Join text" colour="45" categoryName="Expressions" superTypeName="TextExpression" connectionType="OUTPUT_TYPED" outputType="TextExpression" inputsInline="true" tooltip="Concatenate two text expressions.">
+    <orderedInputNames>left</orderedInputNames>
+    <orderedInputNames>right</orderedInputNames>
+    <valueInputs name="left" checkType="TextExpression" shadowBlockType="TextLiteral" uiWidget="expression-slot" uiLabel="Left" uiGroup="Expression" uiOrder="1" uiVariant="default"/>
+    <valueInputs name="right" checkType="TextExpression" shadowBlockType="TextLiteral" uiWidget="expression-slot" uiLabel="Right" uiGroup="Expression" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <validations name="buttonAfterText" targetType="Button" predecessorType="TextLabel">
+    <visualBlock blocklyBlockType="validation_previous_block_is">
+      <fields name="TARGET" value="Button"/>
+      <fields name="TYPE" value="TextLabel"/>
+    </visualBlock>
+    <visualExpression kind="PREVIOUS_BLOCK_IS" typeName="TextLabel"/>
+  </validations>
+  <validations type="EXPRESSION" name="Page_pageHasRoute" ownerType="Page" expression="value('route').startsWith('/')" message="Page routes must start with /">
+    <visualBlock blocklyBlockType="validation_expression_rule">
+      <fields name="TYPE" value="Page"/>
+      <fields name="EXPRESSION" value="value('route').startsWith('/')"/>
+    </visualBlock>
+  </validations>
+  <validations type="CARDINALITY" name="App_dataSources" ownerType="App" containmentName="dataSources" lowerBound="1" upperBound="20">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="App"/>
+      <fields name="INPUT" value="dataSources"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="20"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="dataSources"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="dataSources"/>
+        <children kind="NUMBER_LITERAL" literal="20"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="App_pages" ownerType="App" containmentName="pages" lowerBound="1" upperBound="20">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="App"/>
+      <fields name="INPUT" value="pages"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="20"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="pages"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="pages"/>
+        <children kind="NUMBER_LITERAL" literal="20"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Page_components" ownerType="Page" containmentName="components" lowerBound="1" upperBound="40">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Page"/>
+      <fields name="INPUT" value="components"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="40"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="components"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="components"/>
+        <children kind="NUMBER_LITERAL" literal="40"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Page_onEnter" ownerType="Page" containmentName="onEnter" upperBound="10">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Page"/>
+      <fields name="INPUT" value="onEnter"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="10"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="onEnter"/>
+      <children kind="NUMBER_LITERAL" literal="10"/>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Button_onClick" ownerType="Button" containmentName="onClick" upperBound="10">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Button"/>
+      <fields name="INPUT" value="onClick"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="10"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="onClick"/>
+      <children kind="NUMBER_LITERAL" literal="10"/>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Container_children" ownerType="Container" containmentName="children" lowerBound="1" upperBound="40">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Container"/>
+      <fields name="INPUT" value="children"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="40"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="children"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="children"/>
+        <children kind="NUMBER_LITERAL" literal="40"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Form_children" ownerType="Form" containmentName="children" lowerBound="1" upperBound="30">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Form"/>
+      <fields name="INPUT" value="children"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="30"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="children"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="children"/>
+        <children kind="NUMBER_LITERAL" literal="30"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Form_onSubmit" ownerType="Form" containmentName="onSubmit" upperBound="10">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Form"/>
+      <fields name="INPUT" value="onSubmit"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="10"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="onSubmit"/>
+      <children kind="NUMBER_LITERAL" literal="10"/>
+    </visualExpression>
+  </validations>
+  <validations type="REQUIRED" name="App_name_required" ownerType="App" fieldName="name" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="App"/>
+      <fields name="FIELD" value="name"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="name"/>
+  </validations>
+  <validations type="REQUIRED" name="DataSource_name_required" ownerType="DataSource" fieldName="name" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="DataSource"/>
+      <fields name="FIELD" value="name"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="name"/>
+  </validations>
+  <validations type="REQUIRED" name="DataSource_url_required" ownerType="DataSource" fieldName="url" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="DataSource"/>
+      <fields name="FIELD" value="url"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="url"/>
+  </validations>
+  <validations type="REQUIRED" name="Page_title_required" ownerType="Page" fieldName="title" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Page"/>
+      <fields name="FIELD" value="title"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="title"/>
+  </validations>
+  <validations type="REQUIRED" name="Page_route_required" ownerType="Page" fieldName="route" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Page"/>
+      <fields name="FIELD" value="route"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="route"/>
+  </validations>
+  <validations type="REQUIRED" name="Button_labelText_required" ownerType="Button" fieldName="labelText" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Button"/>
+      <fields name="FIELD" value="labelText"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="labelText"/>
+  </validations>
+  <validations type="REQUIRED" name="TextInput_name_required" ownerType="TextInput" fieldName="name" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="TextInput"/>
+      <fields name="FIELD" value="name"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="name"/>
+  </validations>
+  <validations type="REQUIRED" name="TextInput_labelText_required" ownerType="TextInput" fieldName="labelText" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="TextInput"/>
+      <fields name="FIELD" value="labelText"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="labelText"/>
+  </validations>
+  <validations type="REQUIRED" name="TextInput_hint_required" ownerType="TextInput" fieldName="hint" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="TextInput"/>
+      <fields name="FIELD" value="hint"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="hint"/>
+  </validations>
+  <validations type="REQUIRED" name="ImageView_altText_required" ownerType="ImageView" fieldName="altText" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="ImageView"/>
+      <fields name="FIELD" value="altText"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="altText"/>
+  </validations>
+  <validations type="REQUIRED" name="ListView_emptyText_required" ownerType="ListView" fieldName="emptyText" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="ListView"/>
+      <fields name="FIELD" value="emptyText"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="emptyText"/>
+  </validations>
+  <validations type="REQUIRED" name="ListView_source_required" ownerType="ListView" fieldName="source" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="ListView"/>
+      <fields name="FIELD" value="source"/>
+      <fields name="FIELD_KIND" value="reference"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="source"/>
+  </validations>
+  <validations type="REQUIRED" name="Form_title_required" ownerType="Form" fieldName="title" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Form"/>
+      <fields name="FIELD" value="title"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="title"/>
+  </validations>
+  <validations type="REQUIRED" name="Navigate_target_required" ownerType="Navigate" fieldName="target" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Navigate"/>
+      <fields name="FIELD" value="target"/>
+      <fields name="FIELD_KIND" value="reference"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="target"/>
+  </validations>
+  <validations type="REQUIRED" name="SubmitForm_endpoint_required" ownerType="SubmitForm" fieldName="endpoint" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="SubmitForm"/>
+      <fields name="FIELD" value="endpoint"/>
+      <fields name="FIELD_KIND" value="reference"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="endpoint"/>
+  </validations>
+  <validations type="REQUIRED" name="TextLiteral_content_required" ownerType="TextLiteral" fieldName="content" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="TextLiteral"/>
+      <fields name="FIELD" value="content"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="content"/>
+  </validations>
+  <validations type="REQUIRED" name="InputValue_input_required" ownerType="InputValue" fieldName="input" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="InputValue"/>
+      <fields name="FIELD" value="input"/>
+      <fields name="FIELD_KIND" value="reference"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="input"/>
+  </validations>
+  <validations type="REQUIRED" name="DataField_fieldName_required" ownerType="DataField" fieldName="fieldName" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="DataField"/>
+      <fields name="FIELD" value="fieldName"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="fieldName"/>
+  </validations>
+  <validations type="UNIQUE" name="DataSource_name_unique" ownerType="DataSource" fieldName="name" fieldKind="id">
+    <visualBlock blocklyBlockType="validation_type_field_unique">
+      <fields name="TYPE" value="DataSource"/>
+      <fields name="FIELD" value="name"/>
+    </visualBlock>
+    <visualExpression kind="TYPE_FIELD_UNIQUE" fieldName="name" typeName="DataSource"/>
+  </validations>
+  <validations type="UNIQUE" name="TextInput_name_unique" ownerType="TextInput" fieldName="name" fieldKind="id">
+    <visualBlock blocklyBlockType="validation_type_field_unique">
+      <fields name="TYPE" value="TextInput"/>
+      <fields name="FIELD" value="name"/>
+    </visualBlock>
+    <visualExpression kind="TYPE_FIELD_UNIQUE" fieldName="name" typeName="TextInput"/>
+  </validations>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="startScale" value="1" valueType="INTEGER"/>
+    <children key="maxScale" value="3" valueType="INTEGER"/>
+    <children key="minScale" value="0" valueType="INTEGER"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+</blocklyspec:EditorSpec>

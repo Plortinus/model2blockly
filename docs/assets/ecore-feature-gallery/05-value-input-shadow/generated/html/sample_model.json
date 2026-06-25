@@ -1,0 +1,11 @@
+[
+  {
+    "_type": "TextLabel",
+    "_blockId": "sample_TextLabel_1",
+    "content": {
+      "_type": "TextLiteral",
+      "_blockId": "sample_TextLiteral_1",
+      "content": "Hello"
+    }
+  }
+]

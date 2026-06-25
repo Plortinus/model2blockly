@@ -1,0 +1,11 @@
+[
+  {
+    "_type": "Threshold",
+    "_blockId": "sample_Threshold_1",
+    "value": {
+      "_type": "NumberLiteral",
+      "_blockId": "sample_NumberLiteral_1",
+      "value": "5"
+    }
+  }
+]

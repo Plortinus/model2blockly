@@ -1,0 +1,213 @@
+domain Appmaker
+codeLanguage "javascript"
+codeFileExtension "js"
+runtimeKind "appMaker"
+
+workspace {
+  renderer: "zelos"
+  trashcan: true
+  toolboxType: "categoryToolbox"
+  zoom: {
+    controls: true
+    wheel: true
+    startScale: 1
+    maxScale: 3
+    minScale: 0
+  }
+  move: {
+    scrollbars: true
+    drag: true
+    wheel: true
+  }
+}
+
+category Pages label "Pages" colour 260
+category Data label "Data" colour 210
+category Components label "Components" colour 160
+category Layout label "Layout" colour 120
+category Actions label "Actions" colour 20
+category Expressions label "Expressions" colour 45
+
+class App category Pages colour 260 label "App"
+  tooltip "Root low-code app model containing data sources and pages." {
+  attribute name : string default "Task Tracker" required
+    widget text uiLabel "App name" group "App" order 1
+  attribute theme : enum { light, dark, system } default "light"
+    uiLabel "Theme" group "App" order 2
+  contains DataSource dataSources [1..20]
+    uiLabel "Data sources" group "Data" order 3
+  contains Page pages [1..20]
+    uiLabel "Pages" group "Pages" order 4
+}
+
+class DataSource category Data colour 210 label "Data source"
+  tooltip "HTTP data source that components and actions can reference." inputsInline true {
+  attribute name : string default "tasks" required modelId
+    widget text uiLabel "Name" group "Data" order 1
+  attribute url : string default "https://example.com/api/tasks" required
+    widget text uiLabel "URL" group "Data" order 2
+  attribute method : enum { get, post, put, delete } default "get"
+    uiLabel "Method" group "Data" order 3
+  attribute cacheEnabled : boolean default "true"
+    widget checkbox uiLabel "Cache" group "Data" order 4
+}
+
+class Page category Pages colour 260 label "Page"
+  tooltip "A navigable page with design settings, components and optional lifecycle actions." {
+  attribute title : string default "Home" required
+    widget text uiLabel "Title" group "Page" order 1
+  attribute route : string default "/home" required
+    widget text uiLabel "Route" group "Page" order 2
+  attribute layout : enum { column, row, grid, tabs } default "column"
+    uiLabel "Layout" group "Design" order 3
+  attribute navigationStyle : enum { standard, none, bottomTabs, drawer } default "standard"
+    uiLabel "Navigation" group "Design" order 4
+  attribute backgroundColor : colour default "#ffffff"
+    widget color uiLabel "Background" group "Design" order 5
+  attribute scrollable : boolean default "true"
+    widget checkbox uiLabel "Scrollable" group "Design" order 6
+  contains Component components [1..40]
+    uiLabel "Components" group "Components" order 7
+  contains Action onEnter [0..10]
+    uiLabel "On enter" group "Actions" order 8
+}
+
+abstract class Component category Components colour 160 label "Component"
+  tooltip "Abstract base class for page components." {
+}
+
+class TextLabel extends Component category Components colour 160 label "Text"
+  tooltip "Static or computed text component." {
+  value TextExpression content shadow TextLiteral
+    widget expression-slot uiLabel "Text" group "Text" order 1
+  attribute textStyle : enum { title, subtitle, body, caption } default "body"
+    uiLabel "Variant" group "Text" order 2
+  attribute alignment : enum { start, center, end } default "start"
+    uiLabel "Align" group "Text" order 3
+}
+
+class Button extends Component category Components colour 160 label "Button"
+  tooltip "Button component with click actions." {
+  attribute labelText : string default "Save" required
+    widget text uiLabel "Label" group "Button" order 1
+  attribute style : enum { primary, secondary, danger, ghost } default "primary"
+    uiLabel "Style" group "Button" order 2
+  contains Action onClick [0..10]
+    uiLabel "On click" group "Actions" order 3
+}
+
+class TextInput extends Component category Components colour 160 label "Text input"
+  tooltip "Text input field." {
+  attribute name : string default "taskTitle" required modelId
+    widget text uiLabel "Name" group "Input" order 1
+  attribute labelText : string default "Task title" required
+    widget text uiLabel "Label" group "Input" order 2
+  attribute hint : string default "Write a task" required
+    widget text uiLabel "Hint" group "Input" order 3
+  attribute inputType : enum { plainText, email, password, numeric } default "plainText"
+    uiLabel "Type" group "Input" order 4
+  attribute mandatory : boolean default "false"
+    widget checkbox uiLabel "Required" group "Input" order 5
+}
+
+class ImageView extends Component category Components colour 160 label "Image"
+  tooltip "Image component with URL expression." {
+  value TextExpression url shadow TextLiteral
+    widget expression-slot uiLabel "URL" group "Image" order 1
+  attribute altText : string default "Image" required
+    widget text uiLabel "Alt text" group "Image" order 2
+  attribute fit : enum { cover, contain, fill } default "cover"
+    uiLabel "Fit" group "Image" order 3
+}
+
+class ListView extends Component category Components colour 160 label "List"
+  tooltip "List component fed by a data source." {
+  reference DataSource source required
+    widget reference-select uiLabel "Source" group "Data" order 1 referenceLabelField name
+  value TextExpression itemTitle shadow DataField
+    widget expression-slot uiLabel "Item title" group "Data" order 2
+  attribute emptyText : string default "No items" required
+    widget text uiLabel "Empty text" group "Data" order 3
+}
+
+class Container extends Component category Layout colour 120 label "Container"
+  tooltip "Layout container for child components." {
+  attribute layout : enum { column, row, wrap } default "column"
+    uiLabel "Layout" group "Layout" order 1
+  attribute gap : int default "12" min "0" max "64"
+    widget number uiLabel "Gap" group "Layout" order 2
+  attribute padding : int default "16" min "0" max "96"
+    widget number uiLabel "Padding" group "Layout" order 3
+  contains Component children [1..40]
+    uiLabel "Children" group "Components" order 4
+}
+
+class Form extends Component category Layout colour 120 label "Form"
+  tooltip "Form component with fields and submit actions." {
+  attribute title : string default "New task" required
+    widget text uiLabel "Title" group "Form" order 1
+  reference DataSource endpoint
+    widget reference-select uiLabel "Endpoint" group "Data" order 2 referenceLabelField name
+  contains Component children [1..30]
+    uiLabel "Fields" group "Form" order 3
+  contains Action onSubmit [0..10]
+    uiLabel "On submit" group "Actions" order 4
+}
+
+abstract class Action category Actions colour 20 label "Action"
+  tooltip "Abstract base class for event actions." {
+}
+
+class Navigate extends Action category Actions colour 20 label "Navigate"
+  tooltip "Navigate to another page." {
+  reference Page target required
+    widget reference-select uiLabel "Target" group "Navigation" order 1 referenceLabelField title
+}
+
+class Alert extends Action category Actions colour 20 label "Alert"
+  tooltip "Show a message." {
+  value TextExpression message shadow TextLiteral
+    widget expression-slot uiLabel "Message" group "Alert" order 1
+}
+
+class SubmitForm extends Action category Actions colour 20 label "Submit form"
+  tooltip "Submit a form to a data source." {
+  reference DataSource endpoint required
+    widget reference-select uiLabel "Endpoint" group "Data" order 1 referenceLabelField name
+  reference Page successTarget
+    widget reference-select uiLabel "Success page" group "Navigation" order 2 referenceLabelField title
+}
+
+abstract class TextExpression category Expressions colour 45 label "Text expression"
+  tooltip "Abstract expression that returns text." {
+}
+
+output class TextLiteral extends TextExpression category Expressions colour 45 label "Text literal"
+  tooltip "Constant text expression." {
+  attribute content : string default "Hello" required
+    widget text uiLabel "Text" group "Expression" order 1
+}
+
+output class InputValue extends TextExpression category Expressions colour 45 label "Input value"
+  tooltip "Value read from an input component." {
+  reference TextInput input required
+    widget reference-select uiLabel "Input" group "Expression" order 1 referenceLabelField name
+}
+
+output class DataField extends TextExpression category Expressions colour 45 label "Data field"
+  tooltip "Field read from the current data row." {
+  attribute fieldName : string default "title" required
+    widget text uiLabel "Field" group "Expression" order 1
+}
+
+output class JoinText extends TextExpression category Expressions colour 45 label "Join text"
+  tooltip "Concatenate two text expressions." {
+  value TextExpression left shadow TextLiteral
+    widget expression-slot uiLabel "Left" group "Expression" order 1
+  value TextExpression right shadow TextLiteral
+    widget expression-slot uiLabel "Right" group "Expression" order 2
+}
+
+constraint buttonAfterText on Button : must follow TextLabel
+validation pageHasRoute on Page : expression "value('route').startsWith('/')"
+  errorMessage "Page routes must start with /"

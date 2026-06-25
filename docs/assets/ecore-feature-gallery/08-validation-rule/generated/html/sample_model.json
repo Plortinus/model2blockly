@@ -1,0 +1,23 @@
+[
+  {
+    "_type": "Flow",
+    "_blockId": "sample_Flow_1",
+    "actions": [
+      {
+        "_type": "Alert",
+        "_blockId": "sample_Alert_1",
+        "message": "Leaving page"
+      },
+      {
+        "_type": "Navigate",
+        "_blockId": "sample_Navigate_1",
+        "target": "details"
+      },
+      {
+        "_type": "Alert",
+        "_blockId": "sample_Alert_2",
+        "message": "Leaving page"
+      }
+    ]
+  }
+]

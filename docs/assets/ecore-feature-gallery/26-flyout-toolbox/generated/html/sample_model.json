@@ -1,0 +1,12 @@
+[
+  {
+    "_type": "QuickNote",
+    "_blockId": "sample_QuickNote_1",
+    "text": "One-click block"
+  },
+  {
+    "_type": "QuickFlag",
+    "_blockId": "sample_QuickFlag_1",
+    "enabled": "true"
+  }
+]

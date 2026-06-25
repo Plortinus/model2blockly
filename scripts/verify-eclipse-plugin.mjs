@@ -51,6 +51,7 @@ function checkRequiredFiles() {
     'io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel',
     'io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore',
     'io.github.plortinus.model2blockly/model/app_maker.ecore',
+    'io.github.plortinus.model2blockly/examples/app_maker.m2b',
     'RELEASE_CHECKLIST.md',
     'scripts/rebuild-update-site.mjs',
     'site/update-site/index.html',
@@ -69,6 +70,7 @@ function checkXmlFiles() {
     'io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore',
     'io.github.plortinus.model2blockly/model/app_maker.ecore',
     'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi',
+    'io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/intermediate/Appmaker_blocklyspec.xmi',
   ];
   const script = [
     'import sys, xml.etree.ElementTree as ET',
@@ -363,6 +365,7 @@ function checkFeatureAndUpdateSite() {
 function checkGeneratedExamples() {
   for (const dir of [
     'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore',
+    'io.github.plortinus.model2blockly/examples/generated/app_maker_dsl',
   ]) {
     assertExists(`${dir}/README.md`);
     assertExists(`${dir}/generation_report.html`);
@@ -398,41 +401,47 @@ function checkGeneratedExamples() {
     walk(sample, (node) => {
       if (node && typeof node === 'object' && typeof node._type === 'string') types.add(node._type);
     });
-    for (const type of [
-      'App',
-      'Page',
-      'TextLabel',
-      'Button',
-      'TextInput',
-      'TextArea',
-      'ImageView',
-      'ListView',
-      'ToggleSwitch',
-      'SelectInput',
-      'CheckboxInput',
-      'RadioGroup',
-      'NumberInput',
-      'SliderInput',
-      'DateInput',
-      'TimeInput',
-      'FileUpload',
-      'TableView',
-      'Container',
-      'Card',
-      'Form',
-      'TabsView',
-      'TabPanel',
-      'Modal',
-      'Toast',
-      'Divider',
-      'Spacer',
-      'Alert',
-      'Navigate',
-      'SubmitForm',
-      'SetInputValue',
-      'OpenUrl',
-    ]) {
-      if (!types.has(type)) fail(`${dir}/html/sample_model.json is missing sample type ${type}`);
+    if (dir.endsWith('app_maker_ecore')) {
+      for (const type of [
+        'App',
+        'Page',
+        'TextLabel',
+        'Button',
+        'TextInput',
+        'TextArea',
+        'ImageView',
+        'ListView',
+        'ToggleSwitch',
+        'SelectInput',
+        'CheckboxInput',
+        'RadioGroup',
+        'NumberInput',
+        'SliderInput',
+        'DateInput',
+        'TimeInput',
+        'FileUpload',
+        'TableView',
+        'Container',
+        'Card',
+        'Form',
+        'TabsView',
+        'TabPanel',
+        'Modal',
+        'Toast',
+        'Divider',
+        'Spacer',
+        'Alert',
+        'Navigate',
+        'SubmitForm',
+        'SetInputValue',
+        'OpenUrl',
+      ]) {
+        if (!types.has(type)) fail(`${dir}/html/sample_model.json is missing sample type ${type}`);
+      }
+    } else {
+      for (const type of ['App', 'Page', 'DataSource', 'Button', 'ListView', 'Navigate']) {
+        if (!types.has(type)) fail(`${dir}/html/sample_model.json is missing sample type ${type}`);
+      }
     }
   }
 }
@@ -440,6 +449,7 @@ function checkGeneratedExamples() {
 function checkNoLegacyFrontendArtifacts() {
   for (const dir of [
     'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore',
+    'io.github.plortinus.model2blockly/examples/generated/app_maker_dsl',
   ]) {
     const legacyFrontendDir = 're' + 'act';
     if (existsSync(abs(`${dir}/${legacyFrontendDir}`))) {

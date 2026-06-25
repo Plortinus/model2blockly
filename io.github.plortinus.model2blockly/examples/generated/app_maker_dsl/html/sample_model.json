@@ -1,0 +1,192 @@
+[
+  {
+    "_type": "App",
+    "_blockId": "sample_App_1",
+    "name": "Task Tracker",
+    "theme": "light",
+    "dataSources": [
+      {
+        "_type": "DataSource",
+        "_blockId": "sample_DataSource_1",
+        "name": "tasks",
+        "url": "https://example.com/api/tasks",
+        "method": "get",
+        "cacheEnabled": "true"
+      }
+    ],
+    "pages": [
+      {
+        "_type": "Page",
+        "_blockId": "sample_Page_1",
+        "title": "Home",
+        "route": "/home",
+        "layout": "column",
+        "navigationStyle": "standard",
+        "backgroundColor": "#ffffff",
+        "scrollable": "true",
+        "components": [
+          {
+            "_type": "TextLabel",
+            "_blockId": "sample_TextLabel_1",
+            "textStyle": "body",
+            "alignment": "start",
+            "content": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_1",
+              "content": "Hello"
+            }
+          },
+          {
+            "_type": "Button",
+            "_blockId": "sample_Button_1",
+            "labelText": "Save",
+            "style": "primary",
+            "onClick": [
+              {
+                "_type": "Navigate",
+                "_blockId": "sample_Navigate_1",
+                "target": "sample_Page_1"
+              }
+            ]
+          },
+          {
+            "_type": "TextInput",
+            "_blockId": "sample_TextInput_1",
+            "name": "taskTitle",
+            "labelText": "Task title",
+            "hint": "Write a task",
+            "inputType": "plainText",
+            "mandatory": "false"
+          },
+          {
+            "_type": "ImageView",
+            "_blockId": "sample_ImageView_1",
+            "altText": "Image",
+            "fit": "cover",
+            "url": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_2",
+              "content": "Hello"
+            }
+          },
+          {
+            "_type": "ListView",
+            "_blockId": "sample_ListView_1",
+            "emptyText": "No items",
+            "source": "sample_DataSource_1",
+            "itemTitle": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_3",
+              "content": "Hello"
+            }
+          },
+          {
+            "_type": "Container",
+            "_blockId": "sample_Container_1",
+            "layout": "column",
+            "gap": "12",
+            "padding": "16",
+            "children": [
+              {
+                "_type": "TextLabel",
+                "_blockId": "sample_TextLabel_2",
+                "textStyle": "body",
+                "alignment": "start",
+                "content": {
+                  "_type": "TextLiteral",
+                  "_blockId": "sample_TextLiteral_4",
+                  "content": "Hello"
+                }
+              },
+              {
+                "_type": "Button",
+                "_blockId": "sample_Button_2",
+                "labelText": "Save",
+                "style": "primary",
+                "onClick": [
+                  {
+                    "_type": "Navigate",
+                    "_blockId": "sample_Navigate_2",
+                    "target": "sample_Page_1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "_type": "Form",
+            "_blockId": "sample_Form_1",
+            "title": "New task",
+            "endpoint": "sample_DataSource_1",
+            "children": [
+              {
+                "_type": "TextLabel",
+                "_blockId": "sample_TextLabel_3",
+                "textStyle": "body",
+                "alignment": "start",
+                "content": {
+                  "_type": "TextLiteral",
+                  "_blockId": "sample_TextLiteral_5",
+                  "content": "Hello"
+                }
+              },
+              {
+                "_type": "Button",
+                "_blockId": "sample_Button_3",
+                "labelText": "Save",
+                "style": "primary",
+                "onClick": [
+                  {
+                    "_type": "Navigate",
+                    "_blockId": "sample_Navigate_3",
+                    "target": "sample_Page_1"
+                  }
+                ]
+              }
+            ],
+            "onSubmit": [
+              {
+                "_type": "Navigate",
+                "_blockId": "sample_Navigate_4",
+                "target": "sample_Page_1"
+              }
+            ]
+          },
+          {
+            "_type": "TextLabel",
+            "_blockId": "sample_TextLabel_4",
+            "textStyle": "body",
+            "alignment": "start",
+            "content": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_6",
+              "content": "Hello"
+            }
+          }
+        ],
+        "onEnter": [
+          {
+            "_type": "Navigate",
+            "_blockId": "sample_Navigate_5",
+            "target": "sample_Page_1"
+          },
+          {
+            "_type": "Alert",
+            "_blockId": "sample_Alert_1",
+            "message": {
+              "_type": "TextLiteral",
+              "_blockId": "sample_TextLiteral_7",
+              "content": "Hello"
+            }
+          },
+          {
+            "_type": "SubmitForm",
+            "_blockId": "sample_SubmitForm_1",
+            "endpoint": "sample_DataSource_1",
+            "successTarget": "sample_Page_1"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Multivaluefield" nsURI="https://plortinus.github.io/model2blockly/examples/multivaluefield" nsPrefix="multivaluefield" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Fields" label="Fields"/>
+  <blockTypes typeName="TagSet" label="TagSet" categoryName="Fields" inputsInline="true">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>tags</orderedInputNames>
+    <fields name="name" defaultValue="Filters" required="true" lowerBound="1" uiLabel="Name"/>
+    <fields name="tags" defaultValue="urgent,review" required="true" lowerBound="1" upperBound="0" uiLabel="Tags" uiHelp="Comma or newline separated values."/>
+  </blockTypes>
+  <validations type="REQUIRED" name="TagSet_name_required" ownerType="TagSet" fieldName="name" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="TagSet"/>
+      <fields name="FIELD" value="name"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="name"/>
+  </validations>
+  <validations type="REQUIRED" name="TagSet_tags_required" ownerType="TagSet" fieldName="tags" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="TagSet"/>
+      <fields name="FIELD" value="tags"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="tags"/>
+  </validations>
+  <validations type="UNIQUE" name="TagSet_tags_unique" ownerType="TagSet" fieldName="tags" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_field_unique">
+      <fields name="TYPE" value="TagSet"/>
+      <fields name="FIELD" value="tags"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_UNIQUE" fieldName="tags"/>
+  </validations>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

@@ -1,0 +1,8 @@
+[
+  {
+    "_type": "Rule",
+    "_blockId": "sample_Rule_1",
+    "condition": "cart.total > 100",
+    "result": "apply discount"
+  }
+]

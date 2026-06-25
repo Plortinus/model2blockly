@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="annotatedcustomization"
+    nsURI="https://plortinus.github.io/model2blockly/examples/annotatedcustomization"
+    nsPrefix="annotatedcustomization">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+    <details key="workspace.grid.spacing" value="24"/>
+    <details key="workspace.grid.snap" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="TaskBoard">
+    <eAnnotations source="blockly">
+      <details key="category" value="Work/Boards"/>
+      <details key="colour" value="210"/>
+      <details key="tooltip" value="A board that contains tasks."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Sprint board">
+      <eAnnotations source="ui">
+        <details key="label" value="Board name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tasks" lowerBound="1"
+        upperBound="-1" eType="#//Task" containment="true">
+      <eAnnotations source="ui">
+        <details key="label" value="Tasks"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Task">
+    <eAnnotations source="blockly">
+      <details key="category" value="Work/Tasks"/>
+      <details key="colour" value="120"/>
+      <details key="inputsInline" value="true"/>
+      <details key="tooltip" value="Task details."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Write docs">
+      <eAnnotations source="ui">
+        <details key="label" value="Title"/>
+        <details key="placeholder" value="Task title"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="done"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false">
+      <eAnnotations source="ui">
+        <details key="label" value="Done"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority"
+        eType="#//Priority" defaultValueLiteral="medium">
+      <eAnnotations source="ui">
+        <details key="label" value="Priority"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="Priority">
+    <eLiterals name="low" literal="low"/>
+    <eLiterals name="medium" literal="medium"/>
+    <eLiterals name="high" literal="high"/>
+  </eClassifiers>
+
+</ecore:EPackage>

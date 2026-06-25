@@ -1,0 +1,20 @@
+[
+  {
+    "_type": "Flow",
+    "_blockId": "sample_Flow_1",
+    "pages": [
+      {
+        "_type": "Page",
+        "_blockId": "sample_Page_1",
+        "name": "home"
+      }
+    ],
+    "actions": [
+      {
+        "_type": "Navigate",
+        "_blockId": "sample_Navigate_1",
+        "target": "sample_Page_1"
+      }
+    ]
+  }
+]

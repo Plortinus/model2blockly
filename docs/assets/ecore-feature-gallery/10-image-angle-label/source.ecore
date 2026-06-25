@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="visualfields"
+    nsURI="https://plortinus.github.io/model2blockly/examples/visualfields"
+    nsPrefix="visualfields">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="IconBadge">
+    <eAnnotations source="blockly">
+      <details key="colour" value="45"/>
+      <details key="category" value="Fields"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="icon"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Blockly">
+      <eAnnotations source="blockly">
+        <details key="type" value="field_image"/>
+        <details key="src" value="https://developers.google.com/blockly/images/logos/logo_built_on.svg"/>
+        <details key="width" value="32"/>
+        <details key="height" value="32"/>
+        <details key="alt" value="Blockly"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="Icon"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rotation"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="45">
+      <eAnnotations source="blockly">
+        <details key="type" value="field_angle"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="label" value="Angle"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="caption"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Preview only">
+      <eAnnotations source="blockly">
+        <details key="type" value="field_label"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+</ecore:EPackage>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="classpresentation"
+    nsURI="https://plortinus.github.io/model2blockly/examples/classpresentation"
+    nsPrefix="classpresentation">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="Panel">
+    <eAnnotations source="blockly">
+      <details key="colour" value="300"/>
+      <details key="category" value="Presentation"/>
+      <details key="message0" value="panel %1 width %2"/>
+      <details key="tooltip" value="A styled UI panel."/>
+      <details key="helpUrl" value="https://developers.google.com/blockly"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Styled panel"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Settings"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="480"/>
+  </eClassifiers>
+
+</ecore:EPackage>

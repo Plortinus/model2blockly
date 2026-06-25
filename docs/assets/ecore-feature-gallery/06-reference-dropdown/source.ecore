@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="referenceselect"
+    nsURI="https://plortinus.github.io/model2blockly/examples/referenceselect"
+    nsPrefix="referenceselect">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="Flow">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Flow"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pages"
+        lowerBound="1" upperBound="3" eType="#//Page" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actions"
+        lowerBound="1" upperBound="3" eType="#//Action" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Page">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Flow"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" iD="true"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="home"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Action" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Navigate" eSuperTypes="#//Action">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target"
+        lowerBound="1" eType="#//Page">
+      <eAnnotations source="ui">
+        <details key="widget" value="reference-select"/>
+        <details key="referenceLabelField" value="name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+</ecore:EPackage>

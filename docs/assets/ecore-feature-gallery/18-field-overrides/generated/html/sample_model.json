@@ -1,0 +1,9 @@
+[
+  {
+    "_type": "ControlSettings",
+    "_blockId": "sample_ControlSettings_1",
+    "caption": "Volume",
+    "ratio": "0.75",
+    "locked": "true"
+  }
+]

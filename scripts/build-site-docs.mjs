@@ -17,24 +17,27 @@ const pages = [
   { source: 'docs/en/INSTALL.md', output: 'en/install.md' },
   { source: 'docs/en/USER_GUIDE.md', output: 'en/user-guide.md' },
   { source: 'docs/en/ARCHITECTURE.md', output: 'en/architecture.md' },
+  { source: 'docs/en/TEXTUAL_DSL.md', output: 'en/textual-dsl.md' },
+  { source: 'docs/en/ECORE_TO_BLOCKLY_MAPPING.md', output: 'en/ecore-to-blockly-mapping.md' },
   { source: 'docs/en/RUNNING_EXAMPLE.md', output: 'en/running-example.md' },
-  { source: 'docs/en/ECORE_REFERENCE.md', output: 'en/ecore-reference.md' },
   { source: 'docs/en/TROUBLESHOOTING.md', output: 'en/troubleshooting.md' },
   { source: 'docs/en/RELEASE_CHECKLIST.md', output: 'en/release-checklist.md' },
   { source: 'docs/es/README.md', output: 'es/index.md' },
   { source: 'docs/es/INSTALL.md', output: 'es/install.md' },
   { source: 'docs/es/USER_GUIDE.md', output: 'es/user-guide.md' },
   { source: 'docs/es/ARCHITECTURE.md', output: 'es/architecture.md' },
+  { source: 'docs/es/TEXTUAL_DSL.md', output: 'es/textual-dsl.md' },
+  { source: 'docs/es/ECORE_TO_BLOCKLY_MAPPING.md', output: 'es/ecore-to-blockly-mapping.md' },
   { source: 'docs/es/RUNNING_EXAMPLE.md', output: 'es/running-example.md' },
-  { source: 'docs/es/ECORE_REFERENCE.md', output: 'es/ecore-reference.md' },
   { source: 'docs/es/TROUBLESHOOTING.md', output: 'es/troubleshooting.md' },
   { source: 'docs/es/RELEASE_CHECKLIST.md', output: 'es/release-checklist.md' },
   { source: 'docs/zh/README.md', output: 'zh/index.md' },
   { source: 'docs/zh/INSTALL.md', output: 'zh/install.md' },
   { source: 'docs/zh/USER_GUIDE.md', output: 'zh/user-guide.md' },
   { source: 'docs/zh/ARCHITECTURE.md', output: 'zh/architecture.md' },
+  { source: 'docs/zh/TEXTUAL_DSL.md', output: 'zh/textual-dsl.md' },
+  { source: 'docs/zh/ECORE_TO_BLOCKLY_MAPPING.md', output: 'zh/ecore-to-blockly-mapping.md' },
   { source: 'docs/zh/RUNNING_EXAMPLE.md', output: 'zh/running-example.md' },
-  { source: 'docs/zh/ECORE_REFERENCE.md', output: 'zh/ecore-reference.md' },
   { source: 'docs/zh/TROUBLESHOOTING.md', output: 'zh/troubleshooting.md' },
   { source: 'docs/zh/RELEASE_CHECKLIST.md', output: 'zh/release-checklist.md' },
 ];
@@ -53,6 +56,7 @@ if (existsSync(docsAssetsDir)) {
 for (const page of pages) {
   const source = path.resolve(repoRoot, page.source);
   let markdown = readFileSync(source, 'utf8').replace(/\r\n/g, '\n');
+  markdown = injectGeneratedFeatureGallery(markdown, page);
   markdown = rewriteCodeFenceLanguages(markdown);
   markdown = protectInlineMustacheCode(markdown);
   markdown = rewriteMarkdownLinks(markdown, page);
@@ -90,6 +94,173 @@ function protectInlineMustacheCode(markdown) {
   return markdown.replace(/`([^`\n]*\{\{[^`\n]*\}\}[^`\n]*)`/g, (_, code) => {
     return `<code v-pre>${escapeHtml(code)}</code>`;
   });
+}
+
+function injectGeneratedFeatureGallery(markdown, page) {
+  const marker = '<!-- GENERATED_ECORE_FEATURE_GALLERY -->';
+  if (!markdown.includes(marker)) return markdown;
+
+  const locale = pageLocale(page);
+  const manifestPath = path.join(repoRoot, 'docs/assets/ecore-feature-gallery/manifest.json');
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const numberedEntries = manifest.map((entry, index) => ({
+    ...entry,
+    number: String(index + 1).padStart(2, '0'),
+  }));
+  const groups = groupedFeatureEntries(numberedEntries);
+  const galleryGroups = groups.map(([group, entries]) => {
+    const cards = entries.map((entry) => {
+      const title = localizedFeatureTitle(entry, locale);
+      const displayTitle = formatFeatureDisplayText(title, locale);
+      const description = localizedFeatureDescription(entry, locale);
+      const report = entry.report || `${entry.slug}/generated/generation_report.html`;
+      const coverage = coverageListHtml(entry.covers, locale);
+      const text = galleryUiText(locale);
+
+      return `<span id="feature-${escapeAttribute(entry.slug)}" class="feature-anchor"></span>
+
+#### ${entry.number}. ${displayTitle}
+
+<article class="real-feature-card">
+    <header>
+      <p class="feature-index">${entry.number}</p>
+      <p class="feature-card-summary">${escapeHtml(description)}</p>
+    </header>
+    ${coverage}
+    <div class="real-feature-grid">
+      <div class="real-feature-pane">
+        <div class="pane-title">source.ecore</div>
+        <iframe class="feature-source-frame" loading="lazy" src="../assets/ecore-feature-gallery/${escapeAttribute(entry.sourcePreview)}" title="${escapeAttribute(displayTitle)} Ecore source"></iframe>
+      </div>
+      <div class="real-feature-pane">
+        <div class="pane-title">${escapeHtml(text.generatedBlockly)}</div>
+        <iframe class="feature-preview-frame" loading="lazy" src="../assets/ecore-feature-gallery/${escapeAttribute(entry.preview)}" title="${escapeAttribute(displayTitle)} generated Blockly preview"></iframe>
+      </div>
+    </div>
+    <p class="feature-links">
+      <a target="_blank" rel="noreferrer" href="../assets/ecore-feature-gallery/${escapeAttribute(entry.source)}">source.ecore</a>
+      <a target="_blank" rel="noreferrer" href="../assets/ecore-feature-gallery/${escapeAttribute(entry.standalone)}">${escapeHtml(text.fullEditor)}</a>
+      <a target="_blank" rel="noreferrer" href="../assets/ecore-feature-gallery/${escapeAttribute(report)}">${escapeHtml(text.report)}</a>
+    </p>
+  </article>`;
+    }).join('\n\n');
+
+    return `### ${localizedGroupName(group, locale)}
+
+${cards}`;
+  }).join('\n\n');
+
+  return markdown.replace(marker, `${coverageIndexHtml(numberedEntries, locale)}\n\n${galleryGroups}`);
+}
+
+function coverageIndexHtml(manifest, locale) {
+  const text = galleryUiText(locale);
+  const groupSections = groupedFeatureEntries(manifest).map(([group, entries]) => {
+    const rows = entries.map((entry) => {
+      const title = localizedFeatureTitle(entry, locale);
+      return `<li><a href="#feature-${escapeAttribute(entry.slug)}"><span class="coverage-number">${escapeHtml(entry.number)}</span><span class="coverage-title">${escapeHtml(formatFeatureDisplayText(title, locale))}</span></a></li>`;
+    }).join('\n');
+
+    return `<div class="coverage-group">
+  <h3>${escapeHtml(localizedGroupName(group, locale))}</h3>
+  <ul>
+${rows}
+  </ul>
+</div>`;
+  }).join('\n');
+
+  return `<section class="feature-coverage-index" aria-label="${escapeAttribute(text.coverageIndex)}">
+  <h3>${escapeHtml(text.coverageIndex)}</h3>
+  <p>${text.coverageIndexDescription}</p>
+  <div class="coverage-index-grid">
+${groupSections}
+  </div>
+</section>`;
+}
+
+function groupedFeatureEntries(entries) {
+  const groups = new Map();
+  for (const entry of entries) {
+    const group = entry.group || '其他';
+    if (!groups.has(group)) groups.set(group, []);
+    groups.get(group).push(entry);
+  }
+  return [...groups.entries()];
+}
+
+function coverageListHtml(covers, locale) {
+  if (!Array.isArray(covers) || covers.length === 0) return '';
+  const items = covers.map((item) => `<li>${escapeHtml(formatFeatureDisplayText(item, locale))}</li>`).join('');
+  return `<div class="feature-coverage"><span>${escapeHtml(galleryUiText(locale).covers)}</span><ul>${items}</ul></div>`;
+}
+
+function pageLocale(page) {
+  if (page.output.startsWith('zh/')) return 'zh';
+  if (page.output.startsWith('es/')) return 'es';
+  return 'en';
+}
+
+function localizedFeatureTitle(entry, locale) {
+  return locale === 'zh' ? (entry.zhTitle || entry.title) : entry.title;
+}
+
+function localizedFeatureDescription(entry, locale) {
+  return locale === 'zh' ? (entry.zhDescription || entry.description) : entry.description;
+}
+
+function localizedGroupName(group, locale) {
+  const groups = {
+    '从默认到定制': { en: 'Defaults and customization', es: 'Valores por defecto y personalización' },
+    '零注解与字段': { en: 'Defaults and fields', es: 'Valores por defecto y campos' },
+    '字段类型': { en: 'Field types', es: 'Tipos de campo' },
+    '引用与连接': { en: 'References and connections', es: 'Referencias y conexiones' },
+    '继承与连接': { en: 'Inheritance and connections', es: 'Herencia y conexiones' },
+    '校验': { en: 'Validation', es: 'Validación' },
+    'Blockly 注解': { en: 'Blockly annotations', es: 'Anotaciones Blockly' },
+    'Toolbox 分类': { en: 'Toolbox categories', es: 'Categorías de toolbox' },
+    '代码生成': { en: 'Code generation', es: 'Generación de código' },
+    'Workspace 配置': { en: 'Workspace options', es: 'Opciones de workspace' },
+    'UI 元数据': { en: 'UI metadata', es: 'Metadatos UI' },
+    'Ecore 结构': { en: 'Ecore structure', es: 'Estructura Ecore' },
+    '运行时': { en: 'Runtime', es: 'Runtime' },
+  };
+  return locale === 'zh' ? group : (groups[group]?.[locale] || group);
+}
+
+function galleryUiText(locale) {
+  if (locale === 'zh') {
+    return {
+      coverageIndex: '覆盖索引',
+      coverageIndexDescription: '索引用于快速定位最小 <code>.ecore</code> 示例。每个示例页内提供源码、Blockly 预览和生成报告。',
+      covers: '覆盖',
+      generatedBlockly: '生成的 Blockly HTML',
+      fullEditor: '完整编辑器',
+      report: '生成报告',
+    };
+  }
+  if (locale === 'es') {
+    return {
+      coverageIndex: 'Índice de cobertura',
+      coverageIndexDescription: 'El índice permite localizar rápidamente ejemplos mínimos <code>.ecore</code>. Cada ejemplo incluye el código fuente, una vista Blockly y el informe de generación.',
+      covers: 'Cubre',
+      generatedBlockly: 'HTML Blockly generado',
+      fullEditor: 'Editor completo',
+      report: 'Informe de generación',
+    };
+  }
+  return {
+    coverageIndex: 'Coverage Index',
+    coverageIndexDescription: 'Use this index to locate minimal <code>.ecore</code> examples. Each example includes source, a Blockly preview and a generation report.',
+    covers: 'Covers',
+    generatedBlockly: 'Generated Blockly HTML',
+    fullEditor: 'Full editor',
+    report: 'Generation report',
+  };
+}
+
+function formatFeatureDisplayText(value, locale) {
+  const replacement = locale === 'zh' ? ' 转为 ' : ' to ';
+  return String(value).replace(/\s*->\s*/g, replacement);
 }
 
 function rewriteMarkdownLinks(markdown, page) {
@@ -158,14 +329,8 @@ const enSidebar = [
     text: 'Design',
     items: [
       { text: 'Architecture', link: '/en/architecture' },
-      { text: 'Ecore Reference', link: '/en/ecore-reference' },
-    ],
-  },
-  {
-    text: 'Operate',
-    items: [
-      { text: 'Troubleshooting', link: '/en/troubleshooting' },
-      { text: 'Release Checklist', link: '/en/release-checklist' },
+      { text: 'Textual DSL', link: '/en/textual-dsl' },
+      { text: 'Ecore Mapping', link: '/en/ecore-to-blockly-mapping' },
     ],
   },
 ];
@@ -184,14 +349,8 @@ const esSidebar = [
     text: 'Diseño',
     items: [
       { text: 'Arquitectura', link: '/es/architecture' },
-      { text: 'Referencia Ecore', link: '/es/ecore-reference' },
-    ],
-  },
-  {
-    text: 'Operación',
-    items: [
-      { text: 'Solución de problemas', link: '/es/troubleshooting' },
-      { text: 'Checklist de publicación', link: '/es/release-checklist' },
+      { text: 'DSL textual', link: '/es/textual-dsl' },
+      { text: 'Mapeo Ecore', link: '/es/ecore-to-blockly-mapping' },
     ],
   },
 ];
@@ -210,14 +369,8 @@ const zhSidebar = [
     text: '设计',
     items: [
       { text: '架构', link: '/zh/architecture' },
-      { text: 'Ecore 参考', link: '/zh/ecore-reference' },
-    ],
-  },
-  {
-    text: '运维',
-    items: [
-      { text: '故障排查', link: '/zh/troubleshooting' },
-      { text: '发布清单', link: '/zh/release-checklist' },
+      { text: '文本 DSL', link: '/zh/textual-dsl' },
+      { text: 'Ecore 到 Blockly', link: '/zh/ecore-to-blockly-mapping' },
     ],
   },
 ];
@@ -225,7 +378,7 @@ const zhSidebar = [
 export default defineConfig({
   base,
   title: 'Model2Blockly',
-  description: 'Generate Blockly editors from annotated Ecore metamodels.',
+  description: 'Generate Blockly editors from Ecore metamodels or .m2b textual DSL models.',
   cleanUrls: false,
   lastUpdated: false,
   markdown: {
@@ -236,16 +389,17 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       title: 'Model2Blockly',
-      description: 'Generate Blockly editors from annotated Ecore metamodels.',
+      description: 'Generate Blockly editors from Ecore metamodels or .m2b textual DSL models.',
       themeConfig: {
         nav: [
           { text: 'Home', link: '/en/' },
           { text: 'Install', link: '/en/install' },
           { text: 'User Guide', link: '/en/user-guide' },
           { text: 'AppMaker Case', link: '/en/running-example' },
+          { text: 'Textual DSL', link: '/en/textual-dsl' },
+          { text: 'Mapping', link: '/en/ecore-to-blockly-mapping' },
           { text: 'Architecture', link: '/en/architecture' },
           { text: 'Reference', items: [
-            { text: 'Ecore annotations', link: '/en/ecore-reference' },
             { text: 'Troubleshooting', link: '/en/troubleshooting' },
             { text: 'Release checklist', link: '/en/release-checklist' },
           ] },
@@ -259,16 +413,17 @@ export default defineConfig({
       label: 'Español',
       lang: 'es-ES',
       title: 'Model2Blockly',
-      description: 'Genera editores Blockly desde metamodelos Ecore anotados.',
+      description: 'Genera editores Blockly desde metamodelos Ecore o modelos textuales .m2b.',
       themeConfig: {
         nav: [
           { text: 'Inicio', link: '/es/' },
           { text: 'Instalar', link: '/es/install' },
           { text: 'Guía de uso', link: '/es/user-guide' },
           { text: 'Caso AppMaker', link: '/es/running-example' },
+          { text: 'DSL textual', link: '/es/textual-dsl' },
+          { text: 'Mapeo', link: '/es/ecore-to-blockly-mapping' },
           { text: 'Arquitectura', link: '/es/architecture' },
           { text: 'Referencia', items: [
-            { text: 'Anotaciones Ecore', link: '/es/ecore-reference' },
             { text: 'Solución de problemas', link: '/es/troubleshooting' },
             { text: 'Checklist de publicación', link: '/es/release-checklist' },
           ] },
@@ -282,23 +437,24 @@ export default defineConfig({
       label: '中文',
       lang: 'zh-CN',
       title: 'Model2Blockly',
-      description: '从带注解的 Ecore 元模型生成 Blockly 编辑器。',
+      description: '从 Ecore 元模型或 .m2b 文本 DSL 生成 Blockly 编辑器。',
       themeConfig: {
         nav: [
           { text: '首页', link: '/zh/' },
           { text: '安装', link: '/zh/install' },
           { text: '使用指南', link: '/zh/user-guide' },
           { text: 'AppMaker 案例', link: '/zh/running-example' },
+          { text: '文本 DSL', link: '/zh/textual-dsl' },
+          { text: '映射规则', link: '/zh/ecore-to-blockly-mapping' },
           { text: '架构', link: '/zh/architecture' },
           { text: '参考', items: [
-            { text: 'Ecore 注解', link: '/zh/ecore-reference' },
             { text: '故障排查', link: '/zh/troubleshooting' },
             { text: '发布清单', link: '/zh/release-checklist' },
           ] },
           { text: '演示', link: appMakerDemo },
         ],
         sidebar: zhSidebar,
-        outline: { label: '本页目录', level: [2, 3] },
+        outline: { label: '本页目录', level: [2, 4] },
       },
     },
   },
@@ -311,7 +467,7 @@ export default defineConfig({
       { icon: 'github', link: repoUrl },
     ],
     footer: {
-      message: 'Model2Blockly documentation · Ecore to Blockly through an EMF intermediate model.',
+      message: 'Model2Blockly documentation · Ecore and .m2b to Blockly through an EMF intermediate model.',
     },
   },
 });
@@ -393,7 +549,19 @@ export default DefaultTheme;
 }
 
 .VPDoc .content-container {
-  max-width: 920px;
+  max-width: 1040px !important;
+}
+
+.appmaker-case-page .VPDoc .content,
+.ecore-mapping-page .VPDoc .content {
+  flex: 1 1 auto;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.appmaker-case-page .VPDoc .content-container,
+.ecore-mapping-page .VPDoc .content-container {
+  max-width: 1120px !important;
 }
 
 .VPDoc img {
@@ -410,6 +578,299 @@ export default DefaultTheme;
 .VPDoc td,
 .VPDoc th {
   word-break: break-word;
+}
+
+.feature-coverage-index {
+  margin: 22px 0 30px;
+  padding: 18px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+}
+
+.feature-coverage-index h3 {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  font-size: 18px;
+}
+
+.feature-coverage-index p {
+  margin: 0 0 14px;
+  color: var(--vp-c-text-2);
+}
+
+.coverage-index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.coverage-group {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+}
+
+.coverage-group h3 {
+  margin: 0 0 8px;
+  color: var(--vp-c-text-1);
+  font-size: 15px;
+}
+
+.coverage-group ul {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.coverage-group li {
+  min-width: 0;
+}
+
+.coverage-group a {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  min-height: 32px;
+  padding: 5px 6px;
+  border-radius: 6px;
+  color: var(--vp-c-text-1);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.coverage-group a:hover {
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-brand-1);
+}
+
+.coverage-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 22px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.coverage-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.feature-anchor {
+  display: block;
+  position: relative;
+  top: -92px;
+  visibility: hidden;
+}
+
+.real-feature-gallery {
+  display: grid;
+  gap: 28px;
+  margin: 24px 0 36px;
+}
+
+.real-feature-card {
+  padding-top: 14px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.real-feature-card:last-child {
+  border-bottom: 1px solid var(--vp-c-divider);
+  padding-bottom: 18px;
+}
+
+.real-feature-card header {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: start;
+  margin: 0 0 12px;
+}
+
+.real-feature-card h3 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--vp-c-text-1);
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.real-feature-card .feature-card-summary {
+  grid-column: 2;
+  margin: 0 !important;
+  color: var(--vp-c-text-2);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.feature-coverage {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+}
+
+.feature-coverage > span {
+  flex: 0 0 auto;
+  padding-top: 5px;
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.feature-coverage ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none;
+}
+
+.feature-coverage li {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  margin: 0 !important;
+  padding: 3px 8px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.real-feature-card .feature-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 28px;
+  margin: 0 !important;
+  padding: 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.real-feature-grid {
+  display: grid;
+  grid-template-columns: minmax(420px, 1fr) minmax(420px, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.real-feature-pane {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+}
+
+.pane-title {
+  padding: 8px 11px;
+  border-bottom: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.feature-source-frame,
+.feature-preview-frame {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: var(--vp-c-bg-soft);
+}
+
+.feature-source-frame {
+  height: 430px;
+}
+
+.feature-preview-frame {
+  height: 430px;
+}
+
+.feature-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0 0;
+}
+
+.feature-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 9px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-brand-1);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+@media (max-width: 980px) {
+  .appmaker-case-page .VPDoc .content-container,
+  .ecore-mapping-page .VPDoc .content-container {
+    max-width: 100% !important;
+  }
+
+  .coverage-index-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .real-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-source-frame,
+  .feature-preview-frame {
+    height: 390px;
+  }
+}
+
+@media (max-width: 560px) {
+  .real-feature-card header {
+    grid-template-columns: 1fr;
+  }
+
+  .real-feature-card .feature-card-summary {
+    grid-column: 1;
+  }
+
+  .real-feature-card .feature-index {
+    margin-bottom: 8px !important;
+  }
 }
 `);
 }
@@ -441,4 +902,8 @@ function escapeHtml(value) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(value).replace(/"/g, '&quot;');
 }

@@ -37,8 +37,9 @@ jobs:
         run: |
           set -euo pipefail
           npm run build:site-docs
-          mkdir -p _site/app_maker_ecore _site/update-site
+          mkdir -p _site/app_maker_ecore _site/app_maker_dsl _site/update-site
           cp -R io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/. _site/app_maker_ecore/
+          cp -R io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/html/. _site/app_maker_dsl/
           cp -R io.github.plortinus.model2blockly.updatesite/repository/. _site/update-site/
           cp io.github.plortinus.model2blockly.updatesite/category.xml _site/update-site/category.xml
           cp site/update-site/index.html _site/update-site/index.html

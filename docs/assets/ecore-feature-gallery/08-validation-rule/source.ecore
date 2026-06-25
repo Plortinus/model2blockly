@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="validationrule"
+    nsURI="https://plortinus.github.io/model2blockly/examples/validationrule"
+    nsPrefix="validationrule">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="Flow">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Flow"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actions"
+        lowerBound="1" upperBound="4" eType="#//Action" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Action" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Alert" eSuperTypes="#//Action">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Leaving page"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Navigate" eSuperTypes="#//Action">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Actions"/>
+    </eAnnotations>
+    <eAnnotations source="validation">
+      <details key="mustFollow" value="Alert"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="target"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="details"/>
+  </eClassifiers>
+
+</ecore:EPackage>

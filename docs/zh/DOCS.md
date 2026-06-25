@@ -10,7 +10,7 @@
 | 安装插件并生成第一个编辑器 | [快速开始](GETTING_STARTED.md) |
 | 查看完整 AppMaker 示例 | [AppMaker 案例](RUNNING_EXAMPLE.md) |
 | 了解项目概况 | [项目概览](PROJECT.md) |
-| 使用 Ecore 注解 | [Ecore 参考](ECORE_REFERENCE.md) |
+| 使用 Ecore 注解 | [Ecore 到 Blockly 映射规则](ECORE_TO_BLOCKLY_MAPPING.md) |
 | 解决安装或生成错误 | [排错](TROUBLESHOOTING.md) |
 | 发布前检查 | [发布检查清单](RELEASE_CHECKLIST.md) |
 

@@ -20,8 +20,8 @@ hero:
 features:
   - title: Ecore es la entrada principal
     details: Selecciona un archivo Ecore en Eclipse o usa el punto de entrada standalone de Ecore. Las anotaciones opcionales refinan etiquetas, categorías, widgets, validaciones y plantillas de código.
-    link: /es/ecore-reference
-    linkText: Referencia de anotaciones
+    link: /es/ecore-to-blockly-mapping
+    linkText: Reglas de mapeo
   - title: EditorSpec es el contrato de generación
     details: El EPackage fuente se transforma en un modelo EMF EditorSpec, se serializa como XMI, se recarga y se valida antes de generar HTML.
     link: /es/architecture

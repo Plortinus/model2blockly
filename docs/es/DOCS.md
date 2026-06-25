@@ -10,7 +10,7 @@ Use este mapa para elegir la página correcta sin leer todo el repositorio.
 | Instalar el plugin y generar el primer editor | [Guía rápida](GETTING_STARTED.md) |
 | Revisar el ejemplo completo AppMaker | [Caso AppMaker](RUNNING_EXAMPLE.md) |
 | Entender el proyecto | [Vista general](PROJECT.md) |
-| Usar anotaciones Ecore | [Referencia Ecore](ECORE_REFERENCE.md) |
+| Usar anotaciones Ecore | [Mapeo de Ecore a Blockly](ECORE_TO_BLOCKLY_MAPPING.md) |
 | Resolver errores de instalación o generación | [Solución de problemas](TROUBLESHOOTING.md) |
 | Preparar una entrega | [Release checklist](RELEASE_CHECKLIST.md) |
 

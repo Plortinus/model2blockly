@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="autocategory"
+    nsURI="https://plortinus.github.io/model2blockly/examples/autocategory"
+    nsPrefix="autocategory">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="Sprite">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commands"
+        lowerBound="1" upperBound="4" eType="#//Command" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Command" abstract="true"/>
+
+  <eClassifiers xsi:type="ecore:EClass" name="MovementCommand" abstract="true" eSuperTypes="#//Command"/>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Move" eSuperTypes="#//MovementCommand">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="steps"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="10"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Turn" eSuperTypes="#//MovementCommand">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="degrees"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="15"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Say" eSuperTypes="#//Command">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Hello"/>
+  </eClassifiers>
+
+</ecore:EPackage>

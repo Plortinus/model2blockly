@@ -1,0 +1,22 @@
+[
+  {
+    "_type": "Library",
+    "_blockId": "sample_Library_1",
+    "authors": [
+      {
+        "_type": "Author",
+        "_blockId": "sample_Author_1",
+        "authorId": "author-1",
+        "displayName": "Ada Lovelace"
+      }
+    ],
+    "books": [
+      {
+        "_type": "Book",
+        "_blockId": "sample_Book_1",
+        "title": "Notes",
+        "author": "sample_Author_1"
+      }
+    ]
+  }
+]

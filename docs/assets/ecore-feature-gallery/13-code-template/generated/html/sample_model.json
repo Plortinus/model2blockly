@@ -1,0 +1,8 @@
+[
+  {
+    "_type": "ApiCall",
+    "_blockId": "sample_ApiCall_1",
+    "url": "/api/tasks",
+    "method": "GET"
+  }
+]

@@ -1,7 +1,7 @@
 /**
  * Xtext generator entry point.
  * 
- * Converts each DomainModel (from .model2blockly) into a BlocklyEditorSpec
+ * Converts each DomainModel (from .m2b) into a BlocklyEditorSpec
  * (platform-independent intermediate model), serializes it as XMI, reloads
  * that XMI, then delegates to
  * BlocklyCodeGenerator to produce the Blockly HTML output files.

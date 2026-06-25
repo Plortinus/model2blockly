@@ -1,0 +1,14 @@
+[
+  {
+    "_type": "Checklist",
+    "_blockId": "sample_Checklist_1",
+    "name": "Launch",
+    "items": [
+      {
+        "_type": "ChecklistItem",
+        "_blockId": "sample_ChecklistItem_1",
+        "text": "Review"
+      }
+    ]
+  }
+]

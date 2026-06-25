@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Annotatedcustomization" nsURI="https://plortinus.github.io/model2blockly/examples/annotatedcustomization" nsPrefix="annotatedcustomization" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Work" label="Work" colour="210">
+    <children name="Boards" label="Boards" colour="210"/>
+    <children name="Tasks" label="Tasks" colour="120"/>
+  </categories>
+  <blockTypes typeName="TaskBoard" label="TaskBoard" colour="210" categoryName="Boards" connectionType="NONE" tooltip="A board that contains tasks.">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>tasks</orderedInputNames>
+    <fields name="name" defaultValue="Sprint board" uiLabel="Board name"/>
+    <statementInputs name="tasks" checkType="Task" lowerBound="1" uiLabel="Tasks"/>
+  </blockTypes>
+  <blockTypes typeName="Task" label="Task" colour="120" categoryName="Tasks" connectionType="TYPED" connectionTypeName="Task" inputsInline="true" tooltip="Task details.">
+    <orderedInputNames>title</orderedInputNames>
+    <orderedInputNames>done</orderedInputNames>
+    <orderedInputNames>priority</orderedInputNames>
+    <fields name="title" defaultValue="Write docs" required="true" lowerBound="1" uiLabel="Title" uiPlaceholder="Task title"/>
+    <fields name="done" fieldType="BOOLEAN" defaultValue="false" uiLabel="Done"/>
+    <fields name="priority" fieldType="DROPDOWN" defaultValue="medium" uiLabel="Priority">
+      <options value="low" label="low"/>
+      <options value="medium" label="medium"/>
+      <options value="high" label="high"/>
+    </fields>
+  </blockTypes>
+  <validations type="CARDINALITY" name="TaskBoard_tasks" ownerType="TaskBoard" containmentName="tasks" lowerBound="1">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="TaskBoard"/>
+      <fields name="INPUT" value="tasks"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="unbounded"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="GTE">
+      <children kind="INPUT_COUNT" fieldName="tasks"/>
+      <children kind="NUMBER_LITERAL" literal="1"/>
+    </visualExpression>
+  </validations>
+  <validations type="REQUIRED" name="Task_title_required" ownerType="Task" fieldName="title" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Task"/>
+      <fields name="FIELD" value="title"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="title"/>
+  </validations>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="grid" valueType="OBJECT">
+    <children key="spacing" value="24" valueType="INTEGER"/>
+    <children key="snap" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

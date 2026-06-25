@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Uimetadata" nsURI="https://plortinus.github.io/model2blockly/examples/uimetadata" nsPrefix="uimetadata" codeLanguage="text" codeFileExtension="txt">
+  <categories name="UI" label="UI" colour="170"/>
+  <blockTypes typeName="ProfileForm" label="Profile form" colour="170" categoryName="UI">
+    <orderedInputNames>displayName</orderedInputNames>
+    <orderedInputNames>slug</orderedInputNames>
+    <orderedInputNames>internalToken</orderedInputNames>
+    <fields name="displayName" defaultValue="Ada" required="true" lowerBound="1" uiWidget="text" uiLabel="Display name" uiHelp="Shown in the account header." uiPlaceholder="Full name" uiGroup="Identity" uiOrder="1"/>
+    <fields name="slug" defaultValue="ada" uiLabel="Slug" uiGroup="Identity" uiOrder="2" uiReadonly="true"/>
+    <fields name="internalToken" defaultValue="sys-001" uiGroup="System" uiOrder="99" uiHidden="true" uiVariant="system"/>
+  </blockTypes>
+  <validations type="REQUIRED" name="ProfileForm_displayName_required" ownerType="ProfileForm" fieldName="displayName" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="ProfileForm"/>
+      <fields name="FIELD" value="displayName"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="displayName"/>
+  </validations>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

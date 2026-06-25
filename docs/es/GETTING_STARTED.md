@@ -160,6 +160,6 @@ Genere de nuevo y vuelva a abrir `generation_report.html`.
 
 | Necesidad | Documento |
 | --- | --- |
-| Anotaciones Ecore | [`ECORE_REFERENCE.md`](ECORE_REFERENCE.md) |
+| Anotaciones Ecore | [`ECORE_TO_BLOCKLY_MAPPING.md`](ECORE_TO_BLOCKLY_MAPPING.md) |
 | Problemas comunes | [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) |
 | Mapa completo en ingles | [`../../DOCS.md`](../../DOCS.md) |

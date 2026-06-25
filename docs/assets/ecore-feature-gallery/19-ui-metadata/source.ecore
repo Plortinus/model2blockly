@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="uimetadata"
+    nsURI="https://plortinus.github.io/model2blockly/examples/uimetadata"
+    nsPrefix="uimetadata">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="ProfileForm">
+    <eAnnotations source="blockly">
+      <details key="colour" value="170"/>
+      <details key="category" value="UI"/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Profile form"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="displayName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Ada">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Display name"/>
+        <details key="help" value="Shown in the account header."/>
+        <details key="placeholder" value="Full name"/>
+        <details key="group" value="Identity"/>
+        <details key="order" value="1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="slug"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="ada">
+      <eAnnotations source="ui">
+        <details key="label" value="Slug"/>
+        <details key="readonly" value="true"/>
+        <details key="group" value="Identity"/>
+        <details key="order" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="internalToken"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="sys-001">
+      <eAnnotations source="ui">
+        <details key="hidden" value="true"/>
+        <details key="variant" value="system"/>
+        <details key="group" value="System"/>
+        <details key="order" value="99"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+</ecore:EPackage>

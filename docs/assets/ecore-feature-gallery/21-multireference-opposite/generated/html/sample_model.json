@@ -1,0 +1,24 @@
+[
+  {
+    "_type": "Organization",
+    "_blockId": "sample_Organization_1",
+    "teams": [
+      {
+        "_type": "Team",
+        "_blockId": "sample_Team_1",
+        "name": "platform",
+        "members": [
+          "sample_Member_1"
+        ]
+      }
+    ],
+    "members": [
+      {
+        "_type": "Member",
+        "_blockId": "sample_Member_1",
+        "name": "alice",
+        "team": "sample_Team_1"
+      }
+    ]
+  }
+]

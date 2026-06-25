@@ -1,0 +1,2294 @@
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Referenceselect — Blockly Editor</title>
+		<script src="https://unpkg.com/blockly/blockly.min.js"></script>
+		<script src="https://unpkg.com/blockly/javascript_compressed.js"></script>
+		<style>
+			:root{color-scheme:light;--bg:#f4f6f8;--surface:#fff;--panel:#fbfcfe;--text:#17202a;--muted:#5d6875;--line:#d9dee7;--accent:#1f6feb;--accent-strong:#174ea6;--success:#15803d;--warning:#8a5a00;--danger:#b42318}
+			*{box-sizing:border-box}
+			body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;display:flex;flex-direction:column;height:100vh;min-height:0}
+			button,summary{font:inherit}
+			button{border:1px solid var(--line);background:#fff;color:var(--text);padding:7px 11px;border-radius:6px;cursor:pointer;font-weight:650;white-space:nowrap}
+			button:hover,summary:hover{border-color:#b8c2cf;background:#f8fafc}
+			button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+			#header.appbar{background:var(--surface);border-bottom:1px solid var(--line);padding:10px 14px;display:grid;grid-template-columns:minmax(220px,auto) 1fr;gap:12px;align-items:center;box-shadow:0 1px 2px rgba(15,23,42,.04);z-index:2}
+			.header-title{min-width:0}
+			.header-kicker{margin:0 0 2px;color:var(--muted);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0}
+			#header h1{margin:0;font-size:1.15rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+			.editor-mode-hint{margin-top:2px;color:var(--muted);font-size:.76rem}
+			.header-buttons{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+			.toolbar-group{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-right:8px;border-right:1px solid var(--line)}
+			.toolbar-group:last-child{padding-right:0;border-right:0}
+			.command-button{min-height:34px}
+			.button-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+			.button-primary:hover{background:var(--accent-strong);border-color:var(--accent-strong)}
+			.button-success{background:#ecfdf3;border-color:#bbf7d0;color:#166534}
+			.button-danger{background:#fef2f2;border-color:#fecaca;color:var(--danger)}
+			.mode-toggle{display:flex;gap:0;padding:2px;border:1px solid var(--line);border-radius:8px;background:#f8fafc}
+			.mode-toggle button{border:0;background:transparent;color:var(--muted);padding:6px 9px;border-radius:6px}
+			.mode-toggle button.active{background:var(--surface);color:var(--accent);box-shadow:0 1px 3px rgba(15,23,42,.12)}
+			.toolbar-menu{position:relative}
+			.toolbar-menu summary{list-style:none;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--text);padding:7px 11px;cursor:pointer;font-weight:bold;white-space:nowrap}
+			.toolbar-menu summary::-webkit-details-marker{display:none}
+			.toolbar-menu-panel{position:absolute;right:0;top:calc(100% + 8px);min-width:230px;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 16px 34px rgba(15,23,42,.18);display:flex;flex-direction:column;gap:6px;z-index:20}
+			.toolbar-menu-panel button{width:100%;text-align:left}
+			.speed-control{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.82rem;padding:4px 2px}
+			.speed-control input{width:90px}
+			.editor-toast{position:fixed;right:16px;bottom:16px;max-width:min(420px,calc(100vw - 32px));padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);box-shadow:0 14px 36px rgba(15,23,42,.18);z-index:30;display:none}
+			.editor-toast.visible{display:block}
+			.editor-toast.error{border-color:#fecaca;background:#fef2f2;color:#991b1b}
+			.editor-toast.warning{border-color:#fde68a;background:#fffbeb;color:#92400e}
+			#main{display:grid;grid-template-columns:minmax(520px,1fr) minmax(360px,min(40vw,500px));gap:12px;flex:1;min-height:0;overflow:hidden;padding:12px}
+			.workspace-shell,.inspector-panel{min-height:0;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+			.workspace-shell{display:flex;flex-direction:column}
+			.workspace-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--panel)}
+			.workspace-title{font-weight:700}
+			.workspace-hint{color:var(--muted);font-size:.78rem}
+			#blocklyDiv{flex:1 1 auto;min-height:0;height:100%}
+			#outputPanel{display:flex;flex-direction:column;min-width:0}
+			.panel-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 12px 6px}
+			#outputPanel h2{margin:0;font-size:1rem;color:var(--text);line-height:1.2}
+			.panel-subtitle{margin-top:2px;color:var(--muted);font-size:.76rem}
+			#tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:0 10px;overflow-x:auto;scrollbar-width:thin}
+			#tabs button{flex:0 0 auto;padding:8px 10px;border:0;background:#f1f4f8;color:#526071;border-radius:6px 6px 0 0}
+			#tabs button.active{background:#fff;color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent)}
+			body:not(.developer-mode) [data-developer-only="true"]{display:none!important}
+			.tab-content{flex:1;display:none;margin:0 10px 10px;padding:10px;overflow:auto;font-size:.85em;border:1px solid var(--line);border-top:0;border-radius:0 0 6px 6px;min-height:0}
+			.tab-content.active{display:block}
+			#modelView{background:#fff;font-family:Arial,sans-serif}
+			#jsonView{background:#f5f5f5;font-family:monospace;white-space:pre-wrap}
+			#runtimeView{background:#172033;color:#d4d4d4;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82em;white-space:pre-wrap}
+			.model-node{margin:4px 0;padding:8px 12px;border-radius:6px;border-left:4px solid #4285f4}
+			.model-node .node-type{font-weight:bold;font-size:.9em;color:#333}
+			.model-node .node-attr{font-size:.8em;color:#666;margin-top:2px}
+			.model-node .node-attr span{background:#e8f0fe;padding:1px 6px;border-radius:3px;margin-right:4px}
+			.model-children{margin-left:16px;padding-left:8px;border-left:2px dashed #ccc}
+			.validation-summary{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:.85em;color:#333}
+			.validation-empty{color:#5f6368;text-align:center;margin-top:40px}
+			.validation-list{display:flex;flex-direction:column;gap:8px}
+			.validation-item{border:1px solid #f4b400;border-left:4px solid #f4b400;background:#fff8e1;border-radius:4px;padding:8px 10px;text-align:left;cursor:pointer;color:#3c4043}
+			.validation-item:hover{background:#fff3c4}
+			.validation-item-type{font-size:.75em;font-weight:bold;color:#8a5a00;margin-bottom:3px}
+			.validation-item-message{font-size:.85em;line-height:1.35}
+			#validationBlocksView{padding:0;background:#f5f7fb;overflow:hidden}
+			#validationBlocksView iframe{width:100%;height:100%;min-height:520px;border:0;background:#fff}
+			.reference-dialog-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;z-index:9999}
+			.reference-dialog-panel{background:#fff;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.25);width:min(420px,calc(100vw - 32px));max-height:min(520px,calc(100vh - 32px));display:flex;flex-direction:column}
+			.reference-dialog-title{font-weight:bold;color:#202124;padding:14px 16px;border-bottom:1px solid #e0e0e0}
+			.reference-dialog-list{padding:8px 16px;overflow:auto}
+			.reference-dialog-row{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:.9em;color:#333}
+			.reference-dialog-row input{margin:0}
+			.reference-dialog-empty{padding:18px 0;color:#777;text-align:center}
+			.reference-dialog-textarea{margin:12px 16px 0;min-height:160px;resize:vertical;border:1px solid #dadce0;border-radius:4px;padding:8px;font:13px/1.4 monospace}
+			.reference-dialog-actions{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid #e0e0e0}
+			.reference-dialog-actions button{border:1px solid #dadce0;background:#fff;border-radius:4px;padding:7px 12px;cursor:pointer;font-weight:bold}
+			.reference-dialog-actions .reference-dialog-primary{background:#1a73e8;border-color:#1a73e8;color:#fff}
+			.rt-step{padding:2px 6px;border-bottom:1px solid #333}.rt-step:hover{background:#2a2a2a}
+			.rt-done{padding:4px 6px;color:#4CAF50;font-weight:bold;border-top:1px solid #444}
+			.rt-info{padding:2px 6px;color:#888;font-style:italic}
+			.rt-err{padding:2px 6px;color:#f44336}
+			@media (max-width: 1040px){
+				#header.appbar{grid-template-columns:1fr}
+				.header-buttons{justify-content:flex-start}
+				#main{grid-template-columns:1fr;overflow:auto}
+				.workspace-shell{min-height:420px}
+				.inspector-panel{min-height:420px;max-height:620px}
+			}
+			@media (max-width: 560px){
+				#header.appbar{padding:10px}
+				.toolbar-group{width:100%;border-right:0;padding-right:0}
+				.toolbar-group.primary-actions button{flex:1 1 auto}
+				.mode-toggle{width:100%}
+				.mode-toggle button{flex:1}
+				.toolbar-menu{width:100%}
+				.toolbar-menu summary{width:100%;text-align:center}
+				.toolbar-menu-panel{position:static;margin-top:6px;box-shadow:none}
+				#main{padding:8px}
+				.workspace-shell{min-height:360px}
+				.inspector-panel{min-height:420px;max-height:520px}
+			}
+				#previewView{background:#eef2f7;padding:0}
+				.app-preview-shell{min-height:100%;background:#eef2f7;color:#172033;font-family:Arial,sans-serif}
+				.app-preview-phone{max-width:420px;margin:16px auto;background:#fff;border:1px solid #d8dee9;border-radius:8px;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,.14)}
+				.app-preview-header{padding:14px 16px;background:#1f6feb;color:#fff}
+				.app-preview-title{font-size:1rem;font-weight:bold;margin:0}
+				.app-preview-subtitle{font-size:.78rem;opacity:.85;margin-top:3px}
+				.app-preview-nav{display:flex;gap:6px;padding:10px;background:#f8fafc;border-bottom:1px solid #e5e7eb;overflow:auto}
+				.app-preview-nav button{border:1px solid #cfd8e3;background:#fff;border-radius:4px;padding:6px 9px;cursor:pointer;color:#1f2937;font-size:.78rem}
+				.app-preview-nav button.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
+				.app-preview-page{padding:14px;display:flex;flex-direction:column;gap:12px;min-height:360px}
+				.app-preview-page.row{flex-direction:row;align-items:flex-start}
+				.app-preview-page.grid{display:grid;grid-template-columns:1fr 1fr;align-content:start}
+				.app-preview-status{margin:0 14px 12px;padding:8px 10px;background:#ecfdf3;border:1px solid #bbf7d0;color:#166534;border-radius:4px;font-size:.8rem}
+				.app-preview-component{box-sizing:border-box}
+				.app-preview-text{margin:0;color:#111827;line-height:1.4}
+				.app-preview-text.title{font-size:1.35rem;font-weight:bold}
+				.app-preview-text.subtitle{font-size:1rem;font-weight:bold;color:#475569}
+				.app-preview-text.caption{font-size:.75rem;color:#64748b}
+				.app-preview-text.center{text-align:center}
+				.app-preview-text.end{text-align:right}
+				.app-preview-field{display:flex;flex-direction:column;gap:5px}
+				.app-preview-field label{font-size:.78rem;font-weight:bold;color:#334155}
+				.app-preview-field input,.app-preview-field textarea,.app-preview-field select{border:1px solid #cbd5e1;border-radius:4px;padding:8px;font:inherit;background:#fff}
+				.app-preview-fieldset{border:1px solid #cbd5e1;border-radius:6px;padding:10px;margin:0}
+				.app-preview-fieldset legend{font-size:.78rem;font-weight:bold;color:#334155;padding:0 4px}
+				.app-preview-option{display:flex;align-items:center;gap:7px;margin:6px 0;color:#334155}
+				.app-preview-button{border:0;border-radius:4px;padding:9px 12px;cursor:pointer;font-weight:bold}
+				.app-preview-button.primary{background:#1f6feb;color:#fff}
+				.app-preview-button.secondary{background:#e5e7eb;color:#111827}
+				.app-preview-button.danger{background:#dc2626;color:#fff}
+				.app-preview-button.ghost{background:transparent;color:#1f6feb;border:1px solid #1f6feb}
+				.app-preview-list{border:1px solid #e2e8f0;border-radius:6px;overflow:hidden}
+				.app-preview-list-row{padding:9px 10px;border-bottom:1px solid #e2e8f0;background:#fff}
+				.app-preview-list-row:last-child{border-bottom:0}
+				.app-preview-empty{padding:12px;color:#64748b;text-align:center}
+				.app-preview-card{border:1px solid #e2e8f0;border-radius:6px;padding:12px;background:#fff}
+				.app-preview-card-title{font-weight:bold;margin-bottom:8px}
+				.app-preview-form{border:1px solid #cbd5e1;border-radius:6px;padding:12px;background:#f8fafc;display:flex;flex-direction:column;gap:10px}
+				.app-preview-form-title{font-weight:bold;color:#172033}
+				.app-preview-table{width:100%;border-collapse:collapse;border:1px solid #e2e8f0;background:#fff;font-size:.82rem}
+				.app-preview-table th,.app-preview-table td{border-bottom:1px solid #e2e8f0;padding:7px 8px;text-align:left}
+				.app-preview-table th{background:#f8fafc;color:#334155;font-weight:bold}
+				.app-preview-tabs{border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;background:#fff}
+				.app-preview-tabbar{display:flex;gap:0;border-bottom:1px solid #e2e8f0;background:#f8fafc;overflow:auto}
+				.app-preview-tabbar button{border:0;border-right:1px solid #e2e8f0;background:transparent;padding:8px 10px;cursor:pointer;color:#334155}
+				.app-preview-tabbar button.active{background:#fff;color:#1f6feb;font-weight:bold}
+				.app-preview-tab-panel{padding:10px;display:flex;flex-direction:column;gap:10px}
+				.app-preview-dialog{border:0;border-radius:8px;padding:0;max-width:360px;width:calc(100% - 48px);box-shadow:0 14px 38px rgba(15,23,42,.28)}
+				.app-preview-dialog::backdrop{background:rgba(15,23,42,.38)}
+				.app-preview-dialog-header{padding:12px 14px;background:#1f6feb;color:#fff;font-weight:bold}
+				.app-preview-dialog-body{padding:14px;display:flex;flex-direction:column;gap:10px}
+				.app-preview-toast{padding:10px 12px;border-radius:6px;border:1px solid #cbd5e1;background:#f8fafc;color:#334155}
+				.app-preview-toast.success{border-color:#bbf7d0;background:#ecfdf3;color:#166534}
+				.app-preview-toast.warning{border-color:#fde68a;background:#fffbeb;color:#92400e}
+				.app-preview-toast.error{border-color:#fecaca;background:#fef2f2;color:#991b1b}
+				.app-preview-container{display:flex;gap:12px;padding:12px;border:1px dashed #cbd5e1;border-radius:6px;background:#f8fafc}
+				.app-preview-container.column{flex-direction:column}
+				.app-preview-container.row{flex-direction:row;align-items:flex-start}
+				.app-preview-container.wrap{flex-direction:row;flex-wrap:wrap}
+				.app-preview-image{max-width:100%;border-radius:6px;border:1px solid #e2e8f0}
+				.app-preview-image-fallback{padding:20px;border:1px dashed #cbd5e1;border-radius:6px;background:#f8fafc;color:#64748b;text-align:center}
+				.app-preview-switch{display:flex;align-items:center;gap:8px}
+				.app-preview-unknown{padding:8px;border:1px dashed #cbd5e1;color:#64748b;border-radius:4px}
+		</style>
+	</head>
+	<body>
+		<div id="header" class="appbar" data-generated-ui="2026-product">
+			<div class="header-title">
+				<div class="header-kicker">Blockly editor</div>
+				<h1>Referenceselect</h1>
+				<div id="editorModeHint" class="editor-mode-hint">Build mode</div>
+			</div>
+				<div class="header-buttons" role="toolbar" aria-label="Editor actions">
+					<div class="toolbar-group primary-actions">
+						<button class="button-primary command-button" onclick="loadSampleModel()">Load Sample</button>
+						<button class="command-button" onclick="saveWorkspace()">Save</button>
+						<button class="command-button" onclick="loadWorkspace()">Load</button>
+						<button class="command-button" onclick="exportJSON()">Export JSON</button>
+				</div>
+				<div class="toolbar-group">
+					<details class="toolbar-menu">
+						<summary>More</summary>
+						<div class="toolbar-menu-panel">
+							<button onclick="loadModelJSON()">Import Model JSON</button>
+							<button onclick="exportXMI()">Export XMI</button>
+							<button onclick="exportCode()">Export Code</button>
+							<button class="button-success" onclick="runModel()">Run Runtime</button>
+							<button onclick="pauseModel()">Pause Runtime</button>
+							<button onclick="stepModel()">Step Runtime</button>
+							<button class="button-danger" onclick="stopModel()">Stop Runtime</button>
+							<label class="speed-control">Speed
+								<input type="range" min="50" max="2000" value="500" step="50" oninput="_astRunner.speed=parseInt(this.value)">
+							</label>
+						</div>
+					</details>
+				</div>
+				<div class="toolbar-group">
+					<div class="mode-toggle" aria-label="Editor mode">
+						<button id="buildModeButton" type="button" class="active" onclick="setEditorMode('build')">Build</button>
+						<button id="developerModeButton" type="button" onclick="setEditorMode('developer')">Developer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="editorToast" class="editor-toast" role="status" aria-live="polite"></div>
+		<div id="main">
+			<section class="workspace-shell" aria-label="Blockly workspace">
+				<div class="workspace-panel-header">
+					<div class="workspace-title">Workspace</div>
+					<div class="workspace-hint">Drag blocks here to build the model.</div>
+				</div>
+				<div id="blocklyDiv"></div>
+			</section>
+			<aside id="outputPanel" class="inspector-panel" aria-label="Generated model inspector">
+				<div class="panel-header">
+					<div>
+						<h2>Inspector</h2>
+						<div id="panelSubtitle" class="panel-subtitle">Model, preview and validation issues</div>
+					</div>
+			</div>
+			<div id="tabs">
+				<button class="active" data-tab="model" onclick="switchTab('model')">Model</button>
+				<button data-tab="issues" onclick="switchTab('issues')">Issues <span id="issuesBadge"></span></button>
+				<button data-tab="json" data-developer-only="true" onclick="switchTab('json')">JSON</button>
+				<button data-tab="validationBlocks" data-developer-only="true" onclick="switchTab('validationBlocks')">Validation Blocks</button>
+				<button data-tab="runtime" data-developer-only="true" onclick="switchTab('runtime')">Runtime</button>
+			</div>
+			<div id="modelView" class="tab-content active"></div>
+				<div id="jsonView" class="tab-content"></div>
+				<div id="issuesView" class="tab-content"></div>
+				<div id="validationBlocksView" class="tab-content"><iframe title="Visual validation Blockly workspace" src="validation_workspace.html"></iframe></div>
+				<div id="runtimeView" class="tab-content"></div>
+			</aside>
+		</div>
+		<script>
+		/* ═══ 1. BLOCKS ═══ */
+		window.BLOCKLY_REFERENCE_TARGETS = {
+		"Page": ["Page"]
+		};
+		
+		(function() {
+		  if (typeof Blockly === 'undefined' || !Blockly.FieldTextInput || !Blockly.fieldRegistry) return;
+		  if (Blockly.fieldRegistry.getClass && Blockly.fieldRegistry.getClass('field_reference_multiselect')) return;
+		
+		function parseReferenceMultiValue(value) {
+		    if (Array.isArray(value)) return value;
+		    if (value === null || value === undefined) return [];
+		    return String(value).split(/[,\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });
+		  }
+		  window.parseReferenceMultiValue = parseReferenceMultiValue;
+		  window.parseBlocklyListField = parseReferenceMultiValue;
+		
+		  function closeMultiValueDialog() {
+		    var existing = document.getElementById('multiValueDialog');
+		    if (existing) existing.remove();
+		  }
+		
+		  window.openMultiValueDialog = function(field) {
+		    closeMultiValueDialog();
+		    var values = parseReferenceMultiValue(field.getValue());
+		    var overlay = document.createElement('div');
+		    overlay.id = 'multiValueDialog';
+		    overlay.className = 'reference-dialog-backdrop';
+		    var panel = document.createElement('div');
+		    panel.className = 'reference-dialog-panel';
+		    var title = document.createElement('div');
+		    title.className = 'reference-dialog-title';
+		    title.textContent = 'Edit ' + (field.name || 'values');
+		    panel.appendChild(title);
+		    var input = document.createElement('textarea');
+		    input.className = 'reference-dialog-textarea';
+		    input.rows = 8;
+		    input.value = values.join('\\n');
+		    panel.appendChild(input);
+		    var hint = document.createElement('div');
+		    hint.className = 'reference-dialog-empty';
+		    hint.textContent = 'One value per line. Values are stored as a comma-separated list.';
+		    panel.appendChild(hint);
+		    var actions = document.createElement('div');
+		    actions.className = 'reference-dialog-actions';
+		    var clearBtn = document.createElement('button');
+		    clearBtn.type = 'button';
+		    clearBtn.textContent = 'Clear';
+		    clearBtn.addEventListener('click', function() { input.value = ''; });
+		    var cancelBtn = document.createElement('button');
+		    cancelBtn.type = 'button';
+		    cancelBtn.textContent = 'Cancel';
+		    cancelBtn.addEventListener('click', closeMultiValueDialog);
+		    var applyBtn = document.createElement('button');
+		    applyBtn.type = 'button';
+		    applyBtn.className = 'reference-dialog-primary';
+		    applyBtn.textContent = 'Apply';
+		    applyBtn.addEventListener('click', function() {
+		      field.setValue(parseReferenceMultiValue(input.value).join(', '));
+		      if (typeof applyValidationWarnings === 'function') applyValidationWarnings(referenceWorkspaceForField(field));
+		      if (typeof updateOutput === 'function') updateOutput();
+		      closeMultiValueDialog();
+		    });
+		    actions.appendChild(clearBtn);
+		    actions.appendChild(cancelBtn);
+		    actions.appendChild(applyBtn);
+		    panel.appendChild(actions);
+		    overlay.appendChild(panel);
+		    overlay.addEventListener('click', function(event) {
+		      if (event.target === overlay) closeMultiValueDialog();
+		    });
+		    document.body.appendChild(overlay);
+		    input.focus();
+		  };
+		
+		  function referenceLabelForBlock(block, labelField) {
+		    if (!block) return '';
+		    var label = labelField && block.getField ? block.getFieldValue(labelField) : null;
+		    return label || block.getFieldValue('displayName') || block.getFieldValue('title') ||
+		      block.getFieldValue('name') || block.type + '_' + block.id.substring(0, 6);
+		  }
+		
+		  function referenceWorkspaceForField(field) {
+		    var source = field && field.getSourceBlock ? field.getSourceBlock() : null;
+		    return source && source.workspace ? source.workspace : window.workspace;
+		  }
+		
+		  function referenceTargetBlocksForField(field) {
+		    var workspace = referenceWorkspaceForField(field);
+		    if (!workspace) return [];
+		    var targetType = field.targetTypeName_ || '';
+		    var targetTypes = (window.BLOCKLY_REFERENCE_TARGETS && window.BLOCKLY_REFERENCE_TARGETS[targetType]) || [targetType];
+		    var source = field.getSourceBlock ? field.getSourceBlock() : null;
+		    return workspace.getAllBlocks(false).filter(function(block) {
+		      return block !== source && targetTypes.indexOf(block.type) !== -1;
+		    });
+		  }
+		
+		  function referenceDisplayText(field, value) {
+		    var workspace = referenceWorkspaceForField(field);
+		    var ids = parseReferenceMultiValue(value);
+		    if (!ids.length) return '(select)';
+		    if (!workspace) return ids.join(', ');
+		    var labels = ids.map(function(id) {
+		      var block = workspace.getBlockById(id);
+		      return block ? referenceLabelForBlock(block, field.labelFieldName_) : id;
+		    });
+		    return labels.join(', ');
+		  }
+		
+		  function closeReferenceMultiDialog() {
+		    var existing = document.getElementById('referenceMultiDialog');
+		    if (existing) existing.remove();
+		  }
+		
+		  window.openReferenceMultiSelectDialog = function(field) {
+		    closeReferenceMultiDialog();
+		    var selected = new Set(parseReferenceMultiValue(field.getValue()));
+		    var candidates = referenceTargetBlocksForField(field);
+		    var overlay = document.createElement('div');
+		    overlay.id = 'referenceMultiDialog';
+		    overlay.className = 'reference-dialog-backdrop';
+		    var panel = document.createElement('div');
+		    panel.className = 'reference-dialog-panel';
+		    var title = document.createElement('div');
+		    title.className = 'reference-dialog-title';
+		    title.textContent = 'Select ' + (field.name || 'references');
+		    panel.appendChild(title);
+		    var list = document.createElement('div');
+		    list.className = 'reference-dialog-list';
+		    if (!candidates.length) {
+		      var empty = document.createElement('div');
+		      empty.className = 'reference-dialog-empty';
+		      empty.textContent = 'No compatible blocks exist yet.';
+		      list.appendChild(empty);
+		    }
+		    candidates.forEach(function(block) {
+		      var row = document.createElement('label');
+		      row.className = 'reference-dialog-row';
+		      var checkbox = document.createElement('input');
+		      checkbox.type = 'checkbox';
+		      checkbox.value = block.id;
+		      checkbox.checked = selected.has(block.id);
+		      checkbox.addEventListener('change', function() {
+		        if (checkbox.checked) selected.add(block.id);
+		        else selected.delete(block.id);
+		      });
+		      var text = document.createElement('span');
+		      text.textContent = referenceLabelForBlock(block, field.labelFieldName_);
+		      row.appendChild(checkbox);
+		      row.appendChild(text);
+		      list.appendChild(row);
+		    });
+		    panel.appendChild(list);
+		    var actions = document.createElement('div');
+		    actions.className = 'reference-dialog-actions';
+		    var clearBtn = document.createElement('button');
+		    clearBtn.type = 'button';
+		    clearBtn.textContent = 'Clear';
+		    clearBtn.addEventListener('click', function() {
+		      selected.clear();
+		      list.querySelectorAll('input[type="checkbox"]').forEach(function(input) { input.checked = false; });
+		    });
+		    var cancelBtn = document.createElement('button');
+		    cancelBtn.type = 'button';
+		    cancelBtn.textContent = 'Cancel';
+		    cancelBtn.addEventListener('click', closeReferenceMultiDialog);
+		    var applyBtn = document.createElement('button');
+		    applyBtn.type = 'button';
+		    applyBtn.className = 'reference-dialog-primary';
+		    applyBtn.textContent = 'Apply';
+		    applyBtn.addEventListener('click', function() {
+		      field.setValue(Array.from(selected).join(', '));
+		      if (typeof synchronizeOppositeReferences === 'function') {
+		        var sourceBlock = field.getSourceBlock ? field.getSourceBlock() : null;
+		        synchronizeOppositeReferences(referenceWorkspaceForField(field), { blockId: sourceBlock ? sourceBlock.id : null, name: field.name });
+		      }
+		      if (typeof applyValidationWarnings === 'function') applyValidationWarnings(referenceWorkspaceForField(field));
+		      if (typeof updateOutput === 'function') updateOutput();
+		      closeReferenceMultiDialog();
+		    });
+		    actions.appendChild(clearBtn);
+		    actions.appendChild(cancelBtn);
+		    actions.appendChild(applyBtn);
+		    panel.appendChild(actions);
+		    overlay.appendChild(panel);
+		    overlay.addEventListener('click', function(event) {
+		      if (event.target === overlay) closeReferenceMultiDialog();
+		    });
+		    document.body.appendChild(overlay);
+		  };
+		
+		  class FieldReferenceMultiselect extends Blockly.FieldTextInput {
+		    constructor(value, validator, config) {
+		      super(value || '', validator, config);
+		      this.targetTypeName_ = config && config.targetType ? config.targetType : '';
+		      this.labelFieldName_ = config && config.labelField ? config.labelField : '';
+		    }
+		    static fromJson(options) {
+		      return new FieldReferenceMultiselect(options.text || '', undefined, options);
+		    }
+		    doClassValidation_(value) {
+		      if (value === null || value === undefined) return '';
+		      return String(value);
+		    }
+		    getDisplayText_() {
+		      return referenceDisplayText(this, this.getValue());
+		    }
+		    showEditor_() {
+		      window.openReferenceMultiSelectDialog(this);
+		    }
+		    refreshDisplay() {
+		      if (this.forceRerender) this.forceRerender();
+		    }
+		  }
+		  Blockly.fieldRegistry.register('field_reference_multiselect', FieldReferenceMultiselect);
+		
+		  class FieldMultiValue extends Blockly.FieldTextInput {
+		    constructor(value, validator, config) {
+		      super(value || '', validator, config);
+		    }
+		    static fromJson(options) {
+		      return new FieldMultiValue(options.text || '', undefined, options);
+		    }
+		    doClassValidation_(value) {
+		      if (value === null || value === undefined) return '';
+		      return parseReferenceMultiValue(value).join(', ');
+		    }
+		    getDisplayText_() {
+		      var values = parseReferenceMultiValue(this.getValue());
+		      if (!values.length) return '(empty)';
+		      if (values.length <= 2) return values.join(', ');
+		      return values.length + ' values';
+		    }
+		    showEditor_() {
+		      window.openMultiValueDialog(this);
+		    }
+		  }
+		  Blockly.fieldRegistry.register('field_multivalue', FieldMultiValue);
+		})();
+		var BLOCKLY_BLOCKS = [
+		{
+			"type": "Flow",
+			"message0": "Flow %1 %2",
+			"args0": [{"type": "input_statement", "name": "pages", "check": "Page"}, {"type": "input_statement", "name": "actions", "check": "Action"}],
+			"colour": 260,
+			"tooltip": "Flow",
+			"helpUrl": ""
+		},
+		{
+			"type": "Page",
+			"message0": "Page %1",
+			"args0": [{"type": "field_input", "name": "name", "text": "home"}],
+			"previousStatement": "Page", "nextStatement": "Page",
+			"colour": 260,
+			"tooltip": "Page",
+			"helpUrl": ""
+		},
+		{
+			"type": "Navigate",
+			"message0": "Navigate %1",
+			"args0": [{"type": "field_dropdown", "name": "target", "options": [["(none)", ""]]}],
+			"previousStatement": "Action", "nextStatement": "Action",
+			"inputsInline": true,
+			"colour": 30,
+			"tooltip": "Navigate",
+			"helpUrl": ""
+		}
+		];
+		Blockly.defineBlocksWithJsonArray(BLOCKLY_BLOCKS);
+
+		/* ═══ 2. TOOLBOX ═══ */
+		var BLOCKLY_TOOLBOX = {
+			"kind": "categoryToolbox",
+			"contents": [
+				{
+					"kind": "category",
+					"name": "Flow",
+					"colour": "260",
+					"contents": [
+						{"kind": "block", "type": "Flow"},
+										{"kind": "block", "type": "Page"}
+					]
+				},
+							{
+					"kind": "category",
+					"name": "Actions",
+					"colour": "30",
+					"contents": [
+						{"kind": "block", "type": "Navigate"}
+					]
+				},
+								{"kind": "sep", "gap": "32"},
+				{
+					"kind": "category",
+					"name": "Logic",
+					"colour": "210",
+					"contents": [
+						{"kind": "block", "type": "controls_if"},
+						{"kind": "block", "type": "controls_if", "extraState": {"hasElse": true}},
+						{"kind": "block", "type": "logic_compare"},
+						{"kind": "block", "type": "logic_operation"},
+						{"kind": "block", "type": "logic_negate"},
+						{"kind": "block", "type": "logic_boolean"},
+						{"kind": "block", "type": "logic_null"},
+						{"kind": "block", "type": "logic_ternary"}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Loops",
+					"colour": "120",
+					"contents": [
+						{"kind": "block", "type": "controls_repeat_ext", "inputs": {"TIMES": {"shadow": {"type": "math_number", "fields": {"NUM": 10}}}}},
+						{"kind": "block", "type": "controls_whileUntil"},
+						{"kind": "block", "type": "controls_for", "inputs": {
+							"FROM": {"shadow": {"type": "math_number", "fields": {"NUM": 1}}},
+							"TO":   {"shadow": {"type": "math_number", "fields": {"NUM": 10}}},
+							"BY":   {"shadow": {"type": "math_number", "fields": {"NUM": 1}}}
+						}},
+						{"kind": "block", "type": "controls_forEach"},
+						{"kind": "block", "type": "controls_flow_statements"}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Math",
+					"colour": "230",
+					"contents": [
+						{"kind": "block", "type": "math_number", "fields": {"NUM": 0}},
+						{"kind": "block", "type": "math_arithmetic", "inputs": {
+							"A": {"shadow": {"type": "math_number", "fields": {"NUM": 1}}},
+							"B": {"shadow": {"type": "math_number", "fields": {"NUM": 1}}}
+						}},
+						{"kind": "block", "type": "math_single", "inputs": {
+							"NUM": {"shadow": {"type": "math_number", "fields": {"NUM": 9}}}
+						}},
+						{"kind": "block", "type": "math_round", "inputs": {
+							"NUM": {"shadow": {"type": "math_number", "fields": {"NUM": 3.1}}}
+						}},
+						{"kind": "block", "type": "math_modulo", "inputs": {
+							"DIVIDEND": {"shadow": {"type": "math_number", "fields": {"NUM": 64}}},
+							"DIVISOR":  {"shadow": {"type": "math_number", "fields": {"NUM": 10}}}
+						}},
+						{"kind": "block", "type": "math_constrain", "inputs": {
+							"VALUE": {"shadow": {"type": "math_number", "fields": {"NUM": 50}}},
+							"LOW":   {"shadow": {"type": "math_number", "fields": {"NUM": 1}}},
+							"HIGH":  {"shadow": {"type": "math_number", "fields": {"NUM": 100}}}
+						}},
+						{"kind": "block", "type": "math_random_int", "inputs": {
+							"FROM": {"shadow": {"type": "math_number", "fields": {"NUM": 1}}},
+							"TO":   {"shadow": {"type": "math_number", "fields": {"NUM": 100}}}
+						}},
+						{"kind": "block", "type": "math_random_float"}
+					]
+				},
+				{
+					"kind": "category",
+					"name": "Variables",
+					"colour": "330",
+					"custom": "VARIABLE"
+				},
+				{
+					"kind": "category",
+					"name": "Functions",
+					"colour": "290",
+					"custom": "PROCEDURE"
+				}
+			]
+		};
+
+		/* ═══ 3. WORKSPACE ═══ */
+		var workspace = Blockly.inject('blocklyDiv', {
+			toolbox: BLOCKLY_TOOLBOX,
+			trashcan: true,
+			zoom: { wheel: true, controls: true },
+			move: { scrollbars: true, drag: true },
+			renderer: "zelos"
+		});
+		Blockly.svgResize(workspace);
+		window.addEventListener('resize', function() {
+			Blockly.svgResize(workspace);
+		});
+
+		/* ═══ 4. GENERATORS ═══ */
+		function parseBlocklyListField(value) {
+		  if (Array.isArray(value)) return value;
+		  if (value === null || value === undefined) return [];
+		  return String(value).split(/[,\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });
+		}
+		window.parseBlocklyListField = parseBlocklyListField;
+		
+		javascript.javascriptGenerator.forBlock['Flow'] = function(block) {
+		  var pages_code = javascript.javascriptGenerator.statementToCode(block, 'pages');
+		  var pages_stmt = (pages_code || '').trim().replace(/,\\s*$/, '');
+		  var actions_code = javascript.javascriptGenerator.statementToCode(block, 'actions');
+		  var actions_stmt = (actions_code || '').trim().replace(/,\\s*$/, '');
+		  return '{' +   '"_type": "Flow", "_blockId": ' + JSON.stringify(block.id) +   ', "pages": ' + (pages_stmt ? '[' + pages_stmt + ']' : '[]') +   ', "actions": ' + (actions_stmt ? '[' + actions_stmt + ']' : '[]') + ' },\n';
+		};
+		javascript.javascriptGenerator.forBlock['Page'] = function(block) {
+		  var name = block.getFieldValue('name');
+		  return '{' +   '"_type": "Page", "_blockId": ' + JSON.stringify(block.id) +  ', "_modelId": ' + JSON.stringify(name || block.id) +  ', "name": ' + JSON.stringify(name) + ' },\n';
+		};
+		javascript.javascriptGenerator.forBlock['Navigate'] = function(block) {
+		  var target = block.getFieldValue('target');
+		  return '{' +   '"_type": "Navigate", "_blockId": ' + JSON.stringify(block.id) +  ', "target": ' + JSON.stringify(target) + ' },\n';
+		};
+		/* ── Built-in block generators (JSON AST output) ── */
+		
+		/* --- Logic --- */
+		javascript.javascriptGenerator.forBlock['controls_if'] = function(block) {
+		  var branches = [];
+		  var i = 0;
+		  while (block.getInput('IF' + i)) {
+		    var cond = javascript.javascriptGenerator.valueToCode(block, 'IF' + i, 0) || 'null';
+		    var body = javascript.javascriptGenerator.statementToCode(block, 'DO' + i);
+		    var bodyArr = (body || '').trim().replace(/,\s*$/, '');
+		    branches.push('{"condition": ' + cond + ', "body": ' + (bodyArr ? '[' + bodyArr + ']' : '[]') + '}');
+		    i++;
+		  }
+		  var elseBody = javascript.javascriptGenerator.statementToCode(block, 'ELSE');
+		  var elseArr = (elseBody || '').trim().replace(/,\s*$/, '');
+		  var elsePart = elseArr ? ', "else": [' + elseArr + ']' : '';
+		  return '{' + '"_type": "controls_if", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "branches": [' + branches.join(',') + ']' + elsePart + ' },\n';
+		};
+		javascript.javascriptGenerator.forBlock['logic_compare'] = function(block) {
+		  var op = block.getFieldValue('OP');
+		  var a = javascript.javascriptGenerator.valueToCode(block, 'A', 0) || 'null';
+		  var b = javascript.javascriptGenerator.valueToCode(block, 'B', 0) || 'null';
+		  var code = '{' + '"_type": "logic_compare", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "op": ' + JSON.stringify(op) + ', "left": ' + a + ', "right": ' + b + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['logic_operation'] = function(block) {
+		  var op = block.getFieldValue('OP');
+		  var a = javascript.javascriptGenerator.valueToCode(block, 'A', 0) || 'null';
+		  var b = javascript.javascriptGenerator.valueToCode(block, 'B', 0) || 'null';
+		  var code = '{' + '"_type": "logic_operation", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "op": ' + JSON.stringify(op) + ', "left": ' + a + ', "right": ' + b + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['logic_negate'] = function(block) {
+		  var val = javascript.javascriptGenerator.valueToCode(block, 'BOOL', 0) || 'null';
+		  var code = '{' + '"_type": "logic_negate", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "value": ' + val + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['logic_boolean'] = function(block) {
+		  var val = block.getFieldValue('BOOL');
+		  var code = '{' + '"_type": "logic_boolean", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "value": ' + (val === 'TRUE' ? 'true' : 'false') + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['logic_null'] = function(block) {
+		  var code = '{' + '"_type": "logic_null", "_blockId": ' + JSON.stringify(block.id) + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['logic_ternary'] = function(block) {
+		  var cond = javascript.javascriptGenerator.valueToCode(block, 'IF', 0) || 'null';
+		  var thenVal = javascript.javascriptGenerator.valueToCode(block, 'THEN', 0) || 'null';
+		  var elseVal = javascript.javascriptGenerator.valueToCode(block, 'ELSE', 0) || 'null';
+		  var code = '{' + '"_type": "logic_ternary", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "condition": ' + cond + ', "then": ' + thenVal + ', "else": ' + elseVal + ' }';
+		  return [code, 0];
+		};
+		
+		/* --- Loops --- */
+		javascript.javascriptGenerator.forBlock['controls_repeat_ext'] = function(block) {
+		  var times = javascript.javascriptGenerator.valueToCode(block, 'TIMES', 0) || 'null';
+		  var body = javascript.javascriptGenerator.statementToCode(block, 'DO');
+		  var bodyArr = (body || '').trim().replace(/,\s*$/, '');
+		  return '{' + '"_type": "controls_repeat", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "times": ' + times + ', "body": ' + (bodyArr ? '[' + bodyArr + ']' : '[]') + ' },\n';
+		};
+		javascript.javascriptGenerator.forBlock['controls_whileUntil'] = function(block) {
+		  var mode = block.getFieldValue('MODE');
+		  var cond = javascript.javascriptGenerator.valueToCode(block, 'BOOL', 0) || 'null';
+		  var body = javascript.javascriptGenerator.statementToCode(block, 'DO');
+		  var bodyArr = (body || '').trim().replace(/,\s*$/, '');
+		  return '{' + '"_type": "controls_whileUntil", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "mode": ' + JSON.stringify(mode) + ', "condition": ' + cond +
+		    ', "body": ' + (bodyArr ? '[' + bodyArr + ']' : '[]') + ' },\n';
+		};
+		javascript.javascriptGenerator.forBlock['controls_for'] = function(block) {
+		  var varName = block.getField('VAR').getText();
+		  var from = javascript.javascriptGenerator.valueToCode(block, 'FROM', 0) || 'null';
+		  var to = javascript.javascriptGenerator.valueToCode(block, 'TO', 0) || 'null';
+		  var by = javascript.javascriptGenerator.valueToCode(block, 'BY', 0) || 'null';
+		  var body = javascript.javascriptGenerator.statementToCode(block, 'DO');
+		  var bodyArr = (body || '').trim().replace(/,\s*$/, '');
+		  return '{' + '"_type": "controls_for", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "variable": ' + JSON.stringify(varName) +
+		    ', "from": ' + from + ', "to": ' + to + ', "by": ' + by +
+		    ', "body": ' + (bodyArr ? '[' + bodyArr + ']' : '[]') + ' },\n';
+		};
+		javascript.javascriptGenerator.forBlock['controls_forEach'] = function(block) {
+		  var varName = block.getField('VAR').getText();
+		  var list = javascript.javascriptGenerator.valueToCode(block, 'LIST', 0) || 'null';
+		  var body = javascript.javascriptGenerator.statementToCode(block, 'DO');
+		  var bodyArr = (body || '').trim().replace(/,\s*$/, '');
+		  return '{' + '"_type": "controls_forEach", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "variable": ' + JSON.stringify(varName) + ', "list": ' + list +
+		    ', "body": ' + (bodyArr ? '[' + bodyArr + ']' : '[]') + ' },\n';
+		};
+		javascript.javascriptGenerator.forBlock['controls_flow_statements'] = function(block) {
+		  var flow = block.getFieldValue('FLOW');
+		  return '{' + '"_type": "controls_flow", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "flow": ' + JSON.stringify(flow) + ' },\n';
+		};
+		
+		/* --- Math --- */
+		javascript.javascriptGenerator.forBlock['math_number'] = function(block) {
+		  var num = block.getFieldValue('NUM');
+		  var code = '{' + '"_type": "math_number", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "value": ' + Number(num) + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['math_arithmetic'] = function(block) {
+		  var op = block.getFieldValue('OP');
+		  var a = javascript.javascriptGenerator.valueToCode(block, 'A', 0) || 'null';
+		  var b = javascript.javascriptGenerator.valueToCode(block, 'B', 0) || 'null';
+		  var code = '{' + '"_type": "math_arithmetic", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "op": ' + JSON.stringify(op) + ', "left": ' + a + ', "right": ' + b + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['math_single'] = function(block) {
+		  var op = block.getFieldValue('OP');
+		  var num = javascript.javascriptGenerator.valueToCode(block, 'NUM', 0) || 'null';
+		  var code = '{' + '"_type": "math_single", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "op": ' + JSON.stringify(op) + ', "value": ' + num + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['math_round'] = function(block) {
+		  var op = block.getFieldValue('OP');
+		  var num = javascript.javascriptGenerator.valueToCode(block, 'NUM', 0) || 'null';
+		  var code = '{' + '"_type": "math_round", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "op": ' + JSON.stringify(op) + ', "value": ' + num + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['math_modulo'] = function(block) {
+		  var a = javascript.javascriptGenerator.valueToCode(block, 'DIVIDEND', 0) || 'null';
+		  var b = javascript.javascriptGenerator.valueToCode(block, 'DIVISOR', 0) || 'null';
+		  var code = '{' + '"_type": "math_modulo", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "dividend": ' + a + ', "divisor": ' + b + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['math_constrain'] = function(block) {
+		  var val = javascript.javascriptGenerator.valueToCode(block, 'VALUE', 0) || 'null';
+		  var lo = javascript.javascriptGenerator.valueToCode(block, 'LOW', 0) || 'null';
+		  var hi = javascript.javascriptGenerator.valueToCode(block, 'HIGH', 0) || 'null';
+		  var code = '{' + '"_type": "math_constrain", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "value": ' + val + ', "low": ' + lo + ', "high": ' + hi + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['math_random_int'] = function(block) {
+		  var from = javascript.javascriptGenerator.valueToCode(block, 'FROM', 0) || 'null';
+		  var to = javascript.javascriptGenerator.valueToCode(block, 'TO', 0) || 'null';
+		  var code = '{' + '"_type": "math_random_int", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "from": ' + from + ', "to": ' + to + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['math_random_float'] = function(block) {
+		  var code = '{' + '"_type": "math_random_float", "_blockId": ' + JSON.stringify(block.id) + ' }';
+		  return [code, 0];
+		};
+		
+		/* --- Variables --- */
+		javascript.javascriptGenerator.forBlock['variables_get'] = function(block) {
+		  var varName = block.getField('VAR').getText();
+		  var code = '{' + '"_type": "variables_get", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "variable": ' + JSON.stringify(varName) + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['variables_set'] = function(block) {
+		  var varName = block.getField('VAR').getText();
+		  var val = javascript.javascriptGenerator.valueToCode(block, 'VALUE', 0) || 'null';
+		  return '{' + '"_type": "variables_set", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "variable": ' + JSON.stringify(varName) + ', "value": ' + val + ' },\n';
+		};
+		
+		/* --- Procedures (Functions) --- */
+		javascript.javascriptGenerator.forBlock['procedures_defnoreturn'] = function(block) {
+		  var name = block.getFieldValue('NAME');
+		  var params = block.arguments_ || [];
+		  var body = javascript.javascriptGenerator.statementToCode(block, 'STACK');
+		  var bodyArr = (body || '').trim().replace(/,\s*$/, '');
+		  return '{' + '"_type": "procedures_def", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "name": ' + JSON.stringify(name) +
+		    ', "params": ' + JSON.stringify(params) +
+		    ', "body": ' + (bodyArr ? '[' + bodyArr + ']' : '[]') + ' },\n';
+		};
+		javascript.javascriptGenerator.forBlock['procedures_defreturn'] = function(block) {
+		  var name = block.getFieldValue('NAME');
+		  var params = block.arguments_ || [];
+		  var body = javascript.javascriptGenerator.statementToCode(block, 'STACK');
+		  var bodyArr = (body || '').trim().replace(/,\s*$/, '');
+		  var ret = javascript.javascriptGenerator.valueToCode(block, 'RETURN', 0) || 'null';
+		  return '{' + '"_type": "procedures_def", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "name": ' + JSON.stringify(name) +
+		    ', "params": ' + JSON.stringify(params) +
+		    ', "body": ' + (bodyArr ? '[' + bodyArr + ']' : '[]') +
+		    ', "return": ' + ret + ' },\n';
+		};
+		javascript.javascriptGenerator.forBlock['procedures_callnoreturn'] = function(block) {
+		  var name = block.getFieldValue('NAME');
+		  var args = {};
+		  for (var i = 0; i < (block.arguments_ ? block.arguments_.length : 0); i++) {
+		    args[block.arguments_[i]] = JSON.parse(
+		      javascript.javascriptGenerator.valueToCode(block, 'ARG' + i, 0) || 'null'
+		    );
+		  }
+		  return '{' + '"_type": "procedures_call", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "name": ' + JSON.stringify(name) +
+		    ', "args": ' + JSON.stringify(args) + ' },\n';
+		};
+		javascript.javascriptGenerator.forBlock['procedures_callreturn'] = function(block) {
+		  var name = block.getFieldValue('NAME');
+		  var args = {};
+		  for (var i = 0; i < (block.arguments_ ? block.arguments_.length : 0); i++) {
+		    args[block.arguments_[i]] = JSON.parse(
+		      javascript.javascriptGenerator.valueToCode(block, 'ARG' + i, 0) || 'null'
+		    );
+		  }
+		  var code = '{' + '"_type": "procedures_call", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "name": ' + JSON.stringify(name) +
+		    ', "args": ' + JSON.stringify(args) + ' }';
+		  return [code, 0];
+		};
+		javascript.javascriptGenerator.forBlock['procedures_ifreturn'] = function(block) {
+		  var cond = javascript.javascriptGenerator.valueToCode(block, 'CONDITION', 0) || 'null';
+		  var val = javascript.javascriptGenerator.valueToCode(block, 'VALUE', 0) || 'null';
+		  return '{' + '"_type": "procedures_ifreturn", "_blockId": ' + JSON.stringify(block.id) +
+		    ', "condition": ' + cond + ', "value": ' + val + ' },\n';
+		};
+		
+		/* ── Type compatibility: allow built-in expression blocks to connect
+		   to domain value inputs that check for "Expression" ── */
+		(function() {
+		  var exprTypes = [
+		    'math_number','math_arithmetic','math_single','math_round',
+		    'math_modulo','math_constrain','math_random_int','math_random_float',
+		    'logic_compare','logic_operation','logic_negate','logic_boolean',
+		    'logic_null','logic_ternary','variables_get','procedures_callreturn'
+		  ];
+		  exprTypes.forEach(function(type) {
+		    var def = Blockly.Blocks[type];
+		    if (def && def.init) {
+		      var origInit = def.init;
+		      def.init = function() {
+		        origInit.call(this);
+		        this.setOutput(true, null);
+		      };
+		    }
+		  });
+		})();
+		/* ── Domain code generation (template based) ── */
+		window.BLOCKLY_DOMAIN_CODEGEN = {
+		  language: 'text',
+		  fileExtension: 'txt',
+		  blocks: {
+		'Flow': {
+		  label: 'Flow',
+		  template: null,
+		  fields: [],
+		  fieldTypes: {},
+		  references: [],
+		  values: [],
+		  statements: ['pages', 'actions']
+		},
+		'Page': {
+		  label: 'Page',
+		  template: null,
+		  fields: ['name'],
+		  fieldTypes: {'name': 'TEXT'},
+		  references: [],
+		  values: [],
+		  statements: []
+		},
+		'Navigate': {
+		  label: 'Navigate',
+		  template: null,
+		  fields: [],
+		  fieldTypes: {},
+		  references: ['target'],
+		  values: [],
+		  statements: []
+		}
+		  }
+		};
+		
+		function generateDomainCode(workspace) {
+		  if (!workspace) return '';
+		  var topBlocks = workspace.getTopBlocks(true).filter(function(block) {
+		    return !block.outputConnection;
+		  });
+		  if (topBlocks.length === 0) topBlocks = workspace.getTopBlocks(true);
+		  return topBlocks.map(renderDomainBlock).filter(Boolean).join('\n');
+		}
+		
+		function renderDomainBlock(block) {
+		  if (!block) return '';
+		  var config = window.BLOCKLY_DOMAIN_CODEGEN.blocks[block.type] || null;
+		  if (!config) return renderFallbackDomainBlock(block);
+		  var template = config.template;
+		  if (!template) return renderFallbackDomainBlock(block, config);
+		  return applyDomainTemplate(block, config, template);
+		}
+		
+		function applyDomainTemplate(block, config, template) {
+		  return template
+		    .replace(/\{\{\s*(value|statement|statements|children):\s*([A-Za-z_][\w-]*)\s*\}\}/g, function(_, kind, name) {
+		      if (kind === 'value') return renderDomainValue(block, name);
+		      return renderDomainStatement(block, name);
+		    })
+		    .replace(/\{\{\s*type\s*\}\}/g, block.type)
+		    .replace(/\{\{\s*([A-Za-z_][\w-]*)\s*\}\}/g, function(_, name) {
+		      return block.getFieldValue(name) || '';
+		    });
+		}
+		
+		function renderDomainValue(block, inputName) {
+		  var child = block.getInputTargetBlock(inputName);
+		  return child ? renderDomainBlock(child) : '';
+		}
+		
+		function renderDomainStatement(block, inputName) {
+		  var child = block.getInputTargetBlock(inputName);
+		  var lines = [];
+		  while (child) {
+		    var rendered = renderDomainBlock(child);
+		    if (rendered) lines.push(rendered);
+		    child = child.getNextBlock();
+		  }
+		  return lines.join('\n');
+		}
+		
+		function renderFallbackDomainBlock(block, config) {
+		  config = config || { fields: [], references: [], values: [], statements: [] };
+		  var parts = [];
+		  (config.fields || []).forEach(function(name) {
+		    var value = block.getFieldValue(name);
+		    if (value !== null && value !== undefined && value !== '') parts.push(name + '=' + JSON.stringify(value));
+		  });
+		  (config.references || []).forEach(function(name) {
+		    var value = block.getFieldValue(name);
+		    if (value !== null && value !== undefined && value !== '') parts.push(name + '=' + JSON.stringify(value));
+		  });
+		  (config.values || []).forEach(function(name) {
+		    var valueCode = renderDomainValue(block, name);
+		    if (valueCode) parts.push(name + '=' + valueCode);
+		  });
+		  (config.statements || []).forEach(function(name) {
+		    var stmtCode = renderDomainStatement(block, name);
+		    if (stmtCode) parts.push(name + '={\n' + indentDomainCode(stmtCode) + '\n}');
+		  });
+		  return block.type + (parts.length ? '(' + parts.join(', ') + ')' : '');
+		}
+		
+		function indentDomainCode(text) {
+		  return String(text || '').split('\n').map(function(line) {
+		    return line ? '  ' + line : line;
+		  }).join('\n');
+		}
+
+		/* ═══ 5. VALIDATION BLOCK RUNTIME ═══ */
+		// Validation block runtime for domain "Referenceselect".
+		// Auto-generated from EditorSpec.
+		(function(root) {
+		  const VALIDATION_BLOCK_MODEL = JSON.parse("{\n  \"format\": \"model2blockly.validationBlocks.v1\",\n  \"domain\": \"Referenceselect\",\n  \"customBlockTypes\": [\n    { \"type\": \"validation_rule\", \"label\": \"Validation rule wrapper\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"wrapper\", \"expressionTemplate\": \"\" } },\n    { \"type\": \"validation_required_field\", \"label\": \"Validation rule: required field/reference\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"requiredField\", \"expressionTemplate\": \"has(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_statement_cardinality\", \"label\": \"Validation rule: statement input cardinality\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"statementCardinality\", \"expressionTemplate\": \"inputCount(\\\"${INPUT}\\\") within ${MIN}..${MAX}\" } },\n    { \"type\": \"validation_field_cardinality\", \"label\": \"Validation rule: multi-valued field/reference cardinality\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"fieldCardinality\", \"expressionTemplate\": \"fieldCount(\\\"${FIELD}\\\") within ${MIN}..${MAX}\" } },\n    { \"type\": \"validation_expression_rule\", \"label\": \"Validation rule: custom semantic expression\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"semanticExpression\", \"expressionTemplate\": \"${EXPRESSION}\" } },\n    { \"type\": \"validation_field_exists\", \"label\": \"Domain accessor: field/reference has a value\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"expressionNode\", \"expressionTemplate\": \"has(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_field_value\", \"label\": \"Domain accessor: field/reference value as text\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"expressionNode\", \"expressionTemplate\": \"value(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_field_number\", \"label\": \"Domain accessor: field value as number\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"expressionNode\", \"expressionTemplate\": \"number(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_field_count\", \"label\": \"Domain accessor: multi-valued field/reference count\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"expressionNode\", \"expressionTemplate\": \"fieldCount(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_field_unique\", \"label\": \"Domain accessor: multi-valued field/reference values are unique\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"fieldUnique\", \"expressionTemplate\": \"fieldUnique(\\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_type_field_unique\", \"label\": \"Domain accessor: field values are unique across a block type\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"typeFieldUnique\", \"expressionTemplate\": \"typeFieldUnique(\\\"${TYPE}\\\", \\\"${FIELD}\\\")\" } },\n    { \"type\": \"validation_input_count\", \"label\": \"Domain accessor: statement input child count\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"expressionNode\", \"expressionTemplate\": \"inputCount(\\\"${INPUT}\\\")\" } },\n    { \"type\": \"validation_previous_block_is\", \"label\": \"Domain accessor: previous block type\", \"generator\": { \"format\": \"model2blockly.validationGenerator.v1\", \"runtimeCheck\": \"previousBlockIs\", \"expressionTemplate\": \"previousBlockIs(\\\"${TYPE}\\\")\" } }\n  ],\n  \"blockDefinitions\": [\n    {\n      \"type\": \"validation_rule\",\n      \"message0\": \"rule %1\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"NAME\", \"text\": \"validation\"}],\n      \"message1\": \"target %1 type %2\",\n      \"args1\": [\n        {\"type\": \"field_input\", \"name\": \"TARGET\", \"text\": \"-\"},\n        {\"type\": \"field_input\", \"name\": \"VALIDATION_TYPE\", \"text\": \"-\"}\n      ],\n      \"message2\": \"message %1\",\n      \"args2\": [{\"type\": \"field_input\", \"name\": \"MESSAGE\", \"text\": \"\"}],\n      \"message3\": \"condition %1\",\n      \"args3\": [{\"type\": \"input_value\", \"name\": \"CONDITION\", \"check\": \"Boolean\"}],\n      \"colour\": 20,\n      \"tooltip\": \"Generated validation rule\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_required_field\",\n      \"message0\": \"%1.%2 is required\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}\n      ],\n      \"message1\": \"kind %1\",\n      \"args1\": [{\"type\": \"field_input\", \"name\": \"FIELD_KIND\", \"text\": \"field\"}],\n      \"output\": \"Boolean\",\n      \"colour\": 145,\n      \"tooltip\": \"Checks that a required field or reference has a value\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_statement_cardinality\",\n      \"message0\": \"%1.%2 children count\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"INPUT\", \"text\": \"children\"}\n      ],\n      \"message1\": \"min %1 max %2\",\n      \"args1\": [\n        {\"type\": \"field_input\", \"name\": \"MIN\", \"text\": \"0\"},\n        {\"type\": \"field_input\", \"name\": \"MAX\", \"text\": \"unbounded\"}\n      ],\n      \"output\": \"Boolean\",\n      \"colour\": 260,\n      \"tooltip\": \"Checks the number of child blocks in a statement input\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_cardinality\",\n      \"message0\": \"%1.%2 value count\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}\n      ],\n      \"message1\": \"kind %1 min %2 max %3\",\n      \"args1\": [\n        {\"type\": \"field_input\", \"name\": \"FIELD_KIND\", \"text\": \"field\"},\n        {\"type\": \"field_input\", \"name\": \"MIN\", \"text\": \"0\"},\n        {\"type\": \"field_input\", \"name\": \"MAX\", \"text\": \"unbounded\"}\n      ],\n      \"output\": \"Boolean\",\n      \"colour\": 260,\n      \"tooltip\": \"Checks the number of values in a multi-valued field or reference\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_expression_rule\",\n      \"message0\": \"%1 expression %2\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"EXPRESSION\", \"text\": \"true\"}\n      ],\n      \"message1\": \"expanded %1\",\n      \"args1\": [{\"type\": \"input_value\", \"name\": \"CONDITION\", \"check\": \"Boolean\"}],\n      \"output\": \"Boolean\",\n      \"colour\": 0,\n      \"tooltip\": \"Semantic expression validation, optionally expanded into lower-level blocks\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_exists\",\n      \"message0\": \"field %1 exists\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}],\n      \"output\": \"Boolean\",\n      \"colour\": 145,\n      \"tooltip\": \"Checks whether a field or reference has a value\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_value\",\n      \"message0\": \"field %1 text\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}],\n      \"output\": \"String\",\n      \"colour\": 160,\n      \"tooltip\": \"Reads a field value as text\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_number\",\n      \"message0\": \"field %1 number\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}],\n      \"output\": \"Number\",\n      \"colour\": 230,\n      \"tooltip\": \"Reads a field value as a number\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_count\",\n      \"message0\": \"field %1 count\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}],\n      \"output\": \"Number\",\n      \"colour\": 260,\n      \"tooltip\": \"Counts values in a multi-valued field or reference\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_field_unique\",\n      \"message0\": \"%1.%2 values unique\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}\n      ],\n      \"message1\": \"kind %1\",\n      \"args1\": [{\"type\": \"field_input\", \"name\": \"FIELD_KIND\", \"text\": \"field\"}],\n      \"output\": \"Boolean\",\n      \"colour\": 145,\n      \"tooltip\": \"Checks that values inside a multi-valued field or reference are unique\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_type_field_unique\",\n      \"message0\": \"all %1 field %2 unique\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"},\n        {\"type\": \"field_input\", \"name\": \"FIELD\", \"text\": \"field\"}\n      ],\n      \"output\": \"Boolean\",\n      \"colour\": 145,\n      \"tooltip\": \"Checks that field values are unique across all blocks of a type\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_input_count\",\n      \"message0\": \"input %1 count\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"INPUT\", \"text\": \"children\"}],\n      \"output\": \"Number\",\n      \"colour\": 260,\n      \"tooltip\": \"Counts child blocks in a statement input\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_previous_block_is\",\n      \"message0\": \"%1 previous block is %2\",\n      \"args0\": [\n        {\"type\": \"field_input\", \"name\": \"TARGET\", \"text\": \"target\"},\n        {\"type\": \"field_input\", \"name\": \"TYPE\", \"text\": \"Type\"}\n      ],\n      \"output\": \"Boolean\",\n      \"colour\": 35,\n      \"tooltip\": \"Checks the previous connected block type\",\n      \"helpUrl\": \"\"\n    },\n    {\n      \"type\": \"validation_custom\",\n      \"message0\": \"custom check %1\",\n      \"args0\": [{\"type\": \"field_input\", \"name\": \"VALUE\", \"text\": \"\"}],\n      \"output\": \"Boolean\",\n      \"colour\": 0,\n      \"tooltip\": \"Custom validation check\",\n      \"helpUrl\": \"\"\n    }\n  ],\n  \"rules\": [\n    {\n      \"name\": \"Flow_pages\",\n      \"validationType\": \"CARDINALITY\",\n      \"targetType\": \"Flow\",\n      \"message\": \"Flow.pages has invalid cardinality.\",\n      \"blockTree\": {\n        \"type\": \"validation_rule\",\n        \"fields\": {\n          \"NAME\": \"Flow_pages\",\n          \"TARGET\": \"Flow\",\n          \"VALIDATION_TYPE\": \"CARDINALITY\",\n          \"MESSAGE\": \"Flow.pages has invalid cardinality.\"\n        },\n        \"inputs\": {\n          \"CONDITION\": {\n            \"type\": \"validation_statement_cardinality\",\n            \"fields\": {\n              \"TYPE\": \"Flow\",\n              \"INPUT\": \"pages\",\n              \"MIN\": \"1\",\n              \"MAX\": \"3\"\n            }\n          }\n        }\n      },\n      \"expandedExpression\": {\n        \"type\": \"logic_operation\",\n        \"fields\": { \"OP\": \"AND\" },\n        \"inputs\": {\n          \"A\": {\n            \"type\": \"logic_compare\",\n            \"fields\": { \"OP\": \"GTE\" },\n            \"inputs\": {\n              \"A\": {\n                \"type\": \"validation_input_count\",\n                \"fields\": { \"INPUT\": \"pages\" }\n              },\n              \"B\": {\n                \"type\": \"math_number\",\n                \"fields\": { \"NUM\": \"1\" }\n              }\n            }\n          },\n          \"B\": {\n            \"type\": \"logic_compare\",\n            \"fields\": { \"OP\": \"LTE\" },\n            \"inputs\": {\n              \"A\": {\n                \"type\": \"validation_input_count\",\n                \"fields\": { \"INPUT\": \"pages\" }\n              },\n              \"B\": {\n                \"type\": \"math_number\",\n                \"fields\": { \"NUM\": \"3\" }\n              }\n            }\n          }\n        }\n      },\n      \"generator\": {\n        \"format\": \"model2blockly.validationGenerator.v1\",\n        \"source\": \"visualBlock\",\n        \"blockType\": \"validation_statement_cardinality\",\n        \"runtimeCheck\": \"statementCardinality\",\n        \"runtimeExpression\": \"inputCount(\\\"pages\\\") \u003e= 1 \u0026\u0026 inputCount(\\\"pages\\\") \u003c= 3\",\n        \"parameters\": {\n          \"TYPE\": \"Flow\",\n          \"INPUT\": \"pages\",\n          \"MIN\": \"1\",\n          \"MAX\": \"3\"\n        }\n      }\n    },\n    {\n      \"name\": \"Flow_actions\",\n      \"validationType\": \"CARDINALITY\",\n      \"targetType\": \"Flow\",\n      \"message\": \"Flow.actions has invalid cardinality.\",\n      \"blockTree\": {\n        \"type\": \"validation_rule\",\n        \"fields\": {\n          \"NAME\": \"Flow_actions\",\n          \"TARGET\": \"Flow\",\n          \"VALIDATION_TYPE\": \"CARDINALITY\",\n          \"MESSAGE\": \"Flow.actions has invalid cardinality.\"\n        },\n        \"inputs\": {\n          \"CONDITION\": {\n            \"type\": \"validation_statement_cardinality\",\n            \"fields\": {\n              \"TYPE\": \"Flow\",\n              \"INPUT\": \"actions\",\n              \"MIN\": \"1\",\n              \"MAX\": \"3\"\n            }\n          }\n        }\n      },\n      \"expandedExpression\": {\n        \"type\": \"logic_operation\",\n        \"fields\": { \"OP\": \"AND\" },\n        \"inputs\": {\n          \"A\": {\n            \"type\": \"logic_compare\",\n            \"fields\": { \"OP\": \"GTE\" },\n            \"inputs\": {\n              \"A\": {\n                \"type\": \"validation_input_count\",\n                \"fields\": { \"INPUT\": \"actions\" }\n              },\n              \"B\": {\n                \"type\": \"math_number\",\n                \"fields\": { \"NUM\": \"1\" }\n              }\n            }\n          },\n          \"B\": {\n            \"type\": \"logic_compare\",\n            \"fields\": { \"OP\": \"LTE\" },\n            \"inputs\": {\n              \"A\": {\n                \"type\": \"validation_input_count\",\n                \"fields\": { \"INPUT\": \"actions\" }\n              },\n              \"B\": {\n                \"type\": \"math_number\",\n                \"fields\": { \"NUM\": \"3\" }\n              }\n            }\n          }\n        }\n      },\n      \"generator\": {\n        \"format\": \"model2blockly.validationGenerator.v1\",\n        \"source\": \"visualBlock\",\n        \"blockType\": \"validation_statement_cardinality\",\n        \"runtimeCheck\": \"statementCardinality\",\n        \"runtimeExpression\": \"inputCount(\\\"actions\\\") \u003e= 1 \u0026\u0026 inputCount(\\\"actions\\\") \u003c= 3\",\n        \"parameters\": {\n          \"TYPE\": \"Flow\",\n          \"INPUT\": \"actions\",\n          \"MIN\": \"1\",\n          \"MAX\": \"3\"\n        }\n      }\n    },\n    {\n      \"name\": \"Navigate_target_required\",\n      \"validationType\": \"REQUIRED\",\n      \"targetType\": \"Navigate\",\n      \"message\": \"Navigate.target is required.\",\n      \"blockTree\": {\n        \"type\": \"validation_rule\",\n        \"fields\": {\n          \"NAME\": \"Navigate_target_required\",\n          \"TARGET\": \"Navigate\",\n          \"VALIDATION_TYPE\": \"REQUIRED\",\n          \"MESSAGE\": \"Navigate.target is required.\"\n        },\n        \"inputs\": {\n          \"CONDITION\": {\n            \"type\": \"validation_required_field\",\n            \"fields\": {\n              \"TYPE\": \"Navigate\",\n              \"FIELD\": \"target\",\n              \"FIELD_KIND\": \"reference\"\n            }\n          }\n        }\n      },\n      \"expandedExpression\": {\n        \"type\": \"validation_field_exists\",\n        \"fields\": { \"FIELD\": \"target\" }\n      },\n      \"generator\": {\n        \"format\": \"model2blockly.validationGenerator.v1\",\n        \"source\": \"visualBlock\",\n        \"blockType\": \"validation_required_field\",\n        \"runtimeCheck\": \"requiredField\",\n        \"runtimeExpression\": \"has(\\\"target\\\")\",\n        \"parameters\": {\n          \"TYPE\": \"Navigate\",\n          \"FIELD\": \"target\",\n          \"FIELD_KIND\": \"reference\"\n        }\n      }\n    },\n    {\n      \"name\": \"Page_name_unique\",\n      \"validationType\": \"UNIQUE\",\n      \"targetType\": \"Page\",\n      \"message\": \"UNIQUE\",\n      \"blockTree\": {\n        \"type\": \"validation_rule\",\n        \"fields\": {\n          \"NAME\": \"Page_name_unique\",\n          \"TARGET\": \"Page\",\n          \"VALIDATION_TYPE\": \"UNIQUE\",\n          \"MESSAGE\": \"UNIQUE\"\n        },\n        \"inputs\": {\n          \"CONDITION\": {\n            \"type\": \"validation_type_field_unique\",\n            \"fields\": {\n              \"TYPE\": \"Page\",\n              \"FIELD\": \"name\"\n            }\n          }\n        }\n      },\n      \"expandedExpression\": {\n        \"type\": \"validation_type_field_unique\",\n        \"fields\": { \"TYPE\": \"Page\", \"FIELD\": \"name\" }\n      },\n      \"generator\": {\n        \"format\": \"model2blockly.validationGenerator.v1\",\n        \"source\": \"visualBlock\",\n        \"blockType\": \"validation_type_field_unique\",\n        \"runtimeCheck\": \"typeFieldUnique\",\n        \"runtimeExpression\": \"typeFieldUnique(\\\"Page\\\", \\\"name\\\")\",\n        \"parameters\": {\n          \"TYPE\": \"Page\",\n          \"FIELD\": \"name\"\n        }\n      }\n    }\n  ]\n}\n");
+		
+		  function generateValidationRuntimeRules(model = VALIDATION_BLOCK_MODEL) {
+		    const rules = (model && Array.isArray(model.rules)) ? model.rules : [];
+		    return rules.map((rule) => {
+		      const runtimeExpression = ruleRuntimeExpression(rule);
+		      return {
+		        name: rule && rule.name ? rule.name : 'validation',
+		        validationType: rule && rule.validationType ? rule.validationType : '',
+		        targetType: rule && rule.targetType ? rule.targetType : '',
+		        message: rule && rule.message ? rule.message : '',
+		        runtimeCheck: runtimeCheckForRule(rule),
+		        runtimeExpression,
+		        runtimeFunctionBody: runtimeExpressionToFunctionBody(runtimeExpression)
+		      };
+		    });
+		  }
+		
+		  function compileValidationBlockModel(model = VALIDATION_BLOCK_MODEL) {
+		    return generateValidationRuntimeRules(model);
+		  }
+		
+		  function blockTreeToRuntimeExpression(node) {
+		    if (!node || !node.type) return '';
+		    const fields = node.fields || {};
+		    const inputs = node.inputs || {};
+		    switch (node.type) {
+		      case 'validation_rule':
+		        return blockTreeToRuntimeExpression(inputs.CONDITION);
+		      case 'validation_required_field':
+		        return 'has(' + quoteExpressionString(fields.FIELD) + ')';
+		      case 'validation_statement_cardinality':
+		        return rangeExpression('inputCount(' + quoteExpressionString(fields.INPUT) + ')', fields.MIN, fields.MAX);
+		      case 'validation_field_cardinality':
+		        return rangeExpression('fieldCount(' + quoteExpressionString(fields.FIELD) + ')', fields.MIN, fields.MAX);
+		      case 'validation_expression_rule':
+		        return blockTreeToRuntimeExpression(inputs.CONDITION) || String(fields.EXPRESSION || '');
+		      case 'validation_field_exists':
+		        return 'has(' + quoteExpressionString(fields.FIELD) + ')';
+		      case 'validation_field_value':
+		        return 'value(' + quoteExpressionString(fields.FIELD) + ')';
+		      case 'validation_field_number':
+		        return 'number(' + quoteExpressionString(fields.FIELD) + ')';
+		      case 'validation_field_count':
+		        return 'fieldCount(' + quoteExpressionString(fields.FIELD) + ')';
+		      case 'validation_field_unique':
+		        return 'fieldUnique(' + quoteExpressionString(fields.FIELD) + ')';
+		      case 'validation_type_field_unique':
+		        return 'typeFieldUnique(' + quoteExpressionString(fields.TYPE) + ', ' + quoteExpressionString(fields.FIELD) + ')';
+		      case 'validation_input_count':
+		        return 'inputCount(' + quoteExpressionString(fields.INPUT) + ')';
+		      case 'validation_previous_block_is':
+		        return 'previousBlockIs(' + quoteExpressionString(fields.TYPE) + ')';
+		      case 'logic_compare':
+		        return joinCompareExpression(blockTreeToRuntimeExpression(inputs.A), fields.OP, blockTreeToRuntimeExpression(inputs.B));
+		      case 'logic_operation':
+		        return joinLogicExpression(blockTreeToRuntimeExpression(inputs.A), fields.OP, blockTreeToRuntimeExpression(inputs.B));
+		      case 'logic_negate':
+		        return '!(' + (blockTreeToRuntimeExpression(inputs.BOOL) || 'false') + ')';
+		      case 'logic_boolean':
+		        return fields.BOOL === 'FALSE' ? 'false' : 'true';
+		      case 'math_number':
+		        return normalizedNumber(fields.NUM);
+		      case 'text':
+		        return quoteExpressionString(fields.TEXT);
+		      default:
+		        return String(fields.VALUE || fields.EXPRESSION || '');
+		    }
+		  }
+		
+		  function runtimeExpressionToFunctionBody(expression) {
+		    const text = String(expression || '').trim();
+		    return text ? 'return Boolean(' + text + ');' : 'return true;';
+		  }
+		
+		  function createValidationAccessors(block, workspace) {
+		    function value(name) {
+		      const raw = block && block.getFieldValue ? block.getFieldValue(name) : '';
+		      if (raw === null || raw === undefined) return '';
+		      return String(raw).trim();
+		    }
+		    function number(name) {
+		      const parsed = Number(value(name));
+		      return Number.isFinite(parsed) ? parsed : 0;
+		    }
+		    function fieldCount(name) {
+		      return fieldValuesFromRaw(value(name)).length;
+		    }
+		    function inputCount(name) {
+		      let count = 0;
+		      let child = block && block.getInputTargetBlock ? block.getInputTargetBlock(name) : null;
+		      while (child) {
+		        count += 1;
+		        child = child.getNextBlock ? child.getNextBlock() : null;
+		      }
+		      return count;
+		    }
+		    function has(name) {
+		      return fieldCount(name) > 0 && value(name) !== '';
+		    }
+		    function includes(name, item) {
+		      return fieldValuesFromRaw(value(name)).includes(String(item));
+		    }
+		    function fieldUnique(name) {
+		      return duplicateValues(fieldValuesFromRaw(value(name))).length === 0;
+		    }
+		    function typeFieldUnique(type, name) {
+		      if (!workspace || !workspace.getAllBlocks || !block) return true;
+		      const current = value(name);
+		      if (!current) return true;
+		      let count = 0;
+		      workspace.getAllBlocks(false).forEach((candidate) => {
+		        if (!candidate || candidate.type !== type || !candidate.getFieldValue) return;
+		        const raw = candidate.getFieldValue(name);
+		        const candidateValue = raw === null || raw === undefined ? '' : String(raw).trim();
+		        if (candidateValue === current) count += 1;
+		      });
+		      return count <= 1;
+		    }
+		    function previousBlockIs(type) {
+		      const previous = block && block.getPreviousBlock ? block.getPreviousBlock() : null;
+		      return Boolean(previous && previous.type === type);
+		    }
+		    return {
+		      value,
+		      number,
+		      has,
+		      includes,
+		      fieldCount,
+		      inputCount,
+		      fieldUnique,
+		      typeFieldUnique,
+		      previousBlockIs,
+		      size: fieldCount
+		    };
+		  }
+		
+		  function evaluateRuntimeExpression(block, workspace, expression) {
+		    const text = String(expression || '').trim();
+		    if (!text) return { ok: true };
+		    const accessors = createValidationAccessors(block, workspace);
+		    try {
+		      const fn = new Function(
+		        'value',
+		        'number',
+		        'has',
+		        'includes',
+		        'fieldCount',
+		        'inputCount',
+		        'fieldUnique',
+		        'typeFieldUnique',
+		        'previousBlockIs',
+		        'size',
+		        'block',
+		        'workspace',
+		        'return Boolean(' + text + ');'
+		      );
+		      return {
+		        ok: Boolean(fn(
+		          accessors.value,
+		          accessors.number,
+		          accessors.has,
+		          accessors.includes,
+		          accessors.fieldCount,
+		          accessors.inputCount,
+		          accessors.fieldUnique,
+		          accessors.typeFieldUnique,
+		          accessors.previousBlockIs,
+		          accessors.size,
+		          block,
+		          workspace
+		        ))
+		      };
+		    } catch (error) {
+		      return { ok: false, error: error && error.message ? error.message : String(error) };
+		    }
+		  }
+		
+		  function ruleRuntimeExpression(rule) {
+		    if (!rule) return '';
+		    const fromTree = blockTreeToRuntimeExpression(rule.blockTree);
+		    if (fromTree) return fromTree;
+		    if (rule.generator && rule.generator.runtimeExpression) return rule.generator.runtimeExpression;
+		    return rule.runtimeExpression || '';
+		  }
+		
+		  function runtimeCheckForRule(rule) {
+		    if (rule && rule.generator && rule.generator.runtimeCheck) return rule.generator.runtimeCheck;
+		    const root = rule && rule.blockTree ? rule.blockTree : null;
+		    const condition = root && root.type === 'validation_rule' && root.inputs ? root.inputs.CONDITION : root;
+		    return runtimeCheckForBlockType(condition && condition.type);
+		  }
+		
+		  function runtimeCheckForBlockType(type) {
+		    if (type === 'validation_required_field') return 'requiredField';
+		    if (type === 'validation_statement_cardinality') return 'statementCardinality';
+		    if (type === 'validation_field_cardinality') return 'fieldCardinality';
+		    if (type === 'validation_field_unique') return 'fieldUnique';
+		    if (type === 'validation_type_field_unique') return 'typeFieldUnique';
+		    if (type === 'validation_previous_block_is') return 'previousBlockIs';
+		    if (type === 'validation_expression_rule') return 'semanticExpression';
+		    if (type) return 'expressionNode';
+		    return 'custom';
+		  }
+		
+		  function joinCompareExpression(left, operator, right) {
+		    return (left || 'undefined') + ' ' + compareOperator(operator) + ' ' + (right || 'undefined');
+		  }
+		
+		  function joinLogicExpression(left, operator, right) {
+		    const op = operator === 'OR' ? '||' : '&&';
+		    return '(' + (left || 'true') + ') ' + op + ' (' + (right || 'true') + ')';
+		  }
+		
+		  function compareOperator(operator) {
+		    if (operator === 'NEQ') return '!==';
+		    if (operator === 'GTE') return '>=';
+		    if (operator === 'LTE') return '<=';
+		    if (operator === 'GT') return '>';
+		    if (operator === 'LT') return '<';
+		    return '===';
+		  }
+		
+		  function rangeExpression(accessor, min, max) {
+		    const lower = positiveBound(min) ? accessor + ' >= ' + Number(min) : '';
+		    const upper = finiteUpperBound(max) ? accessor + ' <= ' + Number(max) : '';
+		    if (lower && upper) return lower + ' && ' + upper;
+		    if (lower) return lower;
+		    if (upper) return upper;
+		    return 'true';
+		  }
+		
+		  function positiveBound(value) {
+		    const parsed = Number(value || 0);
+		    return Number.isFinite(parsed) && parsed > 0;
+		  }
+		
+		  function finiteUpperBound(value) {
+		    if (value === null || value === undefined || String(value).trim() === '') return false;
+		    if (String(value).toLowerCase() === 'unbounded') return false;
+		    const parsed = Number(value);
+		    return Number.isFinite(parsed) && parsed > 0;
+		  }
+		
+		  function normalizedNumber(value) {
+		    const parsed = Number(value);
+		    return Number.isFinite(parsed) ? String(parsed) : '0';
+		  }
+		
+		  function quoteExpressionString(value) {
+		    return JSON.stringify(value === null || value === undefined ? '' : String(value));
+		  }
+		
+		  function fieldValuesFromRaw(raw) {
+		    if (raw === null || raw === undefined || raw === '') return [];
+		    return String(raw)
+		      .split(/[,\n]/)
+		      .map((part) => part.trim())
+		      .filter((part) => part.length > 0);
+		  }
+		
+		  function duplicateValues(values) {
+		    const seen = new Set();
+		    const duplicates = new Set();
+		    values.forEach((value) => {
+		      if (seen.has(value)) duplicates.add(value);
+		      seen.add(value);
+		    });
+		    return Array.from(duplicates);
+		  }
+		
+		
+		  const api = {
+		    VALIDATION_BLOCK_MODEL,
+		    blockTreeToRuntimeExpression,
+		    compileValidationBlockModel,
+		    createValidationAccessors,
+		    evaluateRuntimeExpression,
+		    generateValidationRuntimeRules,
+		    runtimeExpressionToFunctionBody
+		  };
+		
+		  root.BLOCKLY_VALIDATION_BLOCK_MODEL = VALIDATION_BLOCK_MODEL;
+		  root.Model2BlocklyValidationRuntime = api;
+		  if (typeof module !== "undefined" && module.exports) module.exports = api;
+		})(typeof window !== "undefined" ? window : globalThis);
+
+		/* ═══ 6. VALIDATIONS ═══ */
+		function computeValidationWarnings(workspace) {
+			var warnings = [];
+			if (!workspace) return warnings;
+			function queueWarn(block, text) {
+				if (!block) return;
+				warnings.push({ block: block, blockId: block.id, message: text });
+			}
+			function fieldMultiplicityCount(value) {
+				if (typeof parseBlocklyListField === 'function') return parseBlocklyListField(value).length;
+				if (value === null || value === undefined || value === '') return 0;
+				return String(value).split(/[,\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; }).length;
+			}
+			function fieldValues(value) {
+				if (typeof parseBlocklyListField === 'function') return parseBlocklyListField(value);
+				if (value === null || value === undefined || value === '') return [];
+				return String(value).split(/[,\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });
+			}
+			function duplicateValues(values) {
+				var seen = {};
+				var duplicates = [];
+				values.forEach(function(value) {
+					if (seen[value] && duplicates.indexOf(value) === -1) duplicates.push(value);
+					seen[value] = true;
+				});
+				return duplicates;
+			}
+			function validationValue(block, name) {
+				var value = block && block.getFieldValue ? block.getFieldValue(name) : '';
+				if (value === null || value === undefined) return '';
+				return String(value).trim();
+			}
+			function validationNumber(block, name) {
+				var number = Number(validationValue(block, name));
+				return isFinite(number) ? number : 0;
+			}
+			function validationSize(block, name) {
+				return fieldMultiplicityCount(block && block.getFieldValue ? block.getFieldValue(name) : '');
+			}
+			function validationHas(block, name) {
+				return validationSize(block, name) > 0 && validationValue(block, name) !== '';
+			}
+			function validationIncludes(block, name, item) {
+				return fieldValues(block && block.getFieldValue ? block.getFieldValue(name) : '').indexOf(String(item)) !== -1;
+			}
+			function evaluateValidationExpression(block, expression) {
+				var value = function(name) { return validationValue(block, name); };
+				var number = function(name) { return validationNumber(block, name); };
+				var size = function(name) { return validationSize(block, name); };
+				var has = function(name) { return validationHas(block, name); };
+				var includes = function(name, item) { return validationIncludes(block, name, item); };
+				try {
+					return { ok: !!(new Function('value', 'number', 'size', 'has', 'includes', 'block', 'return (' + expression + ');'))(value, number, size, has, includes, block) };
+				} catch(e) {
+					return { ok: false, error: e && e.message ? e.message : String(e) };
+				}
+			}
+			function validationRuntimeApi() {
+				if (typeof Model2BlocklyValidationRuntime !== 'undefined') return Model2BlocklyValidationRuntime;
+				if (typeof window !== 'undefined' && window.Model2BlocklyValidationRuntime) return window.Model2BlocklyValidationRuntime;
+				return null;
+			}
+			function activeValidationBlockModel() {
+				if (typeof window !== 'undefined' && window.__activeValidationBlockModel) return window.__activeValidationBlockModel;
+				if (typeof window !== 'undefined' && window.BLOCKLY_VALIDATION_BLOCK_MODEL) return window.BLOCKLY_VALIDATION_BLOCK_MODEL;
+				return null;
+			}
+			function setActiveValidationBlockModel(model) {
+				if (!model || typeof model !== 'object') return false;
+				window.__activeValidationBlockModel = model;
+				window.BLOCKLY_VALIDATION_BLOCK_MODEL = model;
+				if (typeof workspace !== 'undefined' && typeof applyValidationWarnings === 'function') {
+					applyValidationWarnings(workspace);
+				}
+				return true;
+			}
+			function syncValidationBlocksFromFrame() {
+				var iframe = document.querySelector('#validationBlocksView iframe');
+				if (!iframe || !iframe.contentWindow || typeof iframe.contentWindow.workspaceToValidationBlockModel !== 'function') return false;
+				try {
+					return setActiveValidationBlockModel(iframe.contentWindow.workspaceToValidationBlockModel());
+				} catch (e) {
+					return false;
+				}
+			}
+			window.setActiveValidationBlockModel = setActiveValidationBlockModel;
+			window.syncValidationBlocksFromFrame = syncValidationBlocksFromFrame;
+			window.addEventListener('message', function(event) {
+				var iframe = document.querySelector('#validationBlocksView iframe');
+				if (iframe && event.source !== iframe.contentWindow) return;
+				var data = event.data || {};
+				if (data.type !== 'model2blockly.validationModelChanged') return;
+				setActiveValidationBlockModel(data.model);
+			});
+			function computeRuntimeValidationWarnings(workspace, queueWarn) {
+				var runtime = validationRuntimeApi();
+				if (!runtime ||
+					typeof runtime.generateValidationRuntimeRules !== 'function' ||
+					typeof runtime.evaluateRuntimeExpression !== 'function') return false;
+				var rules = runtime.generateValidationRuntimeRules(activeValidationBlockModel());
+				if (!rules || !rules.length) return false;
+				var runnableRules = rules.filter(function(rule) {
+					return rule && rule.runtimeExpression && String(rule.runtimeExpression).trim();
+				});
+				if (runnableRules.length !== rules.length) return false;
+				workspace.getAllBlocks(false).forEach(function(block) {
+					runnableRules.forEach(function(rule) {
+						if (rule.targetType && block.type !== rule.targetType) return;
+						var result = runtime.evaluateRuntimeExpression(block, workspace, rule.runtimeExpression);
+						if (!result.ok) {
+							var message = rule.message || (rule.name ? rule.name + ' is violated.' : 'Validation rule is violated.');
+							if (result.error) message += ' Expression error: ' + result.error;
+							queueWarn(block, message);
+						}
+					});
+				});
+				return true;
+			}
+			if (computeRuntimeValidationWarnings(workspace, queueWarn)) return warnings;
+			workspace.getAllBlocks(false).forEach(function(block) {
+				if (block.type === 'Flow') {
+					var count = 0;
+					var child = block.getInputTargetBlock('pages');
+					while (child) { count++; child = child.getNextBlock(); }
+					if (count < 1)
+						queueWarn(block, '"Flow.pages" needs at least 1 element(s). Has: ' + count);
+					if (count > 3)
+						queueWarn(block, '"Flow.pages" allows at most 3 element(s). Has: ' + count);
+				}
+			});
+			workspace.getAllBlocks(false).forEach(function(block) {
+				if (block.type === 'Flow') {
+					var count = 0;
+					var child = block.getInputTargetBlock('actions');
+					while (child) { count++; child = child.getNextBlock(); }
+					if (count < 1)
+						queueWarn(block, '"Flow.actions" needs at least 1 element(s). Has: ' + count);
+					if (count > 3)
+						queueWarn(block, '"Flow.actions" allows at most 3 element(s). Has: ' + count);
+				}
+			});
+			workspace.getAllBlocks(false).forEach(function(block) {
+				if (block.type === 'Navigate') {
+					var val = block.getFieldValue('target');
+					if (val === null || val === undefined || val === '')
+						queueWarn(block, '"Navigate.target" is required (cannot be empty).');
+				}
+			});
+			(function() {
+				var seen = {};
+				workspace.getAllBlocks(false).forEach(function(block) {
+					if (block.type === 'Page') {
+						var val = block.getFieldValue('name');
+						val = val === null || val === undefined ? '' : String(val).trim();
+						if (!val) return;
+						if (seen[val]) {
+							queueWarn(block, '"Page.name" must be unique. Duplicate ID: ' + val);
+							queueWarn(seen[val], '"Page.name" must be unique. Duplicate ID: ' + val);
+						} else {
+							seen[val] = block;
+						}
+					}
+				});
+			})();
+			return warnings;
+		}
+		
+		function applyValidationWarnings(workspace) {
+			if (!workspace) return [];
+			workspace.getAllBlocks(false).forEach(function(b) { b.setWarningText(null); });
+			var warnings = computeValidationWarnings(workspace);
+			var pending = {};
+			warnings.forEach(function(w) {
+				if (!w.block) return;
+				if (!pending[w.block.id]) pending[w.block.id] = { b: w.block, msgs: [] };
+				pending[w.block.id].msgs.push(w.message);
+			});
+			Object.keys(pending).forEach(function(k) {
+				var p = pending[k];
+				p.b.setWarningText(p.msgs.join('\n'));
+			});
+			renderValidationIssues(warnings);
+			return warnings;
+		}
+		
+		function renderValidationIssues(warnings) {
+			var view = document.getElementById('issuesView');
+			var badge = document.getElementById('issuesBadge');
+			if (badge) badge.textContent = warnings && warnings.length ? '(' + warnings.length + ')' : '';
+			if (!view) return;
+			view.innerHTML = '';
+			if (!warnings || warnings.length === 0) {
+				var empty = document.createElement('div');
+				empty.className = 'validation-empty';
+				empty.textContent = 'No validation issues';
+				view.appendChild(empty);
+				return;
+			}
+			var summary = document.createElement('div');
+			summary.className = 'validation-summary';
+			summary.textContent = warnings.length + ' validation issue' + (warnings.length === 1 ? '' : 's');
+			view.appendChild(summary);
+			var list = document.createElement('div');
+			list.className = 'validation-list';
+			warnings.forEach(function(w) {
+				var item = document.createElement('button');
+				item.type = 'button';
+				item.className = 'validation-item';
+				item.addEventListener('click', function() { focusValidationBlock(w.blockId); });
+				var type = document.createElement('div');
+				type.className = 'validation-item-type';
+				type.textContent = w.block ? w.block.type : 'Model';
+				var msg = document.createElement('div');
+				msg.className = 'validation-item-message';
+				msg.textContent = w.message;
+				item.appendChild(type);
+				item.appendChild(msg);
+				list.appendChild(item);
+			});
+			view.appendChild(list);
+		}
+		
+		function focusValidationBlock(blockId) {
+			if (!blockId || !workspace) return;
+			var block = workspace.getBlockById(blockId);
+			if (!block) return;
+			if (typeof switchTab === 'function') switchTab('issues');
+			if (workspace.centerOnBlock) workspace.centerOnBlock(blockId);
+			if (block.select) block.select();
+			workspace.highlightBlock(blockId);
+			window.setTimeout(function() { workspace.highlightBlock(null); }, 1200);
+		}
+		
+		function confirmExportIfInvalid(workspace) {
+			var warnings = applyValidationWarnings(workspace);
+			if (!warnings.length) return true;
+			var preview = warnings.slice(0, 5).map(function(w) { return '- ' + w.message; }).join('\n');
+			if (warnings.length > 5) preview += '\n- ...and ' + (warnings.length - 5) + ' more.';
+			return confirm('This workspace has validation warnings:\n\n' + preview + '\n\nExport anyway?');
+		}
+		
+		function initValidations(workspace) {
+			applyValidationWarnings(workspace);
+			workspace.addChangeListener(function(event) {
+				if (event.type !== Blockly.Events.BLOCK_MOVE &&
+					event.type !== Blockly.Events.BLOCK_CREATE &&
+					event.type !== Blockly.Events.BLOCK_DELETE &&
+					event.type !== Blockly.Events.BLOCK_CHANGE) return;
+				applyValidationWarnings(workspace);
+			});
+		}
+		initValidations(workspace);
+
+		/* ═══ 7. REFERENCES ═══ */
+		/* ── Reference dropdowns (dynamic) ── */
+		window.BLOCKLY_OPPOSITE_REFERENCES = [
+		];
+		
+		function referenceFieldValues(block, name) {
+			if (!block || !block.getField || !block.getField(name)) return [];
+			var value = block.getFieldValue(name);
+			if (value === null || value === undefined || value === '') return [];
+			if (typeof parseBlocklyListField === 'function') return parseBlocklyListField(value);
+			return [String(value)];
+		}
+		
+		function setReferenceFieldValues(block, name, ids) {
+			if (!block || !block.getField || !block.getField(name)) return;
+			ids = (ids || []).filter(function(id, index, all) {
+				return id && all.indexOf(id) === index;
+			});
+			var field = block.getField(name);
+			var isDropdown = !!field.menuGenerator_;
+			var nextIds = isDropdown ? (ids.length ? [ids[0]] : []) : ids;
+			var currentIds = referenceFieldValues(block, name);
+			if (currentIds.join('|') === nextIds.join('|')) return;
+			try {
+				block.setFieldValue(isDropdown ? (nextIds[0] || '') : nextIds.join(', '), name);
+			} catch(e) {
+				try { block.setFieldValue('', name); } catch(ignored) {}
+			}
+		}
+		
+		function synchronizeOppositeReferences(workspace, event) {
+			var rules = window.BLOCKLY_OPPOSITE_REFERENCES || [];
+			if (!workspace || rules.length === 0 || window.__syncingOppositeReferences) return;
+			var changedBlock = event && event.blockId ? workspace.getBlockById(event.blockId) : null;
+			var changedField = event && event.name ? event.name : null;
+			var activeRules = rules;
+			if (changedBlock && changedField) {
+				activeRules = rules.filter(function(rule) {
+					return rule.ownerType === changedBlock.type && rule.name === changedField;
+				});
+				if (activeRules.length === 0) return;
+			}
+			window.__syncingOppositeReferences = true;
+			var eventsEnabled = Blockly.Events && Blockly.Events.isEnabled ? Blockly.Events.isEnabled() : true;
+			if (Blockly.Events && Blockly.Events.disable) Blockly.Events.disable();
+			try {
+				var blocks = workspace.getAllBlocks(false);
+				var byId = {};
+				blocks.forEach(function(block) { byId[block.id] = block; });
+				activeRules.forEach(function(rule) {
+					var desiredByTarget = {};
+					blocks.forEach(function(source) {
+						if (source.type !== rule.ownerType) return;
+						referenceFieldValues(source, rule.name).forEach(function(targetId) {
+							var target = byId[targetId];
+							if (!target || rule.targetTypes.indexOf(target.type) === -1) return;
+							if (!desiredByTarget[target.id]) desiredByTarget[target.id] = [];
+							if (desiredByTarget[target.id].indexOf(source.id) === -1) desiredByTarget[target.id].push(source.id);
+						});
+					});
+					blocks.forEach(function(target) {
+						if (rule.targetTypes.indexOf(target.type) === -1) return;
+						setReferenceFieldValues(target, rule.oppositeName, desiredByTarget[target.id] || []);
+					});
+				});
+			} finally {
+				if (eventsEnabled && Blockly.Events && Blockly.Events.enable) Blockly.Events.enable();
+				window.__syncingOppositeReferences = false;
+			}
+		}
+		window.synchronizeOppositeReferences = synchronizeOppositeReferences;
+		
+		function updateReferenceDropdowns(workspace) {
+			var instancesByType = {};
+			workspace.getAllBlocks(false).forEach(function(b) {
+				if (!instancesByType[b.type]) instancesByType[b.type] = [];
+				instancesByType[b.type].push(b);
+			});
+			function referenceOption(block, labelField) {
+				var label = labelField ? block.getFieldValue(labelField) : null;
+				label = label || block.getFieldValue('name') || block.type + '_' + block.id.substring(0,6);
+				return [label, block.id];
+			}
+			workspace.getAllBlocks(false).forEach(function(b) {
+				if (b.type === 'Navigate') {
+					var field = b.getField('target');
+						if (field && field.menuGenerator_) {
+							var opts = [['(none)', '']];
+							var labelField = 'name';
+							['Page'].forEach(function(t) {
+								(instancesByType[t] || []).forEach(function(targetBlock) { opts.push(referenceOption(targetBlock, labelField)); });
+							});
+						var cur = field.getValue();
+						field.menuGenerator_ = opts;
+						var valid = opts.some(function(o) { return o[1] === cur; });
+						if (!valid) field.setValue('');
+					} else if (field && field.refreshDisplay) {
+						field.refreshDisplay();
+					}
+				}
+			});
+		}
+		workspace.addChangeListener(function(event) {
+			if (event.type === Blockly.Events.BLOCK_MOVE ||
+				event.type === Blockly.Events.BLOCK_CREATE ||
+				event.type === Blockly.Events.BLOCK_DELETE ||
+				event.type === Blockly.Events.BLOCK_CHANGE) {
+				updateReferenceDropdowns(workspace);
+				synchronizeOppositeReferences(workspace, event);
+				if (typeof applyValidationWarnings === 'function') applyValidationWarnings(workspace);
+				if (typeof updateOutput === 'function') updateOutput();
+			}
+		});
+
+	/* ═══ 8. MODEL VIEWER ═══ */
+	/* ── Tab switching ── */
+	var DEVELOPER_TABS = { json: true, validationBlocks: true, runtime: true };
+	var currentEditorTab = 'model';
+	
+	function showEditorMessage(message, type) {
+		var toast = document.getElementById('editorToast');
+		if (!toast) { if (type === 'error') console.error(message); return; }
+		toast.textContent = message;
+		toast.className = 'editor-toast visible' + (type ? ' ' + type : '');
+		window.clearTimeout(window.__editorToastTimer);
+		window.__editorToastTimer = window.setTimeout(function() {
+			toast.className = 'editor-toast';
+		}, 4200);
+	}
+	
+	function setEditorMode(mode, keepTab) {
+		var developer = mode === 'developer';
+		document.body.classList.toggle('developer-mode', developer);
+		document.body.classList.toggle('build-mode', !developer);
+		var buildButton = document.getElementById('buildModeButton');
+		var developerButton = document.getElementById('developerModeButton');
+		if (buildButton) {
+			buildButton.classList.toggle('active', !developer);
+			buildButton.setAttribute('aria-pressed', String(!developer));
+		}
+		if (developerButton) {
+			developerButton.classList.toggle('active', developer);
+			developerButton.setAttribute('aria-pressed', String(developer));
+		}
+		var hint = document.getElementById('editorModeHint');
+		if (hint) hint.textContent = developer ? 'Developer mode' : 'Build mode';
+		var subtitle = document.getElementById('panelSubtitle');
+		if (subtitle) {
+			subtitle.textContent = developer
+				? 'Model, preview, JSON, runtime and validation internals'
+				: 'Model, preview and validation issues';
+		}
+		if (!developer && !keepTab && DEVELOPER_TABS[currentEditorTab]) {
+			switchTab(document.querySelector('[data-tab="preview"]') ? 'preview' : 'model');
+		}
+	}
+	
+	function switchTab(tab) {
+		if (DEVELOPER_TABS[tab]) setEditorMode('developer', true);
+		currentEditorTab = tab;
+		document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+		document.querySelectorAll('#tabs button').forEach(function(el) { el.classList.remove('active'); });
+		var view = document.getElementById(tab + 'View');
+		if (view) view.classList.add('active');
+		var activeButton = document.querySelector('#tabs button[data-tab="' + tab + '"]');
+		if (activeButton) activeButton.classList.add('active');
+		if (tab === 'validationBlocks' && typeof syncValidationBlocksFromFrame === 'function') {
+			window.setTimeout(syncValidationBlocksFromFrame, 0);
+		}
+	}
+	
+	window.BLOCKLY_SAMPLE_MODEL = [
+	  {
+	    "_type": "Flow",
+	    "_blockId": "sample_Flow_1",
+	    "pages": [
+	      {
+	        "_type": "Page",
+	        "_blockId": "sample_Page_1",
+	        "name": "home"
+	      }
+	    ],
+	    "actions": [
+	      {
+	        "_type": "Navigate",
+	        "_blockId": "sample_Navigate_1",
+	        "target": "sample_Page_1"
+	      }
+	    ]
+	  }
+	];
+	
+	/* ── Extract model JSON from workspace ── */
+	function getModelJSON() {
+		var code = javascript.javascriptGenerator.workspaceToCode(workspace);
+		if (!code || !code.trim()) return null;
+		try {
+			var wrapped = '[' + code.replace(/,\s*$/, '') + ']';
+			wrapped = wrapped.replace(/,\s*\]/g, ']');
+			return JSON.parse(wrapped);
+		} catch(e) {
+			return null;
+		}
+	}
+	
+	/* ── Render model tree as visual cards ── */
+	function renderModelNode(obj) {
+		if (!obj || typeof obj !== 'object') return '';
+		var type = obj._type || 'Unknown';
+		var html = '<div class="model-node">';
+		html += '<div class="node-type">' + type + '</div>';
+		html += '<div class="node-attr">';
+		Object.keys(obj).forEach(function(key) {
+			if (key === '_type') return;
+			var val = obj[key];
+			if (Array.isArray(val)) return;
+			if (val !== null && typeof val === 'object') return;
+			html += '<span>' + key + ': ' + val + '</span> ';
+		});
+		html += '</div>';
+		Object.keys(obj).forEach(function(key) {
+			var val = obj[key];
+			if (Array.isArray(val)) {
+				if (val.length === 0) return;
+				html += '<div class="model-children">';
+				html += '<div style="font-size:.75em;color:#999;margin:4px 0">' + key + ':</div>';
+				val.forEach(function(child) { html += renderModelNode(child); });
+				html += '</div>';
+			} else if (val !== null && typeof val === 'object' && val._type) {
+				html += '<div class="model-children">';
+				html += '<div style="font-size:.75em;color:#999;margin:4px 0">' + key + ':</div>';
+				html += renderModelNode(val);
+				html += '</div>';
+			}
+		});
+		html += '</div>';
+		return html;
+	}
+	
+	/* ── Update both tabs ── */
+	function updateOutput() {
+		var model = getModelJSON();
+		var modelView = document.getElementById('modelView');
+		var jsonView = document.getElementById('jsonView');
+		if (!model || model.length === 0) {
+			modelView.innerHTML = '<p style="color:#999;text-align:center;margin-top:40px">Drag blocks to build your model</p>';
+			jsonView.textContent = '// Empty workspace';
+			if (typeof renderAppMakerPreview === 'function') renderAppMakerPreview([]);
+			return;
+		}
+		var html = '';
+		model.forEach(function(node) { html += renderModelNode(node); });
+		modelView.innerHTML = html;
+		jsonView.textContent = JSON.stringify(model, null, 2);
+		if (typeof renderAppMakerPreview === 'function') renderAppMakerPreview(model);
+	}
+	
+	/* ── Save workspace state ── */
+	function saveWorkspace() {
+		var state = Blockly.serialization.workspaces.save(workspace);
+		var json = JSON.stringify(state, null, 2);
+		var blob = new Blob([json], {type: 'application/json'});
+		var a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = 'Referenceselect_workspace.json';
+		a.click();
+	}
+	
+	/* ── Load workspace state ── */
+	function loadWorkspace() {
+		var input = document.createElement('input');
+		input.type = 'file';
+		input.accept = '.json';
+		input.onchange = function(e) {
+			var file = e.target.files[0];
+			if (!file) return;
+			var reader = new FileReader();
+			reader.onload = function(ev) {
+				try {
+					var state = JSON.parse(ev.target.result);
+					Blockly.serialization.workspaces.load(state, workspace);
+					if (typeof updateReferenceDropdowns === 'function') updateReferenceDropdowns(workspace);
+					if (typeof applyValidationWarnings === 'function') applyValidationWarnings(workspace);
+					if (typeof updateOutput === 'function') updateOutput();
+					Blockly.svgResize(workspace);
+		} catch(err) {
+			showEditorMessage('Error loading workspace: ' + err.message, 'error');
+		}
+			};
+			reader.readAsText(file);
+			};
+			input.click();
+		}
+	
+		/* ── Import domain model JSON back into Blockly blocks ── */
+		function loadModelJSON() {
+			var input = document.createElement('input');
+			input.type = 'file';
+			input.accept = '.json';
+			input.onchange = function(e) {
+				var file = e.target.files[0];
+				if (!file) return;
+				var reader = new FileReader();
+				reader.onload = function(ev) {
+					try {
+						var model = JSON.parse(ev.target.result);
+						importModelJSON(model);
+			} catch(err) {
+				showEditorMessage('Error importing model JSON: ' + err.message, 'error');
+			}
+				};
+				reader.readAsText(file);
+			};
+			input.click();
+		}
+	
+			function loadSampleModel() {
+	if (!window.BLOCKLY_SAMPLE_MODEL || window.BLOCKLY_SAMPLE_MODEL.length === 0) {
+		showEditorMessage('No sample model was generated for this domain.', 'warning');
+		return;
+	}
+			importModelJSON(JSON.parse(JSON.stringify(window.BLOCKLY_SAMPLE_MODEL)));
+		}
+	
+		function importModelJSON(model) {
+			var config = (window.BLOCKLY_DOMAIN_CODEGEN && window.BLOCKLY_DOMAIN_CODEGEN.blocks) || {};
+			var roots = Array.isArray(model) ? model : [model];
+			var supported = roots.filter(function(node) {
+				return node && node._type && config[node._type];
+			});
+			if (supported.length === 0) {
+				throw new Error('No known domain nodes were found.');
+			}
+	
+			var idMap = {};
+			var pendingReferences = [];
+			var eventsEnabled = Blockly.Events.isEnabled ? Blockly.Events.isEnabled() : true;
+			if (Blockly.Events.disable) Blockly.Events.disable();
+			try {
+				workspace.clear();
+				var x = 40;
+				var y = 40;
+				roots.forEach(function(node) {
+					if (!node || !node._type || !config[node._type]) return;
+					createImportedModelNode(node, x, y, idMap, pendingReferences);
+					x += 300;
+					if (x > 640) { x = 40; y += 170; }
+				});
+			} finally {
+				if (eventsEnabled && Blockly.Events.enable) Blockly.Events.enable();
+			}
+	
+			applyImportedReferences(pendingReferences, idMap);
+			if (typeof applyValidationWarnings === 'function') applyValidationWarnings(workspace);
+			if (typeof updateOutput === 'function') updateOutput();
+			Blockly.svgResize(workspace);
+		}
+	
+		function createImportedModelNode(node, x, y, idMap, pendingReferences) {
+			var config = (window.BLOCKLY_DOMAIN_CODEGEN && window.BLOCKLY_DOMAIN_CODEGEN.blocks) || {};
+			var blockConfig = node && node._type ? config[node._type] : null;
+			if (!blockConfig) return null;
+	
+			var block = createImportedBlock(node._type, node._blockId, x, y, idMap);
+			(blockConfig.fields || []).forEach(function(name) {
+				if (Object.prototype.hasOwnProperty.call(node, name)) {
+					setImportedField(block, name, node[name]);
+				}
+			});
+			(blockConfig.references || []).forEach(function(name) {
+				pendingReferences.push({ block: block, field: name, oldId: node[name] || '' });
+			});
+			(blockConfig.values || []).forEach(function(name) {
+				var childNode = node[name];
+				if (!childNode || !childNode._type) return;
+				var child = createImportedModelNode(childNode, 0, 0, idMap, pendingReferences);
+				var input = block.getInput(name);
+				if (child && input && input.connection && child.outputConnection) {
+					input.connection.connect(child.outputConnection);
+				}
+			});
+			(blockConfig.statements || []).forEach(function(name) {
+				var children = Array.isArray(node[name]) ? node[name] : [];
+				connectImportedStatementBlocks(block, name, children, idMap, pendingReferences);
+			});
+			return block;
+		}
+	
+		function connectImportedStatementBlocks(parent, inputName, children, idMap, pendingReferences) {
+			var input = parent.getInput(inputName);
+			var previous = null;
+			children.forEach(function(childNode) {
+				if (!childNode || !childNode._type) return;
+				var child = createImportedModelNode(childNode, 0, 0, idMap, pendingReferences);
+				if (!child) return;
+				if (!previous && input && input.connection && child.previousConnection) {
+					input.connection.connect(child.previousConnection);
+				} else if (previous && previous.nextConnection && child.previousConnection) {
+					previous.nextConnection.connect(child.previousConnection);
+				}
+				previous = child;
+			});
+		}
+	
+		function createImportedBlock(type, requestedId, x, y, idMap) {
+			var block = null;
+			var blockId = requestedId && !workspace.getBlockById(requestedId) ? requestedId : importedModelNewId();
+			try {
+				block = workspace.newBlock(type, blockId);
+			} catch(e) {
+				blockId = importedModelNewId();
+				block = workspace.newBlock(type, blockId);
+			}
+			if (requestedId) idMap[requestedId] = block.id;
+			block.initSvg();
+			block.render();
+			if (typeof x === 'number' && typeof y === 'number') block.moveBy(x, y);
+			return block;
+		}
+	
+		function applyImportedReferences(pendingReferences, idMap) {
+			if (typeof updateReferenceDropdowns === 'function') updateReferenceDropdowns(workspace);
+			pendingReferences.forEach(function(ref) {
+				if (!ref.oldId || !ref.block || !ref.block.getField(ref.field)) return;
+				if (Array.isArray(ref.oldId)) {
+					var mappedIds = ref.oldId.map(function(oldId) { return idMap[oldId] || oldId; }).filter(function(id) { return !!workspace.getBlockById(id); });
+					try {
+						ref.block.setFieldValue(mappedIds.join(', '), ref.field);
+					} catch(e) {}
+					return;
+				}
+				var mappedId = idMap[ref.oldId] || ref.oldId;
+				if (!workspace.getBlockById(mappedId)) return;
+				try {
+					ref.block.setFieldValue(mappedId, ref.field);
+				} catch(e) {
+					ref.block.setFieldValue('', ref.field);
+				}
+			});
+			if (typeof updateReferenceDropdowns === 'function') updateReferenceDropdowns(workspace);
+		}
+	
+		function setImportedField(block, name, value) {
+			if (!block || !block.getField(name) || value === null || value === undefined) return;
+			var field = block.getField(name);
+			var current = field.getValue ? field.getValue() : null;
+			if (Array.isArray(value)) {
+				value = value.map(function(item) {
+					return item === null || item === undefined ? '' : String(item).trim();
+				}).filter(function(item) {
+					return item.length > 0;
+				}).join(', ');
+			}
+			if (typeof value === 'boolean' && (current === 'TRUE' || current === 'FALSE')) {
+				value = value ? 'TRUE' : 'FALSE';
+			}
+			try {
+				block.setFieldValue(String(value), name);
+			} catch(e) {}
+		}
+	
+		function importedModelNewId() {
+			if (Blockly.utils && Blockly.utils.idGenerator && Blockly.utils.idGenerator.genUid) {
+				return Blockly.utils.idGenerator.genUid();
+			}
+			return 'imported_' + Math.random().toString(36).slice(2);
+		}
+	
+			/* ── Export JSON ── */
+			function exportJSON() {
+				if (!confirmExportIfInvalid(workspace)) return;
+			var model = getModelJSON();
+			if (!model) { showEditorMessage('Workspace is empty.', 'warning'); return; }
+		var json = JSON.stringify(model, null, 2);
+		var blob = new Blob([json], {type: 'application/json'});
+		var a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = 'Referenceselect_model.json';
+		a.click();
+	}
+	
+		/* ── Export domain instance XMI (EMF/XMI style) ── */
+		function exportXMI() {
+			if (!confirmExportIfInvalid(workspace)) return;
+			var model = getModelJSON();
+			if (!model) { showEditorMessage('Workspace is empty.', 'warning'); return; }
+		var xmi = modelToDomainXMI(model);
+		var blob = new Blob([xmi], {type: 'application/xml'});
+		var a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = 'Referenceselect_model.xmi';
+		a.click();
+	}
+	
+		/* ── Export generated domain code ── */
+		function exportCode() {
+			if (!confirmExportIfInvalid(workspace)) return;
+			var code = generateDomainCode(workspace);
+			if (!code || !code.trim()) { showEditorMessage('Workspace is empty.', 'warning'); return; }
+			var config = window.BLOCKLY_DOMAIN_CODEGEN || {};
+			var ext = config.fileExtension || 'txt';
+			var blob = new Blob([code], {type: 'text/plain'});
+			var a = document.createElement('a');
+			a.href = URL.createObjectURL(blob);
+			a.download = 'Referenceselect_code.' + ext.replace(/^\./, '');
+			a.click();
+		}
+	
+	function modelToDomainXMI(model) {
+		var nsURI = 'https://plortinus.github.io/model2blockly/examples/referenceselect';
+		var nsPrefix = 'referenceselect';
+		var roots = Array.isArray(model) ? model : [model];
+		var xmi = '<?xml version="1.0" encoding="UTF-8"?>\n';
+		xmi += '<xmi:XMI xmi:version="2.0"';
+		xmi += ' xmlns:xmi="http://www.omg.org/XMI"';
+		xmi += ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
+		xmi += ' xmlns:' + nsPrefix + '="' + xmlAttribute(nsURI) + '">\n';
+		roots.forEach(function(node) {
+			xmi += domainNodeToXMI(node, 1, nsPrefix, nsPrefix + ':' + xmlName(node && node._type ? node._type : 'Element'), false);
+		});
+		xmi += '</xmi:XMI>';
+		return xmi;
+	}
+	window.modelToDomainXMI = modelToDomainXMI;
+	
+	function domainNodeToXMI(obj, indent, nsPrefix, elementName, includeType) {
+		if (!obj || typeof obj !== 'object') return '';
+		var pad = '  '.repeat(indent);
+		var type = obj._type || 'Element';
+		var config = domainBlockConfig(type);
+		var tag = elementName || (nsPrefix + ':' + xmlName(type));
+		var attrs = '';
+		var children = '';
+	
+		if (includeType) attrs += ' xsi:type="' + nsPrefix + ':' + xmlName(type) + '"';
+		if (obj._blockId) attrs += ' xmi:id="' + xmlAttribute(obj._blockId) + '"';
+	
+		(config.fields || []).forEach(function(key) {
+			if (!Object.prototype.hasOwnProperty.call(obj, key)) return;
+			var val = obj[key];
+			if (Array.isArray(val)) {
+				val.forEach(function(item) {
+					children += pad + '  <' + xmlName(key) + '>' + xmlText(domainScalarValue(item, key, config)) + '</' + xmlName(key) + '>\n';
+				});
+			} else if (val !== null && val !== undefined && typeof val !== 'object') {
+				attrs += ' ' + xmlName(key) + '="' + xmlAttribute(domainScalarValue(val, key, config)) + '"';
+			}
+		});
+	
+		(config.references || []).forEach(function(key) {
+			if (!Object.prototype.hasOwnProperty.call(obj, key)) return;
+			var ids = referenceIds(obj[key]);
+			if (ids.length) attrs += ' ' + xmlName(key) + '="' + xmlAttribute(ids.join(' ')) + '"';
+		});
+	
+		(config.values || []).forEach(function(key) {
+			var child = obj[key];
+			if (child && child._type) {
+				children += domainNodeToXMI(child, indent + 1, nsPrefix, xmlName(key), true);
+			}
+		});
+	
+		(config.statements || []).forEach(function(key) {
+			var list = Array.isArray(obj[key]) ? obj[key] : [];
+			list.forEach(function(child) {
+				if (child && child._type) {
+					children += domainNodeToXMI(child, indent + 1, nsPrefix, xmlName(key), true);
+				}
+			});
+		});
+	
+		if (children) {
+			return pad + '<' + tag + attrs + '>\n' + children + pad + '</' + tag + '>\n';
+		} else {
+			return pad + '<' + tag + attrs + '/>\n';
+		}
+	}
+	
+	function domainBlockConfig(type) {
+		var blocks = (window.BLOCKLY_DOMAIN_CODEGEN && window.BLOCKLY_DOMAIN_CODEGEN.blocks) || {};
+		return blocks[type] || { fields: [], fieldTypes: {}, references: [], values: [], statements: [] };
+	}
+	
+	function domainScalarValue(value, fieldName, config) {
+		var type = config && config.fieldTypes ? config.fieldTypes[fieldName] : null;
+		if (type === 'BOOLEAN') {
+			if (value === true || value === 'TRUE' || value === 'true' || value === '1') return 'true';
+			if (value === false || value === 'FALSE' || value === 'false' || value === '0') return 'false';
+		}
+		return value === null || value === undefined ? '' : String(value);
+	}
+	
+	function referenceIds(value) {
+		if (Array.isArray(value)) {
+			return value.map(function(item) { return String(item || '').trim(); }).filter(Boolean);
+		}
+		if (value === null || value === undefined || value === '') return [];
+		return String(value).split(/[,\n ]+/).map(function(item) { return item.trim(); }).filter(Boolean);
+	}
+	
+	function xmlName(value) {
+		var text = String(value || 'Element').replace(/[^A-Za-z0-9_.-]/g, '_');
+		return /^[A-Za-z_]/.test(text) ? text : '_' + text;
+	}
+	
+	function xmlText(value) {
+		return String(value === null || value === undefined ? '' : value)
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;');
+	}
+	
+	function xmlAttribute(value) {
+		return xmlText(value).replace(/"/g, '&quot;');
+	}
+	
+	/* ── Auto-update ── */
+	workspace.addChangeListener(function(e) {
+		if (e.type !== Blockly.Events.UI) updateOutput();
+	});
+	setEditorMode('build', true);
+	updateOutput();
+
+	/* ═══ 9. AST RUNTIME ═══ */
+	/* ═══ GENERIC AST RUNTIME ═══ */
+	var _astRunner = {
+		running: false, paused: false, stepping: false,
+		stepResolve: null, speed: 500, nodeCount: 0,
+	
+		run: function() {
+			var code;
+			try {
+				code = javascript.javascriptGenerator.workspaceToCode(workspace);
+			} catch(ex) { this.log('Generator error: ' + ex.message, 'err'); return; }
+			if (!code || code.trim().length === 0) { showEditorMessage('Workspace is empty.', 'warning'); return; }
+			var model;
+			try {
+				var wrapped = '[' + code.replace(/,\s*$/, '') + ']';
+				wrapped = wrapped.replace(/,\s*\]/g, ']');
+				model = JSON.parse(wrapped);
+			} catch(ex) { this.log('JSON parse error: ' + ex.message, 'err'); return; }
+			this.nodeCount = 0;
+			this.running = true; this.paused = false; this.stepping = false;
+			document.getElementById('runtimeView').innerHTML = '';
+			this.log('▶ Execution started (' + model.length + ' root node' + (model.length > 1 ? 's' : '') + ')', 'info');
+			var self = this;
+			(async function() {
+				for (var i = 0; i < model.length; i++) {
+					if (!self.running) break;
+					await self.walkNode(model[i], 0);
+				}
+				self.running = false;
+				workspace.highlightBlock(null);
+				self.log('✓ Finished — visited ' + self.nodeCount + ' nodes', 'done');
+			})();
+		},
+	
+		walkNode: async function(node, depth) {
+			if (!node || typeof node !== 'object' || !node._type || !this.running) return;
+			this.nodeCount++;
+			if (node._blockId) workspace.highlightBlock(node._blockId);
+			var attrs = [];
+			var childKeys = [];
+			for (var key in node) {
+				if (key === '_type' || key === '_blockId') continue;
+				var v = node[key];
+				if (Array.isArray(v)) { childKeys.push(key); continue; }
+				if (v !== null && typeof v === 'object' && v._type) { childKeys.push(key); continue; }
+				attrs.push(key + '=' + JSON.stringify(v));
+			}
+			var indent = '';
+			for (var d = 0; d < depth; d++) indent += '  ';
+			this.log(indent + '► ' + node._type + (attrs.length ? '  (' + attrs.join(', ') + ')' : ''), 'step');
+			await this.waitStep();
+			for (var ci = 0; ci < childKeys.length; ci++) {
+				var ck = childKeys[ci];
+				var cv = node[ck];
+				if (Array.isArray(cv)) {
+					for (var j = 0; j < cv.length; j++) {
+						if (!this.running) return;
+						await this.walkNode(cv[j], depth + 1);
+					}
+				} else if (cv && typeof cv === 'object' && cv._type) {
+					if (!this.running) return;
+					await this.walkNode(cv, depth + 1);
+				}
+			}
+		},
+	
+		waitStep: function() {
+			var self = this;
+			if (this.stepping || this.paused) {
+				return new Promise(function(r) { self.stepResolve = r; });
+			}
+			return new Promise(function(r) { setTimeout(r, self.speed); });
+		},
+	
+		pause: function() { this.paused = true; },
+		resume: function() {
+			this.paused = false; this.stepping = false;
+			if (this.stepResolve) { this.stepResolve(); this.stepResolve = null; }
+		},
+		step: function() {
+			this.stepping = true;
+			if (this.stepResolve) { this.stepResolve(); this.stepResolve = null; }
+		},
+		stop: function() {
+			this.running = false;
+			if (this.stepResolve) { this.stepResolve(); this.stepResolve = null; }
+			workspace.highlightBlock(null);
+			this.log('⏹ Stopped', 'info');
+		},
+	
+		log: function(msg, cls) {
+			var el = document.getElementById('runtimeView');
+			if (!el) return;
+			var d = document.createElement('div');
+			d.className = 'rt-' + (cls || 'info');
+			d.textContent = msg;
+			el.appendChild(d);
+			el.scrollTop = el.scrollHeight;
+		}
+	};
+	
+	function runModel() {
+		if (_astRunner.running && _astRunner.paused) { _astRunner.resume(); return; }
+		if (_astRunner.running) return;
+		switchTab('runtime');
+		_astRunner.run();
+	}
+	function pauseModel() { _astRunner.pause(); }
+	function stepModel() {
+		if (!_astRunner.running) { _astRunner.stepping = true; switchTab('runtime'); _astRunner.run(); }
+		else { _astRunner.step(); }
+	}
+	function stopModel() { _astRunner.stop(); }
+	</script>
+</body>
+</html>

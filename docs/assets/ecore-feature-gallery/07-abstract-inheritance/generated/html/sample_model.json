@@ -1,0 +1,18 @@
+[
+  {
+    "_type": "Screen",
+    "_blockId": "sample_Screen_1",
+    "components": [
+      {
+        "_type": "Text",
+        "_blockId": "sample_Text_1",
+        "value": "Name"
+      },
+      {
+        "_type": "Image",
+        "_blockId": "sample_Image_1",
+        "url": "https://example.com/avatar.png"
+      }
+    ]
+  }
+]

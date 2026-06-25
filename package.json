@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build:site-docs": "node scripts/build-site-docs.mjs",
+    "build:doc-examples": "node scripts/build-doc-feature-examples.mjs",
     "categorize:update-site": "node scripts/categorize-update-site.mjs",
     "prepare:update-site": "node scripts/prepare-update-site.mjs",
     "rebuild:update-site": "node scripts/rebuild-update-site.mjs",

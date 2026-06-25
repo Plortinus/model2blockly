@@ -1,0 +1,524 @@
+[
+  {
+    "slug": "00-zero-annotation-defaults",
+    "title": "zero annotation Ecore defaults",
+    "zhTitle": "无注解 Ecore 默认生成",
+    "description": "A plain Ecore model without eAnnotations still generates blocks, fields, dropdowns, statement inputs and validation from structure.",
+    "zhDescription": "完全不写 eAnnotations 时，生成器仍会从 EClass、EAttribute、EReference 和 EEnum 推断区块、字段、下拉框、嵌套输入和校验。",
+    "group": "从默认到定制",
+    "covers": [
+      "no eAnnotations -> inferred Blockly editor",
+      "EClass -> block type",
+      "EAttribute/EEnum -> fields and dropdowns",
+      "containment EReference -> statement input",
+      "lowerBound >= 1 -> required validation"
+    ],
+    "source": "00-zero-annotation-defaults/source.ecore",
+    "sourcePreview": "00-zero-annotation-defaults/source.html",
+    "preview": "00-zero-annotation-defaults/preview.html",
+    "report": "00-zero-annotation-defaults/generated/generation_report.html",
+    "standalone": "00-zero-annotation-defaults/generated/html/Zerodefaults_standalone.html"
+  },
+  {
+    "slug": "00-annotation-customization",
+    "title": "annotations customize Blockly output",
+    "zhTitle": "添加注解定制 Blockly",
+    "description": "Adding blockly and ui annotations to the same kind of model controls toolbox categories, colours, tooltips, labels and workspace options.",
+    "zhDescription": "在同类任务模型上添加 blockly 和 ui 注解后，可以指定工具箱分类、区块颜色、tooltip、字段标签和工作区行为。",
+    "group": "从默认到定制",
+    "covers": [
+      "blockly category/colour/tooltip -> block presentation",
+      "ui label/placeholder -> readable fields",
+      "workspace.* -> Blockly workspace options",
+      "same Ecore structure with explicit generated UI"
+    ],
+    "source": "00-annotation-customization/source.ecore",
+    "sourcePreview": "00-annotation-customization/source.html",
+    "preview": "00-annotation-customization/preview.html",
+    "report": "00-annotation-customization/generated/generation_report.html",
+    "standalone": "00-annotation-customization/generated/html/Annotatedcustomization_standalone.html"
+  },
+  {
+    "slug": "01-text-field",
+    "title": "EAttribute -> text field",
+    "zhTitle": "EAttribute -> 文本字段",
+    "description": "A required EString attribute becomes a Blockly text field and a required-field validation.",
+    "zhDescription": "必填的 EString 属性生成 Blockly 文本字段，并生成 required-field 校验。",
+    "group": "零注解与字段",
+    "covers": [
+      "EClass -> block type",
+      "EAttribute:EString -> field_input",
+      "lowerBound >= 1 -> required validation",
+      "defaultValueLiteral -> field default"
+    ],
+    "source": "01-text-field/source.ecore",
+    "sourcePreview": "01-text-field/source.html",
+    "preview": "01-text-field/preview.html",
+    "report": "01-text-field/generated/generation_report.html",
+    "standalone": "01-text-field/generated/html/Textfield_standalone.html"
+  },
+  {
+    "slug": "02-enum-dropdown",
+    "title": "EEnum -> dropdown",
+    "zhTitle": "EEnum -> 下拉框",
+    "description": "An EEnum attribute becomes a Blockly dropdown with one option per enum literal.",
+    "zhDescription": "EEnum 属性生成 Blockly 下拉框，每个枚举字面量都会成为一个选项。",
+    "group": "零注解与字段",
+    "covers": [
+      "EEnum -> field_dropdown",
+      "EEnumLiteral literal/name -> dropdown value/label",
+      "inputsInline=true"
+    ],
+    "source": "02-enum-dropdown/source.ecore",
+    "sourcePreview": "02-enum-dropdown/source.html",
+    "preview": "02-enum-dropdown/preview.html",
+    "report": "02-enum-dropdown/generated/generation_report.html",
+    "standalone": "02-enum-dropdown/generated/html/Enumdropdown_standalone.html"
+  },
+  {
+    "slug": "03-typed-fields",
+    "title": "EAttribute types -> Blockly fields",
+    "zhTitle": "EAttribute 类型 -> Blockly 字段控件",
+    "description": "Boolean, integer and colour annotations generate checkbox, number and colour controls.",
+    "zhDescription": "EBoolean、EInt 和 field_colour 注解分别生成复选框、数字输入和颜色选择器。",
+    "group": "字段类型",
+    "covers": [
+      "EBoolean -> field_checkbox",
+      "EInt -> field_number",
+      "blockly min/max -> numeric bounds",
+      "field_colour override"
+    ],
+    "source": "03-typed-fields/source.ecore",
+    "sourcePreview": "03-typed-fields/source.html",
+    "preview": "03-typed-fields/preview.html",
+    "report": "03-typed-fields/generated/generation_report.html",
+    "standalone": "03-typed-fields/generated/html/Typedfields_standalone.html"
+  },
+  {
+    "slug": "04-containment-statement",
+    "title": "containment EReference -> statement input",
+    "zhTitle": "containment EReference -> statement 输入",
+    "description": "A containment reference becomes a statement area where child blocks can be stacked.",
+    "zhDescription": "containment=\"true\" 的引用生成 statement 区域，用户可以把子区块堆叠进去。",
+    "group": "引用与连接",
+    "covers": [
+      "containment EReference -> input_statement",
+      "lower/upperBound on containment -> cardinality validation",
+      "root container -> no previous/next connection"
+    ],
+    "source": "04-containment-statement/source.ecore",
+    "sourcePreview": "04-containment-statement/source.html",
+    "preview": "04-containment-statement/preview.html",
+    "report": "04-containment-statement/generated/generation_report.html",
+    "standalone": "04-containment-statement/generated/html/Statementinput_standalone.html"
+  },
+  {
+    "slug": "05-value-input-shadow",
+    "title": "input_value + shadow block",
+    "zhTitle": "input_value + shadow block",
+    "description": "A containment reference annotated as input_value becomes an expression socket with a default shadow block.",
+    "zhDescription": "把 containment 引用标注为 input_value 后，会生成表达式插口；shadow 指定默认影子区块。",
+    "group": "引用与连接",
+    "covers": [
+      "EReference type=input_value -> value socket",
+      "shadow -> toolbox shadow input",
+      "abstract output type -> expression connection"
+    ],
+    "source": "05-value-input-shadow/source.ecore",
+    "sourcePreview": "05-value-input-shadow/source.html",
+    "preview": "05-value-input-shadow/preview.html",
+    "report": "05-value-input-shadow/generated/generation_report.html",
+    "standalone": "05-value-input-shadow/generated/html/Valueinput_standalone.html"
+  },
+  {
+    "slug": "06-reference-dropdown",
+    "title": "non-containment EReference -> reference selector",
+    "zhTitle": "普通 EReference -> 引用选择器",
+    "description": "A normal reference does not create a child block; it becomes a selector for existing target blocks.",
+    "zhDescription": "普通引用不会创建子对象，而是生成从已有目标区块中选择的引用字段。",
+    "group": "引用与连接",
+    "covers": [
+      "non-containment EReference -> reference dropdown",
+      "referenceLabelField -> dropdown labels",
+      "required reference -> required validation"
+    ],
+    "source": "06-reference-dropdown/source.ecore",
+    "sourcePreview": "06-reference-dropdown/source.html",
+    "preview": "06-reference-dropdown/preview.html",
+    "report": "06-reference-dropdown/generated/generation_report.html",
+    "standalone": "06-reference-dropdown/generated/html/Referenceselect_standalone.html"
+  },
+  {
+    "slug": "07-abstract-inheritance",
+    "title": "abstract EClass -> typed connection",
+    "zhTitle": "抽象 EClass -> 类型连接",
+    "description": "An abstract parent stays out of the toolbox but provides the connection type for concrete children.",
+    "zhDescription": "抽象父类不会出现在工具箱里，但会成为 statement 输入的连接类型，具体子类可以放入同一个插槽。",
+    "group": "继承与连接",
+    "covers": [
+      "abstract EClass -> hidden from toolbox",
+      "eSuperTypes -> typed previous/next connection",
+      "concrete subclasses share parent input type"
+    ],
+    "source": "07-abstract-inheritance/source.ecore",
+    "sourcePreview": "07-abstract-inheritance/source.html",
+    "preview": "07-abstract-inheritance/preview.html",
+    "report": "07-abstract-inheritance/generated/generation_report.html",
+    "standalone": "07-abstract-inheritance/generated/html/Abstracttype_standalone.html"
+  },
+  {
+    "slug": "08-validation-rule",
+    "title": "validation annotation -> generated warning",
+    "zhTitle": "validation 注解 -> 生成校验提示",
+    "description": "A source=\"validation\" annotation becomes generated Blockly validation logic.",
+    "zhDescription": "source=\"validation\" 注解会进入生成的验证规则，并在 Blockly 工作区里产生运行时提示。",
+    "group": "校验",
+    "covers": [
+      "validation mustFollow -> previous-block validation",
+      "validation_workspace.html generation",
+      "generated warning runtime"
+    ],
+    "source": "08-validation-rule/source.ecore",
+    "sourcePreview": "08-validation-rule/source.html",
+    "preview": "08-validation-rule/preview.html",
+    "report": "08-validation-rule/generated/generation_report.html",
+    "standalone": "08-validation-rule/generated/html/Validationrule_standalone.html"
+  },
+  {
+    "slug": "09-multivalue-field",
+    "title": "multi-valued EAttribute -> list field",
+    "zhTitle": "多值 EAttribute -> 列表字段",
+    "description": "An EAttribute with upperBound=\"-1\" becomes a list-style text field and gets cardinality/uniqueness validation.",
+    "zhDescription": "upperBound=\"-1\" 的属性会生成列表式文本字段，并进入字段基数和唯一性校验。",
+    "group": "字段类型",
+    "covers": [
+      "upperBound=-1 EAttribute -> field_multivalue",
+      "multi-valued field -> field cardinality/unique validation"
+    ],
+    "source": "09-multivalue-field/source.ecore",
+    "sourcePreview": "09-multivalue-field/source.html",
+    "preview": "09-multivalue-field/preview.html",
+    "report": "09-multivalue-field/generated/generation_report.html",
+    "standalone": "09-multivalue-field/generated/html/Multivaluefield_standalone.html"
+  },
+  {
+    "slug": "10-image-angle-label",
+    "title": "field_image / field_angle / field_label",
+    "zhTitle": "field_image / field_angle / field_label",
+    "description": "Blockly field annotations can turn normal attributes into image, angle and read-only label fields.",
+    "zhDescription": "blockly type 注解可以把普通属性改成图片、角度盘或只读标签字段。",
+    "group": "字段类型",
+    "covers": [
+      "field_image src/width/height/alt",
+      "field_angle",
+      "field_label"
+    ],
+    "source": "10-image-angle-label/source.ecore",
+    "sourcePreview": "10-image-angle-label/source.html",
+    "preview": "10-image-angle-label/preview.html",
+    "report": "10-image-angle-label/generated/generation_report.html",
+    "standalone": "10-image-angle-label/generated/html/Visualfields_standalone.html"
+  },
+  {
+    "slug": "11-custom-message",
+    "title": "message0 annotation -> custom block text",
+    "zhTitle": "message0 注解 -> 自定义区块文本",
+    "description": "EClass message0 controls the first row of the generated block and the order of visible fields.",
+    "zhDescription": "EClass 上的 message0 控制区块第一行文案，并决定字段在区块上的显性顺序。",
+    "group": "Blockly 注解",
+    "covers": [
+      "EClass message0 -> custom block text",
+      "ordered structural features -> args0 order"
+    ],
+    "source": "11-custom-message/source.ecore",
+    "sourcePreview": "11-custom-message/source.html",
+    "preview": "11-custom-message/preview.html",
+    "report": "11-custom-message/generated/generation_report.html",
+    "standalone": "11-custom-message/generated/html/Custommessage_standalone.html"
+  },
+  {
+    "slug": "12-nested-category",
+    "title": "category path -> nested toolbox category",
+    "zhTitle": "category 路径 -> 嵌套工具箱分类",
+    "description": "A category value with slashes creates nested toolbox categories such as UI/Screens and UI/Actions.",
+    "zhDescription": "category 中使用斜杠可以生成嵌套工具箱，例如 UI/Screens、UI/Inputs 和 UI/Actions。",
+    "group": "Toolbox 分类",
+    "covers": [
+      "category path with / -> nested toolbox categories",
+      "leaf category assignment"
+    ],
+    "source": "12-nested-category/source.ecore",
+    "sourcePreview": "12-nested-category/source.html",
+    "preview": "12-nested-category/preview.html",
+    "report": "12-nested-category/generated/generation_report.html",
+    "standalone": "12-nested-category/generated/html/Nestedcategory_standalone.html"
+  },
+  {
+    "slug": "13-code-template",
+    "title": "source=\"code\" -> generated code export",
+    "zhTitle": "source=\"code\" -> 代码导出模板",
+    "description": "A code annotation on an EClass is copied into the generated editor code export logic.",
+    "zhDescription": "EClass 上的 code 注解会进入生成编辑器的代码导出逻辑，可在完整编辑器里用 Export Code 检查。",
+    "group": "代码生成",
+    "covers": [
+      "EPackage code language/fileExtension",
+      "EClass code template/codeTemplate",
+      "Export Code runtime"
+    ],
+    "source": "13-code-template/source.ecore",
+    "sourcePreview": "13-code-template/source.html",
+    "preview": "13-code-template/preview.html",
+    "report": "13-code-template/generated/generation_report.html",
+    "standalone": "13-code-template/generated/html/Codetemplate_standalone.html"
+  },
+  {
+    "slug": "14-workspace-options",
+    "title": "workspace.* annotations -> Blockly workspace options",
+    "zhTitle": "workspace.* 注解 -> 工作区配置",
+    "description": "Workspace annotations on EPackage are converted into Blockly.inject options such as grid, zoom and renderer.",
+    "zhDescription": "EPackage 上的 workspace.* details 会进入 Blockly.inject 配置，例如 renderer、grid、zoom 和 move。",
+    "group": "Workspace 配置",
+    "covers": [
+      "workspace.renderer",
+      "workspace.grid.*",
+      "workspace.zoom.*",
+      "workspace.move.*"
+    ],
+    "source": "14-workspace-options/source.ecore",
+    "sourcePreview": "14-workspace-options/source.html",
+    "preview": "14-workspace-options/preview.html",
+    "report": "14-workspace-options/generated/generation_report.html",
+    "standalone": "14-workspace-options/generated/html/Workspaceoptions_standalone.html"
+  },
+  {
+    "slug": "15-auto-category",
+    "title": "zero annotation inheritance -> auto categories",
+    "zhTitle": "零注解继承 -> 自动分类",
+    "description": "When classes do not declare categories, the adapter groups concrete blocks from the inheritance tree.",
+    "zhDescription": "EClass 不写 category 时，生成器会根据继承结构自动创建 toolbox 分类。",
+    "group": "Toolbox 分类",
+    "covers": [
+      "no category annotations -> auto-generated categories",
+      "inheritance tree -> nested category tree"
+    ],
+    "source": "15-auto-category/source.ecore",
+    "sourcePreview": "15-auto-category/source.html",
+    "preview": "15-auto-category/preview.html",
+    "report": "15-auto-category/generated/generation_report.html",
+    "standalone": "15-auto-category/generated/html/Autocategory_standalone.html"
+  },
+  {
+    "slug": "16-output-blocks",
+    "title": "output blocks -> value expressions",
+    "zhTitle": "output block -> 表达式插口",
+    "description": "Classes annotated with output become value-producing blocks that plug into input_value sockets.",
+    "zhDescription": "带 output 注解的 EClass 会生成表达式区块，并能接入 input_value 插口。",
+    "group": "继承与连接",
+    "covers": [
+      "output=true -> output block",
+      "output=<type> -> typed output",
+      "input_value check -> typed socket"
+    ],
+    "source": "16-output-blocks/source.ecore",
+    "sourcePreview": "16-output-blocks/source.html",
+    "preview": "16-output-blocks/preview.html",
+    "report": "16-output-blocks/generated/generation_report.html",
+    "standalone": "16-output-blocks/generated/html/Outputblocks_standalone.html"
+  },
+  {
+    "slug": "17-class-presentation",
+    "title": "EClass presentation annotations",
+    "zhTitle": "EClass 展示注解",
+    "description": "Class-level label, tooltip, helpUrl, colour and inputsInline affect the generated block definition.",
+    "zhDescription": "EClass 上的 label、tooltip、helpUrl、colour、inputsInline 会进入生成的 Blockly block 定义。",
+    "group": "Blockly 注解",
+    "covers": [
+      "ui label -> block label",
+      "tooltip/helpUrl -> block metadata",
+      "colour -> block colour",
+      "inputsInline=false"
+    ],
+    "source": "17-class-presentation/source.ecore",
+    "sourcePreview": "17-class-presentation/source.html",
+    "preview": "17-class-presentation/preview.html",
+    "report": "17-class-presentation/generated/generation_report.html",
+    "standalone": "17-class-presentation/generated/html/Classpresentation_standalone.html"
+  },
+  {
+    "slug": "18-field-overrides",
+    "title": "field_input / field_number / field_checkbox overrides",
+    "zhTitle": "字段类型覆盖注解",
+    "description": "The blockly type detail can override the default field inferred from the EAttribute type.",
+    "zhDescription": "EAttribute 默认字段类型可以被 blockly type 覆盖，例如文本、数字和复选框。",
+    "group": "字段类型",
+    "covers": [
+      "field_input override",
+      "field_number override",
+      "field_checkbox override",
+      "min/max on overridden number"
+    ],
+    "source": "18-field-overrides/source.ecore",
+    "sourcePreview": "18-field-overrides/source.html",
+    "preview": "18-field-overrides/preview.html",
+    "report": "18-field-overrides/generated/generation_report.html",
+    "standalone": "18-field-overrides/generated/html/Fieldoverrides_standalone.html"
+  },
+  {
+    "slug": "19-ui-metadata",
+    "title": "source=\"ui\" metadata",
+    "zhTitle": "source=\"ui\" 元数据",
+    "description": "UI annotations are preserved in the intermediate model for labels, help text, grouping, order and edit hints.",
+    "zhDescription": "source=\"ui\" 会把 label、help、placeholder、group、order、readonly、hidden 等信息写入中间模型和生成器报告。",
+    "group": "UI 元数据",
+    "covers": [
+      "ui widget/label/help/placeholder",
+      "ui group/order/variant",
+      "ui readonly/hidden"
+    ],
+    "source": "19-ui-metadata/source.ecore",
+    "sourcePreview": "19-ui-metadata/source.html",
+    "preview": "19-ui-metadata/preview.html",
+    "report": "19-ui-metadata/generated/generation_report.html",
+    "standalone": "19-ui-metadata/generated/html/Uimetadata_standalone.html"
+  },
+  {
+    "slug": "20-id-reference-label",
+    "title": "iD attribute -> identity and reference labels",
+    "zhTitle": "iD 属性 -> 身份与引用标签",
+    "description": "An EAttribute marked iD becomes the default identity field and is used for reference dropdown labels.",
+    "zhDescription": "iD=\"true\" 的 EAttribute 会成为模型身份字段，并作为引用下拉框的默认标签来源。",
+    "group": "引用与连接",
+    "covers": [
+      "EAttribute iD=true -> identity field",
+      "ID field -> unique validation",
+      "default reference label field"
+    ],
+    "source": "20-id-reference-label/source.ecore",
+    "sourcePreview": "20-id-reference-label/source.html",
+    "preview": "20-id-reference-label/preview.html",
+    "report": "20-id-reference-label/generated/generation_report.html",
+    "standalone": "20-id-reference-label/generated/html/Idreferencelabel_standalone.html"
+  },
+  {
+    "slug": "21-multireference-opposite",
+    "title": "multi EReference + eOpposite",
+    "zhTitle": "多值引用 + eOpposite",
+    "description": "A many non-containment reference becomes a reference multiselect; eOpposite metadata drives opposite-reference sync.",
+    "zhDescription": "多值普通 EReference 会生成引用多选字段；eOpposite 会进入生成的双向引用同步逻辑。",
+    "group": "引用与连接",
+    "covers": [
+      "many non-containment reference -> reference multiselect",
+      "eOpposite -> opposite-reference sync",
+      "multi reference -> unique validation"
+    ],
+    "source": "21-multireference-opposite/source.ecore",
+    "sourcePreview": "21-multireference-opposite/source.html",
+    "preview": "21-multireference-opposite/preview.html",
+    "report": "21-multireference-opposite/generated/generation_report.html",
+    "standalone": "21-multireference-opposite/generated/html/Multirefopposite_standalone.html"
+  },
+  {
+    "slug": "22-expression-validation",
+    "title": "validation expression -> generated rule",
+    "zhTitle": "表达式校验 -> 生成规则",
+    "description": "source=\"validation\" expression/condition/js entries become generated browser-side validation rules.",
+    "zhDescription": "source=\"validation\" 的 expression、condition、js 会生成浏览器端校验规则和可视化验证块。",
+    "group": "校验",
+    "covers": [
+      "validation expression/condition/js subset",
+      "named validation message",
+      "number()/has() visual validation expressions"
+    ],
+    "source": "22-expression-validation/source.ecore",
+    "sourcePreview": "22-expression-validation/source.html",
+    "preview": "22-expression-validation/preview.html",
+    "report": "22-expression-validation/generated/generation_report.html",
+    "standalone": "22-expression-validation/generated/html/Expressionvalidation_standalone.html"
+  },
+  {
+    "slug": "23-ocl-validation",
+    "title": "Ecore OCL constraint -> validation rule",
+    "zhTitle": "Ecore OCL 约束 -> 校验规则",
+    "description": "Supported Ecore/OCL constraints are translated into generated validation expressions.",
+    "zhDescription": "支持的 Ecore/OCL 约束会被翻译成生成器可执行的 validation expression。",
+    "group": "校验",
+    "covers": [
+      "Ecore constraints detail",
+      "OCL/Pivot annotation",
+      "OCL size/notEmpty/comparison translation"
+    ],
+    "source": "23-ocl-validation/source.ecore",
+    "sourcePreview": "23-ocl-validation/source.html",
+    "preview": "23-ocl-validation/preview.html",
+    "report": "23-ocl-validation/generated/generation_report.html",
+    "standalone": "23-ocl-validation/generated/html/Oclvalidation_standalone.html"
+  },
+  {
+    "slug": "24-ignored-features",
+    "title": "derived/transient/volatile features are ignored",
+    "zhTitle": "derived/transient/volatile 特征会被忽略",
+    "description": "Non-editable Ecore features are skipped and do not become Blockly fields or inputs.",
+    "zhDescription": "derived、transient、volatile 或 changeable=false 的特征不会生成 Blockly 字段或输入。",
+    "group": "Ecore 结构",
+    "covers": [
+      "derived/transient/volatile/changeable=false -> skipped feature",
+      "only editable features become block inputs"
+    ],
+    "source": "24-ignored-features/source.ecore",
+    "sourcePreview": "24-ignored-features/source.html",
+    "preview": "24-ignored-features/preview.html",
+    "report": "24-ignored-features/generated/generation_report.html",
+    "standalone": "24-ignored-features/generated/html/Ignoredfeatures_standalone.html"
+  },
+  {
+    "slug": "25-subpackages",
+    "title": "EPackage subpackages -> generated blocks",
+    "zhTitle": "EPackage 子包 -> 生成区块",
+    "description": "Classifiers inside nested EPackages are collected and converted like root package classifiers.",
+    "zhDescription": "嵌套 EPackage 里的 EClass 也会被收集，并和根包里的分类器一样转换成区块。",
+    "group": "Ecore 结构",
+    "covers": [
+      "nested EPackage/eSubpackages",
+      "classifiers in subpackages -> block types"
+    ],
+    "source": "25-subpackages/source.ecore",
+    "sourcePreview": "25-subpackages/source.html",
+    "preview": "25-subpackages/preview.html",
+    "report": "25-subpackages/generated/generation_report.html",
+    "standalone": "25-subpackages/generated/html/Subpackages_standalone.html"
+  },
+  {
+    "slug": "26-flyout-toolbox",
+    "title": "workspace.toolboxType=flyout",
+    "zhTitle": "workspace.toolboxType=flyout",
+    "description": "The EPackage workspace.toolboxType option switches the generated toolbox from categories to a flyout.",
+    "zhDescription": "EPackage 上的 workspace.toolboxType=flyout 会把分类工具箱切换成单列 flyout toolbox。",
+    "group": "Workspace 配置",
+    "covers": [
+      "workspace.toolboxType=flyout -> flyout toolbox",
+      "explicit toolbox type overrides auto category toolbox"
+    ],
+    "source": "26-flyout-toolbox/source.ecore",
+    "sourcePreview": "26-flyout-toolbox/source.html",
+    "preview": "26-flyout-toolbox/preview.html",
+    "report": "26-flyout-toolbox/generated/generation_report.html",
+    "standalone": "26-flyout-toolbox/generated/html/Flyouttoolbox_standalone.html"
+  },
+  {
+    "slug": "27-runtime-kind",
+    "title": "source=\"runtime\" kind -> preview runtime",
+    "zhTitle": "source=\"runtime\" kind -> 预览运行时",
+    "description": "A package-level runtime kind enables domain-specific runtime tabs in the generated standalone editor.",
+    "zhDescription": "EPackage 上的 runtime kind 会启用生成编辑器里的领域运行时预览，例如 AppMaker Preview tab。",
+    "group": "运行时",
+    "covers": [
+      "runtime kind=appMaker -> Preview tab",
+      "domain-specific runtime hook"
+    ],
+    "source": "27-runtime-kind/source.ecore",
+    "sourcePreview": "27-runtime-kind/source.html",
+    "preview": "27-runtime-kind/preview.html",
+    "report": "27-runtime-kind/generated/generation_report.html",
+    "standalone": "27-runtime-kind/generated/html/Runtimekind_standalone.html"
+  }
+]

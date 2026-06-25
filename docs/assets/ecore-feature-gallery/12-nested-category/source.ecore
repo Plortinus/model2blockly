@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="nestedcategory"
+    nsURI="https://plortinus.github.io/model2blockly/examples/nestedcategory"
+    nsPrefix="nestedcategory">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="Screen">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="UI/Screens"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="controls"
+        lowerBound="1" upperBound="4" eType="#//Component" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="UI/Components"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TextInput" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="UI/Inputs"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Name"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="SubmitButton" eSuperTypes="#//Component">
+    <eAnnotations source="blockly">
+      <details key="colour" value="160"/>
+      <details key="category" value="UI/Actions"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Submit"/>
+  </eClassifiers>
+
+</ecore:EPackage>

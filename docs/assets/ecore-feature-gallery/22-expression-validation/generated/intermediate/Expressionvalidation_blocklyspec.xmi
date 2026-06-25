@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Expressionvalidation" nsURI="https://plortinus.github.io/model2blockly/examples/expressionvalidation" nsPrefix="expressionvalidation" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Validation" label="Validation" colour="20"/>
+  <blockTypes typeName="Range" label="Range" colour="20" categoryName="Validation" inputsInline="true">
+    <orderedInputNames>label</orderedInputNames>
+    <orderedInputNames>min</orderedInputNames>
+    <orderedInputNames>max</orderedInputNames>
+    <fields name="label" defaultValue="Allowed range"/>
+    <fields name="min" fieldType="INTEGER" defaultValue="0"/>
+    <fields name="max" fieldType="INTEGER" defaultValue="10"/>
+  </blockTypes>
+  <validations type="EXPRESSION" name="Range_validation" ownerType="Range" expression="number(&quot;min&quot;) &lt;= number(&quot;max&quot;)" message="Minimum must be less than or equal to maximum.">
+    <visualBlock blocklyBlockType="validation_expression_rule">
+      <fields name="TYPE" value="Range"/>
+      <fields name="EXPRESSION" value="number(&quot;min&quot;) &lt;= number(&quot;max&quot;)"/>
+      <inputs name="CONDITION">
+        <expression kind="LOGIC_COMPARE" operator="LTE">
+          <children kind="FIELD_NUMBER" fieldName="min"/>
+          <children kind="FIELD_NUMBER" fieldName="max"/>
+        </expression>
+      </inputs>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="FIELD_NUMBER" fieldName="min"/>
+      <children kind="FIELD_NUMBER" fieldName="max"/>
+    </visualExpression>
+  </validations>
+  <validations type="EXPRESSION" name="Range_hasLabel" ownerType="Range" expression="has(&quot;label&quot;)" message="Range label is required.">
+    <visualBlock blocklyBlockType="validation_expression_rule">
+      <fields name="TYPE" value="Range"/>
+      <fields name="EXPRESSION" value="has(&quot;label&quot;)"/>
+      <inputs name="CONDITION">
+        <expression kind="FIELD_EXISTS" fieldName="label"/>
+      </inputs>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="label"/>
+  </validations>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

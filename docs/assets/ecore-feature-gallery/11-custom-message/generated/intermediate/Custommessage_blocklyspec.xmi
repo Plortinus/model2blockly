@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Custommessage" nsURI="https://plortinus.github.io/model2blockly/examples/custommessage" nsPrefix="custommessage" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Rules" label="Rules" colour="10"/>
+  <blockTypes typeName="Rule" label="Rule" colour="10" categoryName="Rules" message0="when %1 then %2" inputsInline="true">
+    <orderedInputNames>condition</orderedInputNames>
+    <orderedInputNames>result</orderedInputNames>
+    <fields name="condition" defaultValue="cart.total > 100" required="true" lowerBound="1" uiLabel="Condition"/>
+    <fields name="result" defaultValue="apply discount" required="true" lowerBound="1" uiLabel="Result"/>
+  </blockTypes>
+  <validations type="REQUIRED" name="Rule_condition_required" ownerType="Rule" fieldName="condition" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Rule"/>
+      <fields name="FIELD" value="condition"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="condition"/>
+  </validations>
+  <validations type="REQUIRED" name="Rule_result_required" ownerType="Rule" fieldName="result" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Rule"/>
+      <fields name="FIELD" value="result"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="result"/>
+  </validations>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

@@ -1,0 +1,14 @@
+[
+  {
+    "_type": "App",
+    "_blockId": "sample_App_1",
+    "name": "Runtime demo",
+    "pages": [
+      {
+        "_type": "Page",
+        "_blockId": "sample_Page_1",
+        "title": "Home"
+      }
+    ]
+  }
+]

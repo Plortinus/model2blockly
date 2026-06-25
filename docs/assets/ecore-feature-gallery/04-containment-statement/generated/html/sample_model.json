@@ -1,0 +1,14 @@
+[
+  {
+    "_type": "Page",
+    "_blockId": "sample_Page_1",
+    "title": "Home",
+    "components": [
+      {
+        "_type": "Button",
+        "_blockId": "sample_Button_1",
+        "label": "Save"
+      }
+    ]
+  }
+]

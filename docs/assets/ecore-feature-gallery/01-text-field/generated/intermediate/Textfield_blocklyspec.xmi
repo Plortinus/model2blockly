@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Textfield" nsURI="https://plortinus.github.io/model2blockly/examples/textfield" nsPrefix="textfield" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Basics" label="Basics" colour="210"/>
+  <blockTypes typeName="Note" label="Note" colour="210" categoryName="Basics" tooltip="A note with a required title.">
+    <orderedInputNames>title</orderedInputNames>
+    <fields name="title" defaultValue="Design note" required="true" lowerBound="1" uiLabel="Title"/>
+  </blockTypes>
+  <validations type="REQUIRED" name="Note_title_required" ownerType="Note" fieldName="title" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Note"/>
+      <fields name="FIELD" value="title"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="title"/>
+  </validations>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>source=&quot;ui&quot; metadata Ecore</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f8fa;
+      --text: #24292f;
+      --tag: #116329;
+      --attr: #0550ae;
+      --value: #953800;
+      --line: #d0d7de;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    pre {
+      margin: 0;
+      min-height: 100vh;
+      padding: 14px 16px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+      white-space: pre;
+      tab-size: 2;
+    }
+    .tag { color: var(--tag); font-weight: 700; }
+    .attr { color: var(--attr); }
+    .value { color: var(--value); }
+  </style>
+</head>
+<body>
+  <pre><code>&lt;?xml <span class="attr">version</span>=<span class="value">&quot;1.0&quot;</span> <span class="attr">encoding</span>=<span class="value">&quot;UTF-8&quot;</span>?<span class="tag">&gt;</span>
+<span class="tag">&lt;ecore:EPackage</span> <span class="attr">xmi:version</span>=<span class="value">&quot;2.0&quot;</span>
+    <span class="attr">xmlns:xmi</span>=<span class="value">&quot;http://www.omg.org/XMI&quot;</span>
+    <span class="attr">xmlns:xsi</span>=<span class="value">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+    <span class="attr">xmlns:ecore</span>=<span class="value">&quot;http://www.eclipse.org/emf/2002/Ecore&quot;</span>
+    <span class="attr">name</span>=<span class="value">&quot;uimetadata&quot;</span>
+    <span class="attr">nsURI</span>=<span class="value">&quot;https://plortinus.github.io/model2blockly/examples/uimetadata&quot;</span>
+    <span class="attr">nsPrefix</span>=<span class="value">&quot;uimetadata&quot;</span><span class="tag">&gt;</span>
+
+  <span class="tag">&lt;eAnnotations</span> <span class="attr">source</span>=<span class="value">&quot;blockly&quot;</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;workspace.renderer&quot;</span> <span class="attr">value</span>=<span class="value">&quot;zelos&quot;</span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;workspace.trashcan&quot;</span> <span class="attr">value</span>=<span class="value">&quot;true&quot;</span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;workspace.zoom.controls&quot;</span> <span class="attr">value</span>=<span class="value">&quot;true&quot;</span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;workspace.zoom.wheel&quot;</span> <span class="attr">value</span>=<span class="value">&quot;true&quot;</span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;workspace.move.scrollbars&quot;</span> <span class="attr">value</span>=<span class="value">&quot;true&quot;</span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;workspace.move.drag&quot;</span> <span class="attr">value</span>=<span class="value">&quot;true&quot;</span><span class="tag">/&gt;</span>
+
+  <span class="tag">&lt;/eAnnotations</span><span class="tag">&gt;</span>
+
+
+  <span class="tag">&lt;eClassifiers</span> <span class="attr">xsi:type</span>=<span class="value">&quot;ecore:EClass&quot;</span> <span class="attr">name</span>=<span class="value">&quot;ProfileForm&quot;</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;eAnnotations</span> <span class="attr">source</span>=<span class="value">&quot;blockly&quot;</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;colour&quot;</span> <span class="attr">value</span>=<span class="value">&quot;170&quot;</span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;category&quot;</span> <span class="attr">value</span>=<span class="value">&quot;UI&quot;</span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;/eAnnotations</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;eAnnotations</span> <span class="attr">source</span>=<span class="value">&quot;ui&quot;</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;label&quot;</span> <span class="attr">value</span>=<span class="value">&quot;Profile form&quot;</span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;/eAnnotations</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;eStructuralFeatures</span> <span class="attr">xsi:type</span>=<span class="value">&quot;ecore:EAttribute&quot;</span> <span class="attr">name</span>=<span class="value">&quot;displayName&quot;</span> <span class="attr">lowerBound</span>=<span class="value">&quot;1&quot;</span>
+        <span class="attr">eType</span>=<span class="value">&quot;ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString&quot;</span>
+        <span class="attr">defaultValueLiteral</span>=<span class="value">&quot;Ada&quot;</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;eAnnotations</span> <span class="attr">source</span>=<span class="value">&quot;ui&quot;</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;widget&quot;</span> <span class="attr">value</span>=<span class="value">&quot;text&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;label&quot;</span> <span class="attr">value</span>=<span class="value">&quot;Display name&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;help&quot;</span> <span class="attr">value</span>=<span class="value">&quot;Shown in the account header.&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;placeholder&quot;</span> <span class="attr">value</span>=<span class="value">&quot;Full name&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;group&quot;</span> <span class="attr">value</span>=<span class="value">&quot;Identity&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;order&quot;</span> <span class="attr">value</span>=<span class="value">&quot;1&quot;</span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;/eAnnotations</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/eStructuralFeatures</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;eStructuralFeatures</span> <span class="attr">xsi:type</span>=<span class="value">&quot;ecore:EAttribute&quot;</span> <span class="attr">name</span>=<span class="value">&quot;slug&quot;</span>
+        <span class="attr">eType</span>=<span class="value">&quot;ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString&quot;</span>
+        <span class="attr">defaultValueLiteral</span>=<span class="value">&quot;ada&quot;</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;eAnnotations</span> <span class="attr">source</span>=<span class="value">&quot;ui&quot;</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;label&quot;</span> <span class="attr">value</span>=<span class="value">&quot;Slug&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;readonly&quot;</span> <span class="attr">value</span>=<span class="value">&quot;true&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;group&quot;</span> <span class="attr">value</span>=<span class="value">&quot;Identity&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;order&quot;</span> <span class="attr">value</span>=<span class="value">&quot;2&quot;</span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;/eAnnotations</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/eStructuralFeatures</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;eStructuralFeatures</span> <span class="attr">xsi:type</span>=<span class="value">&quot;ecore:EAttribute&quot;</span> <span class="attr">name</span>=<span class="value">&quot;internalToken&quot;</span>
+        <span class="attr">eType</span>=<span class="value">&quot;ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString&quot;</span>
+        <span class="attr">defaultValueLiteral</span>=<span class="value">&quot;sys-001&quot;</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;eAnnotations</span> <span class="attr">source</span>=<span class="value">&quot;ui&quot;</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;hidden&quot;</span> <span class="attr">value</span>=<span class="value">&quot;true&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;variant&quot;</span> <span class="attr">value</span>=<span class="value">&quot;system&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;group&quot;</span> <span class="attr">value</span>=<span class="value">&quot;System&quot;</span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;details</span> <span class="attr">key</span>=<span class="value">&quot;order&quot;</span> <span class="attr">value</span>=<span class="value">&quot;99&quot;</span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;/eAnnotations</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/eStructuralFeatures</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/eClassifiers</span><span class="tag">&gt;</span>
+
+<span class="tag">&lt;/ecore:EPackage</span><span class="tag">&gt;</span>
+</code></pre>
+</body>
+</html>

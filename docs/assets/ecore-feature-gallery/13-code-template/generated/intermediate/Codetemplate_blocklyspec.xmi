@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Codetemplate" nsURI="https://plortinus.github.io/model2blockly/examples/codetemplate" nsPrefix="codetemplate" codeLanguage="JavaScript" codeFileExtension="js">
+  <categories name="Actions" label="Actions" colour="30"/>
+  <blockTypes typeName="ApiCall" label="ApiCall" colour="30" categoryName="Actions" inputsInline="true" codeTemplate="fetch(&quot;{{url}}&quot;, { method: &quot;{{method}}&quot; });">
+    <orderedInputNames>url</orderedInputNames>
+    <orderedInputNames>method</orderedInputNames>
+    <fields name="url" defaultValue="/api/tasks" required="true" lowerBound="1" uiLabel="URL"/>
+    <fields name="method" fieldType="DROPDOWN" defaultValue="GET" uiLabel="Method">
+      <options value="GET" label="GET"/>
+      <options value="POST" label="POST"/>
+      <options value="PUT" label="PUT"/>
+    </fields>
+  </blockTypes>
+  <validations type="REQUIRED" name="ApiCall_url_required" ownerType="ApiCall" fieldName="url" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="ApiCall"/>
+      <fields name="FIELD" value="url"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="url"/>
+  </validations>
+  <workspaceOptions key="zoom" valueType="OBJECT">
+    <children key="wheel" value="true" valueType="BOOLEAN"/>
+    <children key="controls" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="move" valueType="OBJECT">
+    <children key="scrollbars" value="true" valueType="BOOLEAN"/>
+    <children key="drag" value="true" valueType="BOOLEAN"/>
+  </workspaceOptions>
+  <workspaceOptions key="renderer" value="zelos"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

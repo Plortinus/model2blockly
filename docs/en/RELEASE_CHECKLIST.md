@@ -54,7 +54,7 @@ The Pages workflow should:
 
 1. install Node dependencies;
 2. run `npm run build:site-docs`;
-3. copy generated AppMaker HTML to `_site/app_maker_ecore`;
+3. copy generated AppMaker HTML to `_site/app_maker_ecore` and `_site/app_maker_dsl`;
 4. copy the Eclipse update-site repository to `_site/update-site`;
 5. upload `_site` with `actions/upload-pages-artifact`.
 

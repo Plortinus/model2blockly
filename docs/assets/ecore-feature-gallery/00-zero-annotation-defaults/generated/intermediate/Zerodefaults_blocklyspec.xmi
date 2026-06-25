@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Zerodefaults" nsURI="https://plortinus.github.io/model2blockly/examples/zerodefaults" nsPrefix="zerodefaults" codeLanguage="text" codeFileExtension="txt">
+  <categories name="TaskBoard" label="TaskBoard" colour="0"/>
+  <categories name="Task" label="Task" colour="180"/>
+  <blockTypes typeName="TaskBoard" label="TaskBoard" categoryName="TaskBoard" connectionType="NONE">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>tasks</orderedInputNames>
+    <fields name="name" defaultValue="Sprint board"/>
+    <statementInputs name="tasks" checkType="Task" lowerBound="1"/>
+  </blockTypes>
+  <blockTypes typeName="Task" label="Task" categoryName="Task" connectionType="TYPED" connectionTypeName="Task">
+    <orderedInputNames>title</orderedInputNames>
+    <orderedInputNames>done</orderedInputNames>
+    <orderedInputNames>priority</orderedInputNames>
+    <fields name="title" defaultValue="Write docs" required="true" lowerBound="1"/>
+    <fields name="done" fieldType="BOOLEAN" defaultValue="false"/>
+    <fields name="priority" fieldType="DROPDOWN" defaultValue="medium">
+      <options value="low" label="low"/>
+      <options value="medium" label="medium"/>
+      <options value="high" label="high"/>
+    </fields>
+  </blockTypes>
+  <validations type="CARDINALITY" name="TaskBoard_tasks" ownerType="TaskBoard" containmentName="tasks" lowerBound="1">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="TaskBoard"/>
+      <fields name="INPUT" value="tasks"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="unbounded"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="GTE">
+      <children kind="INPUT_COUNT" fieldName="tasks"/>
+      <children kind="NUMBER_LITERAL" literal="1"/>
+    </visualExpression>
+  </validations>
+  <validations type="REQUIRED" name="Task_title_required" ownerType="Task" fieldName="title" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Task"/>
+      <fields name="FIELD" value="title"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="title"/>
+  </validations>
+</blocklyspec:EditorSpec>

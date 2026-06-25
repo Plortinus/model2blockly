@@ -1,0 +1,9 @@
+[
+  {
+    "_type": "IconBadge",
+    "_blockId": "sample_IconBadge_1",
+    "icon": "Blockly",
+    "rotation": "45",
+    "caption": "Preview only"
+  }
+]

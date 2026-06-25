@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="ignoredfeatures"
+    nsURI="https://plortinus.github.io/model2blockly/examples/ignoredfeatures"
+    nsPrefix="ignoredfeatures">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.wheel" value="true"/>
+    <details key="workspace.move.scrollbars" value="true"/>
+    <details key="workspace.move.drag" value="true"/>
+
+  </eAnnotations>
+
+
+  <eClassifiers xsi:type="ecore:EClass" name="DebugRecord">
+    <eAnnotations source="blockly">
+      <details key="colour" value="210"/>
+      <details key="category" value="Ecore"/>
+      <details key="inputsInline" value="true"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibleName"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Shown"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="computedHash" transient="true" volatile="true" derived="true" changeable="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="hidden"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cachedOwner" transient="true" volatile="true" derived="true" changeable="false"
+        eType="#//DebugRecord"/>
+  </eClassifiers>
+
+</ecore:EPackage>

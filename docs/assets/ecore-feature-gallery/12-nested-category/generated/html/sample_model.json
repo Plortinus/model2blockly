@@ -1,0 +1,18 @@
+[
+  {
+    "_type": "Screen",
+    "_blockId": "sample_Screen_1",
+    "controls": [
+      {
+        "_type": "TextInput",
+        "_blockId": "sample_TextInput_1",
+        "label": "Name"
+      },
+      {
+        "_type": "SubmitButton",
+        "_blockId": "sample_SubmitButton_1",
+        "label": "Submit"
+      }
+    ]
+  }
+]

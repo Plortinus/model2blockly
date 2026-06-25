@@ -1,0 +1,9 @@
+[
+  {
+    "_type": "WidgetStyle",
+    "_blockId": "sample_WidgetStyle_1",
+    "visible": "true",
+    "width": "320",
+    "accentColor": "#1f6feb"
+  }
+]
