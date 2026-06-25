@@ -209,7 +209,7 @@ async function extractDomainXmi(browser, baseUrl, target) {
         roots: Array.isArray(model) ? model.map((node) => node && node._type).filter(Boolean) : [],
         parseErrors: doc.getElementsByTagName('parsererror').length,
         hasXmiNamespace: xmi.includes('xmlns:xmi="http://www.omg.org/XMI"'),
-        hasDomainNamespace: /xmlns:[A-Za-z_][\\w.-]*=/.test(xmi),
+        hasDomainNamespace: /xmlns:[A-Za-z_][\w.-]*=/.test(xmi),
       };
     });
     if (result.parseErrors !== 0 || !result.hasXmiNamespace || !result.hasDomainNamespace) {

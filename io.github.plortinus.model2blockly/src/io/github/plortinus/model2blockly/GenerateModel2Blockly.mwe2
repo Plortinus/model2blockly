@@ -27,6 +27,7 @@ Workflow {
 		language = StandardLanguage {
 			name = "io.github.plortinus.model2blockly.Model2Blockly"
 			fileExtensions = "m2b,model2blockly"
+			referencedResource = "platform:/resource/io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.genmodel"
 
 			serializer = {
 				generateStub = false

@@ -31,11 +31,17 @@ metamodelo Ecore anotado (.ecore)
 Los metamodelos internos se mantienen como artefactos EMF:
 
 ```text
-io.github.plortinus.model2blockly/model/generated/Model2Blockly.ecore
-io.github.plortinus.model2blockly/model/generated/Model2Blockly.genmodel
+io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.ecore
+io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.genmodel
 io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore
-io.github.plortinus.model2blockly/model/generated/BlocklyEditorSpec.genmodel
+io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel
+io.github.plortinus.model2blockly/emf-gen/
 ```
+
+El DSL textual usa Xtext como sintaxis concreta sobre la sintaxis abstracta fija
+de `Model2Blockly.ecore`. La generación de Xtext escribe parser, servicios y
+código IDE en `src-gen`; las API EMF generadas para los metamodelos fijos viven
+en `emf-gen`, para que no se borren al regenerar la infraestructura del DSL.
 
 La ruta Ecore también puede operar dinámicamente sobre un `.ecore` de entrada,
 sin exigir generación de código Java para ese dominio. El `EPackage` de dominio

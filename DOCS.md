@@ -70,7 +70,7 @@ final reference:
 - Ecore adapter:
   [`io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/EcoreAdapter.java`](io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/EcoreAdapter.java)
 - Generated intermediate EMF model:
-  [`io.github.plortinus.model2blockly/model/generated/BlocklyEditorSpec.genmodel`](io.github.plortinus.model2blockly/model/generated/BlocklyEditorSpec.genmodel)
+  [`io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel`](io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel)
 - Blockly generator:
   [`io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/generator/BlocklyCodeGenerator.xtend`](io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/generator/BlocklyCodeGenerator.xtend)
 - Intermediate model validator:

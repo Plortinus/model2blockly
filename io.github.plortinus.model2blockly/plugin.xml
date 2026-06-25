@@ -5,10 +5,10 @@
 		<package
 			uri = "https://plortinus.github.io/model2blockly/ns/model2blockly"
 			class = "io.github.plortinus.model2blockly.model2Blockly.Model2BlocklyPackage"
-			genModel = "model/generated/Model2Blockly.genmodel" />
+			genModel = "model/metamodel/Model2Blockly.genmodel" />
 		<package
 			uri = "https://plortinus.github.io/model2blockly/ns/blockly-editor-spec"
 			class = "io.github.plortinus.model2blockly.intermediate.blocklyspec.BlocklySpecPackage"
-			genModel = "model/generated/BlocklyEditorSpec.genmodel" />
+			genModel = "model/metamodel/BlocklyEditorSpec.genmodel" />
 	</extension>
 </plugin>

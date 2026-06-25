@@ -14,6 +14,7 @@ checkXmlFiles();
 checkManifestFiles();
 checkClasspathFiles();
 checkBuildProperties();
+checkMetamodelFirstArchitecture();
 checkNpmScripts();
 checkUiContributions();
 checkIntermediatePipeline();
@@ -45,6 +46,9 @@ function checkRequiredFiles() {
     'io.github.plortinus.model2blockly.updatesite/category.xml',
     'io.github.plortinus.model2blockly.updatesite/repository/content.jar',
     'io.github.plortinus.model2blockly.updatesite/repository/artifacts.jar',
+    'io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.ecore',
+    'io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.genmodel',
+    'io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel',
     'io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore',
     'io.github.plortinus.model2blockly/model/app_maker.ecore',
     'RELEASE_CHECKLIST.md',
@@ -59,6 +63,9 @@ function checkXmlFiles() {
     'io.github.plortinus.model2blockly.ui/plugin.xml',
     'io.github.plortinus.model2blockly.feature/feature.xml',
     'io.github.plortinus.model2blockly.updatesite/category.xml',
+    'io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.ecore',
+    'io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.genmodel',
+    'io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel',
     'io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore',
     'io.github.plortinus.model2blockly/model/app_maker.ecore',
     'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi',
@@ -100,6 +107,7 @@ function checkManifestFiles() {
 
 function checkClasspathFiles() {
   const coreClasspath = read('io.github.plortinus.model2blockly/.classpath');
+  assertIncludes(coreClasspath, 'path="emf-gen"', 'Core classpath includes fixed EMF generated API source folder');
   assertIncludes(coreClasspath, 'path="test"', 'Core classpath includes test source folder');
   assertIncludes(coreClasspath, 'output="test-bin"', 'Core test source uses separate test-bin output');
   assertIncludes(coreClasspath, 'org.eclipse.jdt.junit.JUNIT_CONTAINER/5', 'Core classpath includes JUnit 5 container for IDE tests');
@@ -108,6 +116,7 @@ function checkClasspathFiles() {
 
 function checkBuildProperties() {
   const coreBuild = read('io.github.plortinus.model2blockly/build.properties');
+  assertIncludes(coreBuild, 'emf-gen/', 'Core build compiles fixed EMF generated APIs');
   assertIncludes(coreBuild, 'model/', 'Core build includes model resources');
   assertIncludes(coreBuild, 'examples/', 'Core build includes examples resources');
   assertNotIncludes(coreBuild, 'test/', 'Core build does not package test sources');
@@ -118,6 +127,42 @@ function checkBuildProperties() {
     'io.github.plortinus.model2blockly.feature/build.properties',
   ]) {
     assertIncludes(read(file), 'bin.includes', `${file} declares bin.includes`);
+  }
+}
+
+function checkMetamodelFirstArchitecture() {
+  const grammar = read('io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/Model2Blockly.xtext');
+  assertIncludes(grammar,
+    'import "https://plortinus.github.io/model2blockly/ns/model2blockly" as m2b',
+    'Xtext grammar imports the fixed Model2Blockly Ecore package');
+  assertNotIncludes(grammar,
+    'generate model2Blockly',
+    'Xtext grammar does not infer the Model2Blockly Ecore metamodel');
+  assertIncludes(grammar,
+    'DomainModel returns m2b::DomainModel',
+    'Xtext root rule returns the fixed Ecore DomainModel type');
+
+  const workflow = read('io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/GenerateModel2Blockly.mwe2');
+  assertIncludes(workflow,
+    'referencedResource = "platform:/resource/io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.genmodel"',
+    'Xtext generation workflow references the fixed Model2Blockly genmodel');
+
+  const plugin = read('io.github.plortinus.model2blockly/plugin.xml');
+  assertIncludes(plugin,
+    'genModel = "model/metamodel/Model2Blockly.genmodel"',
+    'Core plugin registers the fixed Model2Blockly genmodel');
+  assertIncludes(plugin,
+    'genModel = "model/metamodel/BlocklyEditorSpec.genmodel"',
+    'Core plugin registers the fixed BlocklyEditorSpec genmodel');
+
+  for (const staleFile of [
+    'io.github.plortinus.model2blockly/model/generated/Model2Blockly.ecore',
+    'io.github.plortinus.model2blockly/model/generated/Model2Blockly.genmodel',
+    'io.github.plortinus.model2blockly/model/generated/BlocklyEditorSpec.genmodel',
+  ]) {
+    if (existsSync(abs(staleFile))) {
+      fail(`Fixed metamodel file should live under model/metamodel, not ${staleFile}`);
+    }
   }
 }
 

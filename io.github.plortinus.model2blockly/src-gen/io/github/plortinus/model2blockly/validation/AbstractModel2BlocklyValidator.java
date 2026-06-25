@@ -13,7 +13,7 @@ public abstract class AbstractModel2BlocklyValidator extends AbstractDeclarative
 	@Override
 	protected List<EPackage> getEPackages() {
 		List<EPackage> result = new ArrayList<EPackage>();
-		result.add(io.github.plortinus.model2blockly.model2Blockly.Model2BlocklyPackage.eINSTANCE);
+		result.add(EPackage.Registry.INSTANCE.getEPackage("https://plortinus.github.io/model2blockly/ns/model2blockly"));
 		return result;
 	}
 }

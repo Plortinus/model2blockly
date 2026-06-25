@@ -57,7 +57,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		///* ═══════════════════════════════════════════════════════════════════
 		//   Raíz: un dominio con clases agrupadas opcionalmente en categorías
 		//   ═══════════════════════════════════════════════════════════════════ */
-		//DomainModel:
+		//DomainModel returns m2b::DomainModel:
 		//  'domain' name=ID
 		//  ('codeLanguage' codeLanguage=STRING)?
 		//  ('codeFileExtension' codeFileExtension=STRING)?
@@ -176,7 +176,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Keyword cRightCurlyBracketKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
 		
 		///* ─── Categorías (para organizar la paleta de bloques) ─────────── */
-		//CategoryDef:
+		//CategoryDef returns m2b::CategoryDef:
 		//  'category' name=ID
 		//  ('label' label=STRING)?
 		//  ('colour' colour=INT)?
@@ -307,10 +307,10 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//   - output → bloque con conexión de salida (pieza de puzzle)
 		//   - inline → campos en línea horizontal
 		//   ─────────────────────────────────────────────────────────────── */
-		//ClassDef:
-		//  (abstract?='abstract')? (output?='output' ('as' outputType=[ClassDef])?)? 'class' name=ID
-		//  ('extends' superClass=[ClassDef])?
-		//  ('category' category=[CategoryDef])?
+		//ClassDef returns m2b::ClassDef:
+		//  (abstract?='abstract')? (output?='output' ('as' outputType=[m2b::ClassDef])?)? 'class' name=ID
+		//  ('extends' superClass=[m2b::ClassDef])?
+		//  ('category' category=[m2b::CategoryDef])?
 		//  ('colour' colour=INT)?
 		//  ('label' label=STRING)?
 		//  ('message0' message0=STRING)?
@@ -324,9 +324,9 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//  '}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//(abstract?='abstract')? (output?='output' ('as' outputType=[ClassDef])?)? 'class' name=ID
-		//('extends' superClass=[ClassDef])?
-		//('category' category=[CategoryDef])?
+		//(abstract?='abstract')? (output?='output' ('as' outputType=[m2b::ClassDef])?)? 'class' name=ID
+		//('extends' superClass=[m2b::ClassDef])?
+		//('category' category=[m2b::CategoryDef])?
 		//('colour' colour=INT)?
 		//('label' label=STRING)?
 		//('message0' message0=STRING)?
@@ -346,7 +346,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//'abstract'
 		public Keyword getAbstractAbstractKeyword_0_0() { return cAbstractAbstractKeyword_0_0; }
 		
-		//(output?='output' ('as' outputType=[ClassDef])?)?
+		//(output?='output' ('as' outputType=[m2b::ClassDef])?)?
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//output?='output'
@@ -355,16 +355,16 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//'output'
 		public Keyword getOutputOutputKeyword_1_0_0() { return cOutputOutputKeyword_1_0_0; }
 		
-		//('as' outputType=[ClassDef])?
+		//('as' outputType=[m2b::ClassDef])?
 		public Group getGroup_1_1() { return cGroup_1_1; }
 		
 		//'as'
 		public Keyword getAsKeyword_1_1_0() { return cAsKeyword_1_1_0; }
 		
-		//outputType=[ClassDef]
+		//outputType=[m2b::ClassDef]
 		public Assignment getOutputTypeAssignment_1_1_1() { return cOutputTypeAssignment_1_1_1; }
 		
-		//[ClassDef]
+		//[m2b::ClassDef]
 		public CrossReference getOutputTypeClassDefCrossReference_1_1_1_0() { return cOutputTypeClassDefCrossReference_1_1_1_0; }
 		
 		//ID
@@ -379,31 +379,31 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_3_0() { return cNameIDTerminalRuleCall_3_0; }
 		
-		//('extends' superClass=[ClassDef])?
+		//('extends' superClass=[m2b::ClassDef])?
 		public Group getGroup_4() { return cGroup_4; }
 		
 		//'extends'
 		public Keyword getExtendsKeyword_4_0() { return cExtendsKeyword_4_0; }
 		
-		//superClass=[ClassDef]
+		//superClass=[m2b::ClassDef]
 		public Assignment getSuperClassAssignment_4_1() { return cSuperClassAssignment_4_1; }
 		
-		//[ClassDef]
+		//[m2b::ClassDef]
 		public CrossReference getSuperClassClassDefCrossReference_4_1_0() { return cSuperClassClassDefCrossReference_4_1_0; }
 		
 		//ID
 		public RuleCall getSuperClassClassDefIDTerminalRuleCall_4_1_0_1() { return cSuperClassClassDefIDTerminalRuleCall_4_1_0_1; }
 		
-		//('category' category=[CategoryDef])?
+		//('category' category=[m2b::CategoryDef])?
 		public Group getGroup_5() { return cGroup_5; }
 		
 		//'category'
 		public Keyword getCategoryKeyword_5_0() { return cCategoryKeyword_5_0; }
 		
-		//category=[CategoryDef]
+		//category=[m2b::CategoryDef]
 		public Assignment getCategoryAssignment_5_1() { return cCategoryAssignment_5_1; }
 		
-		//[CategoryDef]
+		//[m2b::CategoryDef]
 		public CrossReference getCategoryCategoryDefCrossReference_5_1_0() { return cCategoryCategoryDefCrossReference_5_1_0; }
 		
 		//ID
@@ -520,7 +520,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final RuleCall cValueInputParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		///* ─── Features: atributos, contenciones, value inputs y referencias ─ */
-		//Feature:
+		//Feature returns m2b::Feature:
 		//  Attribute | Containment | Reference | ValueInput;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -593,7 +593,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cUiAssignment_18 = (Assignment)cGroup.eContents().get(18);
 		private final RuleCall cUiUiOptionsParserRuleCall_18_0 = (RuleCall)cUiAssignment_18.eContents().get(0);
 		
-		//Attribute:
+		//Attribute returns m2b::Attribute:
 		//  'attribute' name=ID ':' type=AttributeType
 		//  (cardinality=Cardinality)?
 		//  ('default' defaultValue=STRING)?
@@ -800,13 +800,13 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cUiAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cUiUiOptionsParserRuleCall_4_0 = (RuleCall)cUiAssignment_4.eContents().get(0);
 		
-		//Containment:
-		//  'contains' type=[ClassDef] name=ID
+		//Containment returns m2b::Containment:
+		//  'contains' type=[m2b::ClassDef] name=ID
 		//  ('[' lower=INT '..' upper=INT ']')?
 		//  (ui=UiOptions)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'contains' type=[ClassDef] name=ID
+		//'contains' type=[m2b::ClassDef] name=ID
 		//('[' lower=INT '..' upper=INT ']')?
 		//(ui=UiOptions)?
 		public Group getGroup() { return cGroup; }
@@ -814,10 +814,10 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//'contains'
 		public Keyword getContainsKeyword_0() { return cContainsKeyword_0; }
 		
-		//type=[ClassDef]
+		//type=[m2b::ClassDef]
 		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
 		
-		//[ClassDef]
+		//[m2b::ClassDef]
 		public CrossReference getTypeClassDefCrossReference_1_0() { return cTypeClassDefCrossReference_1_0; }
 		
 		//ID
@@ -887,8 +887,8 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cUiAssignment_10 = (Assignment)cGroup.eContents().get(10);
 		private final RuleCall cUiUiOptionsParserRuleCall_10_0 = (RuleCall)cUiAssignment_10.eContents().get(0);
 		
-		//Reference:
-		//  'reference' type=[ClassDef] name=ID
+		//Reference returns m2b::Reference:
+		//  'reference' type=[m2b::ClassDef] name=ID
 		//  (cardinality=Cardinality)?
 		//  ('opposite' oppositeName=ID)?
 		//  (required?='required')?
@@ -899,7 +899,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//  (ui=UiOptions)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'reference' type=[ClassDef] name=ID
+		//'reference' type=[m2b::ClassDef] name=ID
 		//(cardinality=Cardinality)?
 		//('opposite' oppositeName=ID)?
 		//(required?='required')?
@@ -913,10 +913,10 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//'reference'
 		public Keyword getReferenceKeyword_0() { return cReferenceKeyword_0; }
 		
-		//type=[ClassDef]
+		//type=[m2b::ClassDef]
 		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
 		
-		//[ClassDef]
+		//[m2b::ClassDef]
 		public CrossReference getTypeClassDefCrossReference_1_0() { return cTypeClassDefCrossReference_1_0; }
 		
 		//ID
@@ -999,24 +999,24 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cUiAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cUiUiOptionsParserRuleCall_4_0 = (RuleCall)cUiAssignment_4.eContents().get(0);
 		
-		//ValueInput:
-		//  'value' type=[ClassDef] name=ID
-		//  ('shadow' shadowType=[ClassDef])?
+		//ValueInput returns m2b::ValueInput:
+		//  'value' type=[m2b::ClassDef] name=ID
+		//  ('shadow' shadowType=[m2b::ClassDef])?
 		//  (ui=UiOptions)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'value' type=[ClassDef] name=ID
-		//('shadow' shadowType=[ClassDef])?
+		//'value' type=[m2b::ClassDef] name=ID
+		//('shadow' shadowType=[m2b::ClassDef])?
 		//(ui=UiOptions)?
 		public Group getGroup() { return cGroup; }
 		
 		//'value'
 		public Keyword getValueKeyword_0() { return cValueKeyword_0; }
 		
-		//type=[ClassDef]
+		//type=[m2b::ClassDef]
 		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
 		
-		//[ClassDef]
+		//[m2b::ClassDef]
 		public CrossReference getTypeClassDefCrossReference_1_0() { return cTypeClassDefCrossReference_1_0; }
 		
 		//ID
@@ -1028,16 +1028,16 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 		
-		//('shadow' shadowType=[ClassDef])?
+		//('shadow' shadowType=[m2b::ClassDef])?
 		public Group getGroup_3() { return cGroup_3; }
 		
 		//'shadow'
 		public Keyword getShadowKeyword_3_0() { return cShadowKeyword_3_0; }
 		
-		//shadowType=[ClassDef]
+		//shadowType=[m2b::ClassDef]
 		public Assignment getShadowTypeAssignment_3_1() { return cShadowTypeAssignment_3_1; }
 		
-		//[ClassDef]
+		//[m2b::ClassDef]
 		public CrossReference getShadowTypeClassDefCrossReference_3_1_0() { return cShadowTypeClassDefCrossReference_3_1_0; }
 		
 		//ID
@@ -1060,7 +1060,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final RuleCall cUpperINTTerminalRuleCall_3_0 = (RuleCall)cUpperAssignment_3.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//Cardinality:
+		//Cardinality returns m2b::Cardinality:
 		//  '[' lower=INT '..' upper=INT ']';
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1128,7 +1128,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cReferenceLabelFieldAssignment_9_1 = (Assignment)cGroup_9.eContents().get(1);
 		private final RuleCall cReferenceLabelFieldIDTerminalRuleCall_9_1_0 = (RuleCall)cReferenceLabelFieldAssignment_9_1.eContents().get(0);
 		
-		//UiOptions:
+		//UiOptions returns m2b::UiOptions:
 		//  (
 		//    'widget' widget=UiWidget
 		//    | 'uiLabel' uiLabel=STRING
@@ -1272,7 +1272,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final RuleCall cEnumTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
 		///* ─── Tipos de atributo ──────────────────────────────────────── */
-		//AttributeType:
+		//AttributeType returns m2b::AttributeType:
 		//  SimpleType | EnumType;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1290,7 +1290,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cTypeNameAssignment = (Assignment)rule.eContents().get(1);
 		private final RuleCall cTypeNameSimpleTypeNameEnumRuleCall_0 = (RuleCall)cTypeNameAssignment.eContents().get(0);
 		
-		//SimpleType:
+		//SimpleType returns m2b::SimpleType:
 		//  typeName=SimpleTypeName;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1313,7 +1313,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final RuleCall cLiteralsEnumLiteralParserRuleCall_3_1_0 = (RuleCall)cLiteralsAssignment_3_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//EnumType:
+		//EnumType returns m2b::EnumType:
 		//  'enum' '{' literals+=EnumLiteral (',' literals+=EnumLiteral)* '}';
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1357,7 +1357,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cLabelAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
 		private final RuleCall cLabelSTRINGTerminalRuleCall_1_1_0 = (RuleCall)cLabelAssignment_1_1.eContents().get(0);
 		
-		//EnumLiteral:
+		//EnumLiteral returns m2b::EnumLiteral:
 		//  name=ID ('=' label=STRING)?;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1400,15 +1400,15 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final RuleCall cPredecessorClassDefIDTerminalRuleCall_7_0_1 = (RuleCall)cPredecessorClassDefCrossReference_7_0.eContents().get(1);
 		
 		///* ─── Restricciones entre clases ─────────────────────────────── */
-		//ConstraintDef:
+		//ConstraintDef returns m2b::ConstraintDef:
 		//  'constraint' name=ID
-		//  'on' target=[ClassDef]
-		//  ':' 'must' 'follow' predecessor=[ClassDef];
+		//  'on' target=[m2b::ClassDef]
+		//  ':' 'must' 'follow' predecessor=[m2b::ClassDef];
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'constraint' name=ID
-		//'on' target=[ClassDef]
-		//':' 'must' 'follow' predecessor=[ClassDef]
+		//'on' target=[m2b::ClassDef]
+		//':' 'must' 'follow' predecessor=[m2b::ClassDef]
 		public Group getGroup() { return cGroup; }
 		
 		//'constraint'
@@ -1423,10 +1423,10 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//'on'
 		public Keyword getOnKeyword_2() { return cOnKeyword_2; }
 		
-		//target=[ClassDef]
+		//target=[m2b::ClassDef]
 		public Assignment getTargetAssignment_3() { return cTargetAssignment_3; }
 		
-		//[ClassDef]
+		//[m2b::ClassDef]
 		public CrossReference getTargetClassDefCrossReference_3_0() { return cTargetClassDefCrossReference_3_0; }
 		
 		//ID
@@ -1441,10 +1441,10 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//'follow'
 		public Keyword getFollowKeyword_6() { return cFollowKeyword_6; }
 		
-		//predecessor=[ClassDef]
+		//predecessor=[m2b::ClassDef]
 		public Assignment getPredecessorAssignment_7() { return cPredecessorAssignment_7; }
 		
-		//[ClassDef]
+		//[m2b::ClassDef]
 		public CrossReference getPredecessorClassDefCrossReference_7_0() { return cPredecessorClassDefCrossReference_7_0; }
 		
 		//ID
@@ -1470,15 +1470,15 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cMessageAssignment_7_1 = (Assignment)cGroup_7.eContents().get(1);
 		private final RuleCall cMessageSTRINGTerminalRuleCall_7_1_0 = (RuleCall)cMessageAssignment_7_1.eContents().get(0);
 		
-		//ValidationDef:
+		//ValidationDef returns m2b::ValidationDef:
 		//  'validation' name=ID
-		//  'on' target=[ClassDef]
+		//  'on' target=[m2b::ClassDef]
 		//  ':' kind=ValidationKind expression=STRING
 		//  ('errorMessage' message=STRING)?;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'validation' name=ID
-		//'on' target=[ClassDef]
+		//'on' target=[m2b::ClassDef]
 		//':' kind=ValidationKind expression=STRING
 		//('errorMessage' message=STRING)?
 		public Group getGroup() { return cGroup; }
@@ -1495,10 +1495,10 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		//'on'
 		public Keyword getOnKeyword_2() { return cOnKeyword_2; }
 		
-		//target=[ClassDef]
+		//target=[m2b::ClassDef]
 		public Assignment getTargetAssignment_3() { return cTargetAssignment_3; }
 		
-		//[ClassDef]
+		//[m2b::ClassDef]
 		public CrossReference getTargetClassDefCrossReference_3_0() { return cTargetClassDefCrossReference_3_0; }
 		
 		//ID
@@ -1541,7 +1541,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Keyword cRightCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		///* ─── Workspace configuration (thin wrapper over Blockly options) ─── */
-		//WorkspaceConfig:
+		//WorkspaceConfig returns m2b::WorkspaceConfig:
 		//  'workspace' '{'
 		//    (options += WorkspaceOption)*
 		//  '}';
@@ -1575,7 +1575,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final RuleCall cBoolOptionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		private final RuleCall cObjectOptionParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
-		//WorkspaceOption:
+		//WorkspaceOption returns m2b::WorkspaceOption:
 		//  StringOption | IntOption | BoolOption | ObjectOption;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1603,7 +1603,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cValueAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cValueSTRINGTerminalRuleCall_2_0 = (RuleCall)cValueAssignment_2.eContents().get(0);
 		
-		//StringOption:
+		//StringOption returns m2b::StringOption:
 		//  key=ID ':' value=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1634,7 +1634,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cValueAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cValueINTTerminalRuleCall_2_0 = (RuleCall)cValueAssignment_2.eContents().get(0);
 		
-		//IntOption:
+		//IntOption returns m2b::IntOption:
 		//  key=ID ':' value=INT;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1665,7 +1665,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final Assignment cValueAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cValueBoolValEnumRuleCall_2_0 = (RuleCall)cValueAssignment_2.eContents().get(0);
 		
-		//BoolOption:
+		//BoolOption returns m2b::BoolOption:
 		//  key=ID ':' value=BoolVal;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1698,7 +1698,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final RuleCall cEntriesWorkspaceOptionParserRuleCall_3_0 = (RuleCall)cEntriesAssignment_3.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//ObjectOption:
+		//ObjectOption returns m2b::ObjectOption:
 		//  key=ID ':' '{' (entries += WorkspaceOption)* '}';
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1759,7 +1759,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final EnumLiteralDeclaration cEXPRESSION_SLOTEnumLiteralDeclaration_13 = (EnumLiteralDeclaration)cAlternatives.eContents().get(13);
 		private final Keyword cEXPRESSION_SLOTExpressionSlotKeyword_13_0 = (Keyword)cEXPRESSION_SLOTEnumLiteralDeclaration_13.eContents().get(0);
 		
-		//enum UiWidget:
+		//enum UiWidget returns m2b::UiWidget:
 		//  TEXT='text' | TEXTAREA='textarea' | NUMBER='number' | SLIDER='slider'
 		//  | SWITCH='switch' | CHECKBOX='checkbox' | SELECT='select' | RADIO='radio'
 		//  | COLOR='color' | ANGLE='angle' | IMAGE='image'
@@ -1868,7 +1868,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final EnumLiteralDeclaration cPROMINENTEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
 		private final Keyword cPROMINENTProminentKeyword_2_0 = (Keyword)cPROMINENTEnumLiteralDeclaration_2.eContents().get(0);
 		
-		//enum UiVariant:
+		//enum UiVariant returns m2b::UiVariant:
 		//  DEFAULT='default' | COMPACT='compact' | PROMINENT='prominent';
 		public EnumRule getRule() { return rule; }
 		
@@ -1913,7 +1913,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final EnumLiteralDeclaration cLabelEnumLiteralDeclaration_7 = (EnumLiteralDeclaration)cAlternatives.eContents().get(7);
 		private final Keyword cLabelLabelKeyword_7_0 = (Keyword)cLabelEnumLiteralDeclaration_7.eContents().get(0);
 		
-		//enum SimpleTypeName:
+		//enum SimpleTypeName returns m2b::SimpleTypeName:
 		//  string = 'string' | int = 'int' | boolean = 'boolean' | float = 'float'
 		//  | colour = 'colour' | angle = 'angle' | image = 'image' | label = 'label';
 		public EnumRule getRule() { return rule; }
@@ -1982,7 +1982,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final EnumLiteralDeclaration cOCLEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
 		private final Keyword cOCLOclKeyword_3_0 = (Keyword)cOCLEnumLiteralDeclaration_3.eContents().get(0);
 		
-		//enum ValidationKind:
+		//enum ValidationKind returns m2b::ValidationKind:
 		//  EXPRESSION='expression' | CONDITION='condition' | JS='js' | OCL='ocl';
 		public EnumRule getRule() { return rule; }
 		
@@ -2021,7 +2021,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		private final EnumLiteralDeclaration cFALSEEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
 		private final Keyword cFALSEFalseKeyword_1_0 = (Keyword)cFALSEEnumLiteralDeclaration_1.eContents().get(0);
 		
-		//enum BoolVal:
+		//enum BoolVal returns m2b::BoolVal:
 		//  TRUE='true' | FALSE='false';
 		public EnumRule getRule() { return rule; }
 		
@@ -2137,7 +2137,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 	///* ═══════════════════════════════════════════════════════════════════
 	//   Raíz: un dominio con clases agrupadas opcionalmente en categorías
 	//   ═══════════════════════════════════════════════════════════════════ */
-	//DomainModel:
+	//DomainModel returns m2b::DomainModel:
 	//  'domain' name=ID
 	//  ('codeLanguage' codeLanguage=STRING)?
 	//  ('codeFileExtension' codeFileExtension=STRING)?
@@ -2156,7 +2156,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 	}
 	
 	///* ─── Categorías (para organizar la paleta de bloques) ─────────── */
-	//CategoryDef:
+	//CategoryDef returns m2b::CategoryDef:
 	//  'category' name=ID
 	//  ('label' label=STRING)?
 	//  ('colour' colour=INT)?
@@ -2178,10 +2178,10 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 	//   - output → bloque con conexión de salida (pieza de puzzle)
 	//   - inline → campos en línea horizontal
 	//   ─────────────────────────────────────────────────────────────── */
-	//ClassDef:
-	//  (abstract?='abstract')? (output?='output' ('as' outputType=[ClassDef])?)? 'class' name=ID
-	//  ('extends' superClass=[ClassDef])?
-	//  ('category' category=[CategoryDef])?
+	//ClassDef returns m2b::ClassDef:
+	//  (abstract?='abstract')? (output?='output' ('as' outputType=[m2b::ClassDef])?)? 'class' name=ID
+	//  ('extends' superClass=[m2b::ClassDef])?
+	//  ('category' category=[m2b::CategoryDef])?
 	//  ('colour' colour=INT)?
 	//  ('label' label=STRING)?
 	//  ('message0' message0=STRING)?
@@ -2202,7 +2202,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 	}
 	
 	///* ─── Features: atributos, contenciones, value inputs y referencias ─ */
-	//Feature:
+	//Feature returns m2b::Feature:
 	//  Attribute | Containment | Reference | ValueInput;
 	public FeatureElements getFeatureAccess() {
 		return pFeature;
@@ -2212,7 +2212,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getFeatureAccess().getRule();
 	}
 	
-	//Attribute:
+	//Attribute returns m2b::Attribute:
 	//  'attribute' name=ID ':' type=AttributeType
 	//  (cardinality=Cardinality)?
 	//  ('default' defaultValue=STRING)?
@@ -2237,8 +2237,8 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getAttributeAccess().getRule();
 	}
 	
-	//Containment:
-	//  'contains' type=[ClassDef] name=ID
+	//Containment returns m2b::Containment:
+	//  'contains' type=[m2b::ClassDef] name=ID
 	//  ('[' lower=INT '..' upper=INT ']')?
 	//  (ui=UiOptions)?;
 	public ContainmentElements getContainmentAccess() {
@@ -2249,8 +2249,8 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getContainmentAccess().getRule();
 	}
 	
-	//Reference:
-	//  'reference' type=[ClassDef] name=ID
+	//Reference returns m2b::Reference:
+	//  'reference' type=[m2b::ClassDef] name=ID
 	//  (cardinality=Cardinality)?
 	//  ('opposite' oppositeName=ID)?
 	//  (required?='required')?
@@ -2267,9 +2267,9 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getReferenceAccess().getRule();
 	}
 	
-	//ValueInput:
-	//  'value' type=[ClassDef] name=ID
-	//  ('shadow' shadowType=[ClassDef])?
+	//ValueInput returns m2b::ValueInput:
+	//  'value' type=[m2b::ClassDef] name=ID
+	//  ('shadow' shadowType=[m2b::ClassDef])?
 	//  (ui=UiOptions)?;
 	public ValueInputElements getValueInputAccess() {
 		return pValueInput;
@@ -2279,7 +2279,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getValueInputAccess().getRule();
 	}
 	
-	//Cardinality:
+	//Cardinality returns m2b::Cardinality:
 	//  '[' lower=INT '..' upper=INT ']';
 	public CardinalityElements getCardinalityAccess() {
 		return pCardinality;
@@ -2289,7 +2289,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getCardinalityAccess().getRule();
 	}
 	
-	//UiOptions:
+	//UiOptions returns m2b::UiOptions:
 	//  (
 	//    'widget' widget=UiWidget
 	//    | 'uiLabel' uiLabel=STRING
@@ -2310,7 +2310,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getUiOptionsAccess().getRule();
 	}
 	
-	//enum UiWidget:
+	//enum UiWidget returns m2b::UiWidget:
 	//  TEXT='text' | TEXTAREA='textarea' | NUMBER='number' | SLIDER='slider'
 	//  | SWITCH='switch' | CHECKBOX='checkbox' | SELECT='select' | RADIO='radio'
 	//  | COLOR='color' | ANGLE='angle' | IMAGE='image'
@@ -2324,7 +2324,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getUiWidgetAccess().getRule();
 	}
 	
-	//enum UiVariant:
+	//enum UiVariant returns m2b::UiVariant:
 	//  DEFAULT='default' | COMPACT='compact' | PROMINENT='prominent';
 	public UiVariantElements getUiVariantAccess() {
 		return eUiVariant;
@@ -2335,7 +2335,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 	}
 	
 	///* ─── Tipos de atributo ──────────────────────────────────────── */
-	//AttributeType:
+	//AttributeType returns m2b::AttributeType:
 	//  SimpleType | EnumType;
 	public AttributeTypeElements getAttributeTypeAccess() {
 		return pAttributeType;
@@ -2345,7 +2345,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getAttributeTypeAccess().getRule();
 	}
 	
-	//SimpleType:
+	//SimpleType returns m2b::SimpleType:
 	//  typeName=SimpleTypeName;
 	public SimpleTypeElements getSimpleTypeAccess() {
 		return pSimpleType;
@@ -2355,7 +2355,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getSimpleTypeAccess().getRule();
 	}
 	
-	//enum SimpleTypeName:
+	//enum SimpleTypeName returns m2b::SimpleTypeName:
 	//  string = 'string' | int = 'int' | boolean = 'boolean' | float = 'float'
 	//  | colour = 'colour' | angle = 'angle' | image = 'image' | label = 'label';
 	public SimpleTypeNameElements getSimpleTypeNameAccess() {
@@ -2366,7 +2366,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getSimpleTypeNameAccess().getRule();
 	}
 	
-	//EnumType:
+	//EnumType returns m2b::EnumType:
 	//  'enum' '{' literals+=EnumLiteral (',' literals+=EnumLiteral)* '}';
 	public EnumTypeElements getEnumTypeAccess() {
 		return pEnumType;
@@ -2376,7 +2376,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getEnumTypeAccess().getRule();
 	}
 	
-	//EnumLiteral:
+	//EnumLiteral returns m2b::EnumLiteral:
 	//  name=ID ('=' label=STRING)?;
 	public EnumLiteralElements getEnumLiteralAccess() {
 		return pEnumLiteral;
@@ -2387,10 +2387,10 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 	}
 	
 	///* ─── Restricciones entre clases ─────────────────────────────── */
-	//ConstraintDef:
+	//ConstraintDef returns m2b::ConstraintDef:
 	//  'constraint' name=ID
-	//  'on' target=[ClassDef]
-	//  ':' 'must' 'follow' predecessor=[ClassDef];
+	//  'on' target=[m2b::ClassDef]
+	//  ':' 'must' 'follow' predecessor=[m2b::ClassDef];
 	public ConstraintDefElements getConstraintDefAccess() {
 		return pConstraintDef;
 	}
@@ -2399,9 +2399,9 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getConstraintDefAccess().getRule();
 	}
 	
-	//ValidationDef:
+	//ValidationDef returns m2b::ValidationDef:
 	//  'validation' name=ID
-	//  'on' target=[ClassDef]
+	//  'on' target=[m2b::ClassDef]
 	//  ':' kind=ValidationKind expression=STRING
 	//  ('errorMessage' message=STRING)?;
 	public ValidationDefElements getValidationDefAccess() {
@@ -2412,7 +2412,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getValidationDefAccess().getRule();
 	}
 	
-	//enum ValidationKind:
+	//enum ValidationKind returns m2b::ValidationKind:
 	//  EXPRESSION='expression' | CONDITION='condition' | JS='js' | OCL='ocl';
 	public ValidationKindElements getValidationKindAccess() {
 		return eValidationKind;
@@ -2423,7 +2423,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 	}
 	
 	///* ─── Workspace configuration (thin wrapper over Blockly options) ─── */
-	//WorkspaceConfig:
+	//WorkspaceConfig returns m2b::WorkspaceConfig:
 	//  'workspace' '{'
 	//    (options += WorkspaceOption)*
 	//  '}';
@@ -2435,7 +2435,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getWorkspaceConfigAccess().getRule();
 	}
 	
-	//WorkspaceOption:
+	//WorkspaceOption returns m2b::WorkspaceOption:
 	//  StringOption | IntOption | BoolOption | ObjectOption;
 	public WorkspaceOptionElements getWorkspaceOptionAccess() {
 		return pWorkspaceOption;
@@ -2445,7 +2445,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getWorkspaceOptionAccess().getRule();
 	}
 	
-	//StringOption:
+	//StringOption returns m2b::StringOption:
 	//  key=ID ':' value=STRING;
 	public StringOptionElements getStringOptionAccess() {
 		return pStringOption;
@@ -2455,7 +2455,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getStringOptionAccess().getRule();
 	}
 	
-	//IntOption:
+	//IntOption returns m2b::IntOption:
 	//  key=ID ':' value=INT;
 	public IntOptionElements getIntOptionAccess() {
 		return pIntOption;
@@ -2465,7 +2465,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getIntOptionAccess().getRule();
 	}
 	
-	//BoolOption:
+	//BoolOption returns m2b::BoolOption:
 	//  key=ID ':' value=BoolVal;
 	public BoolOptionElements getBoolOptionAccess() {
 		return pBoolOption;
@@ -2475,7 +2475,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getBoolOptionAccess().getRule();
 	}
 	
-	//ObjectOption:
+	//ObjectOption returns m2b::ObjectOption:
 	//  key=ID ':' '{' (entries += WorkspaceOption)* '}';
 	public ObjectOptionElements getObjectOptionAccess() {
 		return pObjectOption;
@@ -2485,7 +2485,7 @@ public class Model2BlocklyGrammarAccess extends AbstractElementFinder.AbstractGr
 		return getObjectOptionAccess().getRule();
 	}
 	
-	//enum BoolVal:
+	//enum BoolVal returns m2b::BoolVal:
 	//  TRUE='true' | FALSE='false';
 	public BoolValElements getBoolValAccess() {
 		return eBoolVal;

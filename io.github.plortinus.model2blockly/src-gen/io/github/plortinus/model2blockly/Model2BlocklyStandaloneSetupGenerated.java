@@ -5,8 +5,6 @@ package io.github.plortinus.model2blockly;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.github.plortinus.model2blockly.model2Blockly.Model2BlocklyPackage;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.ISetup;
 import org.eclipse.xtext.common.TerminalsStandaloneSetup;
@@ -30,12 +28,11 @@ public class Model2BlocklyStandaloneSetupGenerated implements ISetup {
 	}
 	
 	public void register(Injector injector) {
-		if (!EPackage.Registry.INSTANCE.containsKey("https://plortinus.github.io/model2blockly/ns/model2blockly")) {
-			EPackage.Registry.INSTANCE.put("https://plortinus.github.io/model2blockly/ns/model2blockly", Model2BlocklyPackage.eINSTANCE);
-		}
 		IResourceFactory resourceFactory = injector.getInstance(IResourceFactory.class);
 		IResourceServiceProvider serviceProvider = injector.getInstance(IResourceServiceProvider.class);
 		
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("m2b", resourceFactory);
+		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("m2b", serviceProvider);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("model2blockly", resourceFactory);
 		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("model2blockly", serviceProvider);
 	}

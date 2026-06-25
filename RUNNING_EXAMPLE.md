@@ -66,8 +66,8 @@ source of truth.
 The Ecore source is transformed to the generated EMF intermediate metamodel:
 
 ```text
-io.github.plortinus.model2blockly/model/generated/BlocklyEditorSpec.genmodel
-io.github.plortinus.model2blockly/src-gen/io/github/plortinus/model2blockly/intermediate/blocklyspec/EditorSpec.java
+io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel
+io.github.plortinus.model2blockly/emf-gen/io/github/plortinus/model2blockly/intermediate/blocklyspec/EditorSpec.java
 ```
 
 The root object is `EditorSpec`. It is serialized as XMI, read back, validated,

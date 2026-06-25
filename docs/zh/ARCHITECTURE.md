@@ -23,11 +23,16 @@ Model2Blockly 的核心链路是：
 内部生成元模型保留为 EMF 产物：
 
 ```text
-io.github.plortinus.model2blockly/model/generated/Model2Blockly.ecore
-io.github.plortinus.model2blockly/model/generated/Model2Blockly.genmodel
+io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.ecore
+io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.genmodel
 io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore
-io.github.plortinus.model2blockly/model/generated/BlocklyEditorSpec.genmodel
+io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel
+io.github.plortinus.model2blockly/emf-gen/
 ```
+
+文本 DSL 使用 Xtext 作为固定 `Model2Blockly.ecore` 抽象语法之上的具体语法。
+Xtext 生成的 parser、service 和 IDE 代码写入 `src-gen`；固定元模型对应的
+EMF Java API 放在 `emf-gen`，这样重新生成 DSL 基础设施时不会被清理。
 
 Ecore 路线也可以动态处理源 `.ecore`，不要求为该领域先生成 Java 代码。领域 `EPackage` 由 EMF 加载，并作为转换的源模型。
 

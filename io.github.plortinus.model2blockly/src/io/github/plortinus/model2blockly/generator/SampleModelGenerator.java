@@ -139,7 +139,7 @@ public final class SampleModelGenerator {
 			}
 			for (ValueInputSpec input : type.getValueInputs()) {
 				BlockTypeSpec childType = firstMatchingOutput(input.getCheckType(), nextPath);
-				Map<String, Object> child = createNode(childType, depth + 1, nextPath);
+				Map<String, Object> child = createNode(childType, Math.min(depth + 1, MAX_DEPTH), nextPath);
 				if (child != null) node.put(input.getName(), child);
 			}
 			for (StatementInputSpec input : type.getStatementInputs()) {

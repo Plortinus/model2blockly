@@ -71,7 +71,8 @@ for (const page of pages) {
 writeVitePressConfig();
 writeVitePressTheme();
 
-execFileSync(commandName('npx'), ['vitepress', 'build', sourceDir, '--outDir', outputDir], {
+const vitepress = vitepressCommand();
+execFileSync(vitepress.command, [...vitepress.args, 'build', sourceDir, '--outDir', outputDir], {
   cwd: repoRoot,
   env: {
     ...process.env,
@@ -431,6 +432,20 @@ export default DefaultTheme;
 
 function commandName(command) {
   return process.platform === 'win32' ? `${command}.cmd` : command;
+}
+
+function vitepressCommand() {
+  const localVitepress = path.join(repoRoot, 'node_modules/vitepress/bin/vitepress.js');
+  if (existsSync(localVitepress)) {
+    return {
+      command: process.execPath,
+      args: [localVitepress],
+    };
+  }
+  return {
+    command: commandName('npx'),
+    args: ['vitepress'],
+  };
 }
 
 function normalize(file) {

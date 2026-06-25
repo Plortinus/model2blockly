@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="https://plortinus.github.io/model2blockly/ns/blockly-editor-spec" domainName="Appmaker" nsURI="http://www.example.org/appmaker" nsPrefix="app" codeLanguage="javascript" codeFileExtension="js" runtimeKind="appMaker">
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Appmaker" nsURI="http://www.example.org/appmaker" nsPrefix="app" codeLanguage="javascript" codeFileExtension="js" runtimeKind="appMaker">
   <categories name="Pages" label="Pages" colour="260"/>
   <categories name="Data" label="Data" colour="210"/>
   <categories name="Components" label="Components" colour="160"/>

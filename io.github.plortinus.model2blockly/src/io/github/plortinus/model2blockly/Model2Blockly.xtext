@@ -11,13 +11,13 @@
  */
 grammar io.github.plortinus.model2blockly.Model2Blockly with org.eclipse.xtext.common.Terminals
 
-generate model2Blockly "https://plortinus.github.io/model2blockly/ns/model2blockly"
+import "https://plortinus.github.io/model2blockly/ns/model2blockly" as m2b
 
 /* ═══════════════════════════════════════════════════════════════════
    Raíz: un dominio con clases agrupadas opcionalmente en categorías
    ═══════════════════════════════════════════════════════════════════ */
 
-DomainModel:
+DomainModel returns m2b::DomainModel:
   'domain' name=ID
   ('codeLanguage' codeLanguage=STRING)?
   ('codeFileExtension' codeFileExtension=STRING)?
@@ -30,7 +30,7 @@ DomainModel:
 
 /* ─── Categorías (para organizar la paleta de bloques) ─────────── */
 
-CategoryDef:
+CategoryDef returns m2b::CategoryDef:
   'category' name=ID
   ('label' label=STRING)?
   ('colour' colour=INT)?
@@ -46,10 +46,10 @@ CategoryDef:
    - inline → campos en línea horizontal
    ─────────────────────────────────────────────────────────────── */
 
-ClassDef:
-  (abstract?='abstract')? (output?='output' ('as' outputType=[ClassDef])?)? 'class' name=ID
-  ('extends' superClass=[ClassDef])?
-  ('category' category=[CategoryDef])?
+ClassDef returns m2b::ClassDef:
+  (abstract?='abstract')? (output?='output' ('as' outputType=[m2b::ClassDef])?)? 'class' name=ID
+  ('extends' superClass=[m2b::ClassDef])?
+  ('category' category=[m2b::CategoryDef])?
   ('colour' colour=INT)?
   ('label' label=STRING)?
   ('message0' message0=STRING)?
@@ -64,10 +64,10 @@ ClassDef:
 
 /* ─── Features: atributos, contenciones, value inputs y referencias ─ */
 
-Feature:
+Feature returns m2b::Feature:
   Attribute | Containment | Reference | ValueInput;
 
-Attribute:
+Attribute returns m2b::Attribute:
   'attribute' name=ID ':' type=AttributeType
   (cardinality=Cardinality)?
   ('default' defaultValue=STRING)?
@@ -85,13 +85,13 @@ Attribute:
   (unordered?='unordered')?
   (ui=UiOptions)?;
 
-Containment:
-  'contains' type=[ClassDef] name=ID
+Containment returns m2b::Containment:
+  'contains' type=[m2b::ClassDef] name=ID
   ('[' lower=INT '..' upper=INT ']')?
   (ui=UiOptions)?;
 
-Reference:
-  'reference' type=[ClassDef] name=ID
+Reference returns m2b::Reference:
+  'reference' type=[m2b::ClassDef] name=ID
   (cardinality=Cardinality)?
   ('opposite' oppositeName=ID)?
   (required?='required')?
@@ -101,15 +101,15 @@ Reference:
   (unordered?='unordered')?
   (ui=UiOptions)?;
 
-ValueInput:
-  'value' type=[ClassDef] name=ID
-  ('shadow' shadowType=[ClassDef])?
+ValueInput returns m2b::ValueInput:
+  'value' type=[m2b::ClassDef] name=ID
+  ('shadow' shadowType=[m2b::ClassDef])?
   (ui=UiOptions)?;
 
-Cardinality:
+Cardinality returns m2b::Cardinality:
   '[' lower=INT '..' upper=INT ']';
 
-UiOptions:
+UiOptions returns m2b::UiOptions:
   (
     'widget' widget=UiWidget
     | 'uiLabel' uiLabel=STRING
@@ -123,71 +123,71 @@ UiOptions:
     | 'referenceLabelField' referenceLabelField=ID
   )+;
 
-enum UiWidget:
+enum UiWidget returns m2b::UiWidget:
   TEXT='text' | TEXTAREA='textarea' | NUMBER='number' | SLIDER='slider'
   | SWITCH='switch' | CHECKBOX='checkbox' | SELECT='select' | RADIO='radio'
   | COLOR='color' | ANGLE='angle' | IMAGE='image'
   | REFERENCE_SELECT='reference-select'
   | SLOT='slot' | EXPRESSION_SLOT='expression-slot';
 
-enum UiVariant:
+enum UiVariant returns m2b::UiVariant:
   DEFAULT='default' | COMPACT='compact' | PROMINENT='prominent';
 
 /* ─── Tipos de atributo ──────────────────────────────────────── */
 
-AttributeType:
+AttributeType returns m2b::AttributeType:
   SimpleType | EnumType;
 
-SimpleType:
+SimpleType returns m2b::SimpleType:
   typeName=SimpleTypeName;
 
-enum SimpleTypeName:
+enum SimpleTypeName returns m2b::SimpleTypeName:
   string = 'string' | int = 'int' | boolean = 'boolean' | float = 'float'
   | colour = 'colour' | angle = 'angle' | image = 'image' | label = 'label';
 
-EnumType:
+EnumType returns m2b::EnumType:
   'enum' '{' literals+=EnumLiteral (',' literals+=EnumLiteral)* '}';
 
-EnumLiteral:
+EnumLiteral returns m2b::EnumLiteral:
   name=ID ('=' label=STRING)?;
 
 /* ─── Restricciones entre clases ─────────────────────────────── */
 
-ConstraintDef:
+ConstraintDef returns m2b::ConstraintDef:
   'constraint' name=ID
-  'on' target=[ClassDef]
-  ':' 'must' 'follow' predecessor=[ClassDef];
+  'on' target=[m2b::ClassDef]
+  ':' 'must' 'follow' predecessor=[m2b::ClassDef];
 
-ValidationDef:
+ValidationDef returns m2b::ValidationDef:
   'validation' name=ID
-  'on' target=[ClassDef]
+  'on' target=[m2b::ClassDef]
   ':' kind=ValidationKind expression=STRING
   ('errorMessage' message=STRING)?;
 
-enum ValidationKind:
+enum ValidationKind returns m2b::ValidationKind:
   EXPRESSION='expression' | CONDITION='condition' | JS='js' | OCL='ocl';
 
 /* ─── Workspace configuration (thin wrapper over Blockly options) ─── */
 
-WorkspaceConfig:
+WorkspaceConfig returns m2b::WorkspaceConfig:
   'workspace' '{'
     (options += WorkspaceOption)*
   '}';
 
-WorkspaceOption:
+WorkspaceOption returns m2b::WorkspaceOption:
   StringOption | IntOption | BoolOption | ObjectOption;
 
-StringOption:
+StringOption returns m2b::StringOption:
   key=ID ':' value=STRING;
 
-IntOption:
+IntOption returns m2b::IntOption:
   key=ID ':' value=INT;
 
-BoolOption:
+BoolOption returns m2b::BoolOption:
   key=ID ':' value=BoolVal;
 
-ObjectOption:
+ObjectOption returns m2b::ObjectOption:
   key=ID ':' '{' (entries += WorkspaceOption)* '}';
 
-enum BoolVal:
+enum BoolVal returns m2b::BoolVal:
   TRUE='true' | FALSE='false';

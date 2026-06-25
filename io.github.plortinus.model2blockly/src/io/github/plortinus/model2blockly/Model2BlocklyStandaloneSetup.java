@@ -4,6 +4,8 @@
 package io.github.plortinus.model2blockly;
 
 import com.google.inject.Injector;
+import io.github.plortinus.model2blockly.model2Blockly.Model2BlocklyPackage;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
@@ -20,6 +22,9 @@ public class Model2BlocklyStandaloneSetup extends Model2BlocklyStandaloneSetupGe
 
 	@Override
 	public void register(Injector injector) {
+		if (!EPackage.Registry.INSTANCE.containsKey(Model2BlocklyPackage.eNS_URI)) {
+			EPackage.Registry.INSTANCE.put(Model2BlocklyPackage.eNS_URI, Model2BlocklyPackage.eINSTANCE);
+		}
 		super.register(injector);
 		IResourceFactory resourceFactory = injector.getInstance(IResourceFactory.class);
 		IResourceServiceProvider serviceProvider = injector.getInstance(IResourceServiceProvider.class);

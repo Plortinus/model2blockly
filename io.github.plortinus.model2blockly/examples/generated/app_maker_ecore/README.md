@@ -1,6 +1,6 @@
 # Generated Blockly Editor
 
-Input Ecore metamodel: `io.github.plortinus.model2blockly/model/app_maker.ecore`
+Input Ecore metamodel: `model/app_maker.ecore`
 
 Output: EMF EditorSpec intermediate XMI and HTML Blockly editor
 
