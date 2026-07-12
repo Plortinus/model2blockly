@@ -1,0 +1,83 @@
+@startuml
+skinparam backgroundColor white
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+
+abstract class EModelElement {
+  eAnnotations : EAnnotation [0..*]
+}
+
+class EAnnotation {
+  source : EString
+  details : Map<EString, EString>
+}
+
+class EPackage {
+  name : EString
+  nsURI : EString
+  nsPrefix : EString
+}
+
+abstract class EClassifier {
+  name : EString
+}
+
+class EClass {
+  abstract : EBoolean
+  eSuperTypes : EClass [0..*]
+}
+
+class EDataType
+
+abstract class EStructuralFeature {
+  lowerBound : EInt
+  upperBound : EInt
+}
+
+class EAttribute {
+  eAttributeType : EDataType
+}
+
+class EReference {
+  containment : EBoolean
+  eReferenceType : EClass
+}
+
+note right of EAnnotation
+  Ejemplo Model2Blockly
+
+  source = "blockly"
+  colour = "260"
+  category = "Pages"
+  tooltip = "A navigable page..."
+
+  Otra anotación:
+  source = "ui"
+  label = "Page"
+end note
+
+EModelElement "1" *-- "0..*" EAnnotation : eAnnotations
+
+EPackage --|> EModelElement
+EClassifier --|> EModelElement
+EStructuralFeature --|> EModelElement
+EAnnotation --|> EModelElement
+
+EPackage "1" *-- "0..*" EClassifier : eClassifiers
+EClass --|> EClassifier
+EDataType --|> EClassifier
+
+EClass "1" *-- "0..*" EStructuralFeature : eStructuralFeatures
+EAttribute --|> EStructuralFeature
+EReference --|> EStructuralFeature
+
+EAttribute --> EDataType : eAttributeType
+EReference --> EClass : eReferenceType
+EClass --> EClass : eSuperTypes
+
+note bottom
+  Diagrama simplificado:
+  se omiten ENamedElement y ETypedElement.
+end note
+@enduml

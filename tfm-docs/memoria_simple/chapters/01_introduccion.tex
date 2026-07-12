@@ -1,0 +1,131 @@
+\chapter{Introducción}
+\label{chap:introduccion}
+
+Crear sistemas, automatizar tareas y expresar ideas de un dominio mediante
+programación puede suponer una barrera importante para los usuarios principiantes.
+La literatura sobre programación basada en bloques muestra que estos entornos
+se utilizan a menudo para introducir a usuarios noveles en la
+programación, porque ofrecen una entrada más accesible que los lenguajes
+textuales tradicionales \cite{lin2021landscape}. Esta dificultad no aparece
+exclusivamente en la enseñanza de la informática. También afecta a usuarios
+no expertos que podrían utilizar la programación para crear simulaciones,
+automatizar procesos o representar conocimiento de un dominio.
+
+Los lenguajes basados en bloques reducen parte de esta dificultad. En lugar de
+escribir instrucciones textuales desde cero, el usuario trabaja con piezas
+visuales que se arrastran y se conectan. La forma de las piezas, sus colores, sus
+etiquetas y la organización por categorías ayudan a reconocer qué construcciones
+son posibles \cite{weintrop2018modalities}. Herramientas como Scratch, App
+Inventor, Tynker o MakeCode muestran esta idea en contextos educativos y en
+dominios como robótica, ciencia de datos, desarrollo móvil o creación de juegos
+\cite{lin2021landscape}.
+
+Blockly es una de las bibliotecas más usadas para crear editores de este tipo.
+Su documentación lo describe como una biblioteca web que permite integrar en una
+aplicación un editor visual basado en bloques. Blockly se ocupa de la
+representación visual, el arrastre, el encaje de piezas y la gestión del
+workspace. El desarrollador, en cambio, debe definir los bloques, los campos, las
+conexiones y la generación asociada \cite{blocklyWhatIs,blocklyDocs}.
+
+Por lo tanto, Blockly facilita la creación de editores visuales, pero no suprime
+todo el esfuerzo necesario. Cada nuevo dominio sigue necesitando tipos de bloque, campos,
+entradas, categorías de toolbox, reglas de conexión, serialización,
+validaciones y, en algunos casos, generación de código. Este esfuerzo debe
+repetirse cuando se quiere crear un editor de bloques para otro dominio. Además, los
+entornos de programación por bloques no siguen un único diseño. La literatura
+indica que cada entorno toma decisiones propias sobre la organización de los
+bloques, la relación con el código textual y la transición entre programación
+visual y textual \cite{lin2021landscape,weintrop2018modalities}.
+
+Esta situación plantea un problema de ingeniería de lenguajes. Si los conceptos
+principales de un dominio ya están descritos en un modelo o metamodelo, no
+debería ser necesario duplicar la misma información como código
+JavaScript de Blockly. La ingeniería dirigida por modelos propone precisamente
+trabajar con modelos como artefactos principales para especificar, diseñar,
+probar y generar software \cite{brambilla2017modelDriven}. También se han señalado
+motivaciones como la reutilización, la reducción del tiempo de desarrollo y la
+mejora de calidad \cite{hutchinson2014industry,akdur2018survey}. Desde esta perspectiva, un editor
+Blockly puede verse como una sintaxis visual generada a partir de una
+descripción abstracta del dominio.
+
+El ecosistema Eclipse ofrece tecnologías adecuadas para explorar esta idea. EMF
+permite definir modelos estructurados y generar código a partir de ellos. Su
+metamodelo Ecore representa clases, atributos, referencias, herencia y
+cardinalidades \cite{emfOverview,steinberg2008emf}. Xtext permite definir
+lenguajes textuales de dominio específico y genera infraestructura de parsing,
+enlace, validación y edición \cite{xtextProject,bettini2013xtext}. Estas
+tecnologías permiten describir dominios con precisión, pero no generan
+automáticamente una sintaxis visual basada en bloques.
+
+El objetivo de este Trabajo Fin de Máster es desarrollar un entorno para crear
+lenguajes de dominio específico con sintaxis basada en bloques. La idea no es
+construir un único editor de bloques, sino una infraestructura que permita
+describir un dominio y generar de forma automática el código necesario para
+editarlo con Blockly.
+
+La herramienta desarrollada se llama Model2Blockly. Se entrega como un conjunto
+de plugins Eclipse y como una cadena de generación HTML/JavaScript. Admite dos
+rutas de entrada. La primera parte de metamodelos Ecore, que pueden enriquecerse
+con anotaciones sobre la sintaxis visual. En esta ruta, las clases se convierten
+en tipos de bloque, los atributos en campos, las referencias de contención en
+entradas estructurales y las cardinalidades en reglas de comprobación. La
+segunda ruta parte de una sintaxis textual \texttt{.m2b} definida con Xtext. Esa
+sintaxis es un DSL de definición de lenguajes: permite al diseñador del
+lenguaje declarar qué bloques, campos, conexiones, categorías y validaciones
+tendrá el editor Blockly generado.
+
+Ambas rutas se transforman en un modelo intermedio común,
+\texttt{Blockly\allowbreak{}Editor\allowbreak{}Spec}. Este modelo contiene los
+elementos necesarios para generar el editor: tipos de bloque, categorías, campos,
+entradas de valor, referencias, validaciones y metadatos de interfaz. La
+instancia intermedia se serializa como XMI y se recarga antes de producir los
+artefactos finales. A partir de esta representación se genera un editor Blockly
+en HTML/JavaScript que puede ejecutarse directamente en el navegador, junto con
+un informe de generación, un modelo de ejemplo y una vista visual de las reglas
+de validación.
+
+El desarrollo se ha organizado de forma incremental. Primero se generaron bloques
+y paletas a partir de modelos de dominio. Después se añadieron validaciones para
+detectar campos obligatorios vacíos o bloques requeridos que faltan. También se
+incorporaron referencias dinámicas mediante listas desplegables, opciones de
+personalización visual, anotaciones de interfaz, referencias opuestas,
+validaciones semánticas simples, generación de código y exportación del modelo
+creado por el usuario como JSON o XMI de instancia. La herramienta se evalúa
+mediante AppMaker, un ejemplo conductor descrito por las dos rutas: como
+metamodelo Ecore anotado y como fichero textual \texttt{.m2b}. Esta doble
+descripción permite comparar la autoría en Ecore y en el DSL textual, y mostrar
+que ambas entradas se normalizan hacia el mismo modelo intermedio antes de
+generar el editor Blockly.
+
+Las aportaciones principales del TFM son las siguientes. En primer lugar, se
+define una arquitectura que conecta Ecore, un modelo intermedio EMF y Blockly
+mediante transformaciones explícitas y serialización XMI. En segundo lugar, se
+implementa el adaptador Ecore que extrae clases, atributos, referencias,
+cardinalidades y anotaciones. En tercer lugar, se implementa una ruta textual
+\texttt{.m2b} con Xtext y un adaptador que transforma ese modelo al mismo
+\texttt{EditorSpec}. En cuarto lugar, se desarrolla un generador de editores
+Blockly con bloques, toolbox, páginas HTML, serialización, validaciones,
+exportación JSON/XMI e informes de generación. En quinto lugar, se añaden
+referencias, personalización visual, generación de código y una representación
+editable de reglas de validación que puede aplicarse de vuelta a la fuente. Por
+último, se evalúa la solución con un ejemplo conductor, pruebas automáticas y
+artefactos desplegados públicamente.
+
+El alcance del trabajo se centra en la generación de editores Blockly desde
+descripciones de dominio de alto nivel, ya sean metamodelos Ecore anotados o
+modelos textuales \texttt{.m2b}, y en la reutilización de la arquitectura
+mediante un modelo intermedio común. Quedan fuera del objetivo principal la importación
+genérica de modelos XMI existentes, la integración completa de restricciones OCL
+arbitrarias y la creación de interfaces finales muy especializadas para cada
+dominio. La contribución central es reducir el esfuerzo necesario para crear
+editores Blockly específicos mediante metamodelos, DSL textual, transformaciones
+de modelos y generación de código.
+
+El resto del documento se organiza de la siguiente manera. El capítulo 2
+presenta los objetivos, el alcance y los criterios de evaluación del trabajo. El
+capítulo 3 revisa el estado del arte y las tecnologías en las que se apoya la
+propuesta. El capítulo 4 describe el diseño y la arquitectura de la solución,
+mientras que el capítulo 5 detalla la implementación de Model2Blockly. El
+capítulo 6 expone el ejemplo conductor y la evaluación de la herramienta. Por
+último, el capítulo 7 recoge las conclusiones, las limitaciones identificadas y
+las posibles líneas de trabajo futuro.

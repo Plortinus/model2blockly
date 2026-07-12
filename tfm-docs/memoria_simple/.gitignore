@@ -1,0 +1,22 @@
+.DS_Store
+tmp/
+
+# LaTeX build intermediates
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+pdfa.xmpi
+*-SAVE-ERROR
+
+# Local review builds
+main_check.pdf
+main_con_figuras.pdf

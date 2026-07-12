@@ -1,0 +1,229 @@
+\chapter{Objetivos y alcance}
+\label{chap:objetivos}
+
+Este capítulo delimita el propósito y la extensión del trabajo. En primer
+lugar, se formula el objetivo general y se concreta en una serie de objetivos
+específicos. A continuación, se describe el alcance de la solución y se señalan
+los aspectos que quedan fuera de él. Finalmente, se establecen los criterios
+que se utilizarán para evaluar la viabilidad y la reutilización del enfoque
+propuesto.
+
+\section{Objetivo general}
+\label{sec:objetivo-general}
+
+El objetivo general de este Trabajo Fin de Máster es diseñar e implementar un
+entorno para crear lenguajes de dominio específico con sintaxis basada en
+bloques. El enfoque propuesto consiste en describir el dominio a alto nivel
+mediante un metamodelo Ecore anotado o mediante una descripción textual
+\texttt{.m2b}, transformar esa entrada en un modelo intermedio EMF y generar a
+partir de esa representación un editor Blockly ejecutable. La ruta textual
+\texttt{.m2b} se entiende como un DSL de definición de lenguajes: la usa el
+diseñador del lenguaje para especificar el editor, mientras que el usuario final
+interactúa con el editor Blockly generado.
+
+Este objetivo combina dos enfoques. Por un lado, Blockly ofrece la infraestructura para
+crear editores visuales, pero el desarrollador debe definir los bloques, campos,
+conexiones y generadores \cite{blocklyWhatIs}. Por otro lado, la ingeniería
+dirigida por modelos usa modelos como artefactos centrales para especificar y
+generar software \cite{brambilla2017modelDriven}. El TFM conecta ambas ideas para
+reducir el trabajo manual necesario en cada nuevo lenguaje.
+
+\section{Objetivos específicos}
+\label{sec:objetivos-especificos}
+
+Para alcanzar el objetivo general se han definido los siguientes objetivos
+específicos:
+
+\noindent\textbf{OE1. Analizar la estructura de los lenguajes basados en
+bloques.} Identificar qué necesita un editor de bloques para representar un
+dominio: tipos de bloques, campos, categorías, conexiones, restricciones,
+serialización y, cuando sea necesario, generación de código. Este objetivo se
+justifica por la variedad de diseños que existen en la programación por bloques
+\cite{lin2021landscape}.
+
+\medskip
+\noindent\textbf{OE2. Definir una ruta de generación basada en metamodelos
+Ecore.} Permitir que un metamodelo de dominio actúe como fuente principal de
+generación. Las clases se mapean a tipos de bloque, los atributos a campos, las
+referencias de contención a entradas estructurales y las referencias no
+contenedoras a mecanismos de selección o enlace entre elementos.
+Las cardinalidades se traducen en comprobaciones sobre cuántos elementos son
+obligatorios o están permitidos. Esta ruta representa el enfoque
+metamodelo-céntrico del trabajo: generar código Blockly a partir de un
+metamodelo, posiblemente anotado con información adicional sobre su sintaxis
+visual basada en bloques.
+
+\medskip
+\noindent\textbf{OE3. Proporcionar una ruta textual \texttt{.m2b} para definir
+lenguajes de bloques.} Como complemento a la ruta Ecore, se define un DSL
+textual implementado con Xtext para describir dominios de forma compacta. Su
+función es ofrecer una notación de autoría para diseñadores de lenguajes, capaz
+de declarar categorías, clases, atributos, contenciones, referencias,
+validaciones y metadatos de interfaz, y normalizar después esa información hacia
+el mismo modelo intermedio. Xtext es adecuado para esta tarea porque genera
+infraestructura de parsing, modelo abstracto basado en EMF y soporte de edición
+a partir de una gramática
+\cite{xtextProject,bettini2013xtext}.
+
+\medskip
+\noindent\textbf{OE4. Diseñar un modelo intermedio independiente de la salida.}
+Separar la transformación del dominio de la generación de Blockly. Para ello, la
+ruta Ecore y la ruta textual \texttt{.m2b} se normalizan en una representación
+común \texttt{EditorSpec}. Así, el generador no depende de los detalles de
+lectura de Ecore ni de la sintaxis textual y se pueden añadir nuevas salidas con
+menos cambios.
+
+\medskip
+\noindent\textbf{OE5. Generar editores Blockly ejecutables.} Implementar un
+generador que produzca los ficheros necesarios para abrir un editor en el
+navegador: definición de bloques, paleta, generadores, validaciones y página
+HTML. El editor generado permite crear programas o modelos usando la
+sintaxis visual de bloques. El estado del workspace puede guardarse en JSON y
+cargarse posteriormente en el editor. También es posible exportar e importar la
+representación JSON del modelo. Además, el contenido puede exportarse como XMI
+de instancia del dominio para su procesamiento con herramientas compatibles con
+EMF, aunque actualmente este XMI no puede cargarse de nuevo en el editor. La
+generación también debe producir artefactos revisables, como el XMI intermedio,
+un modelo de ejemplo y un informe de generación.
+
+\medskip
+\noindent\textbf{OE6. Incorporar mecanismos genéricos de validación, referencias
+y personalización.} Un editor generado resulta más útil si no se limita a
+mostrar bloques aislados. Por ello, el entorno incorpora comprobaciones para
+detectar modelos incompletos, referencias entre elementos del modelo, opciones
+de presentación y anotaciones que permiten adaptar la apariencia del editor al
+dominio. Además, las reglas de validación se materializan como una vista Blockly
+separada, de modo que puedan inspeccionarse visualmente y, en los casos
+soportados, aplicarse de vuelta a la fuente.
+
+\medskip
+\noindent\textbf{OE7. Evaluar la viabilidad mediante un ejemplo conductor y
+pruebas.} La solución se evalúa con AppMaker descrito por las dos rutas: como
+metamodelo Ecore con anotaciones y como fichero textual \texttt{.m2b}. Este caso
+permite analizar si ambas entradas pueden converger en el mismo modelo
+intermedio y generar un editor Blockly operativo con artefactos revisables. Las
+pruebas automáticas cubren el modelo intermedio, los adaptadores y los
+generadores.
+
+\section{Alcance de la solución}
+\label{sec:alcance-funcional}
+
+El alcance de la solución se organiza alrededor de una cadena generativa:
+describir el dominio, transformarlo en una representación intermedia y generar
+un editor Blockly ejecutable. La entrada puede ser un metamodelo Ecore anotado o
+un fichero textual \texttt{.m2b}. En ambos casos, el sistema construye una
+especificación intermedia y genera una implementación
+HTML/JavaScript que puede abrirse en un navegador.
+
+La Tabla \ref{tab:alcance-funcional} resume las dimensiones consideradas en la
+solución. Estas dimensiones no se organizan como una lista aislada de funciones,
+sino como los elementos necesarios para sostener el argumento central del
+trabajo: que un dominio descrito a alto nivel puede transformarse de forma
+sistemática en una sintaxis visual basada en bloques.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|p{0.32\textwidth}|p{0.56\textwidth}|}
+    \hline
+    Dimensión & Papel en la solución \\
+    \hline
+    Entrada Ecore & Uso de clases, atributos, referencias, herencia,
+    cardinalidades y anotaciones como información de partida para construir el
+    editor visual. \\
+    Ruta textual \texttt{.m2b} & Sintaxis Xtext para describir dominios, categorías,
+    clases, atributos, referencias, contenciones, validaciones y plantillas de
+    código con una notación más compacta, normalizable al mismo modelo
+    intermedio. \\
+    Modelo intermedio & Representación común de bloques, campos, categorías,
+    referencias, entradas de valor, validaciones y metadatos de interfaz,
+    independiente de la ruta de entrada. \\
+	    Generación Blockly & Producción de bloques, toolbox, generadores,
+	    validaciones y páginas HTML ejecutables a partir de la representación
+	    intermedia. \\
+	    Integración Eclipse & Plugins Eclipse/Xtext para editar ficheros
+	    \texttt{.m2b}, ejecutar la generación desde el menú contextual y
+	    publicar la herramienta como feature instalable desde un update site p2. \\
+	    Artefactos trazables & Generación del XMI intermedio, informe de generación,
+	    modelo de ejemplo, workspace visual de validaciones y documentación breve de
+	    la salida producida. \\
+	    Validaciones & Derivación de comprobaciones sobre campos obligatorios,
+	    mínimos y máximos de elementos, unicidad, referencias obligatorias,
+	    expresiones simples y restricciones acotadas de orden. \\
+    Referencias & Representación de relaciones de contención y no contención,
+    incluyendo listas desplegables dinámicas para seleccionar elementos del
+    modelo. \\
+    Personalización & Uso de colores, etiquetas, categorías, tooltips, widgets
+    y metadatos de interfaz para adaptar la sintaxis visual al dominio. \\
+    Evaluación & Uso de AppMaker por la ruta Ecore y por la ruta textual
+    \texttt{.m2b}, junto con pruebas automáticas para
+    aportar evidencia sobre adaptadores, generadores y modelo intermedio. \\
+    \hline
+  \end{tabular}
+  \caption{Dimensiones incluidas en el alcance de la solución}
+  \label{tab:alcance-funcional}
+\end{table}
+
+\section{Límites del trabajo}
+\label{sec:limites}
+
+Los límites del trabajo se derivan de su orientación generativa. El objetivo no
+es construir una plataforma comercial completa ni un entorno final para un único
+dominio. El objetivo es mostrar una cadena reutilizable para crear lenguajes de
+dominio específico con sintaxis basada en bloques.
+
+Por lo tanto, quedan fuera del alcance principal:
+
+\begin{itemize}
+  \item la importación genérica de modelos XMI existentes a un workspace
+  Blockly;
+  \item la integración completa de lenguajes de restricciones complejos como OCL;
+  \item la sincronización automática de referencias bidireccionales complejas;
+  \item la creación de interfaces de usuario finales altamente especializadas
+  para cada dominio;
+  \item la generación de código con análisis semántico avanzado o formateadores
+  específicos de lenguajes de propósito general.
+\end{itemize}
+
+Algunos de estos elementos se exploran parcialmente, como la exportación a JSON
+o XMI, la sincronización de referencias opuestas no contenidas, la traducción de
+un subconjunto sencillo de invariantes OCL, la edición visual de reglas de
+validación y la generación de código mediante plantillas. Se consideran
+extensiones del objetivo principal y no equivalen a un entorno completo de
+modelado, validación y ejecución.
+Por lo tanto, se retoman explícitamente como líneas de trabajo futuro en el
+Capítulo \ref{chap:conclusiones}, donde se discuten como ampliaciones posibles
+de la herramienta y no como requisitos de la evaluación actual.
+
+\section{Criterios de evaluación}
+\label{sec:criterios-evaluacion}
+
+La evaluación del trabajo se apoya en los siguientes criterios, orientados a
+valorar si el enfoque propuesto es técnicamente viable y reutilizable:
+
+\begin{enumerate}
+  \item permitir definir distintos dominios mediante metamodelos Ecore con
+  estructuras y características diferentes;
+  \item generar automáticamente editores Blockly funcionales a partir de dichos
+  metamodelos, sin introducir modificaciones específicas en el generador para
+  cada dominio;
+  \item permitir complementar la generación con información de presentación,
+  como etiquetas, colores o categorías;
+  \item ofrecer una sintaxis textual con Xtext para definir lenguajes de bloques
+  sin editar directamente Ecore en casos sencillos o ejemplos;
+	  \item generar código HTML/JavaScript que pueda ejecutarse en un navegador;
+	  \item producir artefactos de trazabilidad, como XMI intermedio, informe de
+	  generación y ficheros de validación revisables;
+	  \item demostrar la reutilización de la arquitectura con un dominio
+	  representativo descrito por la ruta Ecore y por la ruta textual
+	  \texttt{.m2b}, normalizadas al mismo modelo intermedio;
+	  \item disponer de pruebas, verificaciones y un mecanismo de instalación que
+	  reduzcan el riesgo de que la solución funcione únicamente para un caso
+	  preparado manualmente.
+\end{enumerate}
+
+Estos criterios responden a la motivación inicial del trabajo: evitar que cada
+lenguaje basado en bloques requiera escribir de nuevo la infraestructura Blockly
+de bajo nivel. Si el dominio puede describirse como metamodelo Ecore o como
+modelo textual \texttt{.m2b}, el sistema lo transforma a \texttt{EditorSpec} y
+genera un editor operativo, entonces el enfoque aporta evidencia frente a la
+programación manual de cada editor.

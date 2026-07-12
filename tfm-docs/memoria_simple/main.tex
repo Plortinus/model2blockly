@@ -1,0 +1,172 @@
+\documentclass[12pt,a4paper,oneside]{report}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{spanish}
+\setotherlanguage{english}
+\setmainfont{Times New Roman}
+\gappto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+
+\usepackage[a4paper,margin=2.8cm,includeheadfoot,headheight=40pt,headsep=18pt,footskip=34pt]{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{csquotes}
+\usepackage{listings}
+\usepackage{float}
+\usepackage[section]{placeins}
+\usepackage[a-2b]{pdfx}
+\usepackage[backend=biber,style=ieee,citestyle=numeric-comp]{biblatex}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usetikzlibrary{arrows.meta,calc,fit,positioning}
+
+\addbibresource{references.bib}
+\onehalfspacing
+\emergencystretch=2em
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\renewcommand{\lstlistingname}{Listado}
+\renewcommand{\lstlistlistingname}{Índice de listados}
+\lstdefinestyle{tfmcode}{
+  basicstyle=\ttfamily\scriptsize,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  framerule=0.3pt,
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!3},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=0.8em,
+  belowskip=0.8em,
+  captionpos=b
+}
+\lstset{style=tfmcode}
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{12pt plus 1fil}
+\makeatother
+
+\newcommand{\tfmtitle}{Un entorno para la creación de lenguajes de dominio específico con sintaxis basada en bloques}
+\newcommand{\tfmauthor}{Xiaoyong Wang}
+\newcommand{\tfmmaster}{Máster Universitario en Sistemas Interactivos Inteligentes}
+\newcommand{\tfmcourse}{Curso académico 2025--2026}
+\newcommand{\tfmdirectors}{Juan de Lara y Pablo Gómez Abajo}
+\newcommand{\tfmdepartment}{Departamento de Ingeniería Informática}
+\newcommand{\tfmdate}{25 de junio de 2026}
+\newcommand{\tfmplace}{Escuela Politécnica Superior, Universidad Autónoma de Madrid}
+
+\hypersetup{
+  hidelinks,
+  pdflang={es-ES}
+}
+
+\newcommand{\tfmFooterLeft}{%
+  \textcolor[rgb]{0.0,0.44,0.85}{Universidad Autónoma de Madrid\\
+  Escuela Politécnica Superior}
+}
+
+\newcommand{\tfmFooterRight}{%
+  \textcolor[rgb]{0.0,0.44,0.85}{Página \thepage\ de \pageref*{LastPage}}
+}
+
+\fancypagestyle{tfm}{%
+  \fancyhf{}
+  \fancyhead[L]{\includegraphics[width=0.34\textwidth]{assets/uam_eps_header.png}}
+  \fancyfoot[L]{\tfmFooterLeft}
+  \fancyfoot[R]{\tfmFooterRight}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\fancypagestyle{tfmcover}{%
+  \fancyhf{}
+  \fancyhead[L]{\includegraphics[width=0.56\textwidth]{assets/uam_eps_header.png}}
+  \fancyfoot[L]{\tfmFooterLeft}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyhead[L]{\includegraphics[width=0.34\textwidth]{assets/uam_eps_header.png}}
+  \fancyfoot[L]{\tfmFooterLeft}
+  \fancyfoot[R]{\tfmFooterRight}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\newcommand{\makeTFMtitle}{%
+  \newgeometry{left=1.8cm,right=1.8cm,top=1.5cm,bottom=1.0cm,includeheadfoot,headheight=40pt,headsep=18pt,footskip=34pt}
+  \begin{titlepage}
+    \thispagestyle{tfmcover}
+    \centering
+
+    \vspace*{2.6cm}
+
+    {\LARGE\bfseries TRABAJO FIN DE MÁSTER\par}
+
+    \vspace{0.8cm}
+
+    \begin{minipage}{0.78\textwidth}
+      \centering
+      {\large\bfseries \tfmtitle\par}
+    \end{minipage}
+
+    \vspace{4.1cm}
+
+    {\Large\bfseries Máster Universitario en\par}
+    \vspace{0.8cm}
+    {\Large\bfseries Sistemas Interactivos Inteligentes\par}
+
+    \vspace{1.8cm}
+
+    \begin{tabular}{@{}r@{\hspace{0.7cm}}l@{}}
+      \textbf{Autor:} & \textbf{\tfmauthor} \\
+    \end{tabular}
+
+    \vspace{0.9cm}
+
+    \begin{tabular}{@{}r@{\hspace{0.7cm}}l@{}}
+      \textbf{Tutores:} & \textbf{\tfmdirectors} \\
+      \textbf{Departamento de} & \textbf{Ingeniería Informática} \\
+    \end{tabular}
+
+    \vspace{0.7cm}
+
+    \begin{tabular}{@{}r@{\hspace{0.7cm}}l@{}}
+      \textbf{FECHA:} & \textbf{\tfmdate} \\
+      \textbf{Curso académico:} & \textbf{2025--2026} \\
+    \end{tabular}
+
+    \vfill
+  \end{titlepage}
+  \restoregeometry
+}
+
+\begin{document}
+
+\pagestyle{tfm}
+\makeTFMtitle
+\setcounter{page}{1}
+\input{frontmatter/resumen}
+\tableofcontents
+
+\clearpage
+
+\input{chapters/01_introduccion}
+\input{chapters/02_objetivos_alcance}
+\input{chapters/03_estado_arte_tecnologias}
+\input{chapters/04_diseno_arquitectura}
+\input{chapters/05_implementacion}
+\input{chapters/06_casos_uso_evaluacion}
+\input{chapters/07_conclusiones_trabajo_futuro}
+
+\printbibliography
+
+\end{document}

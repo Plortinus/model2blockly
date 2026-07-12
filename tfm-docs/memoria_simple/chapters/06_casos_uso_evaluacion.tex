@@ -1,0 +1,558 @@
+\chapter{Ejemplo conductor y evaluación}
+\label{chap:casos-evaluacion}
+
+La evaluación de Model2Blockly busca comprobar si el enfoque es viable. En concreto,
+se analiza si es posible generar editores Blockly reutilizables a partir de
+descripciones de dominio, sin programar cada editor desde cero. Para ello se usa
+un ejemplo conductor, verificaciones técnicas y pruebas automáticas.
+
+No se evalúan aprendizaje ni usabilidad con usuarios finales. Ese tipo de estudio
+necesitaría participantes, tareas y métricas de interacción. Aquí la evaluación
+se centra en la ingeniería de la solución: rutas Ecore y \texttt{.m2b},
+artefactos generados, validaciones, modelo intermedio y pruebas automáticas.
+
+El capítulo comienza con la estrategia de evaluación y la presentación del
+ejemplo conductor. A continuación, se describe AppMaker mediante las dos rutas
+de entrada y se analiza la cobertura funcional alcanzada. Después se presentan
+las verificaciones técnicas, los resultados frente a los objetivos y la
+correspondencia entre el metamodelo y el editor Blockly generado. Finalmente,
+se discuten las limitaciones del estudio y se sintetizan sus conclusiones.
+
+\section{Estrategia de evaluación}
+\label{sec:estrategia-evaluacion}
+
+La estrategia de evaluación combina cuatro tipos de evidencia:
+
+\begin{enumerate}
+  \item un ejemplo conductor, AppMaker, definido como metamodelo Ecore anotado
+  y como fichero textual \texttt{.m2b};
+  \item inspección y verificación sintáctica de los artefactos generados;
+  \item pruebas automáticas sobre modelo intermedio, adaptadores y generadores;
+  \item artefactos de entrega reproducibles, incluyendo update site p2, demos
+  desplegadas e informes de generación.
+\end{enumerate}
+
+La Figura \ref{fig:flujo-evaluacion} muestra cómo se relacionan estas fuentes
+de evidencia. El dominio se expresa como \texttt{app\_maker.ecore} y como
+\texttt{app\_maker.m2b}. Ambas entradas convergen en la cadena
+\texttt{EditorSpec}--HTML/JavaScript y después se contrastan mediante informes,
+comprobaciones sintácticas y pruebas automáticas.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+      node distance=0.5cm and 1.1cm,
+      casebox/.style={draw=black!55, rounded corners=2pt, fill=green!8,
+        minimum width=3.0cm, minimum height=0.72cm, align=center, font=\small,
+        inner sep=4pt},
+      stagebox/.style={draw=black!55, rounded corners=2pt, fill=blue!7,
+        minimum width=3.0cm, minimum height=1.05cm, align=center, font=\small,
+        inner sep=5pt},
+      evidencebox/.style={draw=black!55, rounded corners=2pt, fill=orange!10,
+        minimum width=3.15cm, minimum height=1.05cm, align=center, font=\small,
+        inner sep=5pt},
+      arrow/.style={-{Latex[length=2.5mm]}, thick, draw=black!70}
+    ]
+    \node[casebox] (ecore) {AppMaker\\Ecore anotado};
+    \node[casebox, below=of ecore] (dsl) {AppMaker\\.m2b textual};
+
+    \node[stagebox, right=1.35cm of dsl] (chain)
+      {Cadena común\\adaptación + generación};
+    \node[stagebox, right=of chain] (editors)
+      {Editores Blockly\\generados};
+    \node[evidencebox, right=of editors] (checks)
+      {Evidencia técnica\\informe, JS válido, tests};
+
+    \draw[arrow] (ecore.east) -- (chain.west);
+    \draw[arrow] (dsl.east) -- (chain.west);
+    \draw[arrow] (chain) -- (editors);
+    \draw[arrow] (editors) -- (checks);
+  \end{tikzpicture}%
+  }
+  \caption{Flujo de evaluación aplicado al ejemplo conductor AppMaker}
+  \label{fig:flujo-evaluacion}
+\end{figure}
+
+Estas fuentes responden a cuatro preguntas. Primero, si la ruta Ecore puede
+generar un editor Blockly funcional desde un metamodelo anotado. Segundo, si la
+ruta textual \texttt{.m2b} puede describir el mismo lenguaje de bloques y
+normalizarse hacia el mismo modelo intermedio. Tercero, si los artefactos
+generados son técnicamente coherentes y pueden verificarse de forma repetible.
+Cuarto, si el resultado puede entregarse como herramienta instalable y como demo
+web revisable.
+
+La primera fuente analiza la reutilización de la cadena generativa. Un generador
+de editores de bloques no resulta convincente si la salida es un HTML preparado
+manualmente o si cada entrada exige un generador distinto. Por ello, AppMaker se
+describe por las dos rutas: como metamodelo Ecore con anotaciones y como fichero
+textual \texttt{.m2b}. Ambas formas se transforman a \texttt{EditorSpec}; la
+ruta Ecore y la ruta textual cuentan con salidas generadas en el repositorio y
+con demos desplegadas públicamente para la revisión externa del editor final.
+
+La segunda fuente comprueba que la generación produce ficheros revisables y
+sintácticamente válidos. En particular, los ficheros JavaScript generados para
+las salidas incluidas se han comprobado con \texttt{node --check}, lo que permite
+detectar errores de sintaxis sin ejecutar el editor completo en el navegador.
+Esta comprobación no sustituye a una prueba funcional interactiva, pero sí
+reduce el riesgo de que el generador emita código JavaScript mal formado.
+
+La tercera fuente son las pruebas JUnit del proyecto. Estas pruebas no dependen
+de la interacción manual con el navegador y permiten comprobar comportamientos
+internos: mapeos desde Ecore, normalización desde la ruta textual \texttt{.m2b},
+comportamiento del modelo intermedio y generación HTML/JavaScript.
+
+\section{Ejemplo conductor seleccionado}
+\label{sec:casos-seleccionados}
+
+El ejemplo seleccionado es AppMaker. Representa una aplicación visual con
+páginas, componentes, acciones, navegación y fuentes de datos. Se ha elegido
+porque combina elementos estructurales y semánticos suficientes para evaluar la
+generación: contenciones, herencia, clases abstractas, referencias dinámicas,
+campos obligatorios, entradas de valor, validaciones simples y plantillas de
+código.
+
+La Tabla \ref{tab:casos-uso} resume las dos especificaciones usadas para el
+ejemplo conductor.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|p{0.20\textwidth}|p{0.22\textwidth}|p{0.42\textwidth}|}
+    \hline
+    Elemento & Papel & Rasgos evaluados \\
+    \hline
+    AppMaker & Ecore anotado & Metamodelo EMF con clases, atributos,
+    referencias, enumeraciones, cardinalidades y anotaciones
+    \texttt{blockly}, \texttt{ui}, \texttt{code} y \texttt{runtime}. \\
+    AppMaker & DSL textual \texttt{.m2b} & Notación compacta para definir el
+    mismo lenguaje de bloques mediante categorías, clases, contenciones,
+    referencias, validaciones y metadatos sin editar directamente XML Ecore. \\
+    \hline
+  \end{tabular}
+  \caption{Especificaciones usadas para el ejemplo AppMaker}
+  \label{tab:casos-uso}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \begin{tabular}{|L{0.34\textwidth}|L{0.18\textwidth}|L{0.34\textwidth}|}
+    \hline
+    Métrica del fichero \texttt{app\_maker.m2b} & Valor & Interpretación \\
+    \hline
+    Categorías & 6 & Secciones principales del toolbox generado. \\
+    Clases totales & 20 & Conceptos declarados en la definición textual. \\
+    Clases abstractas & 3 & Familias de tipos usadas para conexiones. \\
+    Clases de salida & 4 & Bloques de expresión conectables a entradas de valor. \\
+    Atributos & 30 & Campos editables o exportables. \\
+    Referencias & 6 & Selectores dinámicos hacia elementos existentes. \\
+    Contenciones & 8 & Entradas estructurales para bloques hijos. \\
+    Entradas de valor & 6 & Conectores horizontales para expresiones. \\
+    Validaciones explícitas & 1 & Regla semántica declarada en el DSL. \\
+    Restricciones de orden & 1 & Regla local \texttt{must follow}. \\
+    \hline
+  \end{tabular}
+  \caption{Métricas de la definición textual \texttt{.m2b} de AppMaker}
+  \label{tab:metricas-appmaker-m2b}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \begin{tabular}{|L{0.34\textwidth}|L{0.18\textwidth}|L{0.34\textwidth}|}
+    \hline
+    Métrica del caso AppMaker & Valor & Interpretación \\
+    \hline
+    Clases Ecore & 40 & Conceptos potencialmente convertibles en tipos de
+    bloque o tipos abstractos de conexión. \\
+    Clases abstractas & 3 & Familias de bloques usadas para conexiones tipadas,
+    no instanciables directamente. \\
+    Enumeraciones & 11 & Fuentes de campos desplegables. \\
+    Atributos & 85 & Campos visuales, valores por defecto y datos exportables. \\
+    Referencias totales & 29 & Relaciones estructurales y no estructurales del
+    dominio. \\
+    Referencias de contención & 21 & Entradas de sentencias para bloques hijos. \\
+    Referencias no contenidas & 8 & Desplegables dinámicos hacia elementos existentes. \\
+    Anotaciones Ecore & 221 & Metadatos de sintaxis visual, interfaz, validación y
+    código. \\
+    Reglas de validación generadas & 70 & Reglas publicadas en
+    \texttt{validation\_blocks.json}. \\
+    Objetos del modelo de ejemplo & 58 & Tamaño del sample cargado y exportado como JSON/XMI. \\
+    \hline
+  \end{tabular}
+  \caption{Métricas del metamodelo Ecore AppMaker y de la salida generada}
+  \label{tab:metricas-appmaker}
+\end{table}
+
+\section{AppMaker por las dos rutas de entrada}
+\label{subsec:appmaker}
+
+AppMaker representa una aplicación visual con páginas, componentes, acciones,
+navegación y fuentes de datos. El resultado generado es un editor de modelado:
+el usuario no recibe una aplicación final cerrada, sino un entorno visual para
+construir modelos de aplicaciones. El dominio incluye referencias cruzadas
+representativas: un \texttt{ListView} referencia una fuente de datos, y una
+acción \texttt{Navigate} referencia una página destino. También se usan
+plantillas de código para generar una representación textual de la aplicación.
+
+La ruta Ecore parte de \texttt{model/app\_maker.ecore}. La estructura del dominio
+se expresa como metamodelo EMF y la información específica de Blockly se añade
+mediante anotaciones. Las anotaciones con fuente \texttt{blockly} controlan
+aspectos de sintaxis visual, las anotaciones \texttt{ui} describen metadatos de
+interfaz, las anotaciones \texttt{code} definen plantillas de generación y las
+anotaciones \texttt{runtime} seleccionan opciones de ejecución.
+
+La ruta textual parte de \texttt{examples/app\_maker.m2b}. En este fichero se
+declaran categorías, clases, atributos, contenciones, referencias, entradas de
+valor, validaciones y opciones de presentación con una sintaxis más compacta que
+el XML/XMI de Ecore. El fichero \texttt{.m2b} no representa una instancia de una
+aplicación AppMaker, sino la definición del lenguaje de bloques AppMaker que se
+transforma a \texttt{EditorSpec}.
+
+Para que el caso de estudio sea revisable, la memoria no se limita a describir
+AppMaker de forma narrativa. El caso se documenta con fragmentos de código de
+entrada, fragmentos de modelos generados y capturas de pantalla de los editores.
+Los Listados \ref{lst:appmaker-dsl} y \ref{lst:appmaker-ecore} muestran partes
+representativas del DSL textual \texttt{.m2b} y de la especificación Ecore
+evaluada. El Listado
+\ref{lst:appmaker-xmi} muestra el modelo intermedio obtenido y el Listado
+\ref{lst:appmaker-generated-code} muestra un fragmento del generador JavaScript
+emitido para uno de los bloques del dominio. Las Figuras
+\ref{fig:appmaker-ecore-editor}, \ref{fig:appmaker-dsl-editor},
+\ref{fig:appmaker-ecore-generation-report} y
+\ref{fig:appmaker-validation-workspace} complementan esos fragmentos con
+evidencia visual de las salidas generadas.
+
+Las dos rutas producen una instancia del modelo intermedio
+\texttt{EditorSpec}. Esta instancia se serializa como XMI dentro de la carpeta
+\texttt{intermediate/} de la salida generada. A partir de ese modelo se generan
+los artefactos HTML/JavaScript, las validaciones, las páginas de edición, el
+informe de generación, el modelo de ejemplo y la vista Blockly de reglas de
+validación.
+Además, el editor generado permite exportar el modelo creado por el usuario como
+JSON y como XMI de instancia del dominio. Por lo tanto, en la evaluación se
+distinguen dos niveles: el XMI intermedio \texttt{EditorSpec}, usado por la
+cadena de generación, y el XMI de instancia, producido por el editor generado.
+
+El Listado \ref{lst:appmaker-xmi} muestra un fragmento del XMI generado por la
+ruta Ecore. Este artefacto permite inspeccionar el resultado de la transformación
+antes de generar JavaScript: las clases y relaciones del dominio ya aparecen como
+categorías, tipos de bloque, campos y entradas tipadas.
+
+\begin{lstlisting}[caption={Fragmento del modelo intermedio XMI generado para AppMaker}, label={lst:appmaker-xmi}]
+<blocklyspec:EditorSpec domainName="AppMaker"
+    nsURI="http://www.example.org/appmaker"
+    codeLanguage="javascript" codeFileExtension="js">
+  <categories name="Pages" label="Pages" colour="260"/>
+  <categories name="Components" label="Components" colour="160"/>
+  <categories name="Data" label="Data" colour="210"/>
+  <blockTypes typeName="App" label="App" colour="260"
+      categoryName="Pages" connectionType="NONE">
+    <fields name="name" defaultValue="Task Tracker" required="true"/>
+    <statementInputs name="dataSources" checkType="DataSource"
+        lowerBound="1" upperBound="20"/>
+    <statementInputs name="pages" checkType="Page"
+        lowerBound="1" upperBound="20"/>
+  </blockTypes>
+</blocklyspec:EditorSpec>
+\end{lstlisting}
+
+El Listado \ref{lst:appmaker-generated-code} muestra un fragmento representativo
+del código JavaScript producido por el generador para AppMaker. Este código
+ilustra que la salida no se limita a pintar bloques: también se emiten funciones
+que recorren el workspace, leen campos y referencias, y serializan el modelo
+visual en una representación textual exportable.
+
+\begin{lstlisting}[caption={Fragmento legible del generador JavaScript emitido para \texttt{ListView}}, label={lst:appmaker-generated-code}]
+javascript.javascriptGenerator.forBlock['ListView'] = function(block) {
+  var emptyText = block.getFieldValue('emptyText');
+  var source = block.getFieldValue('source');
+  var itemTitle =
+    javascript.javascriptGenerator.valueToCode(block, 'itemTitle', 0) || 'null';
+
+  return '{' +
+    '"_type": "ListView", ' +
+    '"_blockId": ' + JSON.stringify(block.id) + ', ' +
+    '"emptyText": ' + JSON.stringify(emptyText) + ', ' +
+    '"source": ' + JSON.stringify(source) + ', ' +
+    '"itemTitle": ' + itemTitle +
+  ' },\n';
+};
+\end{lstlisting}
+
+La Figura \ref{fig:appmaker-ecore-editor} muestra el editor generado desde
+Ecore. Se ha cargado el modelo de ejemplo para comprobar visualmente que el
+editor incluye páginas, componentes, acciones, fuentes de datos, referencias y
+salida de modelo. La Figura \ref{fig:appmaker-dsl-editor} muestra la misma idea
+desde la ruta textual, usada para comprobar que el DSL \texttt{.m2b} puede
+describir el mismo lenguaje de bloques a nivel de autoría.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{assets/appmaker/appmaker-ecore-editor.png}
+  \caption{Editor Blockly generado a partir de \texttt{app\_maker.ecore}}
+  \label{fig:appmaker-ecore-editor}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{assets/appmaker/appmaker-dsl-editor.png}
+  \caption{Editor Blockly generado a partir de \texttt{app\_maker.m2b}}
+  \label{fig:appmaker-dsl-editor}
+\end{figure}
+
+Además del editor final, la herramienta genera evidencias revisables. La Figura
+\ref{fig:appmaker-ecore-generation-report} muestra el informe producido para la
+ruta Ecore. El informe resume el mapeo desde la especificación de entrada hasta
+los bloques generados. La Figura \ref{fig:appmaker-validation-workspace} muestra
+el workspace visual de
+validaciones, donde las reglas generadas se representan también como bloques.
+Ese workspace permite descargar un
+\texttt{validation\_blocks.edited.json}; el comando
+\texttt{Apply Validation Blocks to Source} aplica los cambios soportados de ese
+fichero a la fuente \texttt{.m2b} o \texttt{.ecore}.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,trim=150 70 150 30,clip]{assets/appmaker/appmaker-ecore-generation-report.png}
+  \caption{Informe de generación para la ruta Ecore de AppMaker}
+  \label{fig:appmaker-ecore-generation-report}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{assets/appmaker/appmaker-validation-workspace.png}
+  \caption{Workspace visual de reglas de validación generado para AppMaker}
+  \label{fig:appmaker-validation-workspace}
+\end{figure}
+
+\FloatBarrier
+
+\section{Cobertura funcional}
+\label{sec:cobertura-funcional}
+
+La Tabla \ref{tab:cobertura-funcional} resume qué capacidades se ejercitan en
+AppMaker. El objetivo no es afirmar que un único ejemplo cubra todos los
+dominios posibles, sino comprobar que el ejemplo conductor atraviesa las partes
+principales de la arquitectura.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \begin{tabular}{|L{0.32\textwidth}|L{0.54\textwidth}|}
+    \hline
+    Capacidad & Evidencia en AppMaker \\
+    \hline
+    Ruta Ecore & \texttt{model/app\_maker.ecore} con anotaciones. \\
+    Ruta textual \texttt{.m2b} & \texttt{examples/app\_maker.m2b} con
+    categorías, clases, referencias, contenciones, valores y validaciones. \\
+    Contención y cardinalidad & \texttt{App} contiene pantallas,
+    \texttt{Page} contiene componentes y algunas relaciones tienen límites
+    mínimos y máximos. \\
+    Herencia y clases abstractas & \texttt{Component}, \texttt{Action} y
+    \texttt{TextExpression} son conceptos abstractos con subtipos concretos. \\
+    Referencias dinámicas & \texttt{ListView.source},
+    \texttt{Navigate.target}, \texttt{SubmitForm.endpoint} y
+    \texttt{SetInputValue.input} se generan como desplegables dinámicos. \\
+    Entradas de valor y bloques de salida & \texttt{Alert.message},
+    \texttt{ListView.itemTitle}, \texttt{ImageView.url} y
+    \texttt{SetInputValue.newValue} reciben \texttt{TextExpression};
+    \texttt{TextLiteral}, \texttt{InputValue}, \texttt{DataField} y
+    \texttt{JoinText} se generan como bloques de salida. \\
+    Shadow blocks & Las entradas de valor usan \texttt{TextLiteral} como bloque
+    sombra por defecto. \\
+    Validaciones de orden & La regla \texttt{navigate\_after\_alert} comprueba
+    una restricción local de secuencia. \\
+    Campos avanzados & El dominio incluye enumeraciones, booleanos, valores por
+    defecto y campos obligatorios. \\
+	    Plantillas de código & Las clases principales incluyen plantillas para
+	    producir una representación JavaScript del modelo. \\
+	    Exportación de instancia & El editor generado permite exportar el
+	    workspace como JSON y como XMI de instancia del dominio. \\
+	    Trazabilidad de generación & La ruta Ecore produce XMI intermedio,
+	    \texttt{generation\_report.html}, \texttt{README.md},
+	    \texttt{sample\_model.json} y ficheros de validación visual. \\
+	    Validaciones visuales & Las reglas se publican como
+	    \texttt{validation\_blocks.json} y pueden inspeccionarse en
+	    \texttt{validation\_workspace.html}. \\
+	    Metadatos de interfaz & Las anotaciones Ecore incluyen etiquetas, grupos,
+	    orden, widgets de campo y campos de referencia para personalizar la salida
+	    HTML. \\
+    \hline
+  \end{tabular}
+  \caption{Cobertura funcional del ejemplo AppMaker}
+  \label{tab:cobertura-funcional}
+\end{table}
+
+La cobertura muestra que AppMaker no es solo una demostración visual. El ejemplo
+ejercita las dos rutas de entrada, el metamodelo intermedio, la generación
+HTML/JavaScript, las referencias, las validaciones, la exportación JSON/XMI, los
+informes y las plantillas de código. Esto apoya la idea de que Model2Blockly es
+una cadena generativa reutilizable, aunque una evaluación más amplia con otros
+metamodelos queda como trabajo futuro.
+
+\section{Verificaciones técnicas}
+\label{sec:verificaciones-tecnicas}
+
+Además del ejemplo conductor, se han realizado verificaciones técnicas sobre los
+artefactos generados y sobre el código del proyecto. La primera verificación
+consiste en comprobar que los ficheros JavaScript generados no contienen errores
+de sintaxis. Para ello se ha usado una comprobación sintáctica de Node.js sobre
+la salida generada. No se detectaron errores de sintaxis en los ficheros
+revisados, lo que aporta una comprobación reproducible sobre la corrección
+sintáctica de la salida JavaScript.
+
+La segunda verificación es la existencia de pruebas JUnit por capa. El proyecto
+incluye 142 pruebas distribuidas en seis clases. La Tabla
+\ref{tab:pruebas-evaluacion} resume su cobertura.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|L{0.34\textwidth}|L{0.14\textwidth}|L{0.36\textwidth}|}
+    \hline
+    Capa probada & Número & Cobertura principal \\
+    \hline
+    Modelo intermedio & 27 & Tipos,
+    valores por defecto, conexiones y estructura del \texttt{EditorSpec}. \\
+    Serialización y modelo generado & 5 & Carga del metamodelo
+    \texttt{BlocklyEditorSpec}, XMI intermedio y modelo EMF generado. \\
+    Adaptador Ecore & 39 & Conversión desde Ecore, anotaciones,
+    referencias, conexiones y validaciones. \\
+    Adaptador textual \texttt{.m2b} & 6 & Conversión desde la sintaxis textual,
+    campos obligatorios, referencias y metadatos de código. \\
+    Generador HTML/JavaScript & 60 & Generación HTML/JavaScript,
+    bloques, toolbox, validaciones, referencias y exportación. \\
+    Validación DSL & 5 & Diagnósticos del DSL antes de generar el editor. \\
+    \hline
+  \end{tabular}
+  \caption{Pruebas automáticas incluidas en el proyecto}
+  \label{tab:pruebas-evaluacion}
+\end{table}
+
+La organización de las pruebas sigue la misma división que la arquitectura. Si
+falla una prueba del adaptador Ecore, el problema está en la ruta de entrada. Si
+falla una prueba del generador HTML, el problema está en la salida. Si falla una
+prueba del modelo intermedio, puede haberse roto el contrato común entre capas.
+Esta trazabilidad ayuda a mantener el proyecto.
+
+Además de las pruebas JUnit, el repositorio incluye verificaciones de entrega. El
+script \texttt{verify:plugin} comprueba metadatos de bundles, feature, update
+site, versión \texttt{1.0.9.qualifier}, entorno \texttt{JavaSE-21} y presencia de
+artefactos generados. Los scripts \texttt{verify:docs},
+\texttt{verify:domain-xmi} y \texttt{verify:patch} cubren documentación, carga
+EMF del XMI de instancia exportado y el flujo de edición/aplicación de reglas de
+validación.
+También existe un \emph{smoke test} de navegador para cargar los editores
+generados, tratado como verificación complementaria porque depende de disponer de
+Playwright en el entorno local.
+
+\section{Resultados frente a los objetivos}
+\label{sec:resultados-objetivos}
+
+La Tabla \ref{tab:resultados-objetivos} resume la relación entre los objetivos
+específicos y los resultados observados en el ejemplo conductor.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|p{0.14\textwidth}|p{0.72\textwidth}|}
+    \hline
+    Objetivo & Evidencia aportada \\
+    \hline
+    OE1 & AppMaker ejercita bloques, campos, categorías, conexiones,
+    referencias, validaciones y exportación. \\
+    OE2 & AppMaker se genera desde un metamodelo Ecore anotado. \\
+    OE3 & AppMaker también se define mediante el DSL textual \texttt{.m2b}. \\
+    OE4 & Las dos rutas se normalizan hacia el mismo contrato \texttt{EditorSpec}. \\
+    OE5 & La cadena produce editores HTML/JavaScript con bloques, toolbox,
+    validaciones, páginas de edición, exportación JSON/XMI e informes de
+    generación. \\
+    OE6 & El ejemplo incluye referencias dinámicas, validaciones,
+    workspace visual de reglas, personalización de interfaz y plantillas de
+    código. \\
+    OE7 & La solución se contrasta con AppMaker por las dos rutas de entrada y
+    con 142 pruebas automáticas organizadas por capa. \\
+    \hline
+  \end{tabular}
+  \caption{Resultados de evaluación frente a los objetivos}
+  \label{tab:resultados-objetivos}
+\end{table}
+
+La evaluación respalda la idea central del trabajo dentro del alcance definido:
+es viable generar editores Blockly desde descripciones de dominio de alto nivel
+y mantener una arquitectura común basada en un modelo intermedio. La evidencia
+principal no es una salida programada a mano, sino que AppMaker se transforma a
+\texttt{EditorSpec}, se serializa como XMI y desde ahí se genera el editor
+Blockly revisable.
+
+\section{Correspondencia entre metamodelo y editor Blockly}
+\label{sec:correspondencia-expresividad}
+
+La evaluación no asume que un metamodelo Ecore y un editor Blockly tengan la
+misma expresividad. La relación entre ambos es una correspondencia práctica
+definida por el generador. Algunos elementos de Ecore se trasladan de forma
+directa: clases concretas a tipos de bloque, atributos a campos, contenciones a
+entradas de sentencias, referencias no contenidas a desplegables dinámicos y
+cardinalidades a reglas de validación. Otros elementos requieren decisiones de
+sintaxis concreta, como colores, etiquetas, categorías, widgets, disposición en
+línea o campos usados para mostrar referencias.
+
+También existen elementos de Ecore que no tienen una representación Blockly
+equivalente completa en esta versión. Por ejemplo, las restricciones OCL
+arbitrarias, algunas relaciones bidireccionales complejas, la importación
+genérica de instancias XMI existentes, los tipos de datos personalizados con
+semántica rica o reglas globales sobre colecciones no se traducen de forma
+general. La herramienta cubre patrones frecuentes y genera advertencias, pero no
+convierte el editor Blockly en un editor EMF completo.
+
+En sentido contrario, el editor Blockly contiene información que no pertenece al
+metamodelo abstracto: color, toolbox, tooltip, texto visible, orden de campos,
+shadow blocks, vista de validaciones, botones de exportación o preview HTML.
+Esa información describe una sintaxis concreta y una experiencia de edición, no
+la semántica estructural del dominio. Por ello se almacena como anotaciones o
+metadatos y no debe confundirse con el metamodelo de dominio.
+
+La conclusión es que Model2Blockly busca una equivalencia útil para generación,
+no una equivalencia semántica total. El editor generado permite crear y exportar
+modelos que respetan la estructura principal del metamodelo dentro de las reglas
+soportadas, pero hay modelos Ecore válidos que pueden requerir extensiones del
+generador para editarse cómodamente en Blockly, y hay decisiones visuales de
+Blockly que no modifican la expresividad del metamodelo.
+
+\section{Limitaciones de la evaluación}
+\label{sec:limitaciones-evaluacion}
+
+La evaluación realizada tiene límites. En primer lugar, AppMaker ha sido
+diseñado por el autor del proyecto. Aunque cubre varias estructuras, no equivale
+a una evaluación con usuarios externos ni con modelos industriales de gran
+tamaño. En segundo lugar, las comprobaciones generadas se implementan como
+advertencias y confirmaciones de exportación, no como un mecanismo formal de
+verificación semántica completa. En tercer lugar, la comprobación con
+\texttt{node --check} solo verifica sintaxis JavaScript, no interacción visual
+en todos los navegadores.
+
+Además, la ruta Ecore se ha evaluado con un metamodelo representativo, pero no
+con un conjunto amplio de metamodelos heterogéneos. Funciones como la
+sincronización bidireccional completa en todos los runtimes, restricciones OCL
+arbitrarias, importación genérica de XMI o generación de código con análisis
+semántico avanzado quedan fuera del alcance actual. La edición visual de
+validaciones también debe interpretarse de forma acotada: solo se aplican de
+vuelta a la fuente las reglas que tienen una traducción directa.
+
+Estas limitaciones no invalidan la evidencia técnica, pero sí acotan su
+interpretación. Model2Blockly aporta evidencia de una cadena generativa funcional y
+reutilizable en el caso estudiado. Una evaluación futura podría incluir más
+metamodelos, medir el esfuerzo frente a una implementación manual en Blockly y
+realizar estudios con usuarios finales.
+
+\section{Conclusión de la evaluación}
+\label{sec:conclusion-evaluacion}
+
+El ejemplo conductor y las verificaciones técnicas apoyan la idea central del
+TFM. Model2Blockly no genera un editor escrito manualmente, sino un editor
+derivado de descripciones de dominio. La ruta Ecore permite generar desde
+metamodelos. La ruta textual \texttt{.m2b} permite definir lenguajes de bloques
+de forma compacta. El modelo intermedio permite mantener el contrato entre
+transformación y generación.
+La disponibilidad del update site p2, las demos desplegadas y los informes de
+generación complementan esa evidencia al mostrar que la propuesta puede
+instalarse, ejecutarse y revisarse fuera del entorno de desarrollo del autor.

@@ -1,0 +1,678 @@
+\chapter{Implementación de Model2Blockly}
+\label{chap:implementacion}
+
+Este capítulo explica cómo se implementa Model2Blockly. La descripción se centra
+en las decisiones que mantienen separadas la transformación desde Ecore, el
+modelo intermedio y los generadores. Así, la implementación se presenta como una
+cadena generativa: recibe una descripción de dominio y produce un editor Blockly
+operativo. La ruta textual \texttt{.m2b} se implementa con Xtext y reutiliza el
+mismo contrato intermedio que la ruta Ecore.
+
+La exposición comienza con la organización del proyecto, la disponibilidad de
+sus artefactos y su integración como plugin de Eclipse. A continuación, se
+detallan la implementación de la ruta textual, el modelo intermedio y los
+adaptadores desde Ecore y \texttt{.m2b}. Después se describe el generador
+HTML/JavaScript, junto con las validaciones y las referencias disponibles en
+tiempo de ejecución. Por último, se presentan las entradas standalone, las
+pruebas realizadas y un resumen de la implementación.
+
+\section{Organización del proyecto}
+\label{sec:organizacion-proyecto}
+
+La implementación se organiza como un proyecto Eclipse/Xtext compuesto por tres
+módulos principales: el lenguaje y su lógica de generación, el soporte de IDE y
+la integración con la interfaz de Eclipse. Esta separación es habitual en
+proyectos Xtext, donde la definición del lenguaje, la capa IDE y la integración
+UI se mantienen como proyectos relacionados \cite{xtextProject}.
+
+Dentro del módulo principal, la implementación se divide en componentes con
+responsabilidades explícitas. La Tabla \ref{tab:paquetes-implementacion}
+resume los más relevantes desde el punto de vista arquitectónico.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|p{0.32\textwidth}|p{0.54\textwidth}|}
+    \hline
+    Componente & Responsabilidad \\
+    \hline
+    Gramática textual & Definición de la sintaxis del DSL. \\
+    Modelo intermedio & Metamodelo EMF independiente de la entrada, con una
+    vista Java tipada para los generadores. \\
+    Adaptadores & Conversión desde Ecore y desde el modelo producido por Xtext
+    hacia la especificación común del editor. \\
+	    Generadores & Generación de editores HTML/JavaScript y scripts asociados. \\
+    Validación estática & Reglas estáticas del DSL textual \texttt{.m2b}. \\
+	    Integración Eclipse & Editor Xtext, comandos de generación y aplicación de
+	    cambios de validación desde el menú de Eclipse. \\
+	    Ejecución independiente & Entrada de línea de comandos para generar desde
+	    metamodelos Ecore y para aplicar parches de validación. \\
+    Pruebas & Pruebas JUnit del modelo intermedio, adaptadores y
+    generadores. \\
+    \hline
+  \end{tabular}
+  \caption{Organización de los componentes implementados}
+  \label{tab:paquetes-implementacion}
+\end{table}
+
+Esta estructura sigue la arquitectura descrita en el capítulo anterior. La
+gramática y los adaptadores forman la entrada. El modelo intermedio actúa como
+punto común. Los generadores producen los editores finales. Esta
+separación evita que la lógica de un formato concreto se extienda al resto del
+sistema.
+
+\section{Disponibilidad del código y artefactos}
+\label{sec:disponibilidad-codigo}
+
+El código fuente del proyecto está disponible en el repositorio GitHub:
+
+\begin{center}
+  \url{https://github.com/Plortinus/model2blockly}
+\end{center}
+
+El repositorio contiene los tres proyectos Eclipse/Xtext del lenguaje, junto
+con un proyecto de feature, un proyecto de update site, el ejemplo conductor
+AppMaker y las salidas generadas. Las fuentes principales del ejemplo son:
+
+\begin{itemize}
+  \item \path{model/app_maker.ecore};
+  \item \path{examples/app_maker.m2b}.
+\end{itemize}
+
+Los editores generados pueden inspeccionarse en las carpetas
+\path{examples/generated/app_maker_ecore/} y
+\path{examples/generated/app_maker_dsl/}. Las demos públicas se publican en
+GitHub Pages junto con el update site.
+
+Cada salida generada incluye también un informe de generación, un modelo de
+ejemplo, una serialización XMI del modelo intermedio, una representación Blockly
+de las reglas de validación y un editor capaz de exportar los bloques creados
+por el usuario como modelo de instancia en JSON y XMI.
+De este modo, el repositorio permite revisar no solo el código de la propuesta,
+sino también los artefactos obtenidos por la cadena generativa.
+
+\section{Integración como plugin de Eclipse}
+\label{sec:implementacion-plugin-eclipse}
+
+Model2Blockly se entrega como un conjunto de plugins Eclipse. El plugin principal
+contiene la gramática, los adaptadores, el metamodelo intermedio y los
+generadores. El plugin IDE proporciona servicios de edición generados por Xtext,
+y el plugin UI integra el editor textual y una acción de generación dentro del
+entorno Eclipse.
+
+La integración de usuario se basa en acciones disponibles desde el menú
+\texttt{Model2Blockly} y desde el menú contextual del explorador de proyectos. Al
+seleccionar un fichero \texttt{.m2b} o \texttt{.ecore}, la acción
+\texttt{Generate Blockly Editor} ejecuta la cadena generativa completa y escribe
+en el workspace el editor HTML, el informe de generación, el modelo de ejemplo,
+la serialización XMI del modelo intermedio y los ficheros de validación visual.
+Así, el usuario puede trabajar dentro de Eclipse sin invocar manualmente las
+clases standalone.
+La extensión recomendada para nuevos modelos textuales es \texttt{.m2b}; el
+plugin mantiene compatibilidad con la extensión histórica
+\texttt{.model2blockly} para proyectos existentes.
+
+La segunda acción de usuario es \texttt{Apply Validation Blocks to Source}. Esta
+acción toma un \texttt{validation\_blocks.edited.json} producido desde el
+workspace visual de validaciones y aplica al fichero seleccionado los cambios que
+la herramienta reconoce. En la ruta textual modifica reglas del
+\texttt{.m2b}; en la ruta Ecore actualiza anotaciones de validación
+cuando la correspondencia es directa. Esta operación no convierte todos los
+bloques de validación posibles en código fuente, pero cierra un ciclo práctico de
+inspección, edición acotada y regeneración.
+
+Para facilitar la instalación, el repositorio incluye también un proyecto de
+feature y un proyecto de update site. Estos artefactos permiten exportar desde
+Eclipse un repositorio p2 instalable mediante el asistente de instalación de
+software. En la versión utilizada para esta memoria, \texttt{1.0.9.qualifier},
+el update site también se publica en GitHub Pages para que el plugin pueda
+instalarse directamente desde Eclipse mediante \texttt{Help -> Install New
+Software...}. Los bundles declaran \texttt{JavaSE-21} como entorno de ejecución,
+por lo que Eclipse debe ejecutarse con un JDK compatible.
+
+La Tabla \ref{tab:artefactos-entrega} resume los artefactos principales de
+entrega, incluyendo el repositorio de código, el update site p2 y las salidas
+HTML que permiten reproducir la instalación y la demostración del ejemplo
+AppMaker.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \begin{tabular}{|L{0.24\textwidth}|L{0.62\textwidth}|}
+    \hline
+    Artefacto & Ubicación \\
+    \hline
+    Código fuente &
+    \url{https://github.com/Plortinus/model2blockly} \\
+    Update site p2 &
+    \url{https://plortinus.github.io/model2blockly/update-site/} \\
+    Sitio del proyecto &
+    \url{https://plortinus.github.io/model2blockly/} \\
+    Demo AppMaker Ecore &
+    \url{https://plortinus.github.io/model2blockly/app_maker_ecore/Appmaker_standalone.html} \\
+    Demo AppMaker \texttt{.m2b} &
+    \url{https://plortinus.github.io/model2blockly/app_maker_dsl/Appmaker_standalone.html} \\
+    Documentación de entrega &
+    \path{README.md}, \path{RUNNING_EXAMPLE.md} y \path{DOCS.md} \\
+    \hline
+  \end{tabular}
+  \caption{Artefactos de entrega del repositorio Model2Blockly}
+  \label{tab:artefactos-entrega}
+\end{table}
+
+\section{Ruta textual \texttt{.m2b} con Xtext}
+\label{sec:implementacion-xtext}
+
+La gramática Xtext define el lenguaje textual de entrada \texttt{.m2b} y
+vincula sus reglas con los conceptos del metamodelo EMF asociado. A partir de
+esta gramática, Xtext genera el parser y el soporte de edición
+\cite{xtextProject,bettini2013xtext,bettini2015xsemantics}. Así, cada fichero
+DSL puede tratarse como un modelo EMF. La raíz de ese modelo agrupa el nombre
+del dominio, las opciones de generación, la configuración del workspace, las
+categorías, las clases y las restricciones.
+
+Las clases del dominio se declaran con una construcción específica del DSL. Cada
+clase puede ser abstracta, generar un bloque de salida, heredar de otra clase,
+pertenecer a una categoría, definir color, etiqueta, tooltip, disposición en
+línea y plantilla de código. Dentro de una clase se declaran cuatro tipos de
+elementos: atributos, contenciones, referencias y entradas de valor. Esta
+distinción en la gramática se corresponde con las formas principales en las que
+Blockly representa información: campos, entradas de sentencias, desplegables de
+referencia y conectores de valor.
+
+El DSL también incluye opciones de interfaz. Con estas opciones se pueden indicar
+widgets, etiquetas, textos de ayuda, grupos,
+orden de presentación, campos de solo lectura, campos ocultos y campos usados
+para mostrar referencias. Esta información no es necesaria para un editor
+Blockly básico, pero permite enriquecer la salida generada sin escribir
+JavaScript a mano. En la memoria se usa para explicar la correspondencia con
+Ecore y para mostrar una forma más compacta de definir el mismo lenguaje
+AppMaker.
+
+El Listado \ref{lst:appmaker-dsl} muestra un fragmento representativo de la
+ruta textual \texttt{.m2b} aplicado al dominio AppMaker. En pocas líneas se
+declaran una categoría, un bloque raíz, una contención con cardinalidad y un
+bloque que referencia dinámicamente una fuente de datos. La misma información
+acabaría convertida en campos, entradas y validaciones dentro del modelo
+intermedio.
+
+\begin{lstlisting}[caption={Fragmento representativo del DSL textual \texttt{.m2b} para AppMaker}, label={lst:appmaker-dsl}]
+domain Appmaker codeLanguage "javascript" codeFileExtension "js"
+
+category Pages label "Pages" colour 260
+category Components label "Components" colour 160
+category Data label "Data" colour 210
+
+class App category Pages colour 260 label "App" {
+  attribute name : string default "Task Tracker" required
+    widget text uiLabel "App name" group "App" order 1
+  contains DataSource dataSources [1..20]
+    uiLabel "Data sources" group "Data" order 3
+  contains Page pages [1..20]
+    uiLabel "Pages" group "Pages" order 4
+}
+
+class ListView extends Component category Components colour 160 label "List view" {
+  reference DataSource source required
+    widget reference-select uiLabel "Source" referenceLabelField name
+  value TextExpression itemTitle shadow TextLiteral
+}
+\end{lstlisting}
+
+\subsection{Cadena ejecutada para una entrada \texttt{.m2b}}
+
+La Figura \ref{fig:implementacion-flujo-xtext} concreta el esquema conceptual
+presentado en la Sección \ref{sec:xtext} con los componentes implementados en
+el repositorio. La gramática \texttt{Model2Blockly.xtext} configura la
+infraestructura de lectura de Xtext. Las demás flechas representan el recorrido
+de un fichero \texttt{.m2b} durante una ejecución de la herramienta.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+      node distance=1.0cm and 0.65cm,
+      box/.style={draw=black!55, rounded corners=2pt, minimum width=2.75cm,
+        minimum height=0.95cm, align=center, font=\small, inner sep=5pt},
+      sourcebox/.style={box, fill=green!8},
+      xtextbox/.style={box, fill=blue!7},
+      commonbox/.style={box, fill=orange!10},
+      arrow/.style={-{Latex[length=2.4mm]}, thick, draw=black!70},
+      control/.style={-{Latex[length=2.2mm]}, dashed, thick, draw=black!55}
+    ]
+    \node[sourcebox] (dsl) {Fichero\\\texttt{.m2b}};
+    \node[xtextbox, right=of dsl] (resource)
+      {\texttt{XtextResource}\\+ \texttt{DomainModel}};
+    \node[xtextbox, right=of resource] (validator)
+      {\texttt{Model2Blockly}\\\texttt{Validator}};
+    \node[xtextbox, right=of validator] (adapter)
+      {\texttt{DomainModel}\\\texttt{Adapter}};
+
+    \node[sourcebox, above=0.55cm of resource] (grammar)
+      {\texttt{Model2Blockly.xtext}};
+    \node[commonbox, below=1.0cm of resource] (intermediate)
+      {\texttt{EditorSpec}\\+ XMI intermedio};
+    \node[commonbox, right=of intermediate] (generator)
+      {\texttt{BlocklyCode}\\\texttt{Generator}};
+    \node[commonbox, right=of generator] (output)
+      {Bloques, toolbox,\\validaciones y HTML};
+
+    \draw[control] (grammar.south) -- (resource.north);
+    \draw[arrow] (dsl) -- (resource);
+    \draw[arrow] (resource) -- (validator);
+    \draw[arrow] (validator) -- (adapter);
+    \draw[arrow] (adapter.south) -- ++(0,-0.32cm)
+      -| ([xshift=0.75cm]intermediate.north);
+    \draw[arrow] (intermediate) -- (generator);
+    \draw[arrow] (generator) -- (output);
+  \end{tikzpicture}
+  \caption{Componentes de la ruta Xtext implementada para procesar
+  especificaciones \texttt{.m2b}}
+  \label{fig:implementacion-flujo-xtext}
+\end{figure}
+
+La ejecución comienza registrando el lenguaje mediante
+\texttt{Model2BlocklyStandalone}\allowbreak\texttt{Setup} y cargando el fichero como un
+\texttt{XtextResource}. El parser aplica las reglas de la gramática y crea una
+instancia EMF cuya raíz es \texttt{DomainModel}. Durante el enlazado, las
+referencias escritas como nombres ---por ejemplo, la categoría de una clase, su
+superclase o el tipo de una contención--- se resuelven como referencias entre
+objetos del modelo. Los errores de sintaxis o los nombres que no pueden
+resolverse impiden continuar con la generación.
+
+Sobre el modelo enlazado se ejecuta \texttt{Model2BlocklyValidator}. Este
+componente añade comprobaciones semánticas a las verificaciones proporcionadas
+por Xtext. Entre ellas se encuentran la detección de nombres de clase
+duplicados, cardinalidades inválidas, dominios compuestos únicamente por clases
+abstractas, objetivos incorrectos para entradas de valor, usos redundantes de
+\texttt{required} en campos booleanos, restricciones \texttt{must follow} sobre
+bloques de salida y widgets incompatibles con el tipo del atributo. También
+comprueba que el campo elegido para mostrar una referencia exista y que las
+expresiones de validación pertenezcan al subconjunto soportado. En Eclipse estos
+problemas aparecen como marcadores sobre el fichero; en la ejecución
+independiente se convierten en diagnósticos y detienen el proceso.
+
+Si el modelo es válido, \texttt{DomainModelAdapter} lo normaliza a una instancia
+\texttt{EditorSpec}. La instancia se comprueba, se serializa como XMI y se
+vuelve a cargar antes de invocar \texttt{BlocklyCodeGenerator}. La recarga hace
+explícito que el generador depende del contrato EMF intermedio y no del recurso
+temporal construido por el parser. Finalmente, el generador común produce las
+definiciones de bloques, la toolbox, los generadores de código, las validaciones
+y las páginas HTML. Esta cadena se activa desde
+\texttt{Model2BlocklyGenerator} en el flujo integrado de Eclipse y desde
+\texttt{Model2BlocklyToBlocklyMain} en la ejecución independiente.
+
+\section{Modelo intermedio EMF y vista Java}
+\label{sec:implementacion-modelo-intermedio}
+
+El contrato del modelo intermedio está definido como metamodelo EMF en el
+fichero \texttt{blockly\_editor\_spec.ecore}, dentro del directorio
+\texttt{model}. A partir de este metamodelo se serializa una instancia XMI por
+cada ejecución de la cadena generativa. El generador recarga esa instancia antes
+de emitir los artefactos HTML/JavaScript, de modo que la salida final depende del
+contrato EMF y no de objetos auxiliares creados solo en memoria. Para simplificar
+la implementación de los generadores, el proyecto mantiene además una vista Java
+tipada del mismo contenido. Esta vista no sustituye al metamodelo intermedio;
+actúa como API interna para recorrer categorías, bloques, campos, validaciones,
+opciones de workspace y metadatos de generación de código.
+
+Cada tipo de bloque guarda su forma de conexión: bloque raíz, bloque apilable,
+bloque apilable tipado, bloque de valor o bloque de valor tipado. Esta
+clasificación permite generar las conexiones visuales adecuadas sin mezclar
+reglas específicas de Blockly con la lectura del dominio. La implementación
+mantiene además listas separadas para campos, entradas de sentencias,
+referencias y entradas de valor, lo que facilita generar cada tipo de elemento
+con la construcción Blockly adecuada.
+
+El modelo intermedio también conserva información de orden para las entradas de
+un bloque. Esta decisión es relevante para la ruta Ecore: cuando las
+características de una clase se leen desde el metamodelo, el orden
+original de atributos y referencias puede influir en la legibilidad del bloque
+generado. El generador usa esta lista cuando está disponible y, si no existe,
+aplica un orden por defecto.
+
+La ventaja de esta implementación es el desacoplamiento. Los adaptadores de
+entrada producen una instancia conforme al mismo metamodelo intermedio, y los
+generadores consumen su vista Java sin depender de cómo fue creada. Así, las
+entradas y las salidas quedan separadas en el código, pero el contrato MDE sigue
+siendo el metamodelo EMF y su serialización XMI.
+
+\section{Adaptador desde Ecore}
+\label{sec:implementacion-ecore-adapter}
+
+El adaptador Ecore implementa la ruta basada en metamodelos. Recibe un paquete
+Ecore y produce la especificación intermedia del editor. La implementación
+recorre los clasificadores del paquete, identifica las clases, las transforma en
+tipos de bloque y analiza sus características estructurales. Este proceso usa
+los conceptos propios de Ecore, como clases, atributos, referencias, herencia y
+cardinalidades \cite{emfOverview}.
+
+Desde el punto de vista de MDE, este adaptador es una transformación de modelos
+implementada en Java sobre la API de EMF. No se ha usado un lenguaje específico
+de transformación como ATL o ETL. La razón es pragmática: el generador debe
+integrarse dentro de un plugin Eclipse/Xtext, reutilizar utilidades Java del
+proyecto, emitir diagnósticos concretos sobre el fichero de entrada y construir
+la instancia EMF \texttt{EditorSpec} que después se serializa como XMI. La Tabla
+\ref{tab:transformacion-ecore-editor-spec} resume las reglas principales de la
+transformación.
+
+El mapeo estructural se implementa de forma automática. Un atributo Ecore se
+transforma en un campo visual; su tipo determina si el campo Blockly será
+textual, numérico, booleano, desplegable, color, ángulo o imagen. Una referencia
+de contención se transforma en una entrada estructural, porque representa una
+relación jerárquica entre elementos del modelo. Una referencia no contenida se
+transforma en una referencia dinámica, porque apunta a otro elemento ya
+existente. Las cardinalidades se convierten en reglas de validación para que el
+editor generado pueda avisar al usuario si faltan elementos obligatorios, si se
+supera un límite superior o si un campo requerido queda sin completar.
+
+La inferencia de conexiones también se realiza en el adaptador. Las clases
+contenedoras que no están contenidas por otras pueden convertirse en bloques
+raíz sin conexión vertical. Las clases que heredan de una superclase pueden
+generar conexiones tipadas. Las clases marcadas como bloques de salida generan
+conectores de valor. Esta inferencia es importante porque evita que el usuario
+tenga que escribir a mano reglas de conexión Blockly para cada clase.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \begin{tabular}{|L{0.30\textwidth}|L{0.30\textwidth}|L{0.26\textwidth}|}
+    \hline
+    Elemento Ecore de entrada & Elemento \texttt{EditorSpec} destino & Uso en Blockly \\
+    \hline
+    \texttt{EPackage} & \texttt{EditorSpec} con nombre, \texttt{nsURI} y opciones
+    globales & Identidad del editor y exportación XMI. \\
+    \texttt{EClass} concreta & \texttt{BlockTypeSpec} & Tipo de bloque disponible en
+    la toolbox. \\
+    \texttt{EClass} abstracta & \texttt{BlockTypeSpec} abstracto & Tipo usado para
+    conexiones, pero no instanciable. \\
+    \texttt{EAttribute} & \texttt{FieldSpec} & Campo de texto, número, booleano,
+    color, ángulo o desplegable. \\
+    \texttt{EReference containment=true} & \texttt{StatementInputSpec} & Entrada
+    vertical para bloques hijos. \\
+    \texttt{EReference containment=false} & \texttt{ReferenceFieldSpec} & Desplegable
+    dinámico hacia elementos existentes. \\
+    \texttt{lowerBound}/\texttt{upperBound} & \texttt{ValidationSpec} y límites de
+    entrada & Avisos de obligatoriedad y cardinalidad. \\
+    \texttt{EAnnotation} & Metadatos de bloque, interfaz, validación o código &
+    Color, categoría, etiqueta, tooltip, widget y plantilla. \\
+    \hline
+  \end{tabular}
+  \caption{Transformación principal de Ecore a \texttt{EditorSpec}}
+  \label{tab:transformacion-ecore-editor-spec}
+\end{table}
+
+El adaptador permite enriquecer la generación mediante anotaciones Ecore. Las
+anotaciones con fuente \texttt{blockly} afectan a la sintaxis visual: etiqueta,
+color, categoría, tooltip, disposición en línea, bloque de salida, rangos
+numéricos, entradas de valor o shadow blocks. Las anotaciones con fuente
+\texttt{ui} se incorporan al modelo intermedio para personalizar la salida HTML. Las
+anotaciones con fuente \texttt{code} permiten definir lenguaje, extensión de
+archivo y plantillas de generación. Así, un metamodelo sin anotaciones puede
+generar un editor básico, mientras que un metamodelo anotado puede producir una
+experiencia más adaptada al dominio.
+
+El Listado \ref{lst:appmaker-ecore} muestra el mismo tipo de información en la
+ruta Ecore. El metamodelo conserva las clases y referencias EMF, y las
+anotaciones añaden la sintaxis visual, la regla de validación y la plantilla de
+código usadas por el generador.
+
+\begin{lstlisting}[caption={Fragmento de \texttt{model/app\_maker.ecore} con anotaciones}, label={lst:appmaker-ecore}]
+<eClassifiers xsi:type="ecore:EClass" name="Navigate" eSuperTypes="#//Action">
+  <eAnnotations source="blockly">
+    <details key="colour" value="30"/>
+    <details key="category" value="Actions"/>
+    <details key="inputsInline" value="true"/>
+  </eAnnotations>
+  <eAnnotations source="validation">
+    <details key="mustFollow" value="Alert"/>
+  </eAnnotations>
+  <eAnnotations source="code">
+    <details key="template" value="navigate(&quot;{{target}}&quot;);"/>
+  </eAnnotations>
+  <eStructuralFeatures xsi:type="ecore:EReference" name="target"
+      lowerBound="1" eType="#//Page">
+    <eAnnotations source="ui">
+      <details key="widget" value="reference-select"/>
+      <details key="label" value="Target page"/>
+      <details key="referenceLabelField" value="title"/>
+    </eAnnotations>
+  </eStructuralFeatures>
+</eClassifiers>
+\end{lstlisting}
+
+\section{Adaptador desde la ruta textual \texttt{.m2b}}
+\label{sec:implementacion-domainmodel-adapter}
+
+El adaptador de la ruta textual recibe el modelo EMF producido por
+Xtext al analizar el fichero de entrada. A partir de ese modelo convierte
+categorías, clases, restricciones, opciones de workspace y metadatos de código a
+la misma especificación intermedia usada por la ruta Ecore.
+
+El mapeo es más directo que en Ecore porque la gramática ya distingue los
+conceptos específicos que necesita Model2Blockly. Los atributos se convierten en
+campos, las contenciones en entradas estructurales, las referencias en
+desplegables dinámicos y las entradas de valor en conexiones horizontales. Las
+restricciones de orden se convierten en validaciones, y los campos marcados como
+obligatorios generan comprobaciones de obligatoriedad.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \begin{tabular}{|L{0.30\textwidth}|L{0.30\textwidth}|L{0.26\textwidth}|}
+    \hline
+    Elemento del DSL & Elemento \texttt{EditorSpec} destino & Uso en Blockly \\
+    \hline
+    \texttt{domain} & \texttt{EditorSpec} & Nombre del editor y opciones de
+    generación. \\
+    \texttt{category} & \texttt{CategorySpec} & Categoría de toolbox y color por
+    defecto. \\
+    \texttt{class} & \texttt{BlockTypeSpec} & Tipo de bloque. \\
+    \texttt{attribute} & \texttt{FieldSpec} & Campo visual del bloque. \\
+    \texttt{contains [m..n]} & \texttt{StatementInputSpec} y
+    \texttt{ValidationSpec} & Entrada de hijos y comprobación de cardinalidad. \\
+    \texttt{reference} & \texttt{ReferenceFieldSpec} & Desplegable dinámico. \\
+    \texttt{value} & \texttt{ValueInputSpec} & Entrada horizontal para bloques de
+    valor. \\
+    \texttt{must follow} & \texttt{ValidationSpec} & Regla local de orden. \\
+    \hline
+  \end{tabular}
+  \caption{Normalización del DSL textual \texttt{.m2b} a \texttt{EditorSpec}}
+  \label{tab:transformacion-dsl-editor-spec}
+\end{table}
+
+La implementación usa también información de herencia para determinar la forma
+de conexión. Una clase marcada como bloque de salida se convierte en bloque de
+valor; una clase con superclase genera conexiones tipadas; una clase con
+contenciones y sin superclase puede funcionar como bloque raíz; y una clase
+ordinaria se genera como bloque apilable. De este modo, la semántica declarada
+en la sintaxis textual se transforma en reglas visuales de Blockly sin que el
+autor del dominio tenga que conocer la API de bajo nivel de la biblioteca.
+
+Algunas opciones se leen mediante acceso dinámico a propiedades del modelo, en
+lugar de depender siempre de métodos generados de forma estática. Esta decisión
+evita acoplar el adaptador a una versión concreta de los artefactos generados por
+Xtext. La desventaja es que se pierde parte de la comprobación estática. Por eso,
+este mecanismo se usa solo para metadatos de extensión y no para la estructura
+principal del dominio.
+
+\section{Generador HTML/JavaScript}
+\label{sec:implementacion-generador-html}
+
+El generador de la salida HTML/JavaScript transforma el modelo intermedio en los
+artefactos necesarios para abrir el editor en un navegador: bloques, paleta,
+exportación, validaciones, página de edición, página standalone, workspace de
+validaciones, modelo de ejemplo e informe de generación. Esta salida usa Blockly
+para definir bloques, inyectar el workspace, gestionar la paleta, serializar y
+generar código \cite{blocklyDocs}.
+
+La generación de código se implementa principalmente en Xtend. La clase
+principal, \texttt{Blockly\allowbreak{}Code\allowbreak{}Generator.xtend}, recibe
+un \texttt{EditorSpec} y produce
+un mapa de nombres de fichero a contenido textual. Xtend se usa como mecanismo
+de generación porque se integra bien con Xtext y permite escribir plantillas de
+texto legibles dentro del proyecto Eclipse. No se ha usado Acceleo ni un motor
+externo de plantillas. Algunas piezas auxiliares, como el modelo de ejemplo, el
+runtime de validaciones y la vista visual de reglas, se implementan en clases
+Java separadas para mantener responsabilidades acotadas.
+
+La generación de bloques transforma cada tipo concreto del modelo intermedio en
+una definición visual de Blockly. El generador omite las clases abstractas,
+porque no deben aparecer como bloques instanciables. Para cada bloque, construye
+la etiqueta visible, los argumentos, el color, el tooltip, las conexiones y la
+disposición en línea. Los atributos se convierten en campos Blockly adecuados
+según su tipo: texto, número, booleano, desplegable, color, ángulo o imagen. Las
+entradas de sentencias y de valor se convierten en las conexiones verticales u
+horizontales correspondientes.
+
+La generación de la paleta produce el conjunto de bloques disponible para el
+usuario. Si no hay categorías, el generador puede emitir una paleta simple. Si
+existen categorías, genera una paleta categorizada, incluyendo subcategorías cuando se
+han definido. También se incluyen categorías integradas de Blockly, como lógica,
+bucles, matemáticas, variables y funciones, para que los dominios puedan
+combinar bloques propios con construcciones generales cuando sea necesario.
+
+La exportación tiene dos objetivos. Por un lado, serializa el workspace como una
+estructura JSON con el tipo de bloque, identificador, campos, referencias,
+valores y sentencias. También puede exportar ese contenido como XMI de instancia
+del dominio, usando el prefijo y el URI del paquete de entrada y evitando mezclar
+ese XMI con el XMI intermedio \texttt{EditorSpec}. Por otro lado, incorpora una
+ruta de generación de código basada en plantillas. Si un bloque define una
+plantilla, el generador sustituye marcadores por valores de campos, entradas de
+valor o secuencias de sentencias. Si no existe plantilla, se usa una
+representación textual genérica. Esta estrategia mantiene la exportación
+operativa incluso cuando el dominio todavía no ha definido una semántica de
+código completa.
+
+La Tabla \ref{tab:artefactos-generados} resume los ficheros principales que
+emite el generador. Esta lista es importante para interpretar la salida como un
+resultado reproducible y no como una única página HTML aislada.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \begin{tabular}{|L{0.32\textwidth}|L{0.54\textwidth}|}
+    \hline
+    Artefacto generado & Contenido \\
+    \hline
+    \texttt{html/*\_blocks.js} & Definiciones de bloques Blockly. \\
+    \texttt{html/*\_toolbox.js} & Categorías y paleta del editor. \\
+    \texttt{html/*\_generators.js} & Funciones de serialización y generación de
+    código por bloque. \\
+    \texttt{html/*\_validations.js} & Reglas de validación ejecutadas sobre el
+    workspace. \\
+    \texttt{html/*\_editor.html} & Página embebible del editor generado. \\
+    \texttt{html/*\_standalone.html} & Página autocontenida para revisar el
+    editor en el navegador. \\
+    \texttt{html/sample\_model.json} & Modelo de ejemplo usado por el botón
+    \texttt{Load Sample}. \\
+    \path{html/validation_workspace.html} & Editor visual de reglas de
+    validación. \\
+    \path{intermediate/*_blocklyspec.xmi} & Instancia XMI de
+    \texttt{EditorSpec} recargada antes de generar HTML. \\
+    \texttt{generation\_report.html} & Informe de trazabilidad de la generación. \\
+    \hline
+  \end{tabular}
+  \caption{Artefactos principales emitidos por el generador}
+  \label{tab:artefactos-generados}
+\end{table}
+
+\section{Validaciones y referencias en tiempo de ejecución}
+\label{sec:implementacion-validaciones-referencias}
+
+La implementación distingue entre validación estática del DSL y validación en
+tiempo de ejecución del editor generado. La primera se realiza en Eclipse/Xtext
+antes de generar. La segunda se ejecuta en el navegador sobre el workspace
+Blockly.
+
+El código de validación se genera a partir de las reglas del modelo intermedio.
+Durante la ejecución, recorre los bloques del workspace y produce advertencias.
+Las reglas de orden comprueban que un bloque esté precedido inmediatamente por el
+tipo esperado. Las reglas de cardinalidad cuentan los hijos conectados a una
+entrada de sentencias. Las reglas de obligatoriedad verifican que un campo o una
+referencia no estén vacíos. Después, los mensajes se muestran como advertencias
+Blockly y, si todavía existen problemas, se pide confirmación antes de exportar.
+Las mismas reglas se serializan también como
+\texttt{validation\_blocks.json}, lo que permite inspeccionarlas desde
+\texttt{validation\_workspace.html}.
+
+El comportamiento generado es ligero. Las validaciones no son un motor OCL
+completo ni un verificador semántico general. Son comprobaciones JavaScript sobre
+el workspace que muestran advertencias en los bloques. Aun así, la
+implementación cubre más que cardinalidades: también incluye obligatoriedad,
+unicidad, expresiones de validación declaradas en anotaciones y un subconjunto
+simple de invariantes OCL traducibles. Esto mantiene flexible la edición, pero
+también permite exportar un modelo con advertencias si el usuario lo confirma.
+Los límites numéricos \texttt{min} y \texttt{max} se incorporan directamente a
+los campos numéricos de Blockly.
+
+Las referencias dinámicas se implementan mediante un script generado que
+actualiza los desplegables de referencia. El generador agrupa las instancias
+del workspace por tipo de bloque y, para cada campo de referencia, calcula los
+candidatos compatibles. Si la referencia apunta a un tipo abstracto o a una
+superclase, también se consideran subtipos concretos. El texto mostrado en el
+desplegable se obtiene de un campo configurable, de un campo \texttt{name} si
+existe, o de una etiqueta derivada del tipo y del identificador del bloque.
+
+Esta implementación mantiene la diferencia entre contención y referencia. Una
+contención crea estructura jerárquica en el workspace. Una referencia selecciona
+un elemento que ya existe. Esta diferencia es necesaria para conservar la
+información del modelo de dominio.
+
+El ciclo de validación se completa con una utilidad de parche. Desde línea de
+comandos puede ejecutarse sobre un fichero
+\texttt{validation\_blocks.edited.json} y desde Eclipse está expuesta como
+\texttt{Apply Validation Blocks to Source}. El parche se aplica de forma
+conservadora: solo actualiza reglas que se pueden mapear de manera inequívoca a
+la sintaxis textual o a anotaciones Ecore, y deja fuera expresiones que no tengan
+una traducción directa.
+
+\section{Entradas standalone}
+\label{sec:implementacion-standalone}
+
+La implementación proporciona entradas independientes para las dos rutas. La
+entrada Ecore carga un metamodelo, lo convierte mediante el adaptador Ecore y
+escribe los artefactos HTML generados en un directorio de salida. La entrada
+textual carga un fichero \texttt{.m2b}, lo analiza con Xtext, lo transforma
+mediante \texttt{DomainModelAdapter} y reutiliza el mismo generador final.
+Además, existe una entrada standalone para aplicar parches de validación, usada
+por las verificaciones de regresión.
+
+\section{Pruebas de implementación}
+\label{sec:implementacion-pruebas}
+
+La implementación incluye una batería de pruebas JUnit organizada por
+componente. El conjunto consta de 142 pruebas distribuidas por capas: modelo
+intermedio, serialización y recarga XMI, adaptador Ecore, adaptador del DSL
+textual, generador HTML/JavaScript y validaciones asociadas. Estas pruebas no
+sustituyen a la evaluación con el ejemplo conductor, pero reducen el riesgo de
+que el generador funcione solo para un ejemplo concreto. Además, el repositorio
+incorpora scripts de verificación para el empaquetado del plugin, la
+documentación, los diagnósticos del DSL, el flujo de parche de validaciones y
+las pruebas de humo en navegador.
+
+Las pruebas del modelo intermedio verifican valores por defecto, filtrado de
+bloques abstractos, tipos de campo, conexiones y metadatos de código. Las
+pruebas del adaptador Ecore comprueban el mapeo de clases, atributos,
+referencias, cardinalidades, anotaciones, conexiones y validaciones. Las pruebas
+del adaptador DSL verifican atributos y referencias obligatorias,
+etiquetas de referencia y metadatos de generación de código. Las pruebas
+del generador HTML/JavaScript revisan que los ficheros generados contengan las
+construcciones esperadas de Blockly, las validaciones, las referencias y la
+exportación de código.
+
+El conjunto de pruebas sigue la división de la arquitectura. Cada capa puede
+verificarse de forma separada: primero el modelo intermedio, después los
+adaptadores y finalmente los generadores. Esta organización ayuda a mantener el
+proyecto. Si cambia una anotación o se añade una salida nueva, las pruebas ayudan
+a localizar qué contrato se ha modificado.
+
+\section{Resumen de implementación}
+\label{sec:resumen-implementacion}
+
+La implementación de Model2Blockly permite definir un dominio mediante Ecore
+anotado o mediante una sintaxis textual \texttt{.m2b}. Ambas formas se
+transforman en una representación común serializada como XMI. A partir de ella
+se generan editores Blockly HTML/JavaScript, validaciones, referencias dinámicas,
+exportadores, informes, workspaces de validación y plantillas de código. Las
+pruebas por capa y las verificaciones de empaquetado apoyan la idea de que el
+proyecto es una infraestructura generativa organizada alrededor de un modelo
+intermedio.

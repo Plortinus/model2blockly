@@ -1,0 +1,302 @@
+\chapter{Diseño y arquitectura de la solución}
+\label{chap:diseno-arquitectura}
+
+La arquitectura de Model2Blockly considera que un editor Blockly es una sintaxis
+visual de un lenguaje de dominio específico. Por eso, el sistema debe partir de
+una descripción abstracta del dominio y producir una implementación web ejecutable.
+
+El capítulo se organiza de la siguiente manera. En primer lugar, se presenta el
+enfoque arquitectónico y el flujo general de generación. A continuación, se
+describe el modelo intermedio que conecta las entradas con los generadores.
+Después se justifican las rutas basadas en Ecore y en el DSL textual
+\texttt{.m2b}, así como la generación de los editores Blockly. Finalmente, se
+exponen los mecanismos de validación, referencias y personalización, y se
+relacionan las decisiones arquitectónicas con los objetivos del trabajo.
+
+\section{Enfoque general}
+\label{sec:enfoque-arquitectonico}
+
+La arquitectura del sistema sigue un enfoque de ingeniería dirigida por modelos.
+En lugar de definir manualmente cada bloque en JavaScript, el diseñador describe
+el dominio mediante un metamodelo Ecore anotado o mediante una definición
+textual \texttt{.m2b}. A partir de esa descripción, Model2Blockly deriva la
+estructura y parte del comportamiento del editor. Esta organización aplica los
+principios de MDE al diseño concreto de la solución: los modelos constituyen la
+entrada principal del proceso y se utilizan para generar software
+\cite{brambilla2017modelDriven}.
+
+En ambas rutas se mantiene la separación habitual entre sintaxis abstracta y
+sintaxis concreta de un DSL \cite{sal2024dsl}. Ecore o el lenguaje
+\texttt{.m2b} describen los conceptos y relaciones del dominio, mientras que
+Blockly proporciona la notación visual con la que el usuario final crea y edita
+instancias. Por lo tanto, el lenguaje textual de Xtext no sustituye al editor
+visual: es una forma compacta de especificar qué lenguaje de bloques debe
+generarse.
+
+El diseño se apoya en tres principios. El primero es separar la interpretación
+del dominio de la generación del editor. El segundo es hacer que las dos rutas
+de entrada produzcan un modelo \texttt{EditorSpec} conforme al mismo metamodelo
+intermedio. Este modelo constituye el contrato arquitectónico compartido antes
+de generar HTML y JavaScript. El tercero es derivar no solo la apariencia de los
+bloques, sino también parte de su comportamiento: conexiones, validaciones,
+referencias, exportación y metadatos de interfaz.
+
+Estos principios responden al problema identificado en la introducción. Blockly
+proporciona la infraestructura de interacción visual, pero exige que el
+desarrollador describa cada bloque, campo, conexión y generador
+\cite{blocklyDocs}. Model2Blockly desplaza esa descripción a un nivel de dominio:
+el desarrollador define clases, atributos, contenciones, referencias,
+anotaciones o construcciones textuales \texttt{.m2b}; la herramienta se encarga
+de transformar esa información en los artefactos Blockly correspondientes.
+
+\section{Flujo general de generación}
+\label{sec:flujo-generacion}
+
+El flujo completo de la solución se organiza en cuatro etapas:
+
+\begin{enumerate}
+  \item definición del dominio mediante un metamodelo Ecore con anotaciones o
+  mediante un fichero textual \texttt{.m2b};
+  \item interpretación de la entrada y transformación a un modelo intermedio
+  común;
+  \item generación de los artefactos Blockly a partir de ese modelo;
+  \item ejecución del editor generado en el navegador.
+\end{enumerate}
+
+La Figura \ref{fig:arquitectura-general} muestra las dos rutas de entrada y la
+cadena común que se ejecuta después de convertirlas al modelo intermedio.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      node distance=0.75cm and 2.2cm,
+      box/.style={draw=black!55, rounded corners=2pt, minimum width=3.65cm,
+        minimum height=0.92cm, align=center, font=\small, inner sep=5pt},
+      inputbox/.style={box, fill=green!8},
+      stagebox/.style={box, fill=blue!7},
+      commonbox/.style={box, fill=orange!10},
+      outputbox/.style={box, fill=orange!10},
+      arrow/.style={-{Latex[length=2.5mm]}, thick, draw=black!70}
+    ]
+    \node[inputbox] (ecore) {Metamodelo Ecore\\anotado};
+    \node[inputbox, right=of ecore] (dsl) {Definición textual\\\texttt{.m2b}};
+
+    \node[stagebox, below=of ecore] (ecoreAdapter)
+      {Transformación del\\modelo Ecore};
+    \node[stagebox, below=of dsl] (xtextPath)
+      {Análisis Xtext y transformación\\del modelo textual};
+
+    \path let \p1=(ecoreAdapter), \p2=(xtextPath) in
+      node[commonbox] (editorSpec) at ($ (\p1)!0.5!(\p2) +(0,-1.7cm) $)
+      {Modelo intermedio común\\\texttt{EditorSpec}};
+    \node[commonbox, below=of editorSpec] (generator)
+      {Generación de artefactos\\Blockly};
+    \node[outputbox, below=of generator] (outputs)
+      {Editor Blockly ejecutable\\HTML/JavaScript};
+
+    \draw[arrow] (ecore) -- (ecoreAdapter);
+    \draw[arrow] (dsl) -- (xtextPath);
+    \draw[arrow] (ecoreAdapter) -- (editorSpec);
+    \draw[arrow] (xtextPath) -- (editorSpec);
+    \draw[arrow] (editorSpec) -- (generator);
+    \draw[arrow] (generator) -- (outputs);
+  \end{tikzpicture}
+  \caption{Arquitectura general de la generación de editores Blockly}
+  \label{fig:arquitectura-general}
+\end{figure}
+
+La Figura \ref{fig:arquitectura-general} muestra dos recorridos diferentes en su
+parte superior. En la ruta Ecore se interpreta la estructura del metamodelo y
+sus anotaciones para construir el modelo intermedio. En la ruta textual, Xtext
+analiza primero la definición \texttt{.m2b} y crea un modelo estructurado; una
+segunda transformación lleva ese modelo a \texttt{EditorSpec}. Las dos rutas
+terminan, por lo tanto, en modelos conformes al mismo metamodelo intermedio.
+
+Por ejemplo, una \texttt{EClass Page} con un atributo
+\texttt{title:EString} y una declaración textual \texttt{class Page} con
+\texttt{attribute title:string} se representan de la misma forma después de la
+conversión: un tipo de bloque \texttt{Page} con un campo de texto
+\texttt{title}. Desde ese punto se aplica una única generación sobre
+\texttt{EditorSpec}. Por ello, la solución necesita dos mecanismos de entrada,
+pero comparte la representación intermedia y la generación de salida. Esta
+convergencia es la decisión que estructura el resto de la arquitectura.
+
+\section{Modelo intermedio}
+\label{sec:modelo-intermedio}
+
+Las dos rutas de entrada describen conceptos similares mediante representaciones
+diferentes. Si la generación trabajara directamente con ambas, tendría que
+mantener dos interpretaciones de clases, propiedades, relaciones y restricciones.
+La incorporación de una nueva forma de entrada obligaría además a modificar la
+generación. Para evitar esta dependencia, la arquitectura introduce un modelo
+intermedio común entre las entradas y la salida.
+
+Este modelo representa el editor que se desea obtener, no una copia completa del
+artefacto de origen. Su contenido se organiza conceptualmente en tres grupos. El
+primero describe la estructura general del editor, como las categorías de la
+toolbox y su configuración. El segundo define los bloques, sus campos y sus
+formas de conexión. El tercero conserva la información de comportamiento que
+afecta a la edición, como referencias y reglas de validación. El metamodelo
+intermedio establece las relaciones válidas entre estos conceptos y cada
+transformación de entrada produce un modelo conforme a él.
+
+La raíz de esta representación se denomina \texttt{EditorSpec}. Por ejemplo,
+una clase de dominio \texttt{Page} se representa como un tipo de bloque y su
+propiedad \texttt{title} como un campo editable. Una relación de composición se
+representa como una zona para insertar bloques hijos, mientras que una referencia
+a otro objeto se representa como un mecanismo de selección. El origen puede ser
+Ecore o \texttt{.m2b}; después de la transformación, estos conceptos tienen la
+misma forma para la generación.
+
+% Cuando esté disponible el diagrama UML definitivo exportado desde PlantUML,
+% insertarlo aquí con las clases, atributos, roles, multiplicidades y relaciones
+% de contención del metamodelo intermedio.
+
+La elección de esta representación intermedia permite que cada parte tenga una
+responsabilidad definida. Las rutas de entrada interpretan el dominio y la
+generación interpreta únicamente \texttt{EditorSpec}. Así se comparte una sola
+lógica de salida y se pueden modificar o ampliar las entradas sin rediseñar el
+proceso que produce el editor Blockly.
+
+\section{Ruta basada en Ecore}
+\label{sec:ruta-ecore}
+
+La ruta Ecore está dirigida a dominios que ya se encuentran definidos dentro
+del ecosistema EMF. Permite reutilizar un metamodelo existente como punto de
+partida, en lugar de volver a describir manualmente sus conceptos para Blockly.
+Ecore aporta la estructura abstracta del dominio mediante clases, atributos,
+referencias, herencia y cardinalidades \cite{emfOverview}.
+
+El mapeo básico es sistemático. Cada clase Ecore se convierte en un tipo de
+bloque; cada atributo, en un campo visual; cada referencia de contención, en una
+entrada estructural para bloques hijos; y cada referencia no contenida, en un
+campo de referencia dinámica. La herencia se utiliza para mantener la
+compatibilidad entre tipos de bloque y las cardinalidades permiten derivar
+comprobaciones sobre elementos obligatorios o cantidades admitidas. Estas reglas
+de correspondencia preservan en el editor las diferencias estructurales que son
+relevantes para crear modelos válidos.
+
+Ecore no describe por sí solo todas las decisiones de sintaxis concreta de un
+editor Blockly, como el color, la etiqueta visible, la organización de la
+toolbox o el tipo de control utilizado para editar un valor. Por este motivo, la
+ruta admite anotaciones que complementan el metamodelo sin alterar su estructura
+esencial. La separación entre estructura del dominio y metadatos de presentación
+permite obtener una salida útil por defecto y personalizarla cuando el dominio
+lo requiere.
+
+\section{Ruta textual \texttt{.m2b} basada en Xtext}
+\label{sec:ruta-xtext}
+
+La ruta textual ofrece una alternativa de autoría cuando no se dispone de un
+metamodelo Ecore previo o se prefiere una notación más compacta. Xtext resulta
+adecuado porque permite definir una sintaxis textual y obtener a partir de ella
+una representación estructurada del dominio \cite{xtextProject,bettini2013xtext}.
+
+Esta ruta no reemplaza a Ecore, sino que responde a una necesidad distinta. El
+DSL permite reunir en una misma descripción la estructura del dominio y las
+decisiones básicas de presentación del editor. Xtext se encarga de interpretar
+el texto y comprobar que respeta la sintaxis definida; posteriormente, esa
+representación se transforma al mismo modelo intermedio empleado por la ruta
+Ecore. La generación continúa siendo común y no depende de la forma elegida para
+describir el dominio.
+
+\section{Generación de editores Blockly}
+\label{sec:generacion-editores}
+
+Una vez construido el modelo intermedio, la generación produce los artefactos
+necesarios para ejecutar el editor en un navegador. Esta etapa puede entenderse
+como una transformación de modelo a texto: la especificación del editor se
+convierte en definiciones de bloques, toolbox, configuración del workspace,
+reglas de validación y páginas HTML y JavaScript.
+
+La correspondencia se establece por responsabilidad: la organización del modelo
+intermedio determina la toolbox, la definición de cada tipo determina la forma
+del bloque y sus conexiones, y las reglas conservadas determinan las ayudas y
+advertencias disponibles durante la edición. Así, la salida visual se deriva de
+decisiones expresadas en el modelo y no de una colección de bloques programados
+manualmente.
+
+La dependencia exclusiva respecto al modelo intermedio evita duplicar la lógica
+de salida para cada entrada y deja abierta la posibilidad de incorporar otros
+formatos de origen o nuevos objetivos de generación. Para este trabajo se elige
+como salida principal un editor HTML/JavaScript autocontenido, porque facilita
+su ejecución y revisión sin exigir una infraestructura adicional.
+
+\section{Validaciones, referencias y personalización}
+\label{sec:validaciones-referencias-personalizacion}
+
+Un editor de bloques no debe limitarse a mostrar piezas visuales; también debe
+ayudar a construir modelos coherentes. Por ello, la arquitectura conserva en el
+modelo intermedio las restricciones que pueden trasladarse al editor. Entre
+ellas se encuentran las cardinalidades, la obligatoriedad de valores y algunas
+relaciones sencillas entre elementos. La decisión de mantenerlas en el modelo
+intermedio permite aplicar el mismo criterio de validación con independencia de
+la ruta de entrada.
+
+Estas comprobaciones no constituyen un motor general de restricciones. OCL
+permite expresar invariantes sobre objetos, propiedades y colecciones
+\cite{omgOcl}, mientras que Model2Blockly solo transforma patrones que pueden
+reconocerse y ejecutarse de manera predecible en el editor generado. Esta
+decisión mantiene explícito el alcance del sistema: las validaciones ayudan al
+usuario mediante advertencias, pero no sustituyen a un lenguaje completo de
+restricciones. La implementación concreta y la evaluación del subconjunto
+soportado se presentan en los capítulos siguientes.
+
+Las referencias no contenidas se tratan de forma distinta a las contenciones.
+Una contención define la estructura jerárquica del modelo y por lo tanto se
+representa como una entrada de sentencias. Una referencia no contenida apunta a
+otro elemento existente en el workspace, por lo que se representa mediante un
+desplegable dinámico. El generador calcula los candidatos compatibles teniendo
+en cuenta el tipo objetivo y sus subtipos. Esta decisión mantiene una
+diferencia semántica importante del metamodelo: no es lo mismo crear un hijo
+estructural que seleccionar otro elemento ya presente en el modelo.
+
+La personalización se incorpora como una capa controlada de metadatos. Colores,
+etiquetas, categorías, tooltips, disposición en línea, widgets de interfaz y
+plantillas de código no cambian la estructura esencial del dominio, pero sí
+afectan a la experiencia del usuario final. Model2Blockly permite definir esta
+información mediante anotaciones Ecore o mediante opciones del DSL textual. De
+este modo, se evita que el usuario tenga que editar directamente JavaScript para
+realizar cambios habituales de presentación.
+
+\section{Trazabilidad con los objetivos}
+\label{sec:trazabilidad-objetivos}
+
+La arquitectura propuesta mantiene una relación directa con los objetivos
+específicos definidos para el TFM. La Tabla
+\ref{tab:trazabilidad-arquitectura} resume esa relación.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|p{0.18\textwidth}|p{0.70\textwidth}|}
+    \hline
+    Objetivo & Respuesta arquitectónica \\
+    \hline
+    OE1 & El modelo intermedio identifica explícitamente los elementos que
+    necesita un editor de bloques: tipos, campos, conexiones, categorías,
+    referencias y validaciones. \\
+    OE2 & La ruta Ecore permite partir de metamodelos y
+    derivar bloques, campos, entradas y reglas. \\
+    OE3 & La gramática Xtext proporciona la ruta textual \texttt{.m2b}
+    para definir lenguajes de bloques de forma compacta. \\
+    OE4 & El modelo intermedio común desacopla las entradas de los generadores
+    y permite compartir la misma lógica de salida. \\
+    OE5 & Los generadores producen editores HTML/JavaScript ejecutables en el
+    navegador. \\
+    OE6 & Las validaciones, referencias dinámicas, anotaciones de interfaz y
+    plantillas de código se incorporan como capacidades genéricas. \\
+    OE7 & La separación por transformación de entrada, modelo intermedio y
+    generadores facilita probar cada parte y evaluar la convergencia de las dos
+    rutas sobre AppMaker. \\
+    \hline
+  \end{tabular}
+  \caption{Trazabilidad entre objetivos y arquitectura}
+  \label{tab:trazabilidad-arquitectura}
+\end{table}
+
+En conjunto, la arquitectura define una cadena generativa clara: el diseñador
+describe un dominio como metamodelo Ecore anotado o como fichero \texttt{.m2b},
+el sistema transforma esa descripción en un modelo intermedio y el generador
+produce un editor Blockly. La aportación principal no es un bloque concreto,
+sino el mecanismo reutilizable que permite generar editores desde descripciones
+de dominio de alto nivel.
