@@ -29,13 +29,16 @@ public class GenerateBlocklyEditorAction implements IObjectActionDelegate {
 	public void run(IAction action) {
 		IFile file = GenerateBlocklyEditorHandler.selectedFile(selection);
 		if (file == null) {
-			MessageDialog.openInformation(shell, "Generate Blockly Editor", "Select one .ecore or .model2blockly file.");
+			MessageDialog.openInformation(shell, "Generate Blockly Editor",
+				"Select one .ecore, .m2b, or .model2blockly file.");
 			return;
 		}
 		String extension = file.getFileExtension();
-		if (!"ecore".equals(extension) && !"model2blockly".equals(extension)) {
+		if (!"ecore".equals(extension) && !"m2b".equals(extension)
+				&& !"model2blockly".equals(extension)) {
 			MessageDialog.openInformation(shell, "Generate Blockly Editor",
-				"Unsupported file type: " + file.getName() + "\nSelect a .ecore or .model2blockly file.");
+				"Unsupported file type: " + file.getName()
+					+ "\nSelect one .ecore, .m2b, or .model2blockly file.");
 			return;
 		}
 		try {

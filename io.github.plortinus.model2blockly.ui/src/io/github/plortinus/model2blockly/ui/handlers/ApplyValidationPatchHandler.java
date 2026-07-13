@@ -31,7 +31,7 @@ import io.github.plortinus.model2blockly.ValidationPatchService;
 
 /**
  * Workspace command that writes edited validation Blockly JSON back to the
- * selected .ecore or .model2blockly source file.
+ * selected .ecore, .m2b, or legacy .model2blockly source file.
  */
 public class ApplyValidationPatchHandler extends AbstractHandler {
 
@@ -40,13 +40,16 @@ public class ApplyValidationPatchHandler extends AbstractHandler {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		IFile selectedFile = GenerateBlocklyEditorHandler.selectedFile(HandlerUtil.getCurrentSelection(event));
 		if (selectedFile == null) {
-			MessageDialog.openInformation(shell, "Apply Validation Patch", "Select one .ecore or .model2blockly file.");
+			MessageDialog.openInformation(shell, "Apply Validation Patch",
+				"Select one .ecore, .m2b, or .model2blockly file.");
 			return null;
 		}
 		String extension = selectedFile.getFileExtension();
-		if (!"ecore".equals(extension) && !"model2blockly".equals(extension)) {
+		if (!"ecore".equals(extension) && !"m2b".equals(extension)
+				&& !"model2blockly".equals(extension)) {
 			MessageDialog.openInformation(shell, "Apply Validation Patch",
-				"Unsupported file type: " + selectedFile.getName() + "\nSelect a .ecore or .model2blockly file.");
+				"Unsupported file type: " + selectedFile.getName()
+					+ "\nSelect one .ecore, .m2b, or .model2blockly file.");
 			return null;
 		}
 		if (selectedFile.getLocation() == null) {

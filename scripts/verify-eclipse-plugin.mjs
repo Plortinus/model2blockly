@@ -199,6 +199,15 @@ function checkUiContributions() {
   assertIncludes(plugin, 'nameFilter="*.ecore"', '.ecore popup action is registered');
   assertIncludes(plugin, 'io.github.plortinus.model2blockly.Model2Blockly.GeneratableFileSelection', 'Generate command visibility is restricted to supported files');
   assertIncludes(plugin, 'org.eclipse.core.resources.extension" value="ecore"', 'Generate command is visible for .ecore files');
+  assertIncludes(plugin, 'org.eclipse.core.resources.extension" value="m2b"', 'Generate command is visible for .m2b files');
+
+  for (const file of [
+    'io.github.plortinus.model2blockly.ui/src/io/github/plortinus/model2blockly/ui/handlers/GenerateBlocklyEditorHandler.java',
+    'io.github.plortinus.model2blockly.ui/src/io/github/plortinus/model2blockly/ui/handlers/GenerateBlocklyEditorAction.java',
+    'io.github.plortinus.model2blockly.ui/src/io/github/plortinus/model2blockly/ui/handlers/ApplyValidationPatchHandler.java',
+  ]) {
+    assertIncludes(read(file), '"m2b".equals(extension)', `${file} accepts the recommended .m2b extension`);
+  }
 }
 
 function checkIntermediatePipeline() {

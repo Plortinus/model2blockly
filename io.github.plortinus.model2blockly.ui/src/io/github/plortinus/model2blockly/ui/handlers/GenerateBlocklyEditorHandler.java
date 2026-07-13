@@ -60,7 +60,7 @@ import com.google.inject.Injector;
 
 /**
  * Workspace popup handler that generates a Blockly HTML editor from a selected
- * .ecore or .model2blockly file.
+ * .ecore, .m2b, or legacy .model2blockly file.
  */
 public class GenerateBlocklyEditorHandler extends AbstractHandler {
 	private static final String DIAGNOSTIC_MARKER_SOURCE = "io.github.plortinus.model2blockly.generator.diagnostics";
@@ -70,14 +70,17 @@ public class GenerateBlocklyEditorHandler extends AbstractHandler {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		IFile selectedFile = selectedFile(event);
 		if (selectedFile == null) {
-			MessageDialog.openInformation(shell, "Generate Blockly Editor", "Select one .ecore or .model2blockly file.");
+			MessageDialog.openInformation(shell, "Generate Blockly Editor",
+				"Select one .ecore, .m2b, or .model2blockly file.");
 			return null;
 		}
 
 		String extension = selectedFile.getFileExtension();
-		if (!"ecore".equals(extension) && !"model2blockly".equals(extension)) {
+		if (!"ecore".equals(extension) && !"m2b".equals(extension)
+				&& !"model2blockly".equals(extension)) {
 			MessageDialog.openInformation(shell, "Generate Blockly Editor",
-				"Unsupported file type: " + selectedFile.getName() + "\nSelect a .ecore or .model2blockly file.");
+				"Unsupported file type: " + selectedFile.getName()
+					+ "\nSelect one .ecore, .m2b, or .model2blockly file.");
 			return null;
 		}
 
@@ -236,7 +239,7 @@ public class GenerateBlocklyEditorHandler extends AbstractHandler {
 			out.append("3. Open the generated HTML output.\n");
 		}
 		out.append("\n## Typical Iteration\n\n");
-		out.append("- Edit the Ecore or `.model2blockly` source when the domain structure should change.\n");
+		out.append("- Edit the Ecore or `.m2b` source when the domain structure should change.\n");
 		out.append("- Add Blockly/UI/code annotations when block labels, layout, widgets or code templates need refinement.\n");
 		out.append("- Rerun this Eclipse action and reopen `generation_report.html`.\n");
 		return out.toString();
