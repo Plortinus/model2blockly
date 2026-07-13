@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="basicStructure"
+    nsURI="http://www.example.org/basicstructure"
+    nsPrefix="basicstructure">
+
+  <eClassifiers xsi:type="ecore:EClass" name="Board">
+    <eAnnotations source="blockly">
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Sprint board"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="items"
+        lowerBound="1" upperBound="4" eType="#//WorkItem" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="WorkItem" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Task" eSuperTypes="#//WorkItem">
+    <eAnnotations source="blockly">
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Write docs"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority"
+        eType="#//Priority" defaultValueLiteral="medium"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="done"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Note" eSuperTypes="#//WorkItem">
+    <eAnnotations source="blockly">
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="body"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Remember the review"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Tag">
+    <eAnnotations source="blockly">
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="important"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="Priority">
+    <eLiterals name="low" literal="low"/>
+    <eLiterals name="medium" value="1" literal="medium"/>
+    <eLiterals name="high" value="2" literal="high"/>
+  </eClassifiers>
+
+</ecore:EPackage>

@@ -7,13 +7,14 @@ diseño y la arquitectura, aquí se identifican las tecnologías, clases y
 operaciones que materializan cada etapa de la cadena generativa.
 
 La exposición comienza mostrando cómo ejecutar la herramienta sobre el ejemplo
-AppMaker y cómo localizar el editor obtenido. Después se presentan el flujo
-interno, la organización del código y la carga y validación de las dos entradas.
-Sobre esa base se detallan la ruta textual \texttt{.m2b}, el contrato y la
-serialización del modelo intermedio \texttt{EditorSpec}, los adaptadores Java, el
-generador HTML/JavaScript y el comportamiento en el navegador. El capítulo
-termina con la integración y distribución en Eclipse, las entradas independientes y
-las pruebas de implementación.
+completo AppMaker y cómo localizar el editor obtenido. Después se presentan el
+flujo interno, la organización del código y cuatro ejemplos acotados, escritos por pares como
+\texttt{source.ecore} y \texttt{source.m2b}, que aíslan las reglas explicadas en
+el resto del capítulo. Sobre esa base se detallan la carga y validación de las
+entradas, el contrato \texttt{EditorSpec}, los
+adaptadores Java, el generador HTML/JavaScript y el comportamiento en el
+navegador. El capítulo termina con la integración y distribución en Eclipse,
+las entradas independientes y las pruebas de implementación.
 
 \section{Ejecución de Model2Blockly}
 \label{sec:ejecucion-model2blockly}
@@ -253,6 +254,67 @@ repetirla: allí se justificaron los componentes y sus dependencias; aquí se
 identifican las clases, los lenguajes y los artefactos que ejecutan esas
 responsabilidades.
 
+\section{Ejemplos acotados para explicar la implementación}
+\label{sec:ejemplos-acotados-implementacion}
+
+AppMaker se mantiene como demostración de la ejecución completa porque permite
+observar el resultado integrado con un dominio de tamaño real. Sin embargo, su
+metamodelo contiene demasiadas clases, referencias y anotaciones para explicar
+con claridad una regla concreta. Por este motivo, la implementación incluye
+cuatro pares menores bajo
+\path{examples/feature_pairs/}. Cada directorio contiene dos fuentes que
+describen el mismo dominio: \path{source.ecore} para la ruta EMF y
+\path{source.m2b} para la ruta Xtext. La Tabla
+\ref{tab:pares-ejemplos-implementacion} indica la responsabilidad de cada par.
+
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}
+      >{\raggedright\arraybackslash}p{0.20\textwidth}
+      >{\raggedright\arraybackslash}p{0.68\textwidth}@{}}
+    \toprule
+    Par & Capacidades aisladas \\
+    \midrule
+    \path{01_basic_structure} & Paquete y dominio, clases concretas y
+    abstractas, herencia, contención, conexiones y categorías inferidas. \\
+    \path{02_fields_ui} & Tipos de atributo, valores iniciales, límites,
+    widgets, presentación de campos y categorías anidadas. \\
+    \path{03_relations} & Contención, entrada de valor y bloque sombra,
+    identificadores, referencias dinámicas, cardinalidad y opuestos. \\
+    \path{04_validation_codegen} & Validaciones declaradas e inferidas,
+    expresiones OCL soportadas, plantillas de código y opciones del workspace. \\
+    \bottomrule
+  \end{tabular}
+  \caption{Pares de entrada usados para explicar y verificar la implementación}
+  \label{tab:pares-ejemplos-implementacion}
+\end{table}
+
+La división no cambia el alcance funcional: la unión de los cuatro pares cubre
+las capacidades que antes se mostraban juntas en AppMaker. Su ventaja es que
+cada figura y listado puede centrarse en una decisión de implementación. En
+particular, el par \texttt{03\_relations} se emplea más adelante para explicar
+la misma estructura mediante un diagrama Ecore legible y mediante su declaración
+textual comentada línea a línea.
+
+Los pares son también casos de regresión ejecutables. La verificación completa
+se inicia desde la raíz del repositorio con:
+
+\begin{center}
+  \texttt{npm run verify:feature-pairs}
+\end{center}
+
+El script carga las dos fuentes de cada directorio. Después ejecuta
+\texttt{EcoreAdapter} y
+\texttt{DomainModel}\allowbreak\texttt{Adapter}, serializa y recarga los dos
+modelos intermedios, y compara una representación canónica de
+\texttt{EditorSpec}. A continuación exige el mismo conjunto de artefactos
+principales y abre los ocho editores resultantes ---cuatro pares por dos
+rutas--- mediante pruebas de humo en navegador. Esta comprobación permite usar
+los ejemplos como explicación y, al mismo tiempo, demostrar que ambas
+notaciones llegan al mismo contrato común.
+
 \section{Carga y validación de las entradas}
 \label{sec:carga-validacion-entradas}
 
@@ -299,35 +361,50 @@ esta etapa en el manejador. La clase de entrada independiente
 \texttt{Model2BlocklyToBlocklyMain} contiene la misma secuencia, cambiando
 únicamente el origen de la ruta del fichero.
 
-\begin{lstlisting}[language=Java, caption={Secuencia esencial de carga y validación de una entrada \texttt{.m2b}}, label={lst:carga-modelo-m2b}]
+\begin{lstlisting}[language=Java, captionpos=t, caption={Secuencia comentada de carga y validación de una entrada \texttt{.m2b}}, label={lst:carga-modelo-m2b}]
+// Crea la configuracion standalone del DSL.
 Injector injector = new Model2BlocklyStandaloneSetup()
+    // Registra en EMF los elementos generados por Xtext.
     .createInjectorAndDoEMFRegistration();
+// Obtiene un conjunto de recursos configurado por Guice.
 ResourceSet resourceSet = injector.getInstance(ResourceSet.class);
+// Carga la URI y ejecuta el parser y el enlazador.
 Resource resource = resourceSet.getResource(fileUri, true);
+// Conserva el tipo Xtext para acceder a sus servicios.
 XtextResource xtext = (XtextResource) resource;
 
+// Comprueba la correspondencia con la sintaxis concreta.
 xtext.validateConcreteSyntax();
+// Propaga los errores de sintaxis y de enlazado.
 Model2BlocklyValidationDiagnostics.throwIfSyntaxErrors(
+    // Identifica el origen y entrega los errores del recurso.
     sourceLabel, resource.getErrors());
+// Propaga los errores de las reglas semanticas del DSL.
 Model2BlocklyValidationDiagnostics.throwIfErrors(
+    // Asocia los diagnosticos con el fichero de entrada.
     sourceLabel,
+    // Obtiene el validador registrado para este lenguaje.
     xtext.getResourceServiceProvider().getResourceValidator()
+        // Ejecuta todas las reglas @Check sobre el recurso.
         .validate(resource, CheckMode.ALL,
+            // Indica que esta validacion no se cancela.
             CancelIndicator.NullImpl));
 
+// Declara la raiz tipada del modelo textual.
 DomainModel domain =
+    // Recupera el primer objeto EMF producido por Xtext.
     (DomainModel) resource.getAllContents().next();
 \end{lstlisting}
 
-La primera comprobación recoge los errores producidos durante el análisis y el
-enlazado. A continuación, el \texttt{IResourceValidator} ejecuta en modo
-\texttt{ALL} las reglas \texttt{@Check} de
-\texttt{Model2BlocklyValidator}. Estas reglas detectan, entre otros casos,
-nombres de clase duplicados, cardinalidades incoherentes, entradas de valor con
-un tipo no válido, widgets incompatibles, referencias a campos inexistentes y
-expresiones de validación no soportadas. El método \texttt{throwIfErrors} detiene
-la generación únicamente ante diagnósticos de severidad \emph{error}; las
-advertencias permanecen visibles en el editor, pero permiten continuar.
+Las llamadas comentadas cubren dos grupos de problemas. La primera comprobación recoge
+errores producidos durante el análisis y el enlazado; la segunda ejecuta las
+reglas \texttt{@Check} de \texttt{Model2BlocklyValidator}. Estas reglas detectan,
+entre otros casos, nombres de clase duplicados, cardinalidades incoherentes,
+entradas de valor con un tipo no válido, widgets incompatibles, referencias a
+campos inexistentes y expresiones de validación no soportadas. El método
+\texttt{throwIfErrors} detiene la generación únicamente ante diagnósticos de
+severidad \emph{error}; las advertencias permanecen visibles en el editor, pero
+permiten continuar.
 
 \subsection{Niveles de validación y comunicación de errores}
 
@@ -375,36 +452,71 @@ orden de presentación, campos de solo lectura, campos ocultos y campos usados
 para mostrar referencias. Esta información no es necesaria para un editor
 Blockly básico, pero permite enriquecer la salida generada sin escribir
 JavaScript a mano. En la memoria se usa para explicar la correspondencia con
-Ecore y para mostrar una forma más compacta de definir el mismo lenguaje
-AppMaker.
+Ecore mediante ejemplos pequeños, sin confundir la notación textual con el
+metamodelo que genera Xtext.
 
-El Listado \ref{lst:appmaker-dsl} muestra un fragmento representativo de la
-ruta textual \texttt{.m2b} aplicado al dominio AppMaker. En pocas líneas se
-declaran una categoría, un bloque raíz, una contención con cardinalidad y un
-bloque que referencia dinámicamente una fuente de datos. La misma información
-acabaría convertida en campos, entradas y validaciones dentro del modelo
-intermedio.
+El Listado \ref{lst:relations-dsl} toma el par
+\texttt{03\_relations} y muestra sus declaraciones relacionales. Los
+comentarios \texttt{//} explican cada instrucción del DSL: la contención crea
+una entrada estructural, \texttt{value} crea una conexión horizontal y
+\texttt{reference} crea una selección dinámica. La Figura
+\ref{fig:ecore-relations-acotado}, presentada en la sección del adaptador Ecore,
+representa la estructura equivalente de la otra fuente del par.
 
-\begin{lstlisting}[caption={Fragmento representativo del DSL textual \texttt{.m2b} para AppMaker}, label={lst:appmaker-dsl}]
-domain Appmaker codeLanguage "javascript" codeFileExtension "js"
+\begin{lstlisting}[captionpos=t, caption={Fragmento del ejemplo \texttt{03\_relations} comentado línea a línea}, label={lst:relations-dsl}]
+// Declara el dominio que se convertira en EditorSpec.
+domain Relations
+// Crea la categoria comun de la paleta y fija su color.
+category Relations colour 260
 
-category Pages label "Pages" colour 260
-category Components label "Components" colour 160
-category Data label "Data" colour 210
-
-class App category Pages colour 260 label "App" {
-  attribute name : string default "Task Tracker" required
-    widget text uiLabel "App name" group "App" order 1
-  contains DataSource dataSources [1..20]
-    uiLabel "Data sources" group "Data" order 3
-  contains Page pages [1..20]
-    uiLabel "Pages" group "Pages" order 4
+// Declara Workflow como bloque raiz de la estructura.
+class Workflow category Relations colour 260 inputsInline false {
+  // Define el nombre editable y su valor inicial.
+  attribute name : string [0..1] default "Review workflow"
+  // Contiene de uno a seis elementos del flujo.
+  contains Element elements [1..6]
+    // Muestra la contencion como una entrada estructural ordenada.
+    widget slot uiLabel "Elements" order 2 variant default
+// Cierra la clase Workflow.
 }
 
-class ListView extends Component category Components colour 160 label "List view" {
-  reference DataSource source required
-    widget reference-select uiLabel "Source" referenceLabelField name
-  value TextExpression itemTitle shadow TextLiteral
+// Declara el supertipo abstracto que no aparecera en la paleta.
+abstract class Element category Relations colour 120 inputsInline false {
+// Cierra el supertipo sin caracteristicas propias.
+}
+
+// Declara Card como subtipo concreto de Element.
+class Card extends Element category Relations colour 120 inputsInline false {
+  // Usa cardId como identificador obligatorio de la instancia.
+  attribute cardId : string [1..1] default "card-1" modelId
+  // Crea una entrada de valor y propone TextLiteral como sombra.
+  value TextExpression content shadow TextLiteral
+    // Configura la presentacion y la posicion de la entrada.
+    widget expression-slot uiLabel "Content" order 2 variant default
+  // Declara hasta tres enlaces salientes y su referencia opuesta.
+  reference Link outgoing [0..3] opposite source unique ordered
+    // Representa los enlaces como un selector dinamico.
+    widget reference-select uiLabel "Outgoing links" order 4 variant default
+    // Usa linkId como etiqueta visible de cada opcion.
+    referenceLabelField linkId
+// Cierra la clase Card.
+}
+
+// Declara Link como segundo subtipo concreto de Element.
+class Link extends Element category Relations colour 120 inputsInline false {
+  // Define el extremo source obligatorio y opuesto a outgoing.
+  reference Card source [1..1] opposite outgoing required unique ordered
+    // Presenta la tarjeta origen mediante un selector.
+    widget reference-select uiLabel "Source card" order 2 variant default
+    // Muestra el titulo de Card en lugar de su identificador interno.
+    referenceLabelField title
+  // Define un destino obligatorio sin referencia opuesta.
+  reference Card target [1..1] required nonUnique unordered
+    // Presenta tambien el destino como selector dinamico.
+    widget reference-select uiLabel "Target card" order 4 variant default
+    // Usa igualmente el titulo como etiqueta del destino.
+    referenceLabelField title
+// Cierra la clase Link.
 }
 \end{lstlisting}
 
@@ -438,20 +550,31 @@ cargar desde esa cadena y se comprueba que su raíz siga siendo un
 \texttt{EditorSpec}. El Listado \ref{lst:ciclo-editor-spec-xmi} muestra cómo el
 manejador aplica este ciclo en las dos rutas de entrada.
 
-\begin{lstlisting}[language=Java, caption={Validación, serialización y recarga del modelo intermedio}, label={lst:ciclo-editor-spec-xmi}]
+\begin{lstlisting}[float=htbp, language=Java, captionpos=t, caption={Validación, serialización y recarga comentadas del modelo intermedio}, label={lst:ciclo-editor-spec-xmi}]
+// Valida el modelo comun creado por el adaptador.
 BlocklySpecDiagnostics.assertValid(intermediateModel, sourceLabel,
+    // Permite relacionar cada error con el modelo de origen.
     sourceMapper);
 
+// Declara la cadena que contendra el XMI intermedio.
 String intermediateXmi =
+    // Serializa EditorSpec como un recurso XMI en memoria.
     BlocklySpecXmiSerializer.toXmi(intermediateModel);
+// Declara el modelo que se usara para generar el editor.
 EditorSpec spec =
+    // Recarga el XMI y comprueba que su raiz sea EditorSpec.
     BlocklySpecXmiSerializer.fromXmiToEditorSpec(intermediateXmi);
 
+// Valida de nuevo el modelo despues de la recarga.
 BlocklySpecDiagnostics.assertValid(
+    // Identifica esta comprobacion como la del XMI intermedio.
     spec, sourceLabel + " intermediate XMI");
+// Declara el mapa ordenado de ficheros generados.
 Map<String, String> generated =
+    // Transforma el EditorSpec validado en HTML y JavaScript.
     new BlocklyCodeGenerator().generate(spec);
 \end{lstlisting}
+\FloatBarrier
 
 En el extracto, \texttt{sourceMapper} representa el mapeador creado por
 \texttt{forEPackage} o \texttt{forDomainModel}, según la ruta. El primer
@@ -499,14 +622,18 @@ objeto auxiliar de construcción; el resultado contractual del adaptador es la
 instancia EMF \texttt{EditorSpec}.
 
 \begin{lstlisting}[float=htbp, language=Java, caption={Puntos de entrada Java de los dos adaptadores}, label={lst:entrada-adaptadores-java}]
-// EcoreAdapter.java
+// Declara el punto de entrada de EcoreAdapter.java.
 public static EditorSpec toEditorSpec(EPackage pkg) {
+    // Recorre el EPackage y convierte la vista Java al modelo EMF comun.
     return BlocklySpecModelMapper.toEmfSpec(fromEPackage(pkg));
+// Finaliza la ruta de adaptacion Ecore.
 }
 
-// DomainModelAdapter.java
+// Declara el punto de entrada de DomainModelAdapter.java.
 public static EditorSpec toEditorSpec(DomainModel domain) {
+    // Recorre el DomainModel de Xtext y crea el mismo modelo EMF comun.
     return BlocklySpecModelMapper.toEmfSpec(fromDomainModel(domain));
+// Finaliza la ruta de adaptacion textual.
 }
 \end{lstlisting}
 
@@ -588,34 +715,81 @@ archivo y plantillas de generación. Así, un metamodelo sin anotaciones puede
 generar un editor básico, mientras que un metamodelo anotado puede producir una
 experiencia más adaptada al dominio.
 
-El Listado \ref{lst:appmaker-ecore} muestra el mismo tipo de información en la
-ruta Ecore. El metamodelo conserva las clases y referencias EMF, y las
-anotaciones añaden la sintaxis visual, la regla de validación y la plantilla de
-código usadas por el generador.
+Representar el fichero Ecore como XML ocultaría estas reglas entre detalles de
+serialización. Por ello, la Figura \ref{fig:ecore-relations-acotado} muestra una
+vista parcial del ejemplo \texttt{03\_relations}. La figura no pretende
+reproducir todo el árbol XMI: selecciona únicamente los elementos estructurales
+que recorre el adaptador y que son necesarios para explicar el resultado.
 
-\begin{lstlisting}[caption={Fragmento de \texttt{model/app\_maker.ecore} con anotaciones}, label={lst:appmaker-ecore}]
-<eClassifiers xsi:type="ecore:EClass" name="Navigate" eSuperTypes="#//Action">
-  <eAnnotations source="blockly">
-    <details key="colour" value="30"/>
-    <details key="category" value="Actions"/>
-    <details key="inputsInline" value="true"/>
-  </eAnnotations>
-  <eAnnotations source="validation">
-    <details key="mustFollow" value="Alert"/>
-  </eAnnotations>
-  <eAnnotations source="code">
-    <details key="template" value="navigate(&quot;{{target}}&quot;);"/>
-  </eAnnotations>
-  <eStructuralFeatures xsi:type="ecore:EReference" name="target"
-      lowerBound="1" eType="#//Page">
-    <eAnnotations source="ui">
-      <details key="widget" value="reference-select"/>
-      <details key="label" value="Target page"/>
-      <details key="referenceLabelField" value="title"/>
-    </eAnnotations>
-  </eStructuralFeatures>
-</eClassifiers>
-\end{lstlisting}
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+      ecoreclass/.style={draw=black!65, rounded corners=1pt, fill=blue!4,
+        text width=3.4cm, align=left, font=\small, inner sep=6pt},
+      abstractclass/.style={ecoreclass, fill=black!5},
+      relation/.style={-{Latex[length=2.2mm]}, thick, draw=black!70},
+      inheritance/.style={-{Triangle[open,length=3.2mm,width=3.0mm]},
+        thick, draw=black!70},
+      relabel/.style={font=\scriptsize, fill=white, inner sep=0.8pt,
+        align=center}
+    ]
+    \node[ecoreclass] (workflow) at (-5.2,4.8)
+      {\textbf{Workflow}\\[-1mm]\rule{3.15cm}{0.3pt}\\
+       name : EString [0..1]};
+
+    \node[abstractclass] (element) at (0,4.8)
+      {\textit{\textbf{Element}}\\[-1mm]\rule{3.15cm}{0.3pt}\\
+       \textit{abstract}};
+
+    \node[ecoreclass] (link) at (-3.2,0)
+      {\textbf{Link}\\[-1mm]\rule{3.15cm}{0.3pt}\\
+       linkId : EString [1] \{ID\}\\
+       description : EString [0..1]};
+
+    \node[ecoreclass] (card) at (3.2,0)
+      {\textbf{Card}\\[-1mm]\rule{3.15cm}{0.3pt}\\
+       cardId : EString [1] \{ID\}\\
+       title : EString [0..1]};
+
+    \node[abstractclass] (expression) at (8.5,1.7)
+      {\textit{\textbf{TextExpression}}\\[-1mm]\rule{3.15cm}{0.3pt}\\
+       \textit{abstract, output}};
+
+    \node[ecoreclass] (literal) at (8.5,-2.0)
+      {\textbf{TextLiteral}\\[-1mm]\rule{3.15cm}{0.3pt}\\
+       textValue : EString [0..1]};
+
+    \draw[relation] (workflow.north east) to[bend left=18]
+      node[relabel, above] {elements [1..6] (containment)}
+      (element.north west);
+    \draw[inheritance] (link.north) -- (element.south west);
+    \draw[inheritance] (card.north) -- (element.south east);
+    \draw[inheritance] (literal.north) -- (expression.south);
+    \draw[relation] (card.north east) -- node[relabel, above, sloped]
+      {content (input\_value)}
+      (expression.south west);
+    \draw[relation] (card.north west) -- node[relabel, above]
+      {outgoing / source (eOpposite)}
+      (link.north east);
+    \draw[relation] (link.south east) to[bend left=28]
+      node[relabel, below] {target [1]} (card.south west);
+  \end{tikzpicture}%
+  }
+  \caption{Vista parcial del Ecore del ejemplo \texttt{03\_relations}}
+  \label{fig:ecore-relations-acotado}
+\end{figure}
+
+Sobre esta estructura, las anotaciones con fuente \texttt{blockly} asignan la
+categoría, el color y la forma de conexión. En particular,
+\texttt{content} está anotada como \texttt{input\_value}, acepta
+\texttt{TextExpression} y propone \texttt{TextLiteral} como bloque sombra. Las
+anotaciones \texttt{ui} convierten \texttt{elements} en un
+\texttt{slot} y las referencias \texttt{outgoing}, \texttt{source} y
+\texttt{target} en selectores dinámicos; también indican el texto visible y el
+campo usado como etiqueta. De esta forma, la figura explica la estructura Ecore
+y el texto documenta los metadatos sin presentar un fragmento XML difícil de
+leer.
 
 \section{Adaptador desde la ruta textual \texttt{.m2b}}
 \label{sec:implementacion-domainmodel-adapter}
@@ -623,10 +797,11 @@ código usadas por el generador.
 El adaptador de la ruta textual también está implementado manualmente en Java.
 \texttt{DomainModelAdapter.fromDomainModel} recibe la raíz EMF producida por
 Xtext y ejecuta, en orden, los métodos \texttt{convertCategories},
-\texttt{convertClasses}, \texttt{convertConstraints},
-\texttt{convertValidations} y \texttt{convertWorkspaceOptions}. Después genera
-las validaciones inferidas de cardinalidad, obligatoriedad y unicidad. El objeto
-Java resultante vuelve al método \texttt{toEditorSpec} del Listado
+\texttt{convertClasses}, \texttt{convertValidations} y
+\texttt{convertConstraints}. Después genera las validaciones inferidas de
+cardinalidad, obligatoriedad y unicidad, y finalmente copia las opciones del
+workspace con \texttt{convertWorkspace}\allowbreak\texttt{Options}. El objeto Java resultante vuelve
+al método \texttt{toEditorSpec} del Listado
 \ref{lst:entrada-adaptadores-java}, donde se convierte al mismo modelo EMF común
 que en la ruta Ecore.
 
@@ -644,31 +819,52 @@ concreto se entrega a un método especializado y el nombre de la entrada se aña
 a \texttt{orderedInputNames}; de este modo, el orden escrito en el fichero
 \texttt{.m2b} se conserva al construir el bloque.
 
-\begin{lstlisting}[language=Java, caption={Despacho de elementos del DSL en \texttt{DomainModelAdapter}}, label={lst:despacho-domainmodel-adapter}]
+\begin{lstlisting}[language=Java, captionpos=t, caption={Despacho comentado de elementos del DSL en \texttt{DomainModelAdapter}}, label={lst:despacho-domainmodel-adapter}]
+// Recorre en orden las caracteristicas de la clase del DSL.
 for (Feature feature : cls.getFeatures()) {
+    // Distingue los atributos editables.
     if (feature instanceof Attribute) {
+        // Convierte el atributo en un campo del modelo comun.
         FieldSpec field = convertAttribute((Attribute) feature);
+        // Incorpora el campo al tipo de bloque.
         bt.getFields().add(field);
+        // Conserva la posicion declarada en el fichero .m2b.
         bt.getOrderedInputNames().add(field.getName());
+    // Distingue las relaciones jerarquicas de contencion.
     } else if (feature instanceof Containment) {
+        // Declara la entrada estructural resultante.
         StatementInputSpec input =
+            // Copia tipo, cardinalidad y metadatos de interfaz.
             convertContainment((Containment) feature);
+        // Incorpora la entrada de sentencias al bloque.
         bt.getStatementInputs().add(input);
+        // Conserva su posicion respecto de las demas entradas.
         bt.getOrderedInputNames().add(input.getName());
+    // Distingue las referencias a objetos existentes.
     } else if (feature instanceof Reference) {
+        // Declara el desplegable de referencia resultante.
         ReferenceFieldSpec reference =
+            // Copia el destino, obligatoriedad y presentacion.
             convertReference((Reference) feature);
+        // Incorpora la referencia al tipo de bloque.
         bt.getReferenceFields().add(reference);
+        // Conserva tambien su posicion visual.
         bt.getOrderedInputNames().add(reference.getName());
+    // Distingue las conexiones horizontales de valor.
     } else if (feature instanceof ValueInput) {
+        // Convierte el tipo aceptado y el posible bloque sombra.
         ValueInputSpec input = convertValueInput((ValueInput) feature);
+        // Incorpora la entrada de valor al bloque.
         bt.getValueInputs().add(input);
+        // Registra su nombre en el orden comun.
         bt.getOrderedInputNames().add(input.getName());
+    // Finaliza la alternativa aplicada a la caracteristica.
     }
+// Finaliza el recorrido de la clase.
 }
 \end{lstlisting}
 
-\begin{table}[htbp]
+\begin{table}[H]
   \centering
   \small
   \begin{tabular}{|L{0.30\textwidth}|L{0.30\textwidth}|L{0.26\textwidth}|}
@@ -727,24 +923,42 @@ contenido textual. El Listado \ref{lst:entrada-generador-xtend} reproduce el
 método de entrada: cada función \texttt{generate*} devuelve una cadena y el mapa
 conserva la relación entre esa cadena y su fichero de destino.
 
-\begin{lstlisting}[captionpos=t, caption={Método de entrada de \texttt{BlocklyCodeGenerator.xtend}}, label={lst:entrada-generador-xtend}]
+\begin{lstlisting}[captionpos=t, caption={Método de entrada de \texttt{BlocklyCodeGenerator.xtend} comentado línea a línea}, label={lst:entrada-generador-xtend}]
+// Declara la operacion que recibe el modelo intermedio comun.
 def Map<String, String> generate(EditorSpec spec) {
+    // Crea un mapa que conserva el orden de los artefactos.
     val files = new LinkedHashMap<String, String>()
+    // Obtiene el nombre base o usa domain si no esta definido.
     val base = spec.domainName ?: "domain"
+    // Genera las definiciones JSON de los bloques.
     files.put(base + "_blocks.js", generateBlocksJs(spec))
+    // Genera la paleta y sus categorias.
     files.put(base + "_toolbox.js", generateToolboxJs(spec))
+    // Genera las funciones de exportacion de cada bloque.
     files.put(base + "_generators.js", generateGeneratorsJs(spec))
+    // Genera las reglas de validacion del workspace.
     files.put(base + "_validations.js", generateValidationsJs(spec))
+    // Genera la pagina modular del editor.
     files.put(base + "_editor.html", generateEditorHtml(spec))
+    // Genera la pagina autonoma de demostracion.
     files.put(base + "_standalone.html", generateStandaloneHtml(spec))
+    // Registra la pagina para editar reglas visualmente.
     files.put("validation_workspace.html",
+        // Delega su contenido en el generador especializado.
         ValidationWorkspaceHtmlGenerator.generate(spec))
+    // Registra la representacion serializada de las reglas.
     files.put("validation_blocks.json",
+        // Convierte las validaciones en arboles de bloques.
         ValidationBlockModelGenerator.generate(spec))
+    // Registra el evaluador JavaScript de esos arboles.
     files.put("validation_runtime.js",
+        // Emite JavaScript clasico compatible con el navegador.
         ValidationRuntimeGenerator.generateClassicJs(spec))
+    // Genera un modelo inicial para probar el editor.
     files.put("sample_model.json", SampleModelGenerator.generate(spec))
+    // Devuelve rutas y contenidos sin escribir todavia en disco.
     return files
+// Finaliza la operacion principal del generador.
 }
 \end{lstlisting}
 
@@ -895,18 +1109,30 @@ evitan que esa escritura genere un ciclo de notificaciones. El Listado
 \ref{lst:listener-runtime-blockly} resume el listener compartido que mantiene
 referencias, validaciones y vista de salida después de cada cambio estructural.
 
-\begin{lstlisting}[caption={Actualización reactiva del editor generado}, label={lst:listener-runtime-blockly}]
+\begin{lstlisting}[caption={Actualización reactiva del editor generado comentada línea a línea}, label={lst:listener-runtime-blockly}]
+// Registra una funcion que recibe cada cambio del workspace.
 workspace.addChangeListener(function(event) {
+    // Filtra los movimientos de bloques.
     if (event.type === Blockly.Events.BLOCK_MOVE ||
+        // Incluye la creacion de un bloque.
         event.type === Blockly.Events.BLOCK_CREATE ||
+        // Incluye la eliminacion de un bloque.
         event.type === Blockly.Events.BLOCK_DELETE ||
+        // Incluye los cambios de campos y propiedades.
         event.type === Blockly.Events.BLOCK_CHANGE) {
+        // Reconstruye las opciones de referencias disponibles.
         updateReferenceDropdowns(workspace);
+        // Mantiene los dos extremos de las referencias opuestas.
         synchronizeOppositeReferences(workspace, event);
+        // Comprueba que el runtime de validacion este cargado.
         if (typeof applyValidationWarnings === 'function')
+            // Recalcula y muestra los avisos de validacion.
             applyValidationWarnings(workspace);
+        // Comprueba que exista la vista de salida.
         if (typeof updateOutput === 'function') updateOutput();
+    // Finaliza la reaccion ante eventos estructurales.
     }
+// Finaliza y registra la funcion listener.
 });
 \end{lstlisting}
 
@@ -1031,9 +1257,12 @@ puntos de acceso utilizados para la entrega.
 El bundle principal expone tres entradas Java ejecutables sin el workbench,
 resumidas en el Listado \ref{lst:entradas-standalone}.
 
-\begin{lstlisting}[caption={Interfaces de los puntos de entrada standalone}, label={lst:entradas-standalone}]
+\begin{lstlisting}[caption={Interfaces comentadas de los puntos de entrada standalone}, label={lst:entradas-standalone}]
+// Genera desde un EPackage cargado de un fichero Ecore.
 EcoreToBlocklyMain <file.ecore> [output-dir]
+// Genera desde un DomainModel analizado por Xtext.
 Model2BlocklyToBlocklyMain <file.m2b> [output-dir]
+// Aplica o simula cambios de validacion sobre una fuente.
 ValidationPatchMain --source <file> --validation <json> [options]
 \end{lstlisting}
 
@@ -1067,7 +1296,7 @@ generar el editor.
 \section{Pruebas de implementación}
 \label{sec:implementacion-pruebas}
 
-La implementación incluye 142 métodos de prueba JUnit~5. El recuento se realiza
+La implementación incluye 144 métodos de prueba JUnit~5. El recuento se realiza
 sobre las seis clases del directorio \texttt{test} y se distribuye como muestra
 la Tabla \ref{tab:pruebas-implementacion}.
 
@@ -1080,12 +1309,12 @@ la Tabla \ref{tab:pruebas-implementacion}.
     \hline
     \texttt{BlocklyCodeGeneratorTest} & 60 \\
     \texttt{BlocklyEditorSpecTest} & 27 \\
-    \texttt{DomainModelAdapterTest} & 6 \\
+    \texttt{DomainModelAdapterTest} & 8 \\
     \texttt{EcoreAdapterTest} & 39 \\
     \texttt{GeneratedBlocklySpecModelTest} & 5 \\
     \texttt{Model2BlocklyValidatorBridgeTest} & 5 \\
     \hline
-    Total & 142 \\
+    Total & 144 \\
     \hline
   \end{tabular}
   \caption{Distribución de las pruebas JUnit de implementación}
@@ -1110,8 +1339,12 @@ aplicación del parche, su idempotencia y una nueva generación Ecore.
 \texttt{verify:domain-xmi} valida con EMF el XMI de dominio exportado, mientras
 que \texttt{smoke} abre con Playwright las salidas AppMaker de Ecore y
 \texttt{.m2b}, carga el modelo de ejemplo y comprueba el estado observable del
-editor. De este modo se prueban por separado los contratos Java, el empaquetado
-Eclipse y la ejecución real en navegador.
+editor. Finalmente, \texttt{verify:feature-pairs} ejecuta los cuatro pares
+acotados, compara canónicamente los dos \texttt{EditorSpec} de cada dominio,
+comprueba los artefactos principales y somete los ocho editores a la misma
+prueba de navegador. De este modo se prueban por separado los contratos Java,
+la equivalencia de las rutas, el empaquetado Eclipse y la ejecución real en
+navegador.
 
 \section{Resumen de implementación}
 \label{sec:resumen-implementacion}

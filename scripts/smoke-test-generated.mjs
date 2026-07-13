@@ -12,6 +12,7 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'
 
 const options = {
   allowIssues: false,
+  generic: false,
   headed: false,
 };
 
@@ -23,6 +24,7 @@ const defaultTargets = [
 const positional = [];
 for (const arg of process.argv.slice(2)) {
   if (arg === '--allow-issues') options.allowIssues = true;
+  else if (arg === '--generic') options.generic = true;
   else if (arg === '--headed') options.headed = true;
   else if (arg === '--help' || arg === '-h') {
     printUsage();
@@ -69,6 +71,7 @@ function printUsage() {
 
 Options:
   --allow-issues   Do not fail when the generated editor reports validation issues.
+  --generic        Use domain-neutral assertions for compact feature examples.
   --headed         Show the browser while running the smoke test.
   -h, --help       Show this help.
 
@@ -93,7 +96,9 @@ async function resolveTarget(input) {
   const html = await findStandaloneHtml(absolute);
   if (!html) throw new Error(`No *_standalone.html found in ${input} or ${input}/html`);
   return {
-    name: path.basename(absolute),
+    name: options.generic
+      ? `${path.basename(path.dirname(absolute))}/${path.basename(absolute)}`
+      : path.basename(absolute),
     dir: absolute,
     html,
   };
@@ -222,7 +227,7 @@ async function testTarget(browser, baseUrl, target, opts) {
     const previewButton = page.getByRole('button', { name: 'Preview', exact: true });
     if (await previewButton.count()) {
       await previewButton.click();
-      const strictPreview = target.name.includes('ecore');
+      const strictPreview = !opts.generic && target.name.includes('ecore');
       await page.waitForFunction((strict) => {
         const preview = document.getElementById('previewView');
         if (!preview) return false;
@@ -257,7 +262,7 @@ async function testTarget(browser, baseUrl, target, opts) {
       await validationFrame.locator('.blocklySvg').waitFor({ state: 'visible', timeout: 10000 });
       const ruleCountText = (await validationFrame.locator('#ruleCount').textContent({ timeout: 10000 })) || '';
       const draggableCount = await validationFrame.locator('.blocklyDraggable').count();
-      if (!/\d+\s+rules/.test(ruleCountText) || draggableCount === 0) {
+      if (!/\d+\s+rules?/.test(ruleCountText) || draggableCount === 0) {
         throw new Error(`Validation Blocks tab did not render Blockly rules. ruleCount="${ruleCountText}", blocks=${draggableCount}`);
       }
       await page.waitForFunction(() => {
@@ -288,13 +293,19 @@ async function testTarget(browser, baseUrl, target, opts) {
         return iframe?.contentWindow?.validationSourceSnippets?.() || '';
       });
       const expectedMustFollow = target.name.includes('ecore') ? 'must follow Alert' : 'must follow TextLabel';
-      if (!sourceSnippets.includes('=== Ecore ===')
-        || !sourceSnippets.includes('=== Model2Blockly Source ===')
-        || !sourceSnippets.includes(expectedMustFollow)
-        || !sourceSnippets.includes('<eAnnotations source="validation">')) {
+      const genericSourcesOk = opts.generic
+        && sourceSnippets.includes('=== Ecore ===')
+        && sourceSnippets.includes('=== Model2Blockly Source ===');
+      const appMakerSourcesOk = !opts.generic
+        && sourceSnippets.includes('=== Ecore ===')
+        && sourceSnippets.includes('=== Model2Blockly Source ===')
+        && sourceSnippets.includes(expectedMustFollow)
+        && sourceSnippets.includes('<eAnnotations source="validation">');
+      if (!genericSourcesOk && !appMakerSourcesOk) {
         throw new Error('Validation source snippets were not generated as expected.');
       }
-      await page.evaluate(() => {
+      const forcedTargetType = state.roots[0];
+      await page.evaluate((targetType) => {
         const iframe = document.querySelector('#validationBlocksView iframe');
         const source = iframe.contentWindow.workspaceToValidationBlockModel();
         const edited = {
@@ -305,13 +316,13 @@ async function testTarget(browser, baseUrl, target, opts) {
           rules: [{
             name: 'smoke_force_app_failure',
             validationType: 'EXPRESSION',
-            targetType: 'App',
+            targetType,
             message: 'Forced sync test',
             blockTree: {
               type: 'validation_rule',
               fields: {
                 NAME: 'smoke_force_app_failure',
-                TARGET: 'App',
+                TARGET: targetType,
                 VALIDATION_TYPE: 'EXPRESSION',
                 MESSAGE: 'Forced sync test',
               },
@@ -325,7 +336,7 @@ async function testTarget(browser, baseUrl, target, opts) {
           }],
         };
         iframe.contentWindow.loadValidationBlockModel(edited);
-      });
+      }, forcedTargetType);
       await page.waitForFunction(() => {
         const issues = document.getElementById('issuesView')?.textContent || '';
         const activeRules = window.__activeValidationBlockModel?.rules || [];

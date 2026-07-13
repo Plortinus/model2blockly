@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="fieldsUi"
+    nsURI="http://www.example.org/fieldsui"
+    nsPrefix="fieldsui">
+
+  <eClassifiers xsi:type="ecore:EClass" name="ContentForm">
+    <eAnnotations source="blockly">
+      <details key="colour" value="180"/>
+      <details key="category" value="UI/Content"/>
+      <details key="tooltip" value="Content and control field examples."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Content form"/>
+    </eAnnotations>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Welcome">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Title"/>
+        <details key="help" value="Heading shown to the user."/>
+        <details key="placeholder" value="Enter a heading"/>
+        <details key="group" value="Content"/>
+        <details key="order" value="1"/>
+        <details key="variant" value="prominent"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Short description">
+      <eAnnotations source="ui">
+        <details key="widget" value="textarea"/>
+        <details key="label" value="Description"/>
+        <details key="group" value="Content"/>
+        <details key="order" value="2"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="quantity"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="3">
+      <eAnnotations source="blockly">
+        <details key="min" value="0"/>
+        <details key="max" value="10"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="number"/>
+        <details key="label" value="Quantity"/>
+        <details key="group" value="Controls"/>
+        <details key="order" value="3"/>
+        <details key="readonly" value="true"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="opacity"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
+        defaultValueLiteral="0.75">
+      <eAnnotations source="blockly">
+        <details key="min" value="0"/>
+        <details key="max" value="1"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="slider"/>
+        <details key="label" value="Opacity"/>
+        <details key="group" value="Appearance"/>
+        <details key="order" value="4"/>
+        <details key="variant" value="compact"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enabled"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true">
+      <eAnnotations source="ui">
+        <details key="widget" value="switch"/>
+        <details key="label" value="Enabled"/>
+        <details key="group" value="Controls"/>
+        <details key="order" value="5"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="confirmed"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false">
+      <eAnnotations source="ui">
+        <details key="widget" value="checkbox"/>
+        <details key="label" value="Confirmed"/>
+        <details key="group" value="Controls"/>
+        <details key="order" value="6"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mode"
+        eType="#//Mode" defaultValueLiteral="simple">
+      <eAnnotations source="ui">
+        <details key="widget" value="select"/>
+        <details key="label" value="Mode"/>
+        <details key="group" value="Controls"/>
+        <details key="order" value="7"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alignment"
+        eType="#//Alignment" defaultValueLiteral="left">
+      <eAnnotations source="ui">
+        <details key="widget" value="radio"/>
+        <details key="label" value="Alignment"/>
+        <details key="group" value="Appearance"/>
+        <details key="order" value="8"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tags"
+        lowerBound="1" upperBound="3"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="new,featured">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Tags"/>
+        <details key="help" value="Comma-separated labels."/>
+        <details key="group" value="Content"/>
+        <details key="order" value="9"/>
+        <details key="variant" value="compact"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="internalCode"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="FORM-01">
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Internal code"/>
+        <details key="group" value="System"/>
+        <details key="order" value="10"/>
+        <details key="hidden" value="true"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="VisualBadge">
+    <eAnnotations source="blockly">
+      <details key="colour" value="45"/>
+      <details key="category" value="UI/Appearance"/>
+      <details key="message0" value="badge %1 angle %2 icon %3 %4"/>
+      <details key="tooltip" value="Visual Blockly field examples."/>
+      <details key="helpUrl" value="https://developers.google.com/blockly"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="Visual badge"/>
+    </eAnnotations>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="accent"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="#1f6feb">
+      <eAnnotations source="blockly">
+        <details key="type" value="field_colour"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="color"/>
+        <details key="label" value="Accent"/>
+        <details key="order" value="1"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rotation"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="45">
+      <eAnnotations source="blockly">
+        <details key="type" value="field_angle"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="angle"/>
+        <details key="label" value="Rotation"/>
+        <details key="order" value="2"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="icon"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Blockly">
+      <eAnnotations source="blockly">
+        <details key="type" value="field_image"/>
+        <details key="src" value="https://developers.google.com/blockly/images/logos/logo_built_on.svg"/>
+        <details key="width" value="32"/>
+        <details key="height" value="32"/>
+        <details key="alt" value="Blockly"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="image"/>
+        <details key="label" value="Icon"/>
+        <details key="order" value="3"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="caption"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Preview only">
+      <eAnnotations source="blockly">
+        <details key="type" value="field_label"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="text"/>
+        <details key="label" value="Caption"/>
+        <details key="order" value="4"/>
+        <details key="readonly" value="true"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="Mode">
+    <eLiterals name="simple" literal="simple"/>
+    <eLiterals name="advanced" value="1" literal="advanced"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="Alignment">
+    <eLiterals name="left" literal="left"/>
+    <eLiterals name="center" value="1" literal="center"/>
+    <eLiterals name="right" value="2" literal="right"/>
+  </eClassifiers>
+
+</ecore:EPackage>

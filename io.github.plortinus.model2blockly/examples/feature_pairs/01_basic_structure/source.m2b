@@ -1,0 +1,23 @@
+domain BasicStructure
+
+class Board inputsInline false {
+  attribute name : string [0..1] default "Sprint board"
+  contains WorkItem items [1..4]
+}
+
+abstract class WorkItem inputsInline false {
+}
+
+class Task extends WorkItem inputsInline false {
+  attribute title : string [0..1] default "Write docs"
+  attribute priority : enum { low, medium, high } [0..1] default "medium"
+  attribute done : boolean [0..1] default "false"
+}
+
+class Note extends WorkItem inputsInline false {
+  attribute body : string [0..1] default "Remember the review"
+}
+
+class Tag inputsInline false {
+  attribute name : string [0..1] default "important"
+}

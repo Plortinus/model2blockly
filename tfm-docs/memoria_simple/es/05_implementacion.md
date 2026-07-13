@@ -88,7 +88,7 @@ Esta entrada refuerza la ruta metamodelo-céntrica, porque permite partir direct
 
 ## Pruebas de implementación
 
-La implementación incluye una batería de pruebas JUnit organizada por componente. El conjunto consta de 142 pruebas distribuidas por capas: modelo intermedio, adaptador Ecore, adaptador del DSL textual y generador HTML/JavaScript. Estas pruebas no sustituyen a la evaluación con el ejemplo conductor, pero reducen el riesgo de que el generador funcione solo por una coincidencia accidental del caso AppMaker.
+La implementación incluye una batería de pruebas JUnit organizada por componente. El conjunto consta de 144 pruebas distribuidas por capas: modelo intermedio, adaptador Ecore, adaptador del DSL textual y generador HTML/JavaScript. Estas pruebas no sustituyen a la evaluación con el ejemplo conductor, pero reducen el riesgo de que el generador funcione solo por una coincidencia accidental del caso AppMaker.
 
 Las pruebas del modelo intermedio verifican valores por defecto, filtrado de bloques abstractos, tipos de campo, conexiones y metadatos de código. Las pruebas del adaptador Ecore comprueban el mapeo de clases, atributos, referencias, cardinalidades, anotaciones, conexiones y validaciones. Las pruebas del adaptador DSL verifican atributos y referencias obligatorias, etiquetas de referencia y metadatos de generación de código. Las pruebas del generador HTML/JavaScript revisan que los ficheros generados contengan las construcciones esperadas de Blockly, las validaciones, las referencias y la exportación de código.
 

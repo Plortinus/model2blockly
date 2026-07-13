@@ -43,8 +43,8 @@ public class DomainModelAdapter {
 
 		convertCategories(domain, spec);
 		convertClasses(domain, spec);
-		convertConstraints(domain, spec);
 		convertValidations(domain, spec);
+		convertConstraints(domain, spec);
 		generateCardinalityValidations(spec);
 		generateRequiredValidations(spec);
 		generateFieldCardinalityValidations(spec);

@@ -1,0 +1,41 @@
+domain Relations
+
+category Relations colour 260
+
+class Workflow category Relations colour 260 inputsInline false {
+  attribute name : string [0..1] default "Review workflow"
+  contains Element elements [1..6]
+    widget slot uiLabel "Elements" order 2 variant default
+}
+
+abstract class Element category Relations colour 120 inputsInline false {
+}
+
+class Card extends Element category Relations colour 120 inputsInline false {
+  attribute cardId : string [1..1] default "card-1" modelId
+  value TextExpression content shadow TextLiteral
+    widget expression-slot uiLabel "Content" order 2 variant default
+  attribute title : string [0..1] default "Review"
+  reference Link outgoing [0..3] opposite source unique ordered
+    widget reference-select uiLabel "Outgoing links" order 4 variant default
+    referenceLabelField linkId
+}
+
+class Link extends Element category Relations colour 120 inputsInline false {
+  attribute linkId : string [1..1] default "link-1" modelId
+  reference Card source [1..1] opposite outgoing required unique ordered
+    widget reference-select uiLabel "Source card" order 2 variant default
+    referenceLabelField title
+  attribute description : string [0..1] default "Continue"
+  reference Card target [1..1] required nonUnique unordered
+    widget reference-select uiLabel "Target card" order 4 variant default
+    referenceLabelField title
+}
+
+abstract output class TextExpression category Relations colour 230 inputsInline false {
+}
+
+output as TextExpression class TextLiteral extends TextExpression
+  category Relations colour 230 inputsInline false {
+  attribute textValue : string [0..1] default "Ready"
+}

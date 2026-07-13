@@ -210,12 +210,12 @@ aplicación AppMaker, sino la definición del lenguaje de bloques AppMaker que s
 transforma a \texttt{EditorSpec}.
 
 Para que el caso de estudio sea revisable, la memoria no se limita a describir
-AppMaker de forma narrativa. El caso se documenta con fragmentos de código de
-entrada, fragmentos de modelos generados y capturas de pantalla de los editores.
-Los Listados \ref{lst:appmaker-dsl} y \ref{lst:appmaker-ecore} muestran partes
-representativas del DSL textual \texttt{.m2b} y de la especificación Ecore
-evaluada. El Listado
-\ref{lst:appmaker-xmi} muestra el modelo intermedio obtenido y el Listado
+AppMaker de forma narrativa. La correspondencia entre las dos notaciones de
+entrada se explicó con un ejemplo acotado en el Listado
+\ref{lst:relations-dsl} y la Figura \ref{fig:ecore-relations-acotado}; se evita
+así reproducir como XML el metamodelo AppMaker completo. En este capítulo, el
+Listado \ref{lst:appmaker-xmi} muestra el modelo intermedio obtenido para el caso
+de estudio y el Listado
 \ref{lst:appmaker-generated-code} muestra un fragmento del generador JavaScript
 emitido para uno de los bloques del dominio. Las Figuras
 \ref{fig:appmaker-ecore-editor}, \ref{fig:appmaker-dsl-editor},
@@ -389,7 +389,7 @@ revisados, lo que aporta una comprobación reproducible sobre la corrección
 sintáctica de la salida JavaScript.
 
 La segunda verificación es la existencia de pruebas JUnit por capa. El proyecto
-incluye 142 pruebas distribuidas en seis clases. La Tabla
+incluye 144 pruebas distribuidas en seis clases. La Tabla
 \ref{tab:pruebas-evaluacion} resume su cobertura.
 
 \begin{table}[h]
@@ -404,7 +404,7 @@ incluye 142 pruebas distribuidas en seis clases. La Tabla
     \texttt{BlocklyEditorSpec}, XMI intermedio y modelo EMF generado. \\
     Adaptador Ecore & 39 & Conversión desde Ecore, anotaciones,
     referencias, conexiones y validaciones. \\
-    Adaptador textual \texttt{.m2b} & 6 & Conversión desde la sintaxis textual,
+    Adaptador textual \texttt{.m2b} & 8 & Conversión desde la sintaxis textual,
     campos obligatorios, referencias y metadatos de código. \\
     Generador HTML/JavaScript & 60 & Generación HTML/JavaScript,
     bloques, toolbox, validaciones, referencias y exportación. \\
@@ -427,10 +427,11 @@ site, versión \texttt{1.0.9.qualifier}, entorno \texttt{JavaSE-21} y presencia 
 artefactos generados. Los scripts \texttt{verify:docs},
 \texttt{verify:domain-xmi} y \texttt{verify:patch} cubren documentación, carga
 EMF del XMI de instancia exportado y el flujo de edición/aplicación de reglas de
-validación.
-También existe un \emph{smoke test} de navegador para cargar los editores
-generados, tratado como verificación complementaria porque depende de disponer de
-Playwright en el entorno local.
+validación. El script \texttt{verify:feature-pairs} añade una comparación
+canónica de \texttt{EditorSpec} para los cuatro dominios acotados y exige los
+mismos artefactos principales en las dos rutas. También ejecuta ocho
+\emph{smoke tests} de navegador ---uno por cada fuente Ecore y \texttt{.m2b}---
+con Playwright.
 
 \section{Resultados frente a los objetivos}
 \label{sec:resultados-objetivos}
@@ -456,7 +457,8 @@ específicos y los resultados observados en el ejemplo conductor.
     workspace visual de reglas, personalización de interfaz y plantillas de
     código. \\
     OE7 & La solución se contrasta con AppMaker por las dos rutas de entrada y
-    con 142 pruebas automáticas organizadas por capa. \\
+    con cuatro pares equivalentes, ocho pruebas de navegador y 144 pruebas
+    automáticas organizadas por capa. \\
     \hline
   \end{tabular}
   \caption{Resultados de evaluación frente a los objetivos}

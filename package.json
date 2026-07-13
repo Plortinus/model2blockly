@@ -11,6 +11,7 @@
     "verify:docs": "node scripts/verify-docs-i18n.mjs",
     "smoke": "node scripts/smoke-test-generated.mjs",
     "verify:domain-xmi": "node scripts/verify-domain-xmi.mjs",
+    "verify:feature-pairs": "node scripts/verify-feature-pairs.mjs",
     "verify:plugin": "node scripts/verify-eclipse-plugin.mjs",
     "verify:patch": "node scripts/verify-validation-patch.mjs"
   },

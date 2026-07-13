@@ -22,7 +22,7 @@ La cuarta aportación es el DSL textual. Esta ruta facilita definir dominios de 
 
 La quinta aportación es la generación de editores completos. La salida HTML/JavaScript produce definiciones de bloques, toolbox, generadores, validaciones y páginas HTML autocontenidas que pueden abrirse directamente en el navegador.
 
-Finalmente, el trabajo aporta una evaluación con un ejemplo conductor y pruebas automáticas. AppMaker se describe tanto con el DSL textual como con Ecore anotado, lo que permite comparar las dos rutas de entrada sobre el mismo dominio. Las 142 pruebas JUnit organizadas por capa refuerzan la confianza en el modelo intermedio, los adaptadores y los generadores.
+Finalmente, el trabajo aporta una evaluación con un ejemplo conductor y pruebas automáticas. AppMaker se describe tanto con el DSL textual como con Ecore anotado, lo que permite comparar las dos rutas de entrada sobre el mismo dominio. Las 144 pruebas JUnit organizadas por capa refuerzan la confianza en el modelo intermedio, los adaptadores y los generadores.
 
 ## Conclusiones por objetivos
 

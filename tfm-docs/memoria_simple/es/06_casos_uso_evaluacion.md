@@ -80,14 +80,16 @@ La cobertura muestra que AppMaker no es solo una demostración visual. El ejempl
 
 Además del ejemplo conductor, se han realizado verificaciones técnicas sobre los artefactos generados y sobre el código del proyecto. La primera verificación consiste en comprobar que los ficheros JavaScript generados no contienen errores de sintaxis. Para ello se ha usado una comprobación sintáctica de Node.js sobre la salida generada. No se detectaron errores de sintaxis en los ficheros revisados, lo que aporta una comprobación reproducible sobre la corrección sintáctica de la salida JavaScript.
 
-La segunda verificación es la existencia de pruebas JUnit por capa. El proyecto incluye 142 pruebas distribuidas de la siguiente forma:
+La segunda verificación es la existencia de pruebas JUnit por capa. El proyecto incluye 144 pruebas distribuidas de la siguiente forma:
 
 | Capa probada | Número | Cobertura principal |
 |---|---:|---|
-| Modelo intermedio | 26 | Tipos, valores por defecto y conexiones. |
+| Modelo intermedio | 27 | Tipos, valores por defecto y conexiones. |
+| Serialización y modelo generado | 5 | Carga del metamodelo común, XMI intermedio y modelo EMF generado. |
 | Adaptador Ecore | 39 | Conversión desde Ecore, anotaciones, referencias, conexiones y validaciones. |
-| Adaptador del DSL textual | 5 | Conversión desde el DSL textual, campos obligatorios, referencias y metadatos de código. |
+| Adaptador del DSL textual | 8 | Conversión desde el DSL textual, campos obligatorios, referencias y metadatos de código. |
 | Generador HTML/JavaScript | 60 | Generación HTML/JavaScript, bloques, toolbox, validaciones, referencias y exportación. |
+| Validación DSL | 5 | Diagnósticos del DSL antes de generar el editor. |
 
 La organización de las pruebas sigue la misma división que la arquitectura. Si falla una prueba del adaptador Ecore, el problema está en la ruta de entrada. Si falla una prueba del generador HTML/JavaScript, el problema está en la salida. Si falla una prueba del modelo intermedio, puede haberse roto el contrato común entre capas.
 
@@ -101,7 +103,7 @@ La organización de las pruebas sigue la misma división que la arquitectura. Si
 | OE4 | Ambas rutas pasan por el modelo intermedio común, lo que permite reutilizar generadores. |
 | OE5 | Cada ruta produce editores HTML/JavaScript con bloques, toolbox, validaciones y páginas de edición. |
 | OE6 | El ejemplo incluye referencias dinámicas, validaciones, personalización de interfaz y plantillas de código. |
-| OE7 | La solución se contrasta con AppMaker por dos rutas y con 142 pruebas automáticas organizadas por capa. |
+| OE7 | La solución se contrasta con AppMaker por dos rutas y con 144 pruebas automáticas organizadas por capa. |
 
 La evaluación respalda la idea central del trabajo dentro del alcance definido: es viable generar editores Blockly desde metamodelos o desde un DSL textual, y mantener una arquitectura común. La evidencia principal es que un mismo dominio se procesa con dos rutas de entrada, una misma representación intermedia y los mismos generadores.
 

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.plortinus.model2blockly.adapter.DomainModelAdapter;
 import io.github.plortinus.model2blockly.model2Blockly.Attribute;
+import io.github.plortinus.model2blockly.model2Blockly.CategoryDef;
 import io.github.plortinus.model2blockly.model2Blockly.Model2BlocklyFactory;
 import io.github.plortinus.model2blockly.model2Blockly.ClassDef;
 import io.github.plortinus.model2blockly.model2Blockly.Containment;
@@ -13,17 +14,35 @@ import io.github.plortinus.model2blockly.model2Blockly.Reference;
 import io.github.plortinus.model2blockly.model2Blockly.SimpleType;
 import io.github.plortinus.model2blockly.model2Blockly.SimpleTypeName;
 import io.github.plortinus.model2blockly.model2Blockly.UiOptions;
+import io.github.plortinus.model2blockly.model2Blockly.ValidationDef;
+import io.github.plortinus.model2blockly.model2Blockly.ValidationKind;
 import io.github.plortinus.model2blockly.model2Blockly.ValueInput;
 import io.github.plortinus.model2blockly.blocklyspec.BlockTypeSpec;
 import io.github.plortinus.model2blockly.blocklyspec.BlocklyEditorSpec;
 import io.github.plortinus.model2blockly.blocklyspec.ValidationExpressionSpec;
 import io.github.plortinus.model2blockly.blocklyspec.ValidationSpec;
+import io.github.plortinus.model2blockly.naming.Model2BlocklyQualifiedNameProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.eclipse.xtext.naming.QualifiedName;
 
 class DomainModelAdapterTest {
 
 	private final Model2BlocklyFactory factory = Model2BlocklyFactory.eINSTANCE;
+
+	@Test
+	@DisplayName("Nested DSL categories have simple names that class references can resolve")
+	void testNestedCategoryQualifiedName() {
+		CategoryDef root = factory.createCategoryDef();
+		root.setName("UI");
+		CategoryDef child = factory.createCategoryDef();
+		child.setName("Content");
+		root.getSubcategories().add(child);
+
+		QualifiedName name = new Model2BlocklyQualifiedNameProvider().qualifiedName(child);
+
+		assertEquals(QualifiedName.create("Content"), name);
+	}
 
 	@Test
 	@DisplayName("DSL required attribute maps to FieldSpec and REQUIRED validation")
@@ -102,6 +121,38 @@ class DomainModelAdapterTest {
 		assertEquals("validation_previous_block_is", validation.getVisualBlock().getBlocklyBlockType());
 		assertEquals(ValidationExpressionSpec.Kind.PREVIOUS_BLOCK_IS, validation.getVisualExpression().getKind());
 		assertEquals("Alert", validation.getVisualExpression().getTypeName());
+	}
+
+	@Test
+	@DisplayName("DSL expression validations precede must-follow constraints like the Ecore route")
+	void testValidationPhaseOrderMatchesEcoreAdapter() {
+		DomainModel domain = factory.createDomainModel();
+		domain.setName("Story");
+
+		ClassDef page = classDef("Page");
+		ClassDef alert = classDef("Alert");
+		ClassDef navigate = classDef("Navigate");
+		domain.getClasses().add(page);
+		domain.getClasses().add(alert);
+		domain.getClasses().add(navigate);
+
+		ConstraintDef constraint = factory.createConstraintDef();
+		constraint.setName("Navigate_after_Alert");
+		constraint.setTarget(navigate);
+		constraint.setPredecessor(alert);
+		domain.getConstraints().add(constraint);
+
+		ValidationDef validation = factory.createValidationDef();
+		validation.setName("titlePresent");
+		validation.setTarget(page);
+		validation.setKind(ValidationKind.EXPRESSION);
+		validation.setExpression("has('title')");
+		domain.getValidations().add(validation);
+
+		BlocklyEditorSpec spec = DomainModelAdapter.fromDomainModel(domain);
+
+		assertEquals(ValidationSpec.ValidationType.EXPRESSION, spec.getValidations().get(0).getType());
+		assertEquals(ValidationSpec.ValidationType.MUST_FOLLOW, spec.getValidations().get(1).getType());
 	}
 
 	@Test

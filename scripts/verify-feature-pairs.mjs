@@ -1,0 +1,194 @@
+#!/usr/bin/env node
+
+import { execFileSync } from 'node:child_process';
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+} from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const projectDir = path.join(repoRoot, 'io.github.plortinus.model2blockly');
+const pairsRoot = path.join(projectDir, 'examples', 'feature_pairs');
+const eclipsePlugins = process.env.ECLIPSE_PLUGINS
+  || '/Applications/Eclipse.app/Contents/Eclipse/plugins';
+const javaHome = findJavaHome(eclipsePlugins);
+const java = path.join(javaHome, 'bin', executable('java'));
+const javac = path.join(javaHome, 'bin', executable('javac'));
+const workBase = path.join(repoRoot, '.cache');
+mkdirSync(workBase, { recursive: true });
+const workDir = mkdtempSync(path.join(workBase, 'feature-pairs-'));
+const classesDir = path.join(workDir, 'classes');
+const generatedRoot = path.join(workDir, 'generated');
+const keepOutput = process.env.KEEP_FEATURE_PAIR_OUTPUTS === '1';
+let completed = false;
+
+try {
+  const pairs = discoverPairs();
+  compileProject(classesDir);
+  const classpath = [classesDir, path.join(eclipsePlugins, '*')].join(path.delimiter);
+  const smokeTargets = [];
+
+  for (const pair of pairs) {
+    const pairOutput = path.join(generatedRoot, pair.name);
+    const ecoreOutput = path.join(pairOutput, 'ecore');
+    const dslOutput = path.join(pairOutput, 'dsl');
+
+    runJava(classpath,
+      'io.github.plortinus.model2blockly.standalone.EcoreToBlocklyMain',
+      pair.ecore, ecoreOutput);
+    runJava(classpath,
+      'io.github.plortinus.model2blockly.standalone.Model2BlocklyToBlocklyMain',
+      pair.dsl, dslOutput);
+
+    const ecoreXmi = findIntermediateXmi(ecoreOutput);
+    const dslXmi = findIntermediateXmi(dslOutput);
+    runJava(classpath,
+      'io.github.plortinus.model2blockly.standalone.FeaturePairVerifierMain',
+      ecoreXmi, dslXmi);
+
+    const artifactCount = compareGeneratedHtml(ecoreOutput, dslOutput);
+    console.log(`[PASS] ${pair.name}: canonical EditorSpec; ${artifactCount} identical HTML/JS/JSON artifacts.`);
+    smokeTargets.push(ecoreOutput, dslOutput);
+  }
+
+  execFileSync(process.execPath, [
+    path.join(repoRoot, 'scripts', 'smoke-test-generated.mjs'),
+    '--generic',
+    ...smokeTargets,
+  ], { cwd: repoRoot, stdio: 'inherit' });
+
+  console.log(`\n${pairs.length}/${pairs.length} feature pairs passed generation, canonical comparison, artifact comparison, and browser smoke tests.`);
+  completed = true;
+} finally {
+  if (completed && !keepOutput) {
+    rmSync(workDir, { recursive: true, force: true });
+  } else {
+    console.log(`Feature-pair work directory: ${workDir}`);
+  }
+}
+
+function discoverPairs() {
+  const names = readdirSync(pairsRoot)
+    .filter((name) => /^\d{2}_[a-z0-9_]+$/.test(name))
+    .filter((name) => statSync(path.join(pairsRoot, name)).isDirectory())
+    .sort();
+  if (names.length !== 4) {
+    throw new Error(`Expected 4 feature-pair directories, found ${names.length}: ${names.join(', ')}`);
+  }
+  return names.map((name) => {
+    const dir = path.join(pairsRoot, name);
+    const ecore = path.join(dir, 'source.ecore');
+    const dsl = path.join(dir, 'source.m2b');
+    if (!existsSync(ecore) || !existsSync(dsl)) {
+      throw new Error(`Pair ${name} must contain source.ecore and source.m2b.`);
+    }
+    return { name, ecore, dsl };
+  });
+}
+
+function compileProject(outputDir) {
+  mkdirSync(outputDir, { recursive: true });
+  const roots = ['src', 'src-gen', 'emf-gen', 'xtend-gen']
+    .map((name) => path.join(projectDir, name));
+  const sources = roots.flatMap((root) => collectFiles(root, (file) => file.endsWith('.java'))).sort();
+  if (sources.length === 0) throw new Error('No Java sources found for feature-pair verification.');
+
+  console.log(`Compiling ${sources.length} Java sources with ${javac} ...`);
+  execFileSync(javac, [
+    '-cp', path.join(eclipsePlugins, '*'),
+    '-d', outputDir,
+    ...sources,
+  ], { cwd: repoRoot, stdio: 'inherit' });
+
+  const generatedResourcesRoot = path.join(projectDir, 'src-gen');
+  const generatedResources = collectFiles(
+    generatedResourcesRoot,
+    (file) => !file.endsWith('.java'));
+  for (const resource of generatedResources) {
+    const target = path.join(outputDir, path.relative(generatedResourcesRoot, resource));
+    mkdirSync(path.dirname(target), { recursive: true });
+    copyFileSync(resource, target);
+  }
+}
+
+function runJava(classpath, mainClass, ...args) {
+  execFileSync(java, ['-cp', classpath, mainClass, ...args], {
+    cwd: repoRoot,
+    stdio: 'inherit',
+  });
+}
+
+function findIntermediateXmi(outputDir) {
+  const intermediate = path.join(outputDir, 'intermediate');
+  const files = readdirSync(intermediate).filter((name) => name.endsWith('_blocklyspec.xmi'));
+  if (files.length !== 1) {
+    throw new Error(`Expected one intermediate XMI in ${intermediate}, found ${files.length}.`);
+  }
+  return path.join(intermediate, files[0]);
+}
+
+function compareGeneratedHtml(leftOutput, rightOutput) {
+  const leftRoot = path.join(leftOutput, 'html');
+  const rightRoot = path.join(rightOutput, 'html');
+  const leftFiles = collectFiles(leftRoot, () => true)
+    .map((file) => path.relative(leftRoot, file))
+    .sort();
+  const rightFiles = collectFiles(rightRoot, () => true)
+    .map((file) => path.relative(rightRoot, file))
+    .sort();
+  if (JSON.stringify(leftFiles) !== JSON.stringify(rightFiles)) {
+    throw new Error(`Generated artifact sets differ:\nleft=${leftFiles.join(', ')}\nright=${rightFiles.join(', ')}`);
+  }
+  for (const relative of leftFiles) {
+    const left = readFileSync(path.join(leftRoot, relative));
+    const right = readFileSync(path.join(rightRoot, relative));
+    if (!left.equals(right)) {
+      throw new Error(`Generated artifact differs: ${relative}`);
+    }
+  }
+  return leftFiles.length;
+}
+
+function collectFiles(root, predicate) {
+  const result = [];
+  for (const entry of readdirSync(root, { withFileTypes: true })) {
+    const absolute = path.join(root, entry.name);
+    if (entry.isDirectory()) result.push(...collectFiles(absolute, predicate));
+    else if (entry.isFile() && predicate(absolute)) result.push(absolute);
+  }
+  return result;
+}
+
+function findJavaHome(pluginsDir) {
+  if (process.env.JAVA_HOME) {
+    const home = process.env.JAVA_HOME;
+    if (existsSync(path.join(home, 'bin', executable('java')))
+      && existsSync(path.join(home, 'bin', executable('javac')))) return home;
+    throw new Error(`JAVA_HOME does not contain java and javac: ${home}`);
+  }
+  if (!existsSync(pluginsDir)) {
+    throw new Error(`Eclipse plugins directory not found: ${pluginsDir}`);
+  }
+  const candidates = readdirSync(pluginsDir)
+    .filter((name) => name.startsWith('org.eclipse.justj.openjdk.hotspot.jre.full.'))
+    .sort()
+    .reverse();
+  for (const candidate of candidates) {
+    const home = path.join(pluginsDir, candidate, 'jre');
+    if (existsSync(path.join(home, 'bin', executable('java')))
+      && existsSync(path.join(home, 'bin', executable('javac')))) return home;
+  }
+  throw new Error('No Java development runtime found. Set JAVA_HOME to a JDK 21 installation.');
+}
+
+function executable(name) {
+  return process.platform === 'win32' ? `${name}.exe` : name;
+}
