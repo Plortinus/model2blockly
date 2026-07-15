@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E06_music",
+  "authoringScope": "Official in-scope definitions/toolbox/generators versus maintained .m2b; generated files and domain runtime excluded.",
+  "blockCount": 6,
+  "baseline": {
+    "total": {
+      "bytes": 19842,
+      "totalLines": 704,
+      "nonBlank": 663,
+      "nonBlankNonComment": 545
+    },
+    "editor": {
+      "bytes": 18063,
+      "totalLines": 652,
+      "nonBlank": 618,
+      "nonBlankNonComment": 509
+    },
+    "generator": {
+      "bytes": 1779,
+      "totalLines": 52,
+      "nonBlank": 45,
+      "nonBlankNonComment": 36
+    },
+    "fragmentCount": 10
+  },
+  "m2b": {
+    "bytes": 3026,
+    "totalLines": 104,
+    "nonBlank": 94,
+    "nonBlankNonComment": 94
+  },
+  "generatedArtifacts": {
+    "fileCount": 13,
+    "bytes": 322105,
+    "excludedFromAuthoringComparison": true
+  },
+  "comparison": {
+    "locReductionPercent": 82.75,
+    "byteReductionPercent": 84.75,
+    "baselineLocPerBlock": 90.83,
+    "m2bLocPerBlock": 15.67
+  }
+}

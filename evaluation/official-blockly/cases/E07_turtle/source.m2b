@@ -1,0 +1,208 @@
+domain Turtle
+codeLanguage "javascript"
+codeFileExtension "js"
+
+workspace {
+  renderer: "geras"
+  toolboxType: "category"
+  trashcan: false
+}
+
+category Turtle colour 160
+category Colour colour 20
+
+abstract class TurtleCommand {
+}
+
+abstract output class Number {
+}
+
+abstract output class Colour {
+}
+
+abstract output class Text {
+}
+
+class turtle_move extends TurtleCommand category Turtle colour 160
+  label "move"
+  message0 "%1%2"
+  tooltip "Moves the turtle forward or backward by the specified amount."
+  inputsInline false
+  code "{{DIR}}({{value:VALUE}});" {
+  attribute DIR : enum {
+    moveForward = "move forward by",
+    moveBackward = "move backward by"
+  } [0..1] default "moveForward"
+    widget select uiLabel "Direction" order 1 variant default
+  value Number VALUE
+    widget expression-slot uiLabel "Distance" order 2 variant default
+}
+
+class turtle_move_internal extends TurtleCommand category Turtle colour 160
+  label "move with fixed distance"
+  message0 "%1%2"
+  tooltip "Moves the turtle forward or backward by the specified amount."
+  inputsInline false
+  code "{{DIR}}({{VALUE}});" {
+  attribute DIR : enum {
+    moveForward = "move forward by",
+    moveBackward = "move backward by"
+  } [0..1] default "moveForward"
+    widget select uiLabel "Direction" order 1 variant default
+  attribute VALUE : enum {
+    distance20 = "20",
+    distance50 = "50",
+    distance100 = "100",
+    distance150 = "150"
+  } [0..1] default "distance20"
+    widget select uiLabel "Distance" order 2 variant default
+}
+
+class turtle_turn extends TurtleCommand category Turtle colour 160
+  label "turn"
+  message0 "turn %1 by%2"
+  tooltip "Turns the turtle left or right by the specified number of degrees."
+  inputsInline false
+  code "{{DIR}}({{value:VALUE}});" {
+  attribute DIR : enum {
+    turnRight = "right ↻",
+    turnLeft = "left ↺"
+  } [0..1] default "turnRight"
+    widget select uiLabel "Direction" order 1 variant default
+  value Number VALUE
+    widget expression-slot uiLabel "Angle" order 2 variant default
+}
+
+class turtle_turn_internal extends TurtleCommand category Turtle colour 160
+  label "turn with fixed angle"
+  message0 "turn %1 by%2"
+  tooltip "Turns the turtle left or right by the specified number of degrees."
+  inputsInline false
+  code "{{DIR}}({{VALUE}});" {
+  attribute DIR : enum {
+    turnRight = "right ↻",
+    turnLeft = "left ↺"
+  } [0..1] default "turnRight"
+    widget select uiLabel "Direction" order 1 variant default
+  attribute VALUE : enum {
+    angle1 = "1°",
+    angle45 = "45°",
+    angle72 = "72°",
+    angle90 = "90°",
+    angle120 = "120°",
+    angle144 = "144°"
+  } [0..1] default "angle1"
+    widget select uiLabel "Angle" order 2 variant default
+}
+
+class turtle_width extends TurtleCommand category Turtle colour 160
+  label "set width"
+  message0 "set width to%1"
+  tooltip "Changes the width of the pen."
+  inputsInline false
+  code "penWidth({{value:WIDTH}});" {
+  value Number WIDTH
+    widget expression-slot uiLabel "Width" order 1 variant default
+}
+
+class turtle_pen extends TurtleCommand category Turtle colour 160
+  label "pen"
+  message0 "%1"
+  tooltip "Lifts or lowers the pen, to stop or start drawing."
+  inputsInline false
+  code "{{PEN}}();" {
+  attribute PEN : enum {
+    penUp = "pen up",
+    penDown = "pen down"
+  } [0..1] default "penUp"
+    widget select uiLabel "Pen state" order 1 variant default
+}
+
+class turtle_colour extends TurtleCommand category Colour colour 20
+  label "set colour"
+  message0 "set colour to%1"
+  tooltip "Changes the colour of the pen."
+  inputsInline false
+  code "penColour({{value:COLOUR}});" {
+  value Colour COLOUR
+    widget expression-slot uiLabel "Colour" order 1 variant default
+}
+
+class turtle_colour_internal extends TurtleCommand category Colour colour 20
+  label "set fixed colour"
+  message0 "set colour to%1"
+  tooltip "Changes the colour of the pen."
+  inputsInline false
+  code "penColour('{{COLOUR}}');" {
+  attribute COLOUR : colour [0..1] default "#ff0000"
+    widget color uiLabel "Colour" order 1 variant default
+}
+
+class turtle_visibility extends TurtleCommand category Turtle colour 160
+  label "turtle visibility"
+  message0 "%1"
+  tooltip "Makes the turtle (circle and arrow) visible or invisible."
+  inputsInline false
+  code "{{VISIBILITY}}();" {
+  attribute VISIBILITY : enum {
+    hideTurtle = "hide turtle",
+    showTurtle = "show turtle"
+  } [0..1] default "hideTurtle"
+    widget select uiLabel "Visibility" order 1 variant default
+}
+
+class turtle_print extends TurtleCommand category Turtle colour 160
+  label "print"
+  message0 "print%1"
+  tooltip "Draws text in the turtle's direction at its location."
+  helpUrl "https://en.wikipedia.org/wiki/Printing"
+  inputsInline false
+  code "print({{value:TEXT}});" {
+  value Text TEXT
+    widget expression-slot uiLabel "Text" order 1 variant default
+}
+
+class turtle_font extends TurtleCommand category Turtle colour 160
+  label "font"
+  message0 "font%1font size%2%3"
+  tooltip "Sets the font used by the print block."
+  helpUrl "https://en.wikipedia.org/wiki/Font"
+  inputsInline false
+  code "font('{{FONT}}', {{FONTSIZE}}, '{{FONTSTYLE}}');" {
+  attribute FONT : enum {
+    Arial = "Arial",
+    CourierNew = "Courier New",
+    Georgia = "Georgia",
+    Impact = "Impact",
+    TimesNewRoman = "Times New Roman",
+    TrebuchetMS = "Trebuchet MS",
+    Verdana = "Verdana"
+  } [0..1] default "Arial"
+    widget select uiLabel "Font" order 1 variant default
+  attribute FONTSIZE : float [0..1] default "18" min "1" max "1000"
+    widget number uiLabel "Font size" order 2 variant default
+  attribute FONTSTYLE : enum {
+    normal = "normal",
+    italic = "italic",
+    bold = "bold"
+  } [0..1] default "normal"
+    widget select uiLabel "Font style" order 3 variant default
+}
+
+class turtle_repeat_internal extends TurtleCommand category Turtle colour 120
+  label "repeat"
+  message0 "repeat%1do%2"
+  tooltip "Do some statements several times."
+  helpUrl "https://en.wikipedia.org/wiki/For_loop"
+  inputsInline false
+  code "for (let count = 0; count < {{TIMES}}; count++) {\n{{statements:DO}}\n}" {
+  attribute TIMES : enum {
+    times3 = "3",
+    times4 = "4",
+    times5 = "5",
+    times360 = "360"
+  } [0..1] default "times3"
+    widget select uiLabel "Times" order 1 variant default
+  contains TurtleCommand DO [0..50]
+    widget slot uiLabel "Do" order 2 variant default
+}

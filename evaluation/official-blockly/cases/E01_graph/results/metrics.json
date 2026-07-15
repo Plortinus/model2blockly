@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E01_graph",
+  "authoringScope": "Official in-scope definitions/toolbox/generators versus maintained .m2b; generated files and domain runtime excluded.",
+  "blockCount": 2,
+  "baseline": {
+    "total": {
+      "bytes": 9187,
+      "totalLines": 334,
+      "nonBlank": 332,
+      "nonBlankNonComment": 329
+    },
+    "editor": {
+      "bytes": 8596,
+      "totalLines": 315,
+      "nonBlank": 314,
+      "nonBlankNonComment": 314
+    },
+    "generator": {
+      "bytes": 591,
+      "totalLines": 19,
+      "nonBlank": 18,
+      "nonBlankNonComment": 15
+    },
+    "fragmentCount": 6
+  },
+  "m2b": {
+    "bytes": 815,
+    "totalLines": 33,
+    "nonBlank": 28,
+    "nonBlankNonComment": 28
+  },
+  "generatedArtifacts": {
+    "fileCount": 13,
+    "bytes": 297747,
+    "excludedFromAuthoringComparison": true
+  },
+  "comparison": {
+    "locReductionPercent": 91.49,
+    "byteReductionPercent": 91.13,
+    "baselineLocPerBlock": 164.5,
+    "m2bLocPerBlock": 14
+  }
+}

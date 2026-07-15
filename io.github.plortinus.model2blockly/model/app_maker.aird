@@ -4,7 +4,7 @@
     <semanticResources>app_maker.ecore</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_8O2U4H6tEfGm9ZiMEjPBbQ">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_8toioH6tEfGm9ZiMEjPBbQ" name="appmaker class diagram" repPath="#_8tTygH6tEfGm9ZiMEjPBbQ" changeId="1783942181409">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_8toioH6tEfGm9ZiMEjPBbQ" name="appmaker class diagram" repPath="#_8tTygH6tEfGm9ZiMEjPBbQ" changeId="1783976253407">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="app_maker.ecore#/"/>
       </ownedRepresentationDescriptors>
@@ -3430,7 +3430,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//App/dataSources"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//App/dataSources"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96tZwH6tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96tZwn6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96tZwn6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96tZwX6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3441,7 +3443,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//App/pages"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//App/pages"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96uA1H6tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96uA1n6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96uA1n6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96uA1X6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3452,7 +3456,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//Page/components"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//Page/components"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96un4H6tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96un4n6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96un4n6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96un4X6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3474,7 +3480,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//TextLabel/content"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//TextLabel/content"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96un8X6tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96un836tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96un836tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96un8n6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3496,7 +3504,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//ImageView/url"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//ImageView/url"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96vO9H6tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96vO9n6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96vO9n6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96vO9X6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3507,7 +3517,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//ListView/source"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//ListView/source"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96vO_n6tEfGm9ZiMEjPBbQ" description="_96vO-36tEfGm9ZiMEjPBbQ" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96vPAH6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96vPAH6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96vO_36tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3518,7 +3530,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//ListView/itemTitle"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//ListView/itemTitle"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96vPBX6tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96vPB36tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96vPB36tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96vPBn6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3529,7 +3543,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//TableView/source"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//TableView/source"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96v2AH6tEfGm9ZiMEjPBbQ" description="_96vO-36tEfGm9ZiMEjPBbQ" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96v2An6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96v2An6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96v2AX6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3596,7 +3612,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//TabsView/panels"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//TabsView/panels"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96wdG36tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96wdHX6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96wdHX6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96wdHH6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3629,7 +3647,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//Toast/message"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//Toast/message"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96xEJH6tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xEJn6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xEJn6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96xEJX6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3640,7 +3660,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//Navigate/target"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//Navigate/target"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96xEK36tEfGm9ZiMEjPBbQ" description="_96vO-36tEfGm9ZiMEjPBbQ" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xELX6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xELX6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96xELH6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3651,7 +3673,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//Alert/message"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//Alert/message"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96xEMn6tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xENH6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xENH6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96xEM36tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3662,7 +3686,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//SubmitForm/endpoint"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//SubmitForm/endpoint"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96xEOX6tEfGm9ZiMEjPBbQ" description="_96vO-36tEfGm9ZiMEjPBbQ" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xEO36tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xEO36tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96xEOn6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3685,7 +3711,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//SetInputValue/input"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//SetInputValue/input"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96xrOH6tEfGm9ZiMEjPBbQ" description="_96vO-36tEfGm9ZiMEjPBbQ" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xrOn6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xrOn6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96xrOX6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3696,7 +3724,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//SetInputValue/newValue"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//SetInputValue/newValue"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96xrP36tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xrQX6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xrQX6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96xrQH6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3707,7 +3737,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//OpenUrl/url"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//OpenUrl/url"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96xrRn6tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xrSH6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96xrSH6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96xrR36tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3718,7 +3750,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//InputValue/input"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//InputValue/input"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96ySQX6tEfGm9ZiMEjPBbQ" description="_96vO-36tEfGm9ZiMEjPBbQ" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96ySQ36tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96ySQ36tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96ySQn6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3729,7 +3763,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//JoinText/left"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//JoinText/left"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96ySSH6tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96ySSn6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96ySSn6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96ySSX6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
@@ -3740,7 +3776,9 @@
       <target xmi:type="ecore:EReference" href="app_maker.ecore#//JoinText/right"/>
       <semanticElements xmi:type="ecore:EReference" href="app_maker.ecore#//JoinText/right"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_96yST36tEfGm9ZiMEjPBbQ" description="_96pvYX6tEfGm9ZiMEjPBbQ" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96ySUX6tEfGm9ZiMEjPBbQ" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_96ySUX6tEfGm9ZiMEjPBbQ" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_96ySUH6tEfGm9ZiMEjPBbQ" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>

@@ -1,0 +1,19 @@
+domain InterpreterWait
+codeLanguage "javascript"
+codeFileExtension "js"
+
+workspace {
+  renderer: "geras"
+  trashcan: false
+}
+
+category Loops colour 120
+
+class wait_seconds category Loops colour 120
+  label "wait"
+  message0 " wait %1 seconds"
+  inputsInline false
+  code "waitForSeconds({{SECONDS}});" {
+  attribute SECONDS : int [0..1] default "1" min "0" max "600"
+    widget number uiLabel "Seconds" order 1 variant default
+}

@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E08_puzzle",
+  "configuration": "Blockly Puzzle, espacio inicial completo sin paleta",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "complete-block-runtime",
+      "path": "appengine/puzzle/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/baseline/upstream/block-runtime.js",
+      "startLine": 25,
+      "endLine": 205,
+      "sha256": "c5659dda51eead76f511405cc6dc17fed98e9e6f687ad4428e3efb539668d525",
+      "kinds": [
+        "block-definition",
+        "editor-extension",
+        "domain-runtime"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": false,
+      "sharedSourceKey": null,
+      "notes": [
+        "Loaded unchanged by the baseline adapter; isCorrect belongs to excluded answer validation, so precise metric fragments below omit it."
+      ]
+    },
+    {
+      "id": "shared-colours-and-leg-menu",
+      "path": "appengine/puzzle/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/baseline/upstream/shared-editor.jsfrag",
+      "startLine": 25,
+      "endLine": 52,
+      "sha256": "7fa5c4988911088d441ef2bc6bf26dfbf2f67887ff54c07efe9f3d139db0cc35",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "animal-editor-definition",
+      "path": "appengine/puzzle/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/baseline/upstream/animal-editor.jsfrag",
+      "startLine": 54,
+      "endLine": 103,
+      "sha256": "d80238da146152897e3fd45541e0f0ae7ad96cca5328ab64b16be58944f6d8d3",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "picture-editor-definition",
+      "path": "appengine/puzzle/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/baseline/upstream/picture-editor.jsfrag",
+      "startLine": 113,
+      "endLine": 140,
+      "sha256": "6d6e43342f6a068a7bd1f7adb67d99994d6abb5ffd19443a8f51972a68780825",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "trait-editor-definition",
+      "path": "appengine/puzzle/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/baseline/upstream/trait-editor.jsfrag",
+      "startLine": 151,
+      "endLine": 196,
+      "sha256": "9b4e52eee81dc3fca709d74cf9ecc7ffc98c1a5a917abaee26ae9042f91b718a",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "puzzle-data",
+      "path": "appengine/puzzle/src/data.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/baseline/upstream/data.js",
+      "startLine": 22,
+      "endLine": 73,
+      "sha256": "d598caaf96e280acfc6a69421a8015c6e9305e4792968df85eb5b5fc6f34fa31",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "initial-workspace",
+      "path": "appengine/puzzle/src/main.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/baseline/upstream/initial-workspace.jsfrag",
+      "startLine": 72,
+      "endLine": 138,
+      "sha256": "297d8ea2d6ee42d1ff43b1d6cb74a91a20c35d7138a2d26ab1f9f10cc20dab09",
+      "kinds": [
+        "initial-workspace"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": [
+        "Positions are randomized by the official application; the adapter normalizes only the semantic inventory and non-deletable state."
+      ]
+    },
+    {
+      "id": "puzzle-editor-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/baseline/upstream/puzzle-editor-messages.jsonfrag",
+      "startLine": 51,
+      "endLine": 70,
+      "sha256": "942920912df62d3886446989a67413f6a7e7d4879bc59d548e58c4c220fb5f24",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": [
+        "Messages used by data-driven block construction; answer-dialog messages are excluded."
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "duck-picture",
+      "path": "appengine/puzzle/duck.jpg",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/assets/puzzle/duck.jpg",
+      "sha256": "2283e109848a29ef7d4a37cfdeb78f148aedd48a08bd7d03e477429443db2c58",
+      "mediaType": "image/jpeg",
+      "notes": [
+        "Image inserted by picture.populate(1)."
+      ]
+    },
+    {
+      "id": "cat-picture",
+      "path": "appengine/puzzle/cat.jpg",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/assets/puzzle/cat.jpg",
+      "sha256": "dd2350dcefc8b0a7ec197dcf0b87472177d099f99507c4aca2827e40739212bf",
+      "mediaType": "image/jpeg",
+      "notes": [
+        "Image inserted by picture.populate(2)."
+      ]
+    },
+    {
+      "id": "bee-picture",
+      "path": "appengine/puzzle/bee.jpg",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/assets/puzzle/bee.jpg",
+      "sha256": "3fee7a7867b9d77d13c3fa4ad3c7f25baf6f0b3ae1ff03fe6fd42db735ecc782",
+      "mediaType": "image/jpeg",
+      "notes": [
+        "Image inserted by picture.populate(3)."
+      ]
+    },
+    {
+      "id": "snail-picture",
+      "path": "appengine/puzzle/snail.jpg",
+      "snapshotPath": "evaluation/official-blockly/cases/E08_puzzle/assets/puzzle/snail.jpg",
+      "sha256": "846471b9884fe3aacc497b4bd115fcb673fb72771b18206b457096a9f6367536",
+      "mediaType": "image/jpeg",
+      "notes": [
+        "Image inserted by picture.populate(4)."
+      ]
+    }
+  ]
+}

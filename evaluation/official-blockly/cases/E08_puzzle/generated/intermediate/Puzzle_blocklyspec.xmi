@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Puzzle" nsURI="http://www.example.org/puzzle" nsPrefix="puzzle" toolboxType="flyout" codeLanguage="javascript" codeFileExtension="js">
+  <categories name="animal" label="animal" colour="0"/>
+  <categories name="picture" label="picture" colour="120"/>
+  <categories name="trait" label="trait" colour="240"/>
+  <blockTypes typeName="animal" label="animal" colour="120" categoryName="animal" connectionType="NONE" message0="%1picture:%2legs:%3traits:%4" inputsInline="false" tooltip="" helpUrl="https://en.wikipedia.org/wiki/Duck">
+    <orderedInputNames>NAME</orderedInputNames>
+    <orderedInputNames>PIC</orderedInputNames>
+    <orderedInputNames>LEGS</orderedInputNames>
+    <orderedInputNames>TRAITS</orderedInputNames>
+    <fields name="NAME" fieldType="LABEL" defaultValue="Duck" uiWidget="text" uiLabel="Animal" uiOrder="1" uiReadonly="true" uiVariant="default"/>
+    <fields name="LEGS" fieldType="DROPDOWN" defaultValue="choose" uiWidget="select" uiLabel="Legs" uiOrder="3" uiVariant="default">
+      <options value="choose" label="choose..."/>
+      <options value="snail" label="  0  "/>
+      <options value="duck" label="  2  "/>
+      <options value="cat" label="  4  "/>
+      <options value="bee" label="  6  "/>
+    </fields>
+    <statementInputs name="TRAITS" checkType="trait" upperBound="8" uiWidget="slot" uiLabel="Traits" uiOrder="4" uiVariant="default"/>
+    <valueInputs name="PIC" checkType="picture" uiWidget="expression-slot" uiLabel="Picture" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="picture" label="picture" colour="30" categoryName="picture" connectionType="OUTPUT" outputType="picture" message0="%1" inputsInline="false" tooltip="">
+    <orderedInputNames>PIC_IMAGE</orderedInputNames>
+    <fields name="PIC_IMAGE" fieldType="IMAGE" defaultValue="" imageUrl="puzzle/duck.jpg" imageWidth="100" imageHeight="70" imageAlt="" uiWidget="image" uiLabel="Duck" uiOrder="1" uiReadonly="true" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="trait" label="trait" colour="290" categoryName="trait" connectionType="TYPED" connectionTypeName="trait" message0="%1" inputsInline="false" tooltip="">
+    <orderedInputNames>NAME</orderedInputNames>
+    <fields name="NAME" fieldType="LABEL" defaultValue="Feathers" uiWidget="text" uiLabel="Trait" uiOrder="1" uiReadonly="true" uiVariant="default"/>
+  </blockTypes>
+  <validations type="CARDINALITY" name="animal_TRAITS" ownerType="animal" containmentName="TRAITS" upperBound="8">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="animal"/>
+      <fields name="INPUT" value="TRAITS"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="8"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="TRAITS"/>
+      <children kind="NUMBER_LITERAL" literal="8"/>
+    </visualExpression>
+  </validations>
+  <workspaceOptions key="renderer" value="geras"/>
+  <workspaceOptions key="trashcan" value="false" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

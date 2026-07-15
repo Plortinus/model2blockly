@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E08_puzzle",
+  "rules": [
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.animal.inputOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "Puzzle separa nombre, imagen, patas y rasgos en cuatro filas mediante dos input_dummy explícitos; el DSL solo materializa las entradas estructurales PIC y TRAITS."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.animal.dynamicBehaviour",
+      "status": "partial",
+      "capability": "data-driven-block-state",
+      "boundary": "model2blockly",
+      "rationale": "El modelo reproduce el estado representativo del pato, incluido su nombre y selector de patas, pero no puede ejecutar populate ni cambiar menú, ayuda y mutación según uno de los cuatro animales."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.animal.inputs.dummy:<anonymous>.present",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "Las filas dummy independientes que alojan el nombre y el selector de patas no son declarables en el metamodelo común."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.animal.inputs.value:PIC.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "El valor PIC debe referenciar una clase y por ello se restringe a picture; la conexión oficial no tiene comprobación de tipo."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.animal.inputs.value:PIC.alignment",
+      "status": "unsupported",
+      "capability": "input-alignment",
+      "boundary": "model2blockly",
+      "rationale": "La referencia alinea PIC a la derecha, mientras que el DSL no expone la alineación individual de una entrada."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.animal.inputs.value:PIC.fieldOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "Al faltar la primera fila dummy, el nombre representativo del animal se incorpora a la fila de PIC además de su etiqueta oficial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.animal.inputs.statement:TRAITS.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "La contención TRAITS se restringe a trait para preservar el metamodelo; la entrada oficial admite cualquier sentencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.animal.inputs.statement:TRAITS.fieldOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "Al no existir la fila dummy de patas, su desplegable queda unido a la entrada TRAITS junto con las etiquetas generadas."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.picture.inputOrder",
+      "status": "unsupported",
+      "capability": "named-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "La imagen y sus dimensiones se conservan, pero el DSL genera una fila dummy anónima y no permite asignarle el nombre PIC usado por Puzzle."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.picture.dynamicBehaviour",
+      "status": "partial",
+      "capability": "data-driven-block-state",
+      "boundary": "model2blockly",
+      "rationale": "El bloque generado contiene la fotografía representativa del pato con sus dimensiones exactas, pero no puede sustituirla mediante populate para gato, abeja o caracol ni persistir esa elección como mutación."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.trait.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "La clase trait produce conexiones anterior y siguiente tipadas para mantener la cadena homogénea; Puzzle deja ambas conexiones sin restricción."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.trait.dynamicBehaviour",
+      "status": "partial",
+      "capability": "data-driven-block-state",
+      "boundary": "model2blockly",
+      "rationale": "Se conserva el rasgo representativo Feathers, pero no los ocho estados seleccionables por animal y rasgo ni su serialización mediante mutación."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.present",
+      "status": "unsupported",
+      "capability": "toolbox-suppression",
+      "boundary": "model2blockly",
+      "rationale": "Puzzle no usa paleta porque sus dieciséis bloques se crean al iniciar; el DSL exige generar una paleta flyout o por categorías."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "initialWorkspace.present",
+      "status": "unsupported",
+      "capability": "initial-workspace",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no declara el inventario inicial no eliminable formado por cuatro animales, cuatro imágenes y ocho rasgos; sus posiciones aleatorias se normalizan fuera de la comparación."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.*.*",
+      "status": "mismatch",
+      "capability": "automatic-model-serializer",
+      "boundary": "model2blockly",
+      "rationale": "Puzzle es un ejercicio de asociación y no registra generadores; Model2Blockly añade serializadores JavaScript de respaldo para los tres tipos, una capacidad extra que no equivale al comportamiento oficial."
+    }
+  ]
+}

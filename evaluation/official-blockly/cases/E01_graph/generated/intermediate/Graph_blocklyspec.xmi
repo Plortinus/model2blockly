@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Graph" nsURI="http://www.example.org/graph" nsPrefix="graph" codeLanguage="javascript" codeFileExtension="js">
+  <categories name="Variables" label="Variables" colour="330"/>
+  <blockTypes typeName="Number" label="Number" abstract="true" connectionType="OUTPUT" outputType="Number" inputsInline="true"/>
+  <blockTypes typeName="graph_get_x" label="x" colour="330" categoryName="Variables" superTypeName="Number" connectionType="OUTPUT_TYPED" outputType="Number" message0="x" inputsInline="false" tooltip="Returns the value of this variable." helpUrl="https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#get" codeTemplate="x"/>
+  <blockTypes typeName="graph_set_y" label="y =" colour="330" categoryName="Variables" message0="y = %1" inputsInline="false" tooltip="Sets this variable to be equal to the input." helpUrl="https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#set" codeTemplate="y = {{value:VALUE}};">
+    <orderedInputNames>VALUE</orderedInputNames>
+    <valueInputs name="VALUE" checkType="Number" uiWidget="expression-slot" uiLabel="Value" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <workspaceOptions key="renderer" value="geras"/>
+  <workspaceOptions key="trashcan" value="false" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

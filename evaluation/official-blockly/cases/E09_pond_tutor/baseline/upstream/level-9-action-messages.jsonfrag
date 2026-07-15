@@ -1,0 +1,4 @@
+	"Pond.scanTooltip": "Scan for enemies. Specify a direction (0-360). Returns the distance to the closest enemy in that direction. Returns Infinity if no enemy found.",
+	"Pond.cannonTooltip": "Fire the cannon. Specify a direction (0-360) and a range (0-70).",
+	"Pond.swimTooltip": "Swim forward. Specify a direction (0-360).",
+	"Pond.stopTooltip": "Stop swimming. Player will slow to a stop.",

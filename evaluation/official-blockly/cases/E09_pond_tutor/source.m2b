@@ -1,0 +1,170 @@
+domain PondTutor
+codeLanguage "javascript"
+codeFileExtension "js"
+
+workspace {
+  renderer: "geras"
+  toolboxType: "category"
+  trashcan: true
+}
+
+category Pond colour 290
+category Logic colour 210
+category Loops colour 120
+category Math colour 230
+
+abstract class PondCommand {
+}
+
+abstract output class Number {
+}
+
+abstract output class Boolean {
+}
+
+output as Number class pond_scan extends Number category Pond colour 290
+  label "scan"
+  message0 "%1(%2)"
+  tooltip "Scan for enemies. Specify a direction (0-360). Returns the distance to the closest enemy in that direction. Returns Infinity if no enemy found."
+  inputsInline true
+  code "scan({{value:DEGREE}})" {
+  attribute CALL : label [0..1] default "scan"
+    widget text uiLabel "Function" readonly order 1 variant default
+  value Number DEGREE shadow pond_math_number
+    widget expression-slot uiLabel "Direction" order 2 variant default
+}
+
+class pond_cannon extends PondCommand category Pond colour 290
+  label "cannon"
+  message0 "%1(%2, %3);"
+  tooltip "Fire the cannon. Specify a direction (0-360) and a range (0-70)."
+  inputsInline true
+  code "cannon({{value:DEGREE}}, {{value:RANGE}});" {
+  attribute CALL : label [0..1] default "cannon"
+    widget text uiLabel "Function" readonly order 1 variant default
+  value Number DEGREE shadow pond_math_number
+    widget expression-slot uiLabel "Direction" order 2 variant default
+  value Number RANGE shadow pond_math_number
+    widget expression-slot uiLabel "Range" order 3 variant default
+}
+
+class pond_swim extends PondCommand category Pond colour 290
+  label "swim"
+  message0 "%1(%2);"
+  tooltip "Swim forward. Specify a direction (0-360)."
+  inputsInline true
+  code "swim({{value:DEGREE}});" {
+  attribute CALL : label [0..1] default "swim"
+    widget text uiLabel "Function" readonly order 1 variant default
+  value Number DEGREE shadow pond_math_number
+    widget expression-slot uiLabel "Direction" order 2 variant default
+}
+
+class pond_stop extends PondCommand category Pond colour 290
+  label "stop"
+  message0 "%1(%2);"
+  tooltip "Stop swimming. Player will slow to a stop."
+  inputsInline false
+  code "stop();" {
+  attribute CALL : label [0..1] default "stop"
+    widget text uiLabel "Function" readonly order 1 variant default
+  attribute EMPTY : label [0..1] default ""
+    widget text uiLabel "Empty argument" readonly order 2 variant default
+}
+
+output as Number class pond_getX extends Number category Pond colour 290
+  label "getX"
+  message0 "%1(%2)"
+  tooltip "Returns the X coordinate of the player (0 is the left edge, 100 is the right edge)."
+  inputsInline false
+  code "getX()" {
+  attribute CALL : label [0..1] default "getX"
+    widget text uiLabel "Function" readonly order 1 variant default
+  attribute EMPTY : label [0..1] default ""
+    widget text uiLabel "Empty argument" readonly order 2 variant default
+}
+
+output as Number class pond_getY extends Number category Pond colour 290
+  label "getY"
+  message0 "%1(%2)"
+  tooltip "Returns the Y coordinate of the player (0 is the bottom edge, 100 is the top edge)."
+  inputsInline false
+  code "getY()" {
+  attribute CALL : label [0..1] default "getY"
+    widget text uiLabel "Function" readonly order 1 variant default
+  attribute EMPTY : label [0..1] default ""
+    widget text uiLabel "Empty argument" readonly order 2 variant default
+}
+
+class controls_if extends PondCommand category Logic colour 210
+  label "if"
+  message0 "if (%1) {%2}"
+  tooltip "If a value is true, then do some statements."
+  helpUrl "https://github.com/RaspberryPiFoundation/blockly/wiki/IfElse"
+  inputsInline true
+  code "if ({{value:IF0}}) {\n{{statements:DO0}}\n}" {
+  value Boolean IF0
+    widget expression-slot uiLabel "Condition" order 1 variant default
+  contains PondCommand DO0 [0..50]
+    widget slot uiLabel "Do" order 2 variant default
+}
+
+output as Boolean class logic_compare extends Boolean category Logic colour 210
+  label "compare"
+  message0 "%1 %2 %3"
+  tooltip "Return true if both inputs equal each other."
+  helpUrl "https://en.wikipedia.org/wiki/Inequality_(mathematics)"
+  inputsInline true
+  code "{{value:A}} {{OP}} {{value:B}}" {
+  value Number A
+    widget expression-slot uiLabel "Left operand" order 1 variant default
+  attribute OP : enum {
+    EQ = "==",
+    NEQ = "!=",
+    LT = "‏<",
+    LTE = "‏<=",
+    GT = "‏>",
+    GTE = "‏>="
+  } [0..1] default "EQ"
+    widget select uiLabel "Operator" order 2 variant default
+  value Number B
+    widget expression-slot uiLabel "Right operand" order 3 variant default
+}
+
+output as Boolean class logic_boolean extends Boolean category Logic colour 210
+  label "boolean"
+  message0 "%1"
+  tooltip "Returns either true or false."
+  helpUrl "https://github.com/RaspberryPiFoundation/blockly/wiki/Logic#values"
+  inputsInline false
+  code "{{BOOL}}" {
+  attribute BOOL : enum {
+    TRUE = "true",
+    FALSE = "false"
+  } [0..1] default "TRUE"
+    widget select uiLabel "Boolean" order 1 variant default
+}
+
+class controls_whileUntil extends PondCommand category Loops colour 120
+  label "while"
+  message0 "while (%1) {%2}"
+  tooltip "While a value is true, then do some statements."
+  helpUrl "https://github.com/RaspberryPiFoundation/blockly/wiki/Loops#repeat"
+  inputsInline true
+  code "while ({{value:BOOL}}) {\n{{statements:DO}}\n}" {
+  value Boolean BOOL
+    widget expression-slot uiLabel "Condition" order 1 variant default
+  contains PondCommand DO [0..50]
+    widget slot uiLabel "Do" order 2 variant default
+}
+
+output as Number class pond_math_number extends Number category Math colour 230
+  label "number or angle"
+  message0 "%1"
+  tooltip "A number."
+  helpUrl "https://en.wikipedia.org/wiki/Number"
+  inputsInline false
+  code "{{NUM}}" {
+  attribute NUM : float [0..1] default "0"
+    widget number uiLabel "Number" order 1 variant default
+}

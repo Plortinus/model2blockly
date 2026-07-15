@@ -3,37 +3,34 @@
 
 Este Trabajo Fin de Máster aborda la creación de lenguajes de dominio
 específico con sintaxis basada en bloques. Bibliotecas como Blockly facilitan la
-creación de editores visuales, pero todavía que el desarrollador defina
+creación de editores visuales, pero todavía exigen que el desarrollador defina
 manualmente los bloques, los campos, las conexiones, la paleta, las
 validaciones y los generadores en JavaScript. Este esfuerzo debe repetirse cada
 vez que se necesita un editor para un nuevo dominio.
 
 Para reducir este esfuerzo, se propone Model2Blockly, un entorno generativo
-distribuido como plugin de Eclipse y como cadena de generación web. La
+distribuido como complemento de Eclipse y como cadena de generación web. La
 herramienta admite dos rutas de entrada: metamodelos Ecore enriquecidos con
-anotaciones y descripciones textuales \texttt{.m2b} definidas con Xtext. La
-ruta es un DSL de definición de lenguajes para describir qué bloques,
-campos, conexiones y validaciones debe tener el editor generado. Ambas rutas se
-normalizan en un metamodelo EMF intermedio, \texttt{EditorSpec}, que describe
-bloques, campos, categorías, entradas de valor, referencias, validaciones y
-metadatos de interfaz. Sus instancias se serializan como XMI y se recargan como
-contrato entre la transformación de modelos y la generación final. A partir de
-ese modelo se generan editores HTML/JavaScript que pueden abrirse en el navegador y
-permiten guardar, cargar, exportar JSON y XMI de instancia, mostrar avisos de
-validación e inspeccionar las reglas como bloques.
+anotaciones y descripciones textuales \texttt{.m2b} definidas con Xtext. Esta
+última es un DSL con el que el diseñador declara la estructura y presentación
+del lenguaje de bloques. Ambas rutas se normalizan en el modelo EMF intermedio
+\texttt{EditorSpec}, serializado como XMI y usado como contrato común. A partir
+de él se generan editores HTML/JavaScript con persistencia, exportación JSON/XMI
+y validaciones ejecutables en el navegador.
 
-La solución se evalúa mediante un ejemplo conductor, AppMaker, descrito tanto
-como metamodelo Ecore anotado como mediante el DSL textual \texttt{.m2b}. Este
-dominio cubre pantallas, widgets, acciones, navegación, fuentes de datos,
-contenciones, herencia, clases abstractas, referencias dinámicas, campos
-obligatorios, validaciones simples y plantillas de código. La memoria compara
-ambas formas de autoría y muestra cómo convergen en el mismo modelo
-intermedio antes de generar el editor Blockly. El proyecto incluye un update
-site p2 público, informes de generación, editores
-desplegados en GitHub Pages y 144 pruebas JUnit organizadas por capas. Los
-resultados indican que Model2Blockly permite generar editores Blockly a partir
-de descripciones de dominio de alto nivel, reduce la programación manual y
-mantiene una arquitectura MDE reutilizable.
+La evaluación externa compara Model2Blockly con diez configuraciones publicadas
+en los repositorios oficiales de Blockly. La paridad estructural ponderada del
+editor alcanza el 83,82\,\% y la de los generadores el 78,01\,\%. Frente a 4074
+LOC oficiales, los modelos \texttt{.m2b} reducen la fuente mantenida un
+72,48\,\%, o un 70,00\,\% al eliminar líneas compartidas. Los diez editores
+generados cargan sin errores, aunque todos son reproducciones parciales. En
+Graph, Maze y Turtle, ambas rutas producen descriptores estrictamente
+equivalentes. Seis pares Ecore--\texttt{.m2b} y un caso exclusivo de Ecore
+verifican la cadena generativa; 145 pruebas JUnit aportan evidencia
+complementaria. Los
+resultados respaldan la viabilidad y concisión de la propuesta dentro del
+alcance evaluado, e identifican límites en conexiones, paletas avanzadas,
+mutadores y generación con estado.
 
 \noindent\textbf{Palabras clave:} lenguajes de dominio específico, programación
 basada en bloques, Blockly, EMF, Ecore, Xtext, ingeniería dirigida por modelos.
@@ -51,28 +48,26 @@ work must be repeated whenever an editor is needed for a new domain.
 To reduce this effort, the thesis proposes Model2Blockly, a generative
 environment distributed as an Eclipse plugin and as a web generation pipeline.
 The tool supports two input routes: annotated Ecore metamodels and textual
-\texttt{.m2b} descriptions defined with Xtext. The textual route is a language-definition
-DSL for specifying the blocks, fields, connections and validations of the
-generated editor. Both routes are normalised into an intermediate EMF
-metamodel, \texttt{EditorSpec}, which describes blocks, fields, categories,
-value inputs, references, validations and interface metadata. Its instances are
-serialized as XMI and reloaded as the contract between model transformation and
-final generation. From this model, the tool generates HTML/JavaScript editors
-that can be opened in a browser and support
-saving, loading, JSON and domain instance XMI export, validation warnings, and
-inspection of validation rules as blocks.
+\texttt{.m2b} descriptions defined with Xtext. The latter is a DSL in which the
+designer declares the structure and presentation of the block language. Both
+routes are normalised into the intermediate EMF model \texttt{EditorSpec},
+serialised as XMI and used as a common contract. It drives the generation of
+browser-based HTML/JavaScript editors with persistence, JSON/XMI export and
+executable validations.
 
-The solution is evaluated through a running example, AppMaker, described both
-as an annotated Ecore metamodel and as a textual \texttt{.m2b} language
-definition. This domain covers screens, widgets, actions, navigation, data
-sources, containments, inheritance, abstract classes, dynamic references,
-required fields, simple validations and code templates. The thesis compares the
-two authoring forms and shows how they converge on the same intermediate model
-before generating the Blockly editor. In addition, the project includes a
-public p2 update site, generation reports, editors deployed through GitHub Pages,
-and 144 JUnit tests organised by architectural layer. The results indicate that
-Model2Blockly can generate Blockly editors from high-level domain descriptions,
-reduces manual programming and keeps a reusable MDE architecture.
+The external evaluation compares Model2Blockly with ten configurations
+published in the official Blockly repositories. Weighted structural editor
+parity reaches 83.82\%, while generator parity reaches 78.01\%. The official
+configurations contain 4,074 maintained LOC; the \texttt{.m2b} models reduce
+this source by 72.48\%, or 70.00\% after deduplicating shared lines. All ten
+generated editors load without errors, although all are partial reproductions.
+Graph, Maze and Turtle yield strictly equivalent descriptors through both
+routes. Six Ecore--\texttt{.m2b} pairs and an Ecore-only case verify the
+generative chain; 145 JUnit tests provide complementary evidence. The results
+support the
+feasibility and concision of the approach
+within the evaluated scope, while identifying limitations in connections,
+advanced toolboxes, mutators and stateful generation.
 
 \noindent\textbf{Keywords:} domain-specific languages, block-based programming,
 Blockly, EMF, Ecore, Xtext, model-driven engineering.

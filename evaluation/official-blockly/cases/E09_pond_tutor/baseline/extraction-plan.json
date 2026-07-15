@@ -1,0 +1,203 @@
+{
+  "caseId": "E09_pond_tutor",
+  "configuration": "Blockly Pond Tutor, nivel 9",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "domain-block-runtime",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 29,
+      "endLine": 166,
+      "snapshot": "baseline/upstream/domain-block-runtime.js",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": false,
+      "notes": ["Loaded unchanged; precise countable fragments omit health, speed and log because level 9 does not expose them."]
+    },
+    {
+      "id": "domain-shared-definition",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 29,
+      "endLine": 35,
+      "snapshot": "baseline/upstream/domain-shared-definition.jsfrag",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-9-domain-actions",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 36,
+      "endLine": 106,
+      "snapshot": "baseline/upstream/level-9-domain-actions.jsfrag",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-9-domain-coordinates",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 128,
+      "endLine": 146,
+      "snapshot": "baseline/upstream/level-9-domain-coordinates.jsfrag",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-9-domain-action-generators",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 168,
+      "endLine": 195,
+      "snapshot": "baseline/upstream/level-9-domain-action-generators.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-9-coordinate-generators",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 207,
+      "endLine": 215,
+      "snapshot": "baseline/upstream/level-9-coordinate-generators.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "adaptive-number-block",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 225,
+      "endLine": 318,
+      "snapshot": "baseline/upstream/adaptive-number-block.js",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "adaptive-number-generator",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 375,
+      "endLine": 375,
+      "snapshot": "baseline/upstream/adaptive-number-generator.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "standard-block-runtime",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 35,
+      "endLine": 226,
+      "snapshot": "baseline/upstream/standard-block-runtime.js",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": false,
+      "notes": ["Loaded unchanged; precise fragments count only the four standard types exposed at level 9."]
+    },
+    {
+      "id": "javascript-if-block",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 35,
+      "endLine": 100,
+      "snapshot": "baseline/upstream/javascript-if-block.jsfrag",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "javascript-compare-block",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 102,
+      "endLine": 137,
+      "snapshot": "baseline/upstream/javascript-compare-block.jsfrag",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "javascript-boolean-block",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 139,
+      "endLine": 161,
+      "snapshot": "baseline/upstream/javascript-boolean-block.jsfrag",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "javascript-while-block",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 198,
+      "endLine": 226,
+      "snapshot": "baseline/upstream/javascript-while-block.jsfrag",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-9-toolbox",
+      "sourcePath": "appengine/pond/tutor/src/html.js",
+      "startLine": 52,
+      "endLine": 120,
+      "snapshot": "baseline/upstream/level-9-toolbox.js",
+      "kinds": ["toolbox"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-9-initial-workspace",
+      "sourcePath": "appengine/pond/tutor/src/main.js",
+      "startLine": 77,
+      "endLine": 109,
+      "snapshot": "baseline/upstream/level-9-initial-workspace.js",
+      "kinds": ["initial-workspace"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "pond-category-message",
+      "sourcePath": "json/en.json",
+      "startLine": 15,
+      "endLine": 15,
+      "snapshot": "baseline/upstream/pond-category-message.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "standard-category-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 27,
+      "endLine": 29,
+      "snapshot": "baseline/upstream/standard-category-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-9-action-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 243,
+      "endLine": 246,
+      "snapshot": "baseline/upstream/level-9-action-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-9-coordinate-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 249,
+      "endLine": 250,
+      "snapshot": "baseline/upstream/level-9-coordinate-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    }
+  ]
+}

@@ -1,228 +1,242 @@
 \chapter{Conclusiones y trabajo futuro}
 \label{chap:conclusiones}
 
-Este Trabajo Fin de Máster ha tratado la creación de lenguajes de dominio
-específico con sintaxis basada en bloques. La motivación parte de un problema
-práctico: Blockly facilita la creación de editores visuales, pero cada dominio
-todavía requiere definir a mano bloques, campos, toolbox, conexiones,
-validaciones y generadores. El trabajo propone una alternativa basada en
-ingeniería de lenguajes y modelos: describir el dominio a alto nivel y generar
-automáticamente el editor Blockly.
+Este Trabajo Fin de Máster ha abordado un problema práctico de ingeniería de
+lenguajes: Blockly proporciona la infraestructura de edición visual, pero cada
+nuevo dominio obliga a definir bloques, campos, conexiones, paleta y
+generadores mediante las APIs de bajo nivel. Model2Blockly propone mantener esa
+información en un metamodelo Ecore anotado o en un DSL textual \texttt{.m2b},
+normalizar ambas entradas en una especificación común y generar desde ella un
+editor ejecutable.
 
-El capítulo se organiza en torno a los resultados y las perspectivas de la
-propuesta. En primer lugar, se analiza la viabilidad del enfoque y se resumen
-sus principales aportaciones. A continuación, se revisan las conclusiones
-obtenidas para cada objetivo y se presentan las limitaciones identificadas.
-Después se proponen posibles líneas de trabajo futuro y, finalmente, se ofrece
-un cierre global del trabajo realizado.
+La conclusión central es matizada. La cadena generativa resulta viable y
+reproduce una parte mayoritaria de las propiedades observadas en diez editores
+oficiales, con una fuente mantenida considerablemente menor. Sin embargo, no es
+un sustituto universal de cualquier configuración Blockly: todos los casos
+evaluados conservan diferencias concretas. Este capítulo sintetiza la evidencia,
+expone las aportaciones y el grado de cumplimiento de los objetivos, delimita
+las limitaciones y deriva de ellas las líneas de trabajo futuro.
 
 \section{Viabilidad del enfoque}
 \label{sec:viabilidad-enfoque}
 
-El trabajo desarrollado aporta evidencia de que es viable diseñar e implementar
-un entorno para la creación de lenguajes de dominio específico con sintaxis
-basada en bloques. Model2Blockly acepta metamodelos Ecore enriquecidos con
-anotaciones y modelos textuales \texttt{.m2b} definidos con Xtext. Ambas rutas
-se transforman en un modelo intermedio común, y desde él se generan editores
-Blockly ejecutables. La herramienta se materializa además como plugin Eclipse
-instalable mediante un update site p2, por lo que el enfoque no queda limitado a
-un prototipo ejecutado manualmente desde el código fuente.
+La viabilidad se apoya en tres tipos de evidencia. En primer lugar, la
+implementación completa transforma Ecore o \texttt{.m2b} en
+\texttt{EditorSpec}, serializa y valida la representación intermedia y
+genera HTML/JavaScript cargable. El complemento Eclipse, los puntos de entrada
+independientes y el sitio de actualización p2 muestran que la cadena no depende de ejecutar
+manualmente una prueba desde el código fuente.
 
-La solución aprovecha información que ya existe en una descripción de dominio.
-Las clases se convierten en tipos de bloque, los atributos en campos, las
-contenciones en entradas estructurales, las referencias en desplegables
-dinámicos y las cardinalidades en comprobaciones. Las anotaciones añaden
-metadatos de presentación. Este proceso reduce la programación manual en
-JavaScript y sigue la idea central de la ingeniería dirigida por modelos:
-utilizar modelos para especificar y generar software
-\cite{brambilla2017modelDriven,hutchinson2014industry}.
+En segundo lugar, los diez tratamientos generados de la evaluación externa se
+cargaron sin errores. La paridad estructural ponderada del editor fue
+2315/2762, un 83,82\,\%, y la de los generadores 227/291, un 78,01\,\%. Las
+especificaciones \texttt{.m2b} sumaron 1121 LOC frente a 4074 LOC oficiales, una
+reducción del 72,48\,\%. Incluso eliminando las líneas oficiales compartidas
+entre Pond Tutor y Pond, la reducción conservadora se mantuvo en el 70,00\,\%.
 
-El trabajo también refuerza la utilidad de separar lo que el dominio significa
-de la forma en que se muestra al usuario. El dominio se describe mediante Ecore
-o mediante el DSL textual \texttt{.m2b}; Blockly actúa como la representación
-visual generada para manipular ese dominio. Esta separación es coherente con la
-forma en que los lenguajes de dominio específico organizan sus conceptos y sus
-notaciones \cite{sal2024dsl}.
+En tercer lugar, Graph, Maze y Turtle produjeron descriptores estrictamente
+iguales por las rutas Ecore y \texttt{.m2b}. Esta comprobación respalda la
+separación entre los adaptadores de entrada y el contrato común. Aun así, los
+diez editores se clasificaron como reproducciones parciales. Por tanto, la
+evidencia demuestra viabilidad dentro del alcance evaluado, concisión de la
+especificación y coherencia de las rutas seleccionadas; no demuestra
+equivalencia total ni generalidad ilimitada.
 
 \section{Principales aportaciones}
 \label{sec:aportaciones}
 
-La primera aportación es una arquitectura generativa que conecta Ecore,
-\texttt{.m2b}, \texttt{EditorSpec} y Blockly. La arquitectura introduce un
-modelo intermedio, en lugar de acoplar directamente cada entrada a una salida
-concreta. Las dos rutas se normalizan hacia el mismo contrato y no requieren
-generadores separados.
+Las aportaciones principales pueden resumirse en siete elementos:
 
-La segunda aportación es el modelo intermedio común. Este
-modelo recoge los elementos necesarios para construir un editor visual: bloques,
-campos, categorías, entradas de valor, entradas de sentencias, referencias,
-validaciones, opciones de workspace y metadatos de código. También define el
-contrato entre adaptadores y generadores, se serializa como XMI y se recarga
-antes de generar la salida final.
+\begin{enumerate}
+  \item una arquitectura generativa de doble entrada que desacopla la lectura de
+  Ecore y Xtext de la generación de Blockly;
 
-La tercera aportación es la ruta Ecore. El adaptador desarrollado permite partir
-de un metamodelo y derivar una especificación de editor. Esta ruta cubre
-la parte metamodelo-céntrica del sistema: usar un metamodelo, enriquecido cuando
-sea necesario con anotaciones, para generar código basado en Blockly.
+  \item el metamodelo intermedio \texttt{EditorSpec}, usado como contrato
+  tipado, serializable y validable entre adaptadores y generadores;
 
-La cuarta aportación es la ruta textual \texttt{.m2b}. Esta ruta facilita definir
-lenguajes de bloques de forma compacta, con una sintaxis cercana a los conceptos
-que después se convertirán en bloques. También incorpora validación estática
-mediante Xtext, lo que permite detectar errores antes de generar el editor cuando
-se usa esta forma de autoría.
+  \item un adaptador Ecore que deriva bloques, campos, contenciones,
+  referencias, cardinalidades y valores predeterminados, y admite anotaciones
+  para refinar la presentación, la validación y el código;
 
-La quinta aportación es la generación de editores ejecutables. La salida
-HTML/JavaScript produce definiciones de bloques, toolbox, generadores,
-validaciones, páginas HTML autocontenidas, exportación JSON/XMI, informes de
-generación, modelos de ejemplo y una vista Blockly de las reglas de validación.
+  \item un DSL \texttt{.m2b} implementado con Xtext y un adaptador Java que
+  permite expresar de forma compacta la misma clase de especificación común;
 
-La sexta aportación es la integración práctica de la herramienta. El plugin
-Eclipse ofrece comandos para generar desde ficheros \texttt{.m2b} y
-\texttt{.ecore}, y para aplicar de vuelta a la fuente cambios soportados en las
-reglas visuales de validación. El update site y las demos publicadas facilitan la
-revisión externa del resultado.
+  \item un generador de editores HTML/JavaScript con bloques, paleta,
+  generadores, validación, persistencia, exportación JSON/XMI, modelo de ejemplo,
+  informe de generación y representación visual de reglas;
 
-Finalmente, el trabajo aporta una evaluación basada en un ejemplo conductor y
-pruebas automáticas. AppMaker se describe como metamodelo Ecore anotado y como
-fichero textual \texttt{.m2b}, lo que permite comparar las dos formas de autoría.
-Las 144 pruebas JUnit organizadas por capa aportan evidencia adicional sobre el
-comportamiento del modelo intermedio, los adaptadores y los generadores.
+  \item una integración reproducible mediante complemento Eclipse, puntos de entrada
+  independientes, artefactos intermedios trazables, sitio de actualización,
+  seis pares Ecore--\texttt{.m2b} ejecutables, un caso Ecore específico y 145
+  pruebas JUnit;
+
+  \item un corpus y un protocolo de evaluación reproducibles que comparan diez
+  configuraciones oficiales, publican descriptores y diferencias por propiedad,
+  miden la fuente mantenida y separan explícitamente el editor de la aplicación
+  de dominio que lo integra.
+\end{enumerate}
+
+La última aportación es especialmente relevante para interpretar el resultado:
+la evaluación no solo proporciona un porcentaje favorable, sino que conserva
+las diferencias y las transforma en una matriz de límites observados. De esta
+forma, la evidencia sirve tanto para respaldar la solución como para orientar su
+evolución.
 
 \section{Conclusiones por objetivos}
 \label{sec:conclusiones-objetivos}
 
-Los objetivos específicos definidos al inicio del trabajo se han abordado de la
-siguiente forma:
+Los objetivos específicos definidos en el Capítulo~\ref{chap:objetivos} se han
+abordado de la siguiente forma:
 
 \begin{itemize}
-  \item \textbf{OE1.} Se analizaron los elementos necesarios para un editor de
-  bloques y se representaron explícitamente en el modelo intermedio: tipos de
-  bloque, campos, conexiones, categorías, referencias, validaciones y
-  generación.
-  \item \textbf{OE2.} Se implementó una ruta Ecore que transforma clases,
+  \item \textbf{OE1 --- Estructura de los lenguajes de bloques.} Se identificaron y representaron tipos de bloque, campos,
+  entradas, conexiones, categorías, referencias, validaciones y generadores. La
+  comparación externa amplió este análisis con propiedades menos convencionales,
+  como mutadores, paletas dinámicas y políticas específicas de conexión.
+  \item \textbf{OE2 --- Ruta Ecore.} Se implementó la ruta Ecore que transforma clases,
   atributos, referencias, herencia, cardinalidades y anotaciones en una
-  especificación Blockly.
-  \item \textbf{OE3.} Se definió una ruta textual \texttt{.m2b} con Xtext para
-  describir lenguajes de bloques sin editar directamente ficheros Ecore en
-  ejemplos o configuraciones compactas.
-  \item \textbf{OE4.} Se diseñó e implementó un modelo intermedio común como
-  representación común independiente de la fuente de entrada.
-  \item \textbf{OE5.} Se generaron editores HTML/JavaScript ejecutables con
-  bloques, toolbox, validaciones, guardado, carga, exportación JSON/XMI e
-  informes de generación.
-  \item \textbf{OE6.} Se incorporaron comprobaciones, referencias dinámicas,
+  especificación de editor y la procesa mediante el mismo generador final.
+  \item \textbf{OE3 --- Ruta textual \texttt{.m2b}.} Se definió la ruta textual \texttt{.m2b} con Xtext, se
+  implementaron sus validaciones estáticas y se utilizó para modelar las diez
+  configuraciones del corpus.
+  \item \textbf{OE4 --- Modelo intermedio común.} Se diseñó e implementó \texttt{EditorSpec} como
+  representación independiente de la fuente. La igualdad exacta obtenida en
+  Graph, Maze y Turtle aporta evidencia directa sobre este desacoplamiento.
+  \item \textbf{OE5 --- Editores ejecutables.} Se generaron editores HTML/JavaScript ejecutables con
+  bloques, paleta, generadores, validaciones, guardado, carga, exportación
+  JSON/XMI e informes. Los diez casos externos cargaron sin errores.
+  \item \textbf{OE6 --- Validación, referencias y personalización.} Se incorporaron comprobaciones, referencias dinámicas,
   personalización visual, metadatos de interfaz, plantillas de código y una
-  vista Blockly editable para reglas de validación.
-  \item \textbf{OE7.} Se evaluó la solución con AppMaker por la ruta Ecore y por
-  la ruta textual \texttt{.m2b}, junto con pruebas automáticas sobre las capas
-  principales del sistema.
+  vista Blockly editable para reglas de validación. El alcance y las
+  restricciones de estos mecanismos quedaron documentados por característica.
+  \item \textbf{OE7 --- Evaluación de la solución.} Se evaluaron reproducción funcional, esfuerzo de
+  especificación, límites y coherencia de rutas mediante diez editores
+  oficiales y tres pares Ecore--\texttt{.m2b}. Los seis pares mínimos y
+  complementarios, el caso Ecore específico, las pruebas JUnit y las
+  verificaciones de despliegue se mantuvieron como evidencia complementaria.
 \end{itemize}
 
-Por lo tanto, el enfoque es técnicamente viable dentro del alcance definido.
-Un dominio descrito con Ecore anotado o con \texttt{.m2b} puede transformarse en
-un editor de bloques mediante una cadena generativa reproducible. La ruta
-textual muestra además que esa información puede escribirse de forma más
-compacta y normalizarse hacia el mismo modelo intermedio.
+Los siete objetivos se han materializado en artefactos ejecutables y
+verificables. El cumplimiento de OE7 (evaluación de la solución) no significa que todas las capacidades
+Blockly estén cubiertas: su resultado incluye precisamente la identificación y
+cuantificación de las diferencias que permanecen.
 
 \section{Limitaciones}
 \label{sec:conclusiones-limitaciones}
 
-Aunque los resultados respaldan el enfoque principal, el trabajo tiene
-limitaciones. La primera es que la evaluación usa un ejemplo diseñado dentro del
-proyecto. AppMaker cubre estructuras variadas, pero no equivale a una validación
-industrial con muchos metamodelos externos. Por ello, el caso estudiado apoya la
-viabilidad de la herramienta, pero no prueba su generalidad de forma exhaustiva.
+\paragraph{Cobertura del corpus.}
+Los diez casos proceden de repositorios oficiales y cubren tamaños y mecanismos
+distintos, pero forman una muestra intencional, no aleatoria. Además, parte de
+Blockly Games fue desarrollada para versiones anteriores de Blockly y requirió
+un contenedor de compatibilidad común. Las revisiones y la versión 13.1.1 están
+fijados para hacer reproducible la comparación, pero los porcentajes no pueden
+generalizarse estadísticamente a todos los editores Blockly.
 
-La segunda limitación afecta a las validaciones. Model2Blockly genera advertencias
-para mínimos y máximos de bloques, campos obligatorios, referencias obligatorias,
-unicidad, reglas simples de orden, expresiones declaradas en anotaciones y un
-subconjunto sencillo de invariantes OCL. Este soporte cubre restricciones
-frecuentes, pero no equivale a un lenguaje completo de restricciones como OCL
-\cite{omgOcl}. No se soportan invariantes arbitrarios, cuantificadores,
-navegación compleja ni análisis semántico profundo. Además, las comprobaciones
-generadas producen advertencias, no una validación bloqueante. La edición visual
-de reglas tampoco es una transformación bidireccional general: solo se aplican de
-vuelta a la fuente los cambios que tienen una correspondencia clara.
+\paragraph{Cobertura funcional.}
+Ninguno de los diez casos alcanzó equivalencia completa. Las carencias más
+extendidas afectan a políticas de conexión, composición programática de la
+paleta, entradas ficticias y de presentación, configuración de sombras y
+redefinición de bloques reservados. Model2Blockly puede generar editores
+cargables sin reproducir exactamente todas esas propiedades.
 
-La tercera limitación se refiere a las referencias. Las referencias no
-contenidas se representan mediante desplegables dinámicos, lo que permite
-seleccionar elementos existentes del workspace. Además, el runtime HTML
-sincroniza referencias opuestas no contenidas cuando ambos extremos son
-editables. La limitación actual está en los casos más complejos: referencias
-opuestas con semántica de contenedor y visualización avanzada de relaciones
-entre elementos.
+\paragraph{Semántica de los generadores.}
+Las plantillas por bloque cubren traducciones locales, pero representan peor los
+generadores que mantienen estado compartido, coordinan procedimientos o
+variables, responden a mutadores, serializan modelos completos o aplican valores
+distintos a entradas vacías. La paridad del 78,01\,\% debe interpretarse dentro
+de ese contrato, no como prueba de equivalencia para cualquier programa.
 
-La cuarta limitación está relacionada con la generación de código. La solución
-incluye plantillas de código y una representación textual por defecto, pero no
-incorpora todavía formateadores específicos, análisis de tipos avanzado,
-gestión de imports, generación multiarchivo ni integración directa con
-herramientas externas de construcción o ejecución.
+\paragraph{Unidad evaluada.}
+El experimento analiza el subsistema de edición Blockly. No reproduce ni compara
+el mapa de Maze, el lienzo de Turtle, el audio de Music o los simuladores de
+Pond. Tampoco ejecuta exhaustivamente todos los programas posibles ni realiza
+una comparación visual píxel a píxel. Por ello, la paridad estructural no
+equivale a paridad de las aplicaciones completas.
 
-La quinta limitación es de evaluación de usuario. Este TFM no mide si los
-editores generados reducen efectivamente el esfuerzo de aprendizaje o mejoran la
-experiencia de usuarios no técnicos. La literatura sobre programación por
-bloques muestra que la modalidad de interacción influye en las prácticas de los
-usuarios noveles \cite{weintrop2018modalities}, pero validar empíricamente los
-editores generados requeriría un estudio específico.
+\paragraph{Rutas de entrada.}
+La equivalencia Ecore--\texttt{.m2b} se comprobó de forma estricta, pero solo en
+tres casos seleccionados. El resultado 3/3 respalda las construcciones
+cubiertas; no demuestra que cualquier metamodelo Ecore y cualquier modelo
+textual equivalente produzcan siempre la misma salida.
+
+\paragraph{Medida de esfuerzo y usuarios.}
+LOC y bytes miden el tamaño reproducible de la fuente mantenida. No miden el
+tiempo empleado en aprender el DSL, modelar un editor o corregir errores. El TFM
+tampoco evalúa aprendizaje, usabilidad ni satisfacción de diseñadores de
+lenguajes o usuarios finales. Por tanto, no puede afirmarse una reducción del
+72,48\,\% en coste humano.
+
+\paragraph{Capacidades de modelado.}
+El soporte de validación cubre cardinalidades, obligatoriedad, unicidad, orden y
+un subconjunto sencillo de invariantes, pero no OCL completo. La aplicación de
+cambios desde las reglas visuales hacia la fuente solo cubre correspondencias
+inequívocas. También permanecen limitados la importación genérica de XMI, las
+referencias bidireccionales complejas, el análisis de tipos y la generación
+multiarchivo.
 
 \section{Trabajo futuro}
 \label{sec:trabajo-futuro}
 
-A partir de estas limitaciones se identifican varias líneas de trabajo futuro.
+Las líneas futuras se priorizan a partir de las diferencias observadas, no solo
+de posibilidades generales de extensión:
 
-En primer lugar, sería útil ampliar el soporte de validación. Una opción sería
-integrar un lenguaje de restricciones más expresivo o un mecanismo de reglas
-declarativas. Así se podrían describir condiciones más complejas que los mínimos,
-máximos y reglas de orden inmediato. Esta línea también permitiría ampliar la
-traducción entre reglas visuales editadas y su representación en
-\texttt{.m2b} o en anotaciones Ecore.
+\begin{enumerate}
+  \item \textbf{Ampliar el contrato del editor.} Incorporar políticas de
+  conexión declarativas, entradas ficticias con nombre, alineación, composición
+  completa de categorías, entradas de paleta preconfiguradas y configuración
+  explícita de sombras. Estas extensiones atacan los grupos con más propiedades
+  \texttt{unsupported} de RQ3 (límites de la solución).
 
-En segundo lugar, la gestión de referencias podría evolucionar hacia un soporte
-más completo de referencias bidireccionales. Esto implicaría extender la
-sincronización de referencias opuestas en el runtime HTML, cubrir casos de
-contenedor, detectar referencias que apuntan a elementos ya eliminados y ofrecer
-visualizaciones más claras de las relaciones entre elementos del workspace.
+  \item \textbf{Introducir servicios de generación con estado.} El generador
+  común podría ofrecer bases de nombres, definiciones compartidas, valores por
+  defecto para entradas vacías, mapeos de enumeraciones y puntos de extensión
+  para mutadores y serializadores. Así se cubrirían procedimientos, variables y
+  los casos complejos de Puzzle y Pond sin insertar JavaScript arbitrario en
+  cada modelo.
 
-En tercer lugar, se podría profundizar en la importación y exportación de
-modelos. Actualmente la herramienta se centra en generar editores y exportar el
-contenido del workspace. Una línea futura consistiría en importar modelos XMI
-existentes y reconstruir automáticamente el workspace Blockly correspondiente.
-Esto acercaría más la herramienta a flujos completos de ingeniería de modelos.
+  \item \textbf{Extender la regresión entre rutas.} La comparación Ecore--
+  \texttt{.m2b} debería ampliarse desde tres casos a una matriz sistemática de
+  construcciones y, después, a más editores completos. El descriptor canónico
+  ya permite automatizar esta comprobación sin depender de capturas.
 
-En cuarto lugar, la generación de código podría enriquecerse. Las plantillas
-actuales son suficientes para demostrar una ruta genérica de exportación, pero
-podrían ampliarse con validación de plantillas, tipado, formateadores,
-generación multiarchivo y objetivos específicos para lenguajes o plataformas
-concretas.
+  \item \textbf{Añadir pruebas semánticas de programas.} Además de comparar la
+  estructura del editor y del generador, podrían definirse espacios de trabajo de entrada
+  y oráculos sobre el código producido. Esto permitiría estudiar equivalencia
+  de comportamiento para subconjuntos concretos sin incluir necesariamente todo
+  el motor de dominio.
 
-En quinto lugar, podrían explorarse interfaces web más avanzadas sobre el mismo
-modelo intermedio. Un futuro objetivo de generación podría incorporar un
-inspector estructurado, temas visuales por dominio, componentes personalizados y
-modos de edición más adaptados a usuarios finales.
+  \item \textbf{Completar las capacidades de ingeniería de modelos.} Resulta
+  útil ampliar la validación declarativa, las referencias bidireccionales y la
+  reconstrucción del espacio de trabajo desde XMI. La generación de código podría añadir
+  tipado, gestión de importaciones, formateadores y salidas multiarchivo.
 
-En sexto lugar, sería conveniente realizar una evaluación empírica con usuarios.
-Un estudio futuro podría comparar el esfuerzo necesario para construir un editor
-Blockly manualmente frente al uso de Model2Blockly, o analizar cómo interactúan
-usuarios no técnicos con editores generados para distintos dominios. Esta
-evaluación permitiría complementar la evidencia técnica de este TFM con datos
-de uso.
+  \item \textbf{Realizar estudios con participantes.} Un experimento controlado
+  podría comparar JavaScript/JSON Blockly con Ecore y \texttt{.m2b} usando
+  tiempo, errores, correcciones y percepción de dificultad. Un estudio separado
+  debería evaluar la interacción de usuarios finales con los editores
+  generados. Solo entonces podría relacionarse la reducción de LOC con una
+  reducción de esfuerzo humano.
 
-Por último, convendría robustecer el ciclo de publicación del plugin. La versión
-actual ya dispone de update site p2 y verificaciones de empaquetado, pero una
-línea futura sería automatizar más la publicación, el versionado y las pruebas de
-instalación sobre instalaciones limpias de Eclipse.
+  \item \textbf{Ampliar y mantener el corpus.} Incluir editores externos a los
+  repositorios de Google y configuraciones creadas con versiones actuales de
+  Blockly aumentaría la validez externa. El mismo proceso puede integrarse en la
+  publicación del complemento para detectar regresiones antes de generar el sitio de
+  actualización.
+\end{enumerate}
 
 \section{Cierre}
 \label{sec:cierre}
 
-Model2Blockly aporta evidencia de que es posible conectar técnicas de ingeniería de
-lenguajes con entornos de programación basada en bloques. El resultado no es un
-único editor visual, sino una infraestructura que transforma descripciones de
-dominio en editores Blockly ejecutables. El conocimiento del dominio se mantiene
-en modelos o DSLs de alto nivel, y la sintaxis visual se genera a partir de ellos.
+Model2Blockly no produce un único editor preparado para una demostración, sino
+una infraestructura que transforma descripciones de alto nivel en editores
+Blockly ejecutables. Ecore y Xtext proporcionan las entradas, el modelo
+intermedio hace explícito el contrato y la generación materializa la sintaxis
+visual y los artefactos de soporte.
 
-El trabajo muestra que la combinación de Ecore, Xtext, un modelo intermedio EMF,
-generación HTML/JavaScript y Blockly es viable para construir editores de
-lenguajes de dominio específico con sintaxis basada en bloques. Dentro del
-alcance definido, esta combinación es una alternativa razonable a la programación
-manual de editores Blockly y deja una base extensible para trabajos futuros.
+La evaluación externa permite formular el cierre con precisión: la solución
+reproduce una parte mayoritaria de diez editores oficiales y reduce alrededor
+de un 70\,\% su fuente de configuración, pero todavía no expresa todas sus
+capacidades. Esa combinación de resultado cuantitativo y límites trazables
+constituye la principal evidencia del trabajo. El proyecto deja una base
+ejecutable, instalable y evaluable sobre la que ampliar tanto la cobertura
+técnica como la validación empírica con desarrolladores y usuarios.

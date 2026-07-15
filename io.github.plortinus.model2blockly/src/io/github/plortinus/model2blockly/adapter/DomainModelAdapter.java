@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import io.github.plortinus.model2blockly.model2Blockly.*;
 import io.github.plortinus.model2blockly.blocklyspec.*;
 import io.github.plortinus.model2blockly.intermediate.BlocklySpecModelMapper;
@@ -107,7 +108,7 @@ public class DomainModelAdapter {
 		CategorySpec cs = new CategorySpec();
 		cs.setName(cat.getName());
 		cs.setLabel(cat.getLabel() != null ? cat.getLabel() : cat.getName());
-		cs.setColour(cat.getColour() != 0 ? cat.getColour() : 200);
+		cs.setColour(hasExplicitFeature(cat, "colour") ? cat.getColour() : 200);
 		// Recursive: convert subcategories if present
 		try {
 			@SuppressWarnings("unchecked")
@@ -116,7 +117,7 @@ public class DomainModelAdapter {
 				for (Object sub : subcats) {
 					if (sub instanceof CategoryDef) {
 						CategorySpec childSpec = convertCategoryDef((CategoryDef) sub);
-						if (childSpec.getColour() == 200 && cs.getColour() != 200) {
+						if (!hasExplicitFeature((CategoryDef) sub, "colour") && cs.getColour() != 200) {
 							childSpec.setColour(cs.getColour());
 						}
 						cs.getChildren().add(childSpec);
@@ -137,9 +138,9 @@ public class DomainModelAdapter {
 			bt.setLabel(cls.getLabel() != null ? cls.getLabel() : cls.getName());
 			bt.setAbstract(cls.isAbstract());
 
-			if (cls.getColour() != 0) {
+			if (hasExplicitFeature(cls, "colour")) {
 				bt.setColour(cls.getColour());
-			} else if (cls.getCategory() != null && cls.getCategory().getColour() != 0) {
+			} else if (cls.getCategory() != null && hasExplicitFeature(cls.getCategory(), "colour")) {
 				bt.setColour(cls.getCategory().getColour());
 			}
 
@@ -395,6 +396,17 @@ public class DomainModelAdapter {
 	private static String normalizeWidget(String value) {
 		if (value == null) return null;
 		return value.toLowerCase().replace('_', '-');
+	}
+
+	private static boolean hasExplicitFeature(EObject object, String featureName) {
+		if (object == null) return false;
+		EStructuralFeature feature = object.eClass().getEStructuralFeature(featureName);
+		if (feature == null) return false;
+		try {
+			return !NodeModelUtils.findNodesForFeature(object, feature).isEmpty();
+		} catch (RuntimeException ignored) {
+			return object.eIsSet(feature);
+		}
 	}
 
 	private static Map.Entry<String, Object> toWorkspaceEntry(EObject option) {

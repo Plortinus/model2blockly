@@ -1,0 +1,31 @@
+[
+  {
+    "_type": "Workflow",
+    "_blockId": "sample_Workflow_1",
+    "name": "Review workflow",
+    "elements": [
+      {
+        "_type": "Card",
+        "_blockId": "sample_Card_1",
+        "cardId": "card-1",
+        "title": "Review",
+        "outgoing": [
+          "sample_Link_1"
+        ],
+        "content": {
+          "_type": "TextLiteral",
+          "_blockId": "sample_TextLiteral_1",
+          "textValue": "Ready"
+        }
+      },
+      {
+        "_type": "Link",
+        "_blockId": "sample_Link_1",
+        "linkId": "link-1",
+        "description": "Continue",
+        "source": "sample_Card_1",
+        "target": "sample_Card_1"
+      }
+    ]
+  }
+]

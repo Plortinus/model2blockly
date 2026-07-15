@@ -1,0 +1,30 @@
+Blockly.Blocks['math_random_float'].init = function() {
+  this.jsonInit({
+    "message0": "Math.random  (  )",
+    "output": "Number",
+    "colour": "%{BKY_MATH_HUE}",
+    "tooltip": "%{BKY_MATH_RANDOM_FLOAT_TOOLTIP}",
+    "helpUrl": "%{BKY_MATH_RANDOM_FLOAT_HELPURL}",
+  });
+};
+
+/**
+ * Block for variable setter.
+ * @this {Blockly.Block}
+ */
+Blockly.Blocks['variables_set'].init = function() {
+  this.appendValueInput('VALUE')
+      .appendField('var')
+      .appendField(new Blockly.FieldVariable('name'), 'VAR')
+      .appendField('=');
+  this.appendDummyInput()
+      .appendField(';');
+  this.setInputsInline(true);
+  this.setPreviousStatement(true);
+  this.setNextStatement(true);
+  this.setColour(Blockly.Msg['VARIABLES_HUE']);
+  this.setTooltip(Blockly.Msg['VARIABLES_SET_TOOLTIP']);
+  this.setHelpUrl(Blockly.Msg['VARIABLES_SET_HELPURL']);
+  this.contextMenuMsg_ = Blockly.Msg['VARIABLES_SET_CREATE_GET'];
+  this.contextMenuType_ = 'variables_get';
+};

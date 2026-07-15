@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 1,
+  "title": "Evaluación de Model2Blockly con editores oficiales de Blockly",
+  "status": "completed",
+  "evaluationUnit": "blockly-editor-subsystem",
+  "language": "es",
+  "repositories": {
+    "blockly-games": {
+      "url": "https://github.com/google/blockly-games.git",
+      "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+      "branchAtSelection": "master",
+      "officialCatalogue": "https://blockly.games/about?lang=en"
+    },
+    "blockly-samples": {
+      "url": "https://github.com/google/blockly-samples.git",
+      "commit": "62ce120977078bf9179c5633681ee70446e5073b",
+      "branchAtSelection": "main",
+      "officialCatalogue": "https://github.com/google/blockly-samples/tree/main/examples"
+    }
+  },
+  "controls": {
+    "blocklyVersion": "13.1.1",
+    "renderer": "geras",
+    "theme": "classic",
+    "locale": "en",
+    "browserViewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "workspaceViewport": {
+      "width": 1024,
+      "height": 640
+    }
+  },
+  "routes": {
+    "m2b": {
+      "cases": "all"
+    },
+    "ecore": {
+      "cases": [
+        "E01_graph",
+        "E03_maze",
+        "E07_turtle"
+      ],
+      "purpose": "Comprobar la coherencia entre las dos rutas de entrada; no medir concisión textual."
+    }
+  },
+  "cases": [
+    {
+      "id": "E01_graph",
+      "name": "Graph Demo",
+      "repository": "blockly-samples",
+      "configuration": "Editor único de la demostración",
+      "pilot": true,
+      "complexity": "simple",
+      "baselineFiles": [
+        {
+          "path": "examples/graph-demo/index.html",
+          "role": "block-definitions-toolbox-generators-and-host-page"
+        }
+      ],
+      "editorFocus": [
+        "json-block-definitions",
+        "value-inputs",
+        "output-and-statement-connections",
+        "json-toolbox",
+        "javascript-generators"
+      ],
+      "excludedDomainLayer": [
+        "graph-canvas",
+        "coordinate-rendering",
+        "expression-execution"
+      ]
+    },
+    {
+      "id": "E02_interpreter_wait",
+      "name": "JS-Interpreter Wait",
+      "repository": "blockly-samples",
+      "configuration": "Demostración de ejecución asíncrona con el bloque wait_seconds",
+      "pilot": false,
+      "complexity": "simple",
+      "baselineFiles": [
+        {
+          "path": "examples/interpreter-demo/wait_block.js",
+          "role": "block-definition-generator-and-interpreter-binding"
+        },
+        {
+          "path": "examples/interpreter-demo/toolbox.js",
+          "role": "shared-json-toolbox"
+        },
+        {
+          "path": "examples/interpreter-demo/async-execution.html",
+          "role": "selected-editor-configuration"
+        }
+      ],
+      "editorFocus": [
+        "number-field",
+        "statement-connections",
+        "json-toolbox",
+        "javascript-generator"
+      ],
+      "excludedDomainLayer": [
+        "javascript-interpreter-runtime",
+        "asynchronous-wait-execution",
+        "host-page-controls"
+      ]
+    },
+    {
+      "id": "E03_maze",
+      "name": "Maze",
+      "repository": "blockly-games",
+      "configuration": "Nivel 10, usado como configuración máxima y estable de la paleta",
+      "pilot": true,
+      "complexity": "medium",
+      "baselineFiles": [
+        {
+          "path": "appengine/maze/src/blocks.js",
+          "role": "block-definitions-and-generators"
+        },
+        {
+          "path": "appengine/maze/src/html.js",
+          "role": "level-dependent-toolbox"
+        }
+      ],
+      "editorFocus": [
+        "dropdown-fields",
+        "statement-inputs",
+        "previous-next-connections",
+        "level-10-toolbox",
+        "javascript-generators"
+      ],
+      "excludedDomainLayer": [
+        "maze-map",
+        "pegman-animation",
+        "path-simulation",
+        "level-completion-ui"
+      ]
+    },
+    {
+      "id": "E04_bird",
+      "name": "Bird",
+      "repository": "blockly-games",
+      "configuration": "Nivel 10, usado como configuración máxima de la paleta",
+      "pilot": false,
+      "complexity": "medium",
+      "baselineFiles": [
+        {
+          "path": "appengine/bird/src/blocks.js",
+          "role": "block-definitions-and-generators"
+        },
+        {
+          "path": "appengine/bird/src/html.js",
+          "role": "level-dependent-toolbox"
+        },
+        {
+          "path": "appengine/bird/src/main.js",
+          "role": "level-dependent-initial-workspace"
+        }
+      ],
+      "editorFocus": [
+        "number-and-dropdown-fields",
+        "value-inputs",
+        "output-types",
+        "shadow-blocks",
+        "level-10-toolbox"
+      ],
+      "excludedDomainLayer": [
+        "bird-animation",
+        "trajectory-rendering",
+        "level-simulation"
+      ]
+    },
+    {
+      "id": "E05_movie",
+      "name": "Movie",
+      "repository": "blockly-games",
+      "configuration": "Nivel 10, editor libre con la paleta completa disponible en ese nivel",
+      "pilot": false,
+      "complexity": "medium",
+      "baselineFiles": [
+        {
+          "path": "appengine/movie/src/blocks.js",
+          "role": "block-definitions-and-generators"
+        },
+        {
+          "path": "appengine/movie/src/html.js",
+          "role": "level-dependent-toolbox"
+        }
+      ],
+      "editorFocus": [
+        "drawing-block-shapes",
+        "value-input-checks",
+        "colour-fields",
+        "category-toolbox",
+        "javascript-generators"
+      ],
+      "excludedDomainLayer": [
+        "movie-canvas",
+        "frame-rendering",
+        "scrubber",
+        "animation-runtime"
+      ]
+    },
+    {
+      "id": "E06_music",
+      "name": "Music",
+      "repository": "blockly-games",
+      "configuration": "Nivel 10, editor con la paleta completa disponible en ese nivel",
+      "pilot": false,
+      "complexity": "complex",
+      "baselineFiles": [
+        {
+          "path": "appengine/music/src/blocks.js",
+          "role": "block-definitions-and-generators"
+        },
+        {
+          "path": "appengine/music/src/field_pitch.js",
+          "role": "custom-editor-field"
+        },
+        {
+          "path": "appengine/music/src/startcount.js",
+          "role": "generator-thread-counter"
+        },
+        {
+          "path": "appengine/music/src/html.js",
+          "role": "level-dependent-toolbox"
+        },
+        {
+          "path": "appengine/music/src/main.js",
+          "role": "level-dependent-initial-workspace"
+        },
+        {
+          "path": "appengine/music/style.css",
+          "role": "custom-pitch-field-style"
+        }
+      ],
+      "editorFocus": [
+        "custom-pitch-field",
+        "dynamic-toolbox-state",
+        "statement-inputs",
+        "category-toolbox",
+        "javascript-generators"
+      ],
+      "excludedDomainLayer": [
+        "audio-synthesis",
+        "score-playback",
+        "timing-runtime",
+        "visual-countdown"
+      ]
+    },
+    {
+      "id": "E07_turtle",
+      "name": "Turtle",
+      "repository": "blockly-games",
+      "configuration": "Nivel 10, editor libre con la paleta completa",
+      "pilot": false,
+      "complexity": "complex",
+      "baselineFiles": [
+        {
+          "path": "appengine/turtle/src/blocks.js",
+          "role": "block-definitions-and-generators"
+        },
+        {
+          "path": "appengine/turtle/src/html.js",
+          "role": "level-dependent-toolbox"
+        },
+        {
+          "path": "appengine/turtle/src/main.js",
+          "role": "level-dependent-initial-workspace"
+        }
+      ],
+      "editorFocus": [
+        "drawing-command-blocks",
+        "colour-and-angle-fields",
+        "typed-value-inputs",
+        "large-category-toolbox",
+        "javascript-generators"
+      ],
+      "excludedDomainLayer": [
+        "turtle-canvas",
+        "drawing-renderer",
+        "execution-animation",
+        "result-export"
+      ]
+    },
+    {
+      "id": "E08_puzzle",
+      "name": "Puzzle",
+      "repository": "blockly-games",
+      "configuration": "Espacio de trabajo inicial del rompecabezas; no utiliza una paleta convencional",
+      "pilot": false,
+      "complexity": "complex",
+      "baselineFiles": [
+        {
+          "path": "appengine/puzzle/src/blocks.js",
+          "role": "dynamic-block-definitions"
+        },
+        {
+          "path": "appengine/puzzle/src/data.js",
+          "role": "data-used-by-dynamic-fields"
+        },
+        {
+          "path": "appengine/puzzle/src/main.js",
+          "role": "initial-workspace-configuration"
+        }
+      ],
+      "editorFocus": [
+        "image-and-dropdown-fields",
+        "dynamic-block-shape",
+        "validators",
+        "mutator-state",
+        "initial-workspace"
+      ],
+      "excludedDomainLayer": [
+        "answer-validation",
+        "completion-dialog",
+        "application-navigation"
+      ]
+    },
+    {
+      "id": "E09_pond_tutor",
+      "name": "Pond Tutor",
+      "repository": "blockly-games",
+      "configuration": "Nivel 9, último nivel impar y por tanto última configuración Blockly del tutor",
+      "pilot": false,
+      "complexity": "complex",
+      "baselineFiles": [
+        {
+          "path": "appengine/pond/src/blocks.js",
+          "role": "domain-block-definitions-and-generators"
+        },
+        {
+          "path": "appengine/pond/src/js-blocks.js",
+          "role": "extensions-to-standard-blocks-and-generators"
+        },
+        {
+          "path": "appengine/pond/tutor/src/html.js",
+          "role": "level-dependent-toolbox"
+        },
+        {
+          "path": "appengine/pond/tutor/src/main.js",
+          "role": "level-dependent-initial-workspace"
+        }
+      ],
+      "editorFocus": [
+        "domain-command-blocks",
+        "standard-block-extensions",
+        "level-9-toolbox",
+        "typed-inputs",
+        "javascript-generators"
+      ],
+      "excludedDomainLayer": [
+        "pond-battle-engine",
+        "avatar-rendering",
+        "projectile-physics",
+        "level-simulation",
+        "text-editor-mode"
+      ]
+    },
+    {
+      "id": "E10_pond_duck",
+      "name": "Pond",
+      "repository": "blockly-games",
+      "configuration": "Editor Blockly completo de Pond Duck",
+      "pilot": false,
+      "complexity": "complex",
+      "baselineFiles": [
+        {
+          "path": "appengine/pond/src/blocks.js",
+          "role": "domain-block-definitions-and-generators"
+        },
+        {
+          "path": "appengine/pond/src/js-blocks.js",
+          "role": "extensions-to-standard-blocks-and-generators"
+        },
+        {
+          "path": "appengine/pond/duck/src/html.js",
+          "role": "full-toolbox"
+        },
+        {
+          "path": "appengine/pond/duck/default-ducks.js",
+          "role": "default-editable-duck-initial-workspace"
+        }
+      ],
+      "editorFocus": [
+        "domain-command-and-query-blocks",
+        "standard-block-extensions",
+        "full-category-toolbox",
+        "dynamic-variable-and-procedure-categories",
+        "default-editable-duck-workspace",
+        "typed-inputs",
+        "javascript-generators"
+      ],
+      "excludedDomainLayer": [
+        "pond-battle-engine",
+        "avatar-rendering",
+        "projectile-physics",
+        "network-or-headless-battle-runtime"
+      ]
+    }
+  ]
+}

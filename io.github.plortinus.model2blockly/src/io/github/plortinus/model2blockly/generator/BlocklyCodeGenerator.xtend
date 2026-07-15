@@ -71,6 +71,8 @@ class BlocklyCodeGenerator {
 	def String blockTypeToBlockJson(BlockTypeSpec bt) {
 		val argsList = new ArrayList<String>()
 		val msgParts = new ArrayList<String>()
+		val rowMessages = new ArrayList<String>()
+		val rowArgs = new ArrayList<String>()
 		msgParts.add(bt.label ?: bt.typeName)
 
 		// Build lookup maps for each input type
@@ -96,20 +98,32 @@ class BlocklyCodeGenerator {
 		              }
 		for (inputName : ordered) {
 			if (fieldMap.containsKey(inputName)) {
+				val field = fieldMap.get(inputName)
 				msgParts.add("%" + argIdx)
-				argsList.add(fieldToArg(fieldMap.get(inputName)))
+				argsList.add(fieldToArg(field))
+				rowMessages.add((field.uiLabel ?: inputName) + " %1")
+				rowArgs.add(fieldToArg(field))
 				argIdx++
 			} else if (refMap.containsKey(inputName)) {
+				val reference = refMap.get(inputName)
 				msgParts.add("%" + argIdx)
-				argsList.add(referenceToArg(refMap.get(inputName)))
+				argsList.add(referenceToArg(reference))
+				rowMessages.add((reference.uiLabel ?: inputName) + " %1")
+				rowArgs.add(referenceToArg(reference))
 				argIdx++
 			} else if (viMap.containsKey(inputName)) {
+				val valueInput = viMap.get(inputName)
 				msgParts.add("%" + argIdx)
-				argsList.add(valueInputToArg(viMap.get(inputName)))
+				argsList.add(valueInputToArg(valueInput))
+				rowMessages.add((valueInput.uiLabel ?: inputName) + " %1")
+				rowArgs.add(valueInputToArg(valueInput))
 				argIdx++
 			} else if (siMap.containsKey(inputName)) {
+				val statementInput = siMap.get(inputName)
 				msgParts.add("%" + argIdx)
-				argsList.add(statementInputToArg(siMap.get(inputName)))
+				argsList.add(statementInputToArg(statementInput))
+				rowMessages.add((statementInput.uiLabel ?: inputName) + " %1")
+				rowArgs.add(statementInputToArg(statementInput))
 				argIdx++
 			}
 		}
@@ -117,6 +131,23 @@ class BlocklyCodeGenerator {
 		val generatedMessage0 = msgParts.join(" ")
 		val message0 = bt.message0 ?: generatedMessage0
 		val args0 = argsList.join(", ")
+		val useStackedRows = bt.message0 === null && Boolean.FALSE.equals(bt.inputsInline) && !rowArgs.empty
+		val messageJson = if (useStackedRows) {
+			val rows = new ArrayList<String>()
+			rows.add('''"message0": «toJsonString(bt.label ?: bt.typeName)»,
+				"args0": [],''')
+			var rowIndex = 0
+			while (rowIndex < rowArgs.size) {
+				val messageIndex = rowIndex + 1
+				rows.add('''"message«messageIndex»": «toJsonString(rowMessages.get(rowIndex))»,
+					"args«messageIndex»": [«rowArgs.get(rowIndex)»],''')
+				rowIndex++
+			}
+			rows.join("\n")
+		} else {
+			'''"message0": «toJsonString(message0)»,
+				"args0": [«args0»],'''
+		}
 
 		val connectionJson = switch bt.connectionType {
 			case NONE: ""
@@ -133,8 +164,7 @@ class BlocklyCodeGenerator {
 		'''
 		{
 			"type": "«bt.typeName»",
-			"message0": «toJsonString(message0)»,
-			"args0": [«args0»],
+			«messageJson»
 			«connectionJson»
 			«inlineJson»
 			"colour": «bt.colour»,
@@ -210,6 +240,61 @@ class BlocklyCodeGenerator {
 
 			(function() {
 			  if (typeof Blockly === 'undefined' || !Blockly.FieldTextInput || !Blockly.fieldRegistry) return;
+
+			  function hasRegisteredField(type) {
+			    return Blockly.fieldRegistry.getClass && Blockly.fieldRegistry.getClass(type);
+			  }
+
+			  // Blockly distributes colour and angle fields as optional plugins.  Generated
+			  // editors provide small compatible fallbacks so these widgets also work when
+			  // only the core Blockly bundle is loaded.
+			  if (!hasRegisteredField('field_colour')) {
+			    class FieldColourFallback extends Blockly.FieldTextInput {
+			      constructor(value, validator, config) {
+			        super(value || '#ff0000', validator, config);
+			      }
+			      static fromJson(options) {
+			        return new FieldColourFallback(options.colour || '#ff0000', undefined, options);
+			      }
+			      doClassValidation_(value) {
+			        var colour = String(value || '').trim().toLowerCase();
+			        return /^#[0-9a-f]{6}$/.test(colour) ? colour : null;
+			      }
+			      showEditor_() {
+			        var field = this;
+			        var picker = document.createElement('input');
+			        picker.type = 'color';
+			        picker.value = this.getValue();
+			        picker.setAttribute('aria-label', this.name || 'Colour');
+			        picker.style.position = 'fixed';
+			        picker.style.left = '-1000px';
+			        picker.addEventListener('input', function() { field.setValue(picker.value); });
+			        picker.addEventListener('change', function() {
+			          field.setValue(picker.value);
+			          picker.remove();
+			        });
+			        picker.addEventListener('blur', function() {
+			          window.setTimeout(function() { picker.remove(); }, 0);
+			        });
+			        document.body.appendChild(picker);
+			        picker.click();
+			      }
+			    }
+			    Blockly.fieldRegistry.register('field_colour', FieldColourFallback);
+			  }
+
+			  if (!hasRegisteredField('field_angle') && Blockly.FieldNumber) {
+			    class FieldAngleFallback extends Blockly.FieldNumber {
+			      constructor(value, validator, config) {
+			        super(value === null || value === undefined ? 90 : value, 0, 360, 1, validator, config);
+			      }
+			      static fromJson(options) {
+			        return new FieldAngleFallback(options.angle === undefined ? 90 : options.angle, undefined, options);
+			      }
+			    }
+			    Blockly.fieldRegistry.register('field_angle', FieldAngleFallback);
+			  }
+
 			  if (Blockly.fieldRegistry.getClass && Blockly.fieldRegistry.getClass('field_reference_multiselect')) return;
 
 			function parseReferenceMultiValue(value) {
@@ -683,10 +768,10 @@ class BlocklyCodeGenerator {
 			}
 			window.parseBlocklyListField = parseBlocklyListField;
 
+			«generateBuiltinBlockGenerators()»
 			«FOR bt : spec.concreteBlockTypes»
 			«blockTypeToGeneratorJs(bt)»
 			«ENDFOR»
-			«generateBuiltinBlockGenerators()»
 			«generateDomainCodegenBody(spec)»
 		'''
 	}
@@ -1835,6 +1920,7 @@ class BlocklyCodeGenerator {
 				.tab-content{flex:1;display:none;margin:0 10px 10px;padding:10px;overflow:auto;font-size:.85em;border:1px solid var(--line);border-top:0;border-radius:0 0 6px 6px;min-height:0}
 				.tab-content.active{display:block}
 				#modelView{background:#fff;font-family:Arial,sans-serif}
+				#codeView{background:#172033;color:#d4d4d4;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82em;white-space:pre-wrap;tab-size:2}
 				#jsonView{background:#f5f5f5;font-family:monospace;white-space:pre-wrap}
 				#runtimeView{background:#172033;color:#d4d4d4;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82em;white-space:pre-wrap}
 				.model-node{margin:4px 0;padding:8px 12px;border-radius:6px;border-left:4px solid #4285f4}
@@ -1954,6 +2040,7 @@ class BlocklyCodeGenerator {
 					</div>
 					<div id="tabs">
 						<button class="active" data-tab="model" onclick="switchTab('model')">Model</button>
+						<button data-tab="code" onclick="switchTab('code')">Code</button>
 						«AppMakerHtmlRuntimeGenerator.tabButton(spec)»
 						<button data-tab="issues" onclick="switchTab('issues')">Issues <span id="issuesBadge"></span></button>
 						<button data-tab="json" data-developer-only="true" onclick="switchTab('json')">JSON</button>
@@ -1961,6 +2048,7 @@ class BlocklyCodeGenerator {
 						<button data-tab="runtime" data-developer-only="true" onclick="switchTab('runtime')">Runtime</button>
 					</div>
 					<div id="modelView" class="tab-content active"></div>
+					<div id="codeView" class="tab-content"></div>
 					«AppMakerHtmlRuntimeGenerator.tabContent(spec)»
 						<div id="jsonView" class="tab-content"></div>
 						<div id="issuesView" class="tab-content"></div>
@@ -2030,8 +2118,8 @@ class BlocklyCodeGenerator {
 				var subtitle = document.getElementById('panelSubtitle');
 				if (subtitle) {
 					subtitle.textContent = developer
-						? 'Model, preview, JSON, runtime and validation internals'
-						: 'Model, preview and validation issues';
+						? 'Model, generated code, JSON, runtime and validation internals'
+						: 'Model, generated code and validation issues';
 				}
 				if (!developer && !keepTab && DEVELOPER_TABS[currentEditorTab]) {
 					switchTab(document.querySelector('[data-tab="preview"]') ? 'preview' : 'model');
@@ -2105,9 +2193,11 @@ class BlocklyCodeGenerator {
 			function updateOutput() {
 				var model = getModelJSON();
 				var modelView = document.getElementById('modelView');
+				var codeView = document.getElementById('codeView');
 				var jsonView = document.getElementById('jsonView');
 				if (!model || model.length === 0) {
 					modelView.innerHTML = '<p style="color:#999;text-align:center;margin-top:40px">Drag blocks to build your model</p>';
+					codeView.textContent = '// Empty workspace';
 					jsonView.textContent = '// Empty workspace';
 					if (typeof renderAppMakerPreview === 'function') renderAppMakerPreview([]);
 					return;
@@ -2115,6 +2205,12 @@ class BlocklyCodeGenerator {
 				var html = '';
 				model.forEach(function(node) { html += renderModelNode(node); });
 				modelView.innerHTML = html;
+				var generatedCode = typeof generateDomainCode === 'function'
+					? generateDomainCode(workspace)
+					: '';
+				codeView.textContent = generatedCode && generatedCode.trim()
+					? generatedCode
+					: '// No code generated for the current model';
 				jsonView.textContent = JSON.stringify(model, null, 2);
 				if (typeof renderAppMakerPreview === 'function') renderAppMakerPreview(model);
 			}
@@ -2200,16 +2296,20 @@ class BlocklyCodeGenerator {
 					var pendingReferences = [];
 					var eventsEnabled = Blockly.Events.isEnabled ? Blockly.Events.isEnabled() : true;
 					if (Blockly.Events.disable) Blockly.Events.disable();
-					try {
-						workspace.clear();
-						var x = 40;
-						var y = 40;
-						roots.forEach(function(node) {
-							if (!node || !node._type || !config[node._type]) return;
-							createImportedModelNode(node, x, y, idMap, pendingReferences);
-							x += 300;
-							if (x > 640) { x = 40; y += 170; }
-						});
+				try {
+					workspace.clear();
+					var x = 40;
+					var y = 40;
+					roots.forEach(function(node) {
+						if (!node || !node._type || !config[node._type]) return;
+						var rootBlock = createImportedModelNode(node, x, y, idMap, pendingReferences);
+						var rootHeight = 120;
+						if (rootBlock && rootBlock.getHeightWidth) {
+							var rootSize = rootBlock.getHeightWidth();
+							if (rootSize && typeof rootSize.height === 'number') rootHeight = rootSize.height;
+						}
+						y += Math.max(170, Math.ceil(rootHeight) + 48);
+					});
 					} finally {
 						if (eventsEnabled && Blockly.Events.enable) Blockly.Events.enable();
 					}

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E03_maze",
+  "configuration": "Blockly Maze, nivel 10",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "block-definitions",
+      "path": "appengine/maze/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E03_maze/baseline/upstream/block-definitions.js",
+      "startLine": 26,
+      "endLine": 178,
+      "sha256": "b8b3eaa621121be18ef570b1b7cd9f75a0ef54785d44649bf0a17c17120f5705",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "generators",
+      "path": "appengine/maze/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E03_maze/baseline/upstream/generators.js",
+      "startLine": 181,
+      "endLine": 214,
+      "sha256": "657e50a7eca809f9a880ee359d9d8e2690a720d36605daef8601ab1d36b26e87",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-10-toolbox",
+      "path": "appengine/maze/src/html.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E03_maze/baseline/upstream/level-10-toolbox.js",
+      "startLine": 78,
+      "endLine": 96,
+      "sha256": "7a22b4e51c381c15a1ba47317ce8a0cb6dbe59123f26b6d7c3294a76398406f4",
+      "kinds": [
+        "toolbox"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "english-editor-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E03_maze/baseline/upstream/english-editor-messages.jsonfrag",
+      "startLine": 77,
+      "endLine": 90,
+      "sha256": "db19838f9c1edc19501689fae4ee3e0eb509b7c41371c5fcb684a7287291373f",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": [
+        "Only the English messages used by the selected Maze block definitions are included."
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "goal-marker",
+      "path": "appengine/maze/marker.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E03_maze/assets/maze/marker.png",
+      "sha256": "0619a7b61d7999f7ebfad1361160f3e6d1ae42b15afcc6a126dffa31c0cd679c",
+      "mediaType": "image/png",
+      "notes": [
+        "Image displayed by the maze_forever block."
+      ]
+    }
+  ]
+}

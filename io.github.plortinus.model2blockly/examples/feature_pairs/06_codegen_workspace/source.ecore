@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="codegenWorkspace"
+    nsURI="http://www.example.org/codegenworkspace"
+    nsPrefix="codegenworkspace">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="zelos"/>
+    <details key="workspace.trashcan" value="true"/>
+    <details key="workspace.toolboxType" value="flyout"/>
+    <details key="workspace.grid.spacing" value="24"/>
+    <details key="workspace.grid.snap" value="true"/>
+    <details key="workspace.zoom.controls" value="true"/>
+    <details key="workspace.zoom.startScale" value="1"/>
+    <details key="workspace.zoom.maxScale" value="3"/>
+  </eAnnotations>
+  <eAnnotations source="code">
+    <details key="language" value="javascript"/>
+    <details key="fileExtension" value="js"/>
+  </eAnnotations>
+  <eAnnotations source="runtime">
+    <details key="kind" value="workflow"/>
+  </eAnnotations>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Program">
+    <eAnnotations source="blockly">
+      <details key="colour" value="260"/>
+      <details key="category" value="Programs"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="program('{{name}}', () =&gt; { {{statements:steps}} });"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Demo"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="steps"
+        lowerBound="1" upperBound="4" eType="#//Command" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Command" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Commands"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Log" eSuperTypes="#//Command">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Commands"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="console.log('{{message}}');"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Ready"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Wait" eSuperTypes="#//Command">
+    <eAnnotations source="blockly">
+      <details key="colour" value="30"/>
+      <details key="category" value="Commands"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="wait({{milliseconds}});"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="milliseconds"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="250"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="BooleanLiteral">
+    <eAnnotations source="blockly">
+      <details key="colour" value="230"/>
+      <details key="category" value="Expressions"/>
+      <details key="output" value="true"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="{{literal}}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="literal"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true"/>
+  </eClassifiers>
+
+</ecore:EPackage>

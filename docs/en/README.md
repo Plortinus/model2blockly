@@ -2,14 +2,14 @@
 layout: home
 hero:
   name: Model2Blockly
-  text: Generate Blockly editors from annotated Ecore
-  tagline: An Eclipse plugin and standalone generation pipeline that turns an EMF Ecore metamodel into a browser-ready Blockly editor through an inspectable EditorSpec XMI model.
+  text: Generate Blockly editors from Ecore or .m2b
+  tagline: An Eclipse plugin and standalone generation pipeline that normalizes annotated Ecore metamodels and textual .m2b specifications into an inspectable EditorSpec XMI model and a browser-ready Blockly editor.
   image:
     src: /assets/diagrams/model2blockly-concept.svg
-    alt: Model2Blockly converts annotated Ecore into an intermediate EditorSpec model and then into Blockly HTML output
+    alt: Model2Blockly converts Ecore or m2b into an intermediate EditorSpec model and then into Blockly HTML output
   actions:
     - theme: brand
-      text: Start with Ecore
+      text: Start with a model
       link: /en/user-guide
     - theme: alt
       text: AppMaker Case
@@ -18,22 +18,26 @@ hero:
       text: Architecture
       link: /en/architecture
 features:
-  - title: Ecore is the main input
-    details: Select an Ecore file in Eclipse or run the Ecore standalone entry point. Optional annotations refine block labels, categories, widgets, validation and code templates.
-    link: /en/ecore-to-blockly-mapping
-    linkText: Ecore mapping rules
+  - title: Two input routes, one generator
+    details: Start from an annotated Ecore metamodel or a concise .m2b textual specification. EcoreAdapter and DomainModelAdapter normalize both sources into the same EditorSpec contract.
+    link: /en/user-guide
+    linkText: Choose an input route
   - title: EditorSpec is the generation contract
-    details: The source EPackage is transformed into a generated EMF EditorSpec model, serialized as XMI, reloaded and validated before HTML generation.
+    details: Each source model is transformed into a generated EMF EditorSpec, serialized as XMI, reloaded and validated before HTML generation.
     link: /en/architecture
     linkText: Read the architecture
   - title: Blockly output is static HTML
     details: Generation writes block definitions, toolbox files, code generators, a standalone editor, a validation workspace, a sample model and a generation report.
     link: /en/running-example
     linkText: Inspect AppMaker
-  - title: Xtext is auxiliary
-    details: m2b and model2blockly files are still supported by the Eclipse action and standalone path, but the documented project route is Ecore first.
-    link: /en/architecture
-    linkText: See the boundaries
+  - title: Evaluated against existing editors
+    details: Ten configurations from the official Blockly repositories separate the AppMaker example from external evidence and quantify structural parity, generator parity, specification size and current limits.
+    link: /en/evaluation
+    linkText: Read the evaluation
+  - title: Ecore and .m2b are first-class inputs
+    details: Use Ecore when an EMF metamodel already exists; use .m2b when a compact textual language definition is easier to maintain. The longer .model2blockly extension remains a legacy alias.
+    link: /en/textual-dsl
+    linkText: Read the textual DSL
   - title: Validation is generated
     details: Required fields, containment cardinality, references, uniqueness and a supported subset of expression/OCL constraints are converted into runtime checks and visual validation blocks.
     link: /en/user-guide
@@ -47,21 +51,20 @@ features:
 ## Current Project Shape
 
 Model2Blockly is not a hand-written Blockly template library. The current code
-is a model-driven pipeline:
+implements a dual-input model-driven pipeline:
 
 ```text
-annotated .ecore
-  -> EMF EPackage
-  -> EcoreAdapter
-  -> EditorSpec EMF model
-  -> intermediate/*_blocklyspec.xmi
-  -> BlocklyCodeGenerator
-  -> static HTML/JavaScript editor
+annotated .ecore -> EPackage    -> EcoreAdapter -------\
+                                                        -> EditorSpec EMF model
+.m2b             -> DomainModel -> DomainModelAdapter --/
+                                                        -> intermediate/*_blocklyspec.xmi
+                                                        -> BlocklyCodeGenerator
+                                                        -> static HTML/JavaScript editor
 ```
 
-The AppMaker case in this repository is the reference path for that pipeline.
-The generated output lives under
-`io.github.plortinus.model2blockly/examples/generated/app_maker_ecore`.
+The AppMaker integration case provides both authoring styles. Its checked-in
+outputs live under `examples/generated/app_maker_ecore` and
+`examples/generated/app_maker_dsl` inside the core project.
 
-The old custom landing page is no longer the public documentation homepage.
-GitHub Pages now serves this VitePress site directly from the repository root.
+GitHub Pages serves this VitePress documentation together with the two AppMaker
+editors and the Eclipse p2 repository.

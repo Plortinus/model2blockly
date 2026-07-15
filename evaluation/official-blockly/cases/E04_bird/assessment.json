@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E04_bird",
+  "rules": [
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.bird_heading.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "Al usar bird_heading como tipo de una contención, Model2Blockly deriva comprobaciones tipadas para sus conexiones anterior y siguiente; Bird las declara sin tipo."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.bird_ifElse.inputs.statement:*.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "Las contenciones producen entradas de sentencias restringidas a bird_heading, mientras que las entradas DO y ELSE oficiales aceptan cualquier bloque de sentencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.*.dynamicBehaviour",
+      "status": "unsupported",
+      "capability": "editor-extension",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no permite declarar la extensión de tooltip dependiente de OP ni la herencia del tooltip del bloque padre usada por math_number."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.math_number.connections.output",
+      "status": "mismatch",
+      "capability": "reserved-block-redefinition",
+      "boundary": "model2blockly",
+      "rationale": "La redefinición generada del nombre estándar math_number no conserva la comprobación de salida Number en el espacio de trabajo final, aunque los tipos de dominio no reservados sí la conservan."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.math_number.inputs.dummy:<anonymous>.fields.0.constraints.precision",
+      "status": "unsupported",
+      "capability": "number-field-precision",
+      "boundary": "model2blockly",
+      "rationale": "El tipo int de Model2Blockly fija la precisión del campo en 1 y no permite solicitar el valor 0 usado por la definición oficial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_if.connections.*",
+      "status": "unsupported",
+      "capability": "stock-block-extension",
+      "boundary": "model2blockly",
+      "rationale": "Bird modifica el init del bloque estándar controls_if para eliminar sus conexiones anterior y siguiente; el DSL no declara modificaciones puntuales de bloques Blockly incorporados."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.blockOrder",
+      "status": "unsupported",
+      "capability": "toolbox-entry-selection",
+      "boundary": "model2blockly",
+      "rationale": "La paleta generada enumera una vez todos los tipos concretos y no permite seleccionar ni ordenar por separado las entradas disponibles en un nivel."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.blocks.bird_compare#1.configuration",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no permite preconfigurar una entrada de paleta con bird_position y math_number anidados, valores iniciales y movable=false."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.blocks.bird_compare#2.present",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "No se puede declarar una segunda instancia de bird_compare con la coordenada Y preconfigurada."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.unexpectedBlocks",
+      "status": "unsupported",
+      "capability": "toolbox-entry-selection",
+      "boundary": "model2blockly",
+      "rationale": "Model2Blockly añade automáticamente los tipos concretos bird_position, bird_ifElse y math_number, que en Bird solo aparecen anidados o en el espacio inicial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "initialWorkspace.present",
+      "status": "unsupported",
+      "capability": "initial-workspace",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no dispone de una construcción para fijar el controls_if inicial, su posición y deletable=false."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.bird_heading.template",
+      "status": "excluded",
+      "capability": "execution-tracing",
+      "boundary": "domain-runtime",
+      "rationale": "La parte adicional block_id enlaza el comando con la animación del ave y pertenece al runtime del juego, no a la estructura del editor."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.bird_compare.template",
+      "status": "unsupported",
+      "capability": "enum-code-mapping",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla actual sustituye el valor LT o GT directamente y no permite mapearlo a los operadores JavaScript < o >."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.bird_*.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-empty-input-defaults",
+      "boundary": "model2blockly",
+      "rationale": "Las plantillas declarativas no expresan los valores alternativos específicos que Bird aplica cuando faltan operandos o la condición."
+    }
+  ]
+}

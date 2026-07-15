@@ -1,0 +1,46 @@
+Blockly.Blocks['trait'] = {
+  /**
+   * Block to represent a trait.
+   * @this {Blockly.Block}
+   */
+  init: function() {
+    this.setColour(Puzzle.Blocks.TRAIT_HUE);
+    this.appendDummyInput().appendField('', 'NAME');
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+  },
+  /**
+   * Save the animal and trait numbers.
+   * @returns {!Element} XML storage element.
+   * @this {Blockly.Block}
+   */
+  mutationToDom: function() {
+    const container = document.createElement('mutation');
+    container.setAttribute('animal', this.animal);
+    container.setAttribute('trait', this.trait);
+    return container;
+  },
+  /**
+   * Restore the animal and trait numbers.
+   * @param {!Element} xmlElement XML storage element.
+   * @this {Blockly.Block}
+   */
+  domToMutation: function(xmlElement) {
+    this.populate(parseInt(xmlElement.getAttribute('animal')),
+                  parseInt(xmlElement.getAttribute('trait')));
+  },
+  animal: 0,
+  trait: 0,
+  /**
+   * Set the animal and trait.
+   * @param {number} n Animal number.
+   * @param {number} m Trait number.
+   * @this {Blockly.Block}
+   */
+  populate: function(n, m) {
+    this.animal = n;
+    this.trait = m;
+    // Set the trait name.
+    const data = Puzzle.data.getData();
+    this.setFieldValue(data[n - 1].traits[m - 1], 'NAME');
+  },

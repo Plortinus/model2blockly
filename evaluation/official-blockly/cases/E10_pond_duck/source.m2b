@@ -1,0 +1,381 @@
+domain Pond
+codeLanguage "javascript"
+codeFileExtension "js"
+
+workspace {
+  renderer: "geras"
+  toolboxType: "category"
+  trashcan: true
+}
+
+category Pond colour 290
+category Logic colour 210
+category Loops colour 120
+category Math colour 230
+category Variables colour 330
+category Functions colour 290
+
+abstract class PondCommand {
+}
+
+abstract output class Number {
+}
+
+abstract output class Boolean {
+}
+
+output as Number class pond_scan extends Number category Pond colour 290
+  label "scan"
+  message0 "%1(%2)"
+  tooltip "Scan for enemies. Specify a direction (0-360). Returns the distance to the closest enemy in that direction. Returns Infinity if no enemy found."
+  inputsInline true
+  code "scan({{value:DEGREE}})" {
+  attribute CALL : label [0..1] default "scan"
+    widget text uiLabel "Function" readonly order 1 variant default
+  value Number DEGREE shadow pond_math_number
+    widget expression-slot uiLabel "Direction" order 2 variant default
+}
+
+class pond_cannon extends PondCommand category Pond colour 290
+  label "cannon"
+  message0 "%1(%2, %3);"
+  tooltip "Fire the cannon. Specify a direction (0-360) and a range (0-70)."
+  inputsInline true
+  code "cannon({{value:DEGREE}}, {{value:RANGE}});" {
+  attribute CALL : label [0..1] default "cannon"
+    widget text uiLabel "Function" readonly order 1 variant default
+  value Number DEGREE shadow pond_math_number
+    widget expression-slot uiLabel "Direction" order 2 variant default
+  value Number RANGE shadow pond_math_number
+    widget expression-slot uiLabel "Range" order 3 variant default
+}
+
+class pond_swim extends PondCommand category Pond colour 290
+  label "swim"
+  message0 "%1(%2);"
+  tooltip "Swim forward. Specify a direction (0-360)."
+  inputsInline true
+  code "swim({{value:DEGREE}});" {
+  attribute CALL : label [0..1] default "swim"
+    widget text uiLabel "Function" readonly order 1 variant default
+  value Number DEGREE shadow pond_math_number
+    widget expression-slot uiLabel "Direction" order 2 variant default
+}
+
+class pond_stop extends PondCommand category Pond colour 290
+  label "stop"
+  message0 "%1(%2);"
+  tooltip "Stop swimming. Player will slow to a stop."
+  inputsInline false
+  code "stop();" {
+  attribute CALL : label [0..1] default "stop"
+    widget text uiLabel "Function" readonly order 1 variant default
+  attribute EMPTY : label [0..1] default ""
+    widget text uiLabel "Empty argument" readonly order 2 variant default
+}
+
+output as Number class pond_health extends Number category Pond colour 290
+  label "health"
+  message0 "%1(%2)"
+  tooltip "Returns the player's current health (0 is dead, 100 is healthy)."
+  inputsInline false
+  code "health()" {
+  attribute CALL : label [0..1] default "health"
+    widget text uiLabel "Function" readonly order 1 variant default
+  attribute EMPTY : label [0..1] default ""
+    widget text uiLabel "Empty argument" readonly order 2 variant default
+}
+
+output as Number class pond_speed extends Number category Pond colour 290
+  label "speed"
+  message0 "%1(%2)"
+  tooltip "Returns the current speed of the player (0 is stopped, 100 is full speed)."
+  inputsInline false
+  code "speed()" {
+  attribute CALL : label [0..1] default "speed"
+    widget text uiLabel "Function" readonly order 1 variant default
+  attribute EMPTY : label [0..1] default ""
+    widget text uiLabel "Empty argument" readonly order 2 variant default
+}
+
+output as Number class pond_getX extends Number category Pond colour 290
+  label "getX"
+  message0 "%1(%2)"
+  tooltip "Returns the X coordinate of the player (0 is the left edge, 100 is the right edge)."
+  inputsInline false
+  code "getX()" {
+  attribute CALL : label [0..1] default "getX"
+    widget text uiLabel "Function" readonly order 1 variant default
+  attribute EMPTY : label [0..1] default ""
+    widget text uiLabel "Empty argument" readonly order 2 variant default
+}
+
+output as Number class pond_getY extends Number category Pond colour 290
+  label "getY"
+  message0 "%1(%2)"
+  tooltip "Returns the Y coordinate of the player (0 is the bottom edge, 100 is the top edge)."
+  inputsInline false
+  code "getY()" {
+  attribute CALL : label [0..1] default "getY"
+    widget text uiLabel "Function" readonly order 1 variant default
+  attribute EMPTY : label [0..1] default ""
+    widget text uiLabel "Empty argument" readonly order 2 variant default
+}
+
+class pond_log extends PondCommand category Pond colour 290
+  label "log"
+  message0 "%1(%2);"
+  tooltip "Prints a number to your browser's console."
+  inputsInline true
+  code "log({{value:VALUE}});" {
+  attribute CALL : label [0..1] default "log"
+    widget text uiLabel "Function" readonly order 1 variant default
+  value Number VALUE shadow pond_math_number
+    widget expression-slot uiLabel "Value" order 2 variant default
+}
+
+class controls_if extends PondCommand category Logic colour 210
+  label "if"
+  message0 "if (%1) {%2}"
+  tooltip "If a value is true, then do some statements."
+  helpUrl "https://github.com/RaspberryPiFoundation/blockly/wiki/IfElse"
+  inputsInline true
+  code "if ({{value:IF0}}) {\n{{statements:DO0}}\n}" {
+  value Boolean IF0
+    widget expression-slot uiLabel "Condition" order 1 variant default
+  contains PondCommand DO0 [0..50]
+    widget slot uiLabel "Do" order 2 variant default
+}
+
+output as Boolean class logic_compare extends Boolean category Logic colour 210
+  label "compare"
+  message0 "%1 %2 %3"
+  tooltip "Return true if both inputs equal each other."
+  helpUrl "https://en.wikipedia.org/wiki/Inequality_(mathematics)"
+  inputsInline true
+  code "{{value:A}} {{OP}} {{value:B}}" {
+  value Number A
+    widget expression-slot uiLabel "Left operand" order 1 variant default
+  attribute OP : enum {
+    EQ = "==",
+    NEQ = "!=",
+    LT = "‏<",
+    LTE = "‏<=",
+    GT = "‏>",
+    GTE = "‏>="
+  } [0..1] default "EQ"
+    widget select uiLabel "Operator" order 2 variant default
+  value Number B
+    widget expression-slot uiLabel "Right operand" order 3 variant default
+}
+
+output as Boolean class logic_operation extends Boolean category Logic colour 210
+  label "logical operation"
+  message0 "%1 %2 %3"
+  tooltip "Return true if both inputs are true."
+  helpUrl "https://github.com/RaspberryPiFoundation/blockly/wiki/Logic#logical-operations"
+  inputsInline true
+  code "{{value:A}} {{OP}} {{value:B}}" {
+  value Boolean A
+    widget expression-slot uiLabel "Left operand" order 1 variant default
+  attribute OP : enum {
+    AND = "&&",
+    OR = "||"
+  } [0..1] default "AND"
+    widget select uiLabel "Operator" order 2 variant default
+  value Boolean B
+    widget expression-slot uiLabel "Right operand" order 3 variant default
+}
+
+output as Boolean class logic_boolean extends Boolean category Logic colour 210
+  label "boolean"
+  message0 "%1"
+  tooltip "Returns either true or false."
+  helpUrl "https://github.com/RaspberryPiFoundation/blockly/wiki/Logic#values"
+  inputsInline false
+  code "{{BOOL}}" {
+  attribute BOOL : enum {
+    TRUE = "true",
+    FALSE = "false"
+  } [0..1] default "TRUE"
+    widget select uiLabel "Boolean" order 1 variant default
+}
+
+class controls_whileUntil extends PondCommand category Loops colour 120
+  label "while"
+  message0 "while (%1) {%2}"
+  tooltip "While a value is true, then do some statements."
+  helpUrl "https://github.com/RaspberryPiFoundation/blockly/wiki/Loops#repeat"
+  inputsInline true
+  code "while ({{value:BOOL}}) {\n{{statements:DO}}\n}" {
+  value Boolean BOOL
+    widget expression-slot uiLabel "Condition" order 1 variant default
+  contains PondCommand DO [0..50]
+    widget slot uiLabel "Do" order 2 variant default
+}
+
+output as Number class pond_math_number extends Number category Math colour 230
+  label "number or angle"
+  message0 "%1"
+  tooltip "A number."
+  helpUrl "https://en.wikipedia.org/wiki/Number"
+  inputsInline false
+  code "{{NUM}}" {
+  attribute NUM : float [0..1] default "0"
+    widget number uiLabel "Number" order 1 variant default
+}
+
+output as Number class math_arithmetic extends Number category Math colour 230
+  label "arithmetic"
+  message0 "%1 %2 %3"
+  tooltip "Return the sum of the two numbers."
+  helpUrl "https://en.wikipedia.org/wiki/Arithmetic"
+  inputsInline true
+  code "{{value:A}} {{OP}} {{value:B}}" {
+  value Number A shadow pond_math_number
+    widget expression-slot uiLabel "Left operand" order 1 variant default
+  attribute OP : enum {
+    ADD = "+",
+    MINUS = "-",
+    MULTIPLY = "*",
+    DIVIDE = "/"
+  } [0..1] default "ADD"
+    widget select uiLabel "Operator" order 2 variant default
+  value Number B shadow pond_math_number
+    widget expression-slot uiLabel "Right operand" order 3 variant default
+}
+
+output as Number class pond_math_single extends Number category Math colour 230
+  label "advanced math"
+  message0 "%1 (%2)"
+  tooltip "Return the square root of a number."
+  helpUrl "https://en.wikipedia.org/wiki/Square_root"
+  inputsInline true
+  code "Math.{{OP}}({{value:NUM}})" {
+  attribute OP : enum {
+    ROOT = "Math.sqrt",
+    ABS = "Math.abs",
+    SIN = "Math.sin_deg",
+    COS = "Math.cos_deg",
+    TAN = "Math.tan_deg",
+    ASIN = "Math.asin_deg",
+    ACOS = "Math.acos_deg",
+    ATAN = "Math.atan_deg"
+  } [0..1] default "ROOT"
+    widget select uiLabel "Function" order 1 variant default
+  value Number NUM shadow pond_math_number
+    widget expression-slot uiLabel "Operand" order 2 variant default
+}
+
+output as Number class math_random_float extends Number category Math colour 230
+  label "random fraction"
+  message0 "Math.random  (  )"
+  tooltip "Return a random fraction between 0.0 (inclusive) and 1.0 (exclusive)."
+  helpUrl "https://en.wikipedia.org/wiki/Random_number_generation"
+  inputsInline false
+  code "Math.random()" {
+}
+
+class math_change extends PondCommand category Variables colour 330
+  label "change variable"
+  message0 "%1 += %2;"
+  tooltip "Add a number to variable 'name'."
+  helpUrl "https://en.wikipedia.org/wiki/Programming_idiom#Incrementing_a_counter"
+  inputsInline true
+  code "{{VAR}} += {{value:DELTA}};" {
+  attribute VAR : string [0..1] default "name"
+    widget text uiLabel "Variable" order 1 variant default
+  value Number DELTA shadow pond_math_number
+    widget expression-slot uiLabel "Delta" order 2 variant default
+}
+
+class variables_set extends PondCommand category Variables colour 330
+  label "set variable"
+  message0 "var %1 = %2;"
+  tooltip "Sets this variable to be equal to the input."
+  helpUrl "https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#set"
+  inputsInline true
+  code "var {{VAR}} = {{value:VALUE}};" {
+  attribute VAR : string [0..1] default "name"
+    widget text uiLabel "Variable" order 1 variant default
+  value Number VALUE
+    widget expression-slot uiLabel "Value" order 2 variant default
+}
+
+class procedures_defnoreturn category Functions colour 290
+  label "function definition"
+  message0 "%1 %2 %3%4%5%6%7"
+  tooltip "Creates a function with no output."
+  helpUrl "https://en.wikipedia.org/wiki/Subroutine"
+  inputsInline false
+  code "function {{NAME}}({{PARAMS}}) {\n{{statements:STACK}}\n}" {
+  attribute FUNCTION : label [0..1] default "function"
+    widget text uiLabel "Keyword" readonly order 1 variant default
+  attribute NAME : string [0..1] default ""
+    widget text uiLabel "Name" order 2 variant default
+  attribute OPEN : label [0..1] default "("
+    widget text uiLabel "Open parenthesis" readonly order 3 variant default
+  attribute PARAMS : label [0..1] default ""
+    widget text uiLabel "Parameters" readonly order 4 variant default
+  attribute BODY : label [0..1] default ") {"
+    widget text uiLabel "Body start" readonly order 5 variant default
+  contains PondCommand STACK [0..50]
+    widget slot uiLabel "Body" order 6 variant default
+  attribute CLOSE : label [0..1] default "}"
+    widget text uiLabel "Body end" readonly order 7 variant default
+}
+
+class procedures_defreturn category Functions colour 290
+  label "function definition with return"
+  message0 "%1 %2 %3%4%5%6return %7%8"
+  tooltip "Creates a function with an output."
+  helpUrl "https://en.wikipedia.org/wiki/Subroutine"
+  inputsInline true
+  code "function {{NAME}}({{PARAMS}}) {\n{{statements:STACK}}\nreturn {{value:RETURN}};\n}" {
+  attribute FUNCTION : label [0..1] default "function"
+    widget text uiLabel "Keyword" readonly order 1 variant default
+  attribute NAME : string [0..1] default ""
+    widget text uiLabel "Name" order 2 variant default
+  attribute OPEN : label [0..1] default "("
+    widget text uiLabel "Open parenthesis" readonly order 3 variant default
+  attribute PARAMS : label [0..1] default ""
+    widget text uiLabel "Parameters" readonly order 4 variant default
+  attribute BODY : label [0..1] default ") {"
+    widget text uiLabel "Body start" readonly order 5 variant default
+  contains PondCommand STACK [0..50]
+    widget slot uiLabel "Body" order 6 variant default
+  value Number RETURN
+    widget expression-slot uiLabel "Return value" order 7 variant default
+  attribute CLOSE : label [0..1] default "}"
+    widget text uiLabel "Body end" readonly order 8 variant default
+}
+
+class procedures_callnoreturn extends PondCommand category Functions colour 290
+  label "function call"
+  message0 "%1%2%3"
+  tooltip "Run the user-defined function '%1'."
+  helpUrl "https://en.wikipedia.org/wiki/Subroutine"
+  inputsInline true
+  code "{{NAME}}();" {
+  attribute NAME : label [0..1] default ""
+    widget text uiLabel "Function" readonly order 1 variant default
+  attribute OPEN : label [0..1] default "("
+    widget text uiLabel "Open parenthesis" readonly order 2 variant default
+  attribute TAIL : label [0..1] default ");"
+    widget text uiLabel "Call end" readonly order 3 variant default
+}
+
+output class procedures_callreturn category Functions colour 290
+  label "function call with return"
+  message0 "%1%2%3"
+  tooltip "Run the user-defined function '%1' and use its output."
+  helpUrl "https://en.wikipedia.org/wiki/Subroutine"
+  inputsInline true
+  code "{{NAME}}()" {
+  attribute NAME : label [0..1] default ""
+    widget text uiLabel "Function" readonly order 1 variant default
+  attribute OPEN : label [0..1] default "("
+    widget text uiLabel "Open parenthesis" readonly order 2 variant default
+  attribute TAIL : label [0..1] default ")"
+    widget text uiLabel "Call end" readonly order 3 variant default
+}

@@ -32,7 +32,7 @@ reducir el trabajo manual necesario en cada nuevo lenguaje.
 \label{sec:objetivos-especificos}
 
 Para alcanzar el objetivo general se han definido los siguientes objetivos
-específicos:
+específicos, identificados en adelante como OE1--OE7:
 
 \noindent\textbf{OE1. Analizar la estructura de los lenguajes basados en
 bloques.} Identificar qué necesita un editor de bloques para representar un
@@ -78,7 +78,7 @@ menos cambios.
 generador que produzca los ficheros necesarios para abrir un editor en el
 navegador: definición de bloques, paleta, generadores, validaciones y página
 HTML. El editor generado permite crear programas o modelos usando la
-sintaxis visual de bloques. El estado del workspace puede guardarse en JSON y
+sintaxis visual de bloques. El estado del espacio de trabajo puede guardarse en JSON y
 cargarse posteriormente en el editor. También es posible exportar e importar la
 representación JSON del modelo. Además, el contenido puede exportarse como XMI
 de instancia del dominio para su procesamiento con herramientas compatibles con
@@ -97,13 +97,13 @@ separada, de modo que puedan inspeccionarse visualmente y, en los casos
 soportados, aplicarse de vuelta a la fuente.
 
 \medskip
-\noindent\textbf{OE7. Evaluar la viabilidad mediante un ejemplo conductor y
-pruebas.} La solución se evalúa con AppMaker descrito por las dos rutas: como
-metamodelo Ecore con anotaciones y como fichero textual \texttt{.m2b}. Este caso
-permite analizar si ambas entradas pueden converger en el mismo modelo
-intermedio y generar un editor Blockly operativo con artefactos revisables. Las
-pruebas automáticas cubren el modelo intermedio, los adaptadores y los
-generadores.
+\noindent\textbf{OE7. Evaluar la efectividad, el esfuerzo de especificación y
+los límites de la solución.} Contrastar Model2Blockly con editores Blockly
+existentes mediante propiedades observables, generadores y tamaño de la fuente
+mantenida. Comprobar en una muestra si Ecore y \texttt{.m2b} convergen en el
+mismo descriptor. Los seis pares mínimos y complementarios, el caso Ecore
+específico y las pruebas automáticas aportan evidencia complementaria de
+integración, regresión y despliegue.
 
 \section{Alcance de la solución}
 \label{sec:alcance-funcional}
@@ -137,14 +137,14 @@ sistemática en una sintaxis visual basada en bloques.
     Modelo intermedio & Representación común de bloques, campos, categorías,
     referencias, entradas de valor, validaciones y metadatos de interfaz,
     independiente de la ruta de entrada. \\
-	    Generación Blockly & Producción de bloques, toolbox, generadores,
+	    Generación Blockly & Producción de bloques, paleta, generadores,
 	    validaciones y páginas HTML ejecutables a partir de la representación
 	    intermedia. \\
-	    Integración Eclipse & Plugins Eclipse/Xtext para editar ficheros
+	    Integración Eclipse & Complementos Eclipse/Xtext para editar ficheros
 	    \texttt{.m2b}, ejecutar la generación desde el menú contextual y
-	    publicar la herramienta como feature instalable desde un update site p2. \\
+	    publicar la herramienta como feature instalable desde un sitio de actualización p2. \\
 	    Artefactos trazables & Generación del XMI intermedio, informe de generación,
-	    modelo de ejemplo, workspace visual de validaciones y documentación breve de
+	    modelo de ejemplo, espacio de trabajo visual de validaciones y documentación breve de
 	    la salida producida. \\
 	    Validaciones & Derivación de comprobaciones sobre campos obligatorios,
 	    mínimos y máximos de elementos, unicidad, referencias obligatorias,
@@ -154,9 +154,9 @@ sistemática en una sintaxis visual basada en bloques.
     modelo. \\
     Personalización & Uso de colores, etiquetas, categorías, tooltips, widgets
     y metadatos de interfaz para adaptar la sintaxis visual al dominio. \\
-    Evaluación & Uso de AppMaker por la ruta Ecore y por la ruta textual
-    \texttt{.m2b}, junto con pruebas automáticas para
-    aportar evidencia sobre adaptadores, generadores y modelo intermedio. \\
+    Evaluación & Comparación con editores Blockly existentes: paridad funcional,
+    fuente mantenida y rutas Ecore/\texttt{.m2b}; evidencia complementaria con
+    seis pares, un caso Ecore específico y pruebas automáticas. \\
     \hline
   \end{tabular}
   \caption{Dimensiones incluidas en el alcance de la solución}
@@ -174,7 +174,7 @@ dominio específico con sintaxis basada en bloques.
 Por lo tanto, quedan fuera del alcance principal:
 
 \begin{itemize}
-  \item la importación genérica de modelos XMI existentes a un workspace
+  \item la importación genérica de modelos XMI existentes a un espacio de trabajo
   Blockly;
   \item la integración completa de lenguajes de restricciones complejos como OCL;
   \item la sincronización automática de referencias bidireccionales complejas;
@@ -213,12 +213,13 @@ valorar si el enfoque propuesto es técnicamente viable y reutilizable:
 	  \item generar código HTML/JavaScript que pueda ejecutarse en un navegador;
 	  \item producir artefactos de trazabilidad, como XMI intermedio, informe de
 	  generación y ficheros de validación revisables;
-	  \item demostrar la reutilización de la arquitectura con un dominio
-	  representativo descrito por la ruta Ecore y por la ruta textual
-	  \texttt{.m2b}, normalizadas al mismo modelo intermedio;
-	  \item disponer de pruebas, verificaciones y un mecanismo de instalación que
-	  reduzcan el riesgo de que la solución funcione únicamente para un caso
-	  preparado manualmente.
+	  \item comparar con un corpus de editores Blockly existentes qué propiedades
+	  pueden reproducirse, qué tamaño tiene la fuente mantenida y qué capacidades
+	  quedan fuera del soporte actual;
+	  \item comprobar la coherencia de las rutas Ecore y \texttt{.m2b}, y disponer
+	  de pruebas, verificaciones y un mecanismo de instalación que reduzcan el
+	  riesgo de que la solución funcione únicamente para un caso preparado
+	  manualmente.
 \end{enumerate}
 
 Estos criterios responden a la motivación inicial del trabajo: evitar que cada

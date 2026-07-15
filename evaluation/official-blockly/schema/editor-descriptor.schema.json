@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://model2blockly.local/schema/editor-descriptor.schema.json",
+  "title": "Canonical Blockly editor descriptor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "caseId",
+    "treatment",
+    "controls",
+    "blocks",
+    "toolbox",
+    "initialWorkspace",
+    "generators",
+    "errors"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "caseId": { "type": "string", "minLength": 1 },
+    "treatment": { "enum": ["baseline", "m2b", "ecore"] },
+    "controls": { "$ref": "#/$defs/controls" },
+    "blocks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/block" }
+    },
+    "toolbox": {
+      "type": ["object", "array", "null"]
+    },
+    "initialWorkspace": {
+      "type": ["object", "array", "null"]
+    },
+    "generators": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/generator" }
+    },
+    "errors": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "blocklyVersion",
+        "renderer",
+        "theme",
+        "locale",
+        "browserViewport",
+        "workspaceViewport"
+      ],
+      "properties": {
+        "blocklyVersion": { "type": "string" },
+        "renderer": { "type": "string" },
+        "theme": { "type": "string" },
+        "locale": { "type": "string" },
+        "browserViewport": { "$ref": "#/$defs/dimensions" },
+        "workspaceViewport": { "$ref": "#/$defs/dimensions" }
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["height", "width"],
+      "properties": {
+        "height": { "type": "integer", "minimum": 1 },
+        "width": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "elements",
+        "inputs",
+        "connections",
+        "inputsInline",
+        "colour",
+        "tooltip",
+        "helpUrl",
+        "dynamicBehaviour"
+      ],
+      "properties": {
+        "type": { "type": "string", "minLength": 1 },
+        "elements": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/element" }
+        },
+        "inputs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/input" }
+        },
+        "connections": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["previous", "next", "output"],
+          "properties": {
+            "previous": { "$ref": "#/$defs/nullableConnection" },
+            "next": { "$ref": "#/$defs/nullableConnection" },
+            "output": { "$ref": "#/$defs/nullableConnection" }
+          }
+        },
+        "inputsInline": { "type": "boolean" },
+        "colour": { "type": ["string", "null"] },
+        "tooltip": { "type": ["string", "null"] },
+        "helpUrl": { "type": ["string", "null"] },
+        "dynamicBehaviour": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "element": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "name", "inputKind"],
+          "properties": {
+            "kind": { "const": "input" },
+            "name": { "type": "string" },
+            "inputKind": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "name", "fieldKind", "inputName"],
+          "properties": {
+            "kind": { "const": "field" },
+            "name": { "type": ["string", "null"] },
+            "fieldKind": { "type": "string" },
+            "inputName": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "kind", "check", "alignment", "fields"],
+      "properties": {
+        "name": { "type": "string" },
+        "kind": { "type": "string" },
+        "check": { "$ref": "#/$defs/nullableStringArray" },
+        "alignment": { "type": ["integer", "null"] },
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/field" }
+        }
+      }
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "kind", "value", "text", "options", "constraints"],
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "kind": { "type": "string" },
+        "value": true,
+        "text": { "type": "string" },
+        "options": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["label", "value"],
+                "properties": {
+                  "label": true,
+                  "value": true
+                }
+              }
+            }
+          ]
+        },
+        "constraints": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["min", "max", "precision"],
+              "properties": {
+                "min": { "type": ["number", "null"] },
+                "max": { "type": ["number", "null"] },
+                "precision": { "type": ["number", "null"] }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "nullableConnection": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["check"],
+          "properties": {
+            "check": { "$ref": "#/$defs/nullableStringArray" }
+          }
+        }
+      ]
+    },
+    "nullableStringArray": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" }
+        }
+      ]
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "language", "registered", "metadata"],
+      "properties": {
+        "type": { "type": "string" },
+        "language": { "type": "string" },
+        "registered": { "type": "boolean" },
+        "metadata": { "type": ["object", "array", "string", "number", "boolean", "null"] }
+      }
+    }
+  }
+}

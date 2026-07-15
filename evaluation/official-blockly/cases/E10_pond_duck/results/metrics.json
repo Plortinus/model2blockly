@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E10_pond_duck",
+  "authoringScope": "Official in-scope definitions/toolbox/generators versus maintained .m2b; generated files and domain runtime excluded.",
+  "blockCount": 24,
+  "baseline": {
+    "total": {
+      "bytes": 25840,
+      "totalLines": 901,
+      "nonBlank": 869,
+      "nonBlankNonComment": 740
+    },
+    "editor": {
+      "bytes": 22642,
+      "totalLines": 814,
+      "nonBlank": 790,
+      "nonBlankNonComment": 679
+    },
+    "generator": {
+      "bytes": 3198,
+      "totalLines": 87,
+      "nonBlank": 79,
+      "nonBlankNonComment": 61
+    },
+    "fragmentCount": 16
+  },
+  "m2b": {
+    "bytes": 14253,
+    "totalLines": 381,
+    "nonBlank": 352,
+    "nonBlankNonComment": 352
+  },
+  "generatedArtifacts": {
+    "fileCount": 13,
+    "bytes": 507168,
+    "excludedFromAuthoringComparison": true
+  },
+  "comparison": {
+    "locReductionPercent": 52.43,
+    "byteReductionPercent": 44.84,
+    "baselineLocPerBlock": 30.83,
+    "m2bLocPerBlock": 14.67
+  }
+}

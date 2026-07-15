@@ -1,0 +1,1281 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E09_pond_tutor",
+  "treatment": "baseline",
+  "controls": {
+    "blocklyVersion": "13.1.1",
+    "browserViewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "locale": "en",
+    "renderer": "geras",
+    "theme": "classic",
+    "workspaceViewport": {
+      "height": 640,
+      "width": 1024
+    }
+  },
+  "blocks": [
+    {
+      "type": "pond_scan",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "DEGREE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "DEGREE",
+          "kind": "value",
+          "check": [
+            "Angle",
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "scan",
+              "text": "scan",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ")",
+              "text": ")",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": true,
+      "colour": "#995ba5",
+      "tooltip": "Scan for enemies. Specify a direction (0-360). Returns the distance to the closest enemy in that direction. Returns Infinity if no enemy found.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_cannon",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "DEGREE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "input",
+          "name": "RANGE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "RANGE"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "DEGREE",
+          "kind": "value",
+          "check": [
+            "Angle",
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "cannon",
+              "text": "cannon",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "RANGE",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ",",
+              "text": ",",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ");",
+              "text": ");",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#995ba5",
+      "tooltip": "Fire the cannon. Specify a direction (0-360) and a range (0-70).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_swim",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "DEGREE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "DEGREE",
+          "kind": "value",
+          "check": [
+            "Angle",
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "swim",
+              "text": "swim",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ");",
+              "text": ");",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#995ba5",
+      "tooltip": "Swim forward. Specify a direction (0-360).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_stop",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "stop",
+              "text": "stop",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ");",
+              "text": ");",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Stop swimming. Player will slow to a stop.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_getX",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "getX",
+              "text": "getX",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ")",
+              "text": ")",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Returns the X coordinate of the player (0 is the left edge, 100 is the right edge).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_getY",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "getY",
+              "text": "getY",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ")",
+              "text": ")",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Returns the Y coordinate of the player (0 is the bottom edge, 100 is the top edge).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "controls_if",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "IF0",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "IF0"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "input",
+          "name": "DO0",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "input",
+          "name": "TAIL",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "TAIL"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "IF0",
+          "kind": "value",
+          "check": [
+            "Boolean"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "if (",
+              "text": "if (",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ") {",
+              "text": ") {",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "DO0",
+          "kind": "statement",
+          "check": null,
+          "alignment": -1,
+          "fields": []
+        },
+        {
+          "name": "TAIL",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "}",
+              "text": "}",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#5b80a5",
+      "tooltip": "If a value is true, then do some statements.",
+      "helpUrl": "https://github.com/RaspberryPiFoundation/blockly/wiki/IfElse",
+      "dynamicBehaviour": [
+        "dom-to-mutation",
+        "dynamic-elseif-else-shape",
+        "legacy-mutator:controls_if",
+        "mutation-to-dom",
+        "mutator",
+        "tooltip-from-mutator-state"
+      ]
+    },
+    {
+      "type": "logic_compare",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "A",
+          "inputKind": "value"
+        },
+        {
+          "kind": "input",
+          "name": "B",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": "OP",
+          "fieldKind": "field_dropdown",
+          "inputName": "B"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "A",
+          "kind": "value",
+          "check": null,
+          "alignment": -1,
+          "fields": []
+        },
+        {
+          "name": "B",
+          "kind": "value",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "OP",
+              "kind": "field_dropdown",
+              "value": "EQ",
+              "text": "==",
+              "options": [
+                {
+                  "label": "==",
+                  "value": "EQ"
+                },
+                {
+                  "label": "!=",
+                  "value": "NEQ"
+                },
+                {
+                  "label": "‏<",
+                  "value": "LT"
+                },
+                {
+                  "label": "‏<=",
+                  "value": "LTE"
+                },
+                {
+                  "label": "‏>",
+                  "value": "GT"
+                },
+                {
+                  "label": "‏>=",
+                  "value": "GTE"
+                }
+              ],
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Boolean"
+          ]
+        }
+      },
+      "inputsInline": true,
+      "colour": "#5b80a5",
+      "tooltip": "Return true if both inputs equal each other.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Inequality_(mathematics)",
+      "dynamicBehaviour": [
+        "connection-type-validator",
+        "dropdown-dependent-tooltip",
+        "onchange"
+      ]
+    },
+    {
+      "type": "logic_boolean",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": "BOOL",
+          "fieldKind": "field_dropdown",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "BOOL",
+              "kind": "field_dropdown",
+              "value": "TRUE",
+              "text": "true",
+              "options": [
+                {
+                  "label": "true",
+                  "value": "TRUE"
+                },
+                {
+                  "label": "false",
+                  "value": "FALSE"
+                }
+              ],
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Boolean"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#5b80a5",
+      "tooltip": "Returns either true or false.",
+      "helpUrl": "https://github.com/RaspberryPiFoundation/blockly/wiki/Logic#values",
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "controls_whileUntil",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "BOOL",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "BOOL"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "input",
+          "name": "DO",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "BOOL",
+          "kind": "value",
+          "check": [
+            "Boolean"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "while (",
+              "text": "while (",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ") {",
+              "text": ") {",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "DO",
+          "kind": "statement",
+          "check": null,
+          "alignment": -1,
+          "fields": []
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "}",
+              "text": "}",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#5ba55b",
+      "tooltip": "While a value is true, then do some statements.",
+      "helpUrl": "https://github.com/RaspberryPiFoundation/blockly/wiki/Loops#repeat",
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_math_number",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": "NUM",
+          "fieldKind": "field_number",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "NUM",
+              "kind": "field_number",
+              "value": 0,
+              "text": "0",
+              "options": null,
+              "constraints": {
+                "min": null,
+                "max": null,
+                "precision": 0
+              }
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#5b67a5",
+      "tooltip": "A number.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Number",
+      "dynamicBehaviour": [
+        "angle-field-switch",
+        "dom-to-mutation",
+        "mutation-to-dom",
+        "onchange",
+        "parent-tooltip-when-inline"
+      ]
+    }
+  ],
+  "toolbox": {
+    "contents": [
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "inputs": {
+              "DEGREE": {
+                "shadow": {
+                  "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"true\"></mutation>",
+                  "fields": {
+                    "NUM": 0
+                  },
+                  "type": "pond_math_number"
+                }
+              },
+              "RANGE": {
+                "shadow": {
+                  "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"false\"></mutation>",
+                  "fields": {
+                    "NUM": 70
+                  },
+                  "type": "pond_math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "pond_cannon"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "DEGREE": {
+                "shadow": {
+                  "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"true\"></mutation>",
+                  "fields": {
+                    "NUM": 0
+                  },
+                  "type": "pond_math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "pond_scan"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "DEGREE": {
+                "shadow": {
+                  "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"true\"></mutation>",
+                  "fields": {
+                    "NUM": 0
+                  },
+                  "type": "pond_math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "pond_swim"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "pond_stop"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "pond_getX"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "pond_getY"
+          }
+        ],
+        "kind": "category",
+        "name": "Pond"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_compare"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_boolean"
+          }
+        ],
+        "kind": "category",
+        "name": "Logic"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_whileUntil"
+          }
+        ],
+        "kind": "category",
+        "name": "Loops"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"false\"></mutation>",
+            "kind": "block",
+            "type": "pond_math_number"
+          }
+        ],
+        "kind": "category",
+        "name": "Math"
+      }
+    ],
+    "kind": "categoryToolbox"
+  },
+  "initialWorkspace": {
+    "blocks": {
+      "blocks": [
+        {
+          "id": "mUyg4P_+iu`I,v1utmV=",
+          "inputs": {
+            "DEGREE": {
+              "shadow": {
+                "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"true\"></mutation>",
+                "fields": {
+                  "NUM": 0
+                },
+                "id": "Mp~Y*+-n0,n?Ev/#f%]x",
+                "type": "pond_math_number"
+              }
+            },
+            "RANGE": {
+              "shadow": {
+                "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"false\"></mutation>",
+                "fields": {
+                  "NUM": 70
+                },
+                "id": "Bwl0u!*8v#CaBU+KMQPH",
+                "type": "pond_math_number"
+              }
+            }
+          },
+          "type": "pond_cannon",
+          "x": 70,
+          "y": 70
+        }
+      ],
+      "languageVersion": 0
+    }
+  },
+  "generators": [
+    {
+      "type": "pond_scan",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "sideEffects": [
+          "missing-degree-default-zero"
+        ],
+        "template": "scan({{value:DEGREE}})"
+      }
+    },
+    {
+      "type": "pond_cannon",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-degree-default-zero",
+          "missing-range-default-zero"
+        ],
+        "template": "cannon({{value:DEGREE}}, {{value:RANGE}});"
+      }
+    },
+    {
+      "type": "pond_swim",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-degree-default-zero"
+        ],
+        "template": "swim({{value:DEGREE}});"
+      }
+    },
+    {
+      "type": "pond_stop",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "stop();"
+      }
+    },
+    {
+      "type": "pond_getX",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "getX()"
+      }
+    },
+    {
+      "type": "pond_getY",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "getY()"
+      }
+    },
+    {
+      "type": "controls_if",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-condition-default-false"
+        ],
+        "template": "if ({{value:IF0}}) {\n{{statements:DO0}}\n}{{mutated:elseif-else}}"
+      }
+    },
+    {
+      "type": "logic_compare",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "sideEffects": [
+          "missing-operands-default-empty-string"
+        ],
+        "template": "{{value:A}} {{mapped:OP:EQ===,NEQ=!=,LT=<,LTE=<=,GT=>,GTE=>=}} {{value:B}}"
+      }
+    },
+    {
+      "type": "logic_boolean",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "{{mapped:BOOL:TRUE=true,FALSE=false}}"
+      }
+    },
+    {
+      "type": "controls_whileUntil",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-condition-default-false",
+          "infinite-loop-trap"
+        ],
+        "template": "while ({{value:BOOL}}) {\n{{statements:DO}}\n}"
+      }
+    },
+    {
+      "type": "pond_math_number",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "{{NUM}}"
+      }
+    }
+  ],
+  "errors": []
+}

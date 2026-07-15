@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E09_pond_tutor",
+  "configuration": "Blockly Pond Tutor, nivel 9",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "domain-block-runtime",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/domain-block-runtime.js",
+      "startLine": 29,
+      "endLine": 166,
+      "sha256": "84339c173f63ce7c97e462eaf042e8dc78b5c9eea3d4bdec161b0d74c9c14e3f",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": false,
+      "sharedSourceKey": null,
+      "notes": [
+        "Loaded unchanged; precise countable fragments omit health, speed and log because level 9 does not expose them."
+      ]
+    },
+    {
+      "id": "domain-shared-definition",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/domain-shared-definition.jsfrag",
+      "startLine": 29,
+      "endLine": 35,
+      "sha256": "75cf1bcb838948e01fd25a4ca0c86234adbe0c58614febf6477bbe59ef8a3b97",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-9-domain-actions",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/level-9-domain-actions.jsfrag",
+      "startLine": 36,
+      "endLine": 106,
+      "sha256": "e853e960b5fe97fe8d9af26adfcb21fc2b29c9b250d8d342541e5e72bf4d1ec1",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-9-domain-coordinates",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/level-9-domain-coordinates.jsfrag",
+      "startLine": 128,
+      "endLine": 146,
+      "sha256": "b0fdb5ffffd6f971796c35863903c5a9e480a1841455df62d81c0060a93fc7b1",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-9-domain-action-generators",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/level-9-domain-action-generators.js",
+      "startLine": 168,
+      "endLine": 195,
+      "sha256": "38c8ef9ec5c89f62c51beaf78ae7ec455b74e4111b7caa7c0364c3bc4304be69",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-9-coordinate-generators",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/level-9-coordinate-generators.js",
+      "startLine": 207,
+      "endLine": 215,
+      "sha256": "08241390e797ef34ec514950b983f507c14258f7c457ae1125d7aceff34f4ba2",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "adaptive-number-block",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/adaptive-number-block.js",
+      "startLine": 225,
+      "endLine": 318,
+      "sha256": "7b557e7efa1604c3c230e2f099c19c8a580e74d4e0bed9d346f70979a31f61be",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "adaptive-number-generator",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/adaptive-number-generator.js",
+      "startLine": 375,
+      "endLine": 375,
+      "sha256": "e4c246c6a699aec5185b768c09f36c14d00854b15db8d17edac2f0678d65629b",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "standard-block-runtime",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/standard-block-runtime.js",
+      "startLine": 35,
+      "endLine": 226,
+      "sha256": "af9acd0bad7d54cdd68e4afad52458af80133104c598f25a412e714fb948ae6c",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": false,
+      "sharedSourceKey": null,
+      "notes": [
+        "Loaded unchanged; precise fragments count only the four standard types exposed at level 9."
+      ]
+    },
+    {
+      "id": "javascript-if-block",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/javascript-if-block.jsfrag",
+      "startLine": 35,
+      "endLine": 100,
+      "sha256": "440757baf0ad0714b09e394280363c399a06f73a442f46a757e7713189b8d2d0",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "javascript-compare-block",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/javascript-compare-block.jsfrag",
+      "startLine": 102,
+      "endLine": 137,
+      "sha256": "caf17f33637afda2d3398c47a1bc54927e5a005714b3f63611013b897468c1a0",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "javascript-boolean-block",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/javascript-boolean-block.jsfrag",
+      "startLine": 139,
+      "endLine": 161,
+      "sha256": "1e030666f26b3fa78f24b258919b720b6479b3006984d343b9be4a1bbd6d1c14",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "javascript-while-block",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/javascript-while-block.jsfrag",
+      "startLine": 198,
+      "endLine": 226,
+      "sha256": "de53589a5025bfbf27347a2addb4d65be68d305e330ea567e5db80e62f0e0510",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-9-toolbox",
+      "path": "appengine/pond/tutor/src/html.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/level-9-toolbox.js",
+      "startLine": 52,
+      "endLine": 120,
+      "sha256": "58227968dc34507705674decf6bd09598717ac205cbb4a03986686dc7d668c75",
+      "kinds": [
+        "toolbox"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-9-initial-workspace",
+      "path": "appengine/pond/tutor/src/main.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/level-9-initial-workspace.js",
+      "startLine": 77,
+      "endLine": 109,
+      "sha256": "bbce315717458d69535da5a883b5e318e0a846e75373a5df475329b1e01ae37d",
+      "kinds": [
+        "initial-workspace"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "pond-category-message",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/pond-category-message.jsonfrag",
+      "startLine": 15,
+      "endLine": 15,
+      "sha256": "01171150bc766fb1104d394bd392c045924391d00592fead67e8973cc7fc6f4f",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "standard-category-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/standard-category-messages.jsonfrag",
+      "startLine": 27,
+      "endLine": 29,
+      "sha256": "76200a0d31fc079d36d5166772cad4bb6151a5256a458933e3d6f1856163564b",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-9-action-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/level-9-action-messages.jsonfrag",
+      "startLine": 243,
+      "endLine": 246,
+      "sha256": "9828b78749f1bb9747bdbcfc39056777204e8de880e333f846be47c18a4e9f56",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-9-coordinate-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E09_pond_tutor/baseline/upstream/level-9-coordinate-messages.jsonfrag",
+      "startLine": 249,
+      "endLine": 250,
+      "sha256": "2d05787789a351a8bce35d352362babc8d198e6e6c403191028af9b582440f28",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    }
+  ]
+}

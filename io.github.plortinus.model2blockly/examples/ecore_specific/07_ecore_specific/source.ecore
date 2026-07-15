@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="ecoreSpecific"
+    nsURI="http://www.example.org/ecorespecific"
+    nsPrefix="ecorespecific">
+
+  <eClassifiers xsi:type="ecore:EClass" name="Catalog">
+    <eAnnotations source="blockly">
+      <details key="category" value="Catalog"/>
+      <details key="colour" value="200"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Technical catalog"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entries"
+        lowerBound="1" upperBound="4" eType="#//NamedElement" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featured"
+        eType="#//details/Entry"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="derivedSummary"
+        derived="true"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transientCache"
+        transient="true"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="volatileState"
+        volatile="true"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lockedValue"
+        changeable="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement"
+      abstract="true" interface="true">
+    <eAnnotations source="blockly">
+      <details key="category" value="Elements"/>
+      <details key="colour" value="160"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title"
+        lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Named element"/>
+  </eClassifiers>
+
+  <eSubpackages name="details"
+      nsURI="http://www.example.org/ecorespecific/details"
+      nsPrefix="details">
+    <eClassifiers xsi:type="ecore:EClass" name="Entry" eSuperTypes="#//NamedElement">
+      <eAnnotations source="blockly">
+        <details key="category" value="Elements"/>
+        <details key="colour" value="160"/>
+        <details key="inputsInline" value="false"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+        <details key="constraints" value="HasTitle"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="HasTitle" value="self.title-&gt;notEmpty()"/>
+      </eAnnotations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="entryId"
+          iD="true" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+          defaultValueLiteral="entry-1"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="longCount"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"
+          defaultValueLiteral="1000"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="shortCount"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EShort"
+          defaultValueLiteral="12"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="bigCount"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigInteger"
+          defaultValueLiteral="123456789"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="doubleRatio"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+          defaultValueLiteral="0.5"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="decimalRatio"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigDecimal"
+          defaultValueLiteral="0.75"/>
+    </eClassifiers>
+  </eSubpackages>
+
+</ecore:EPackage>

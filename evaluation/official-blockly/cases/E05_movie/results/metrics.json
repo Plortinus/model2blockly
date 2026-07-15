@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E05_movie",
+  "authoringScope": "Official in-scope definitions/toolbox/generators versus maintained .m2b; generated files and domain runtime excluded.",
+  "blockCount": 5,
+  "baseline": {
+    "total": {
+      "bytes": 13781,
+      "totalLines": 477,
+      "nonBlank": 467,
+      "nonBlankNonComment": 449
+    },
+    "editor": {
+      "bytes": 11619,
+      "totalLines": 427,
+      "nonBlank": 421,
+      "nonBlankNonComment": 408
+    },
+    "generator": {
+      "bytes": 2162,
+      "totalLines": 50,
+      "nonBlank": 46,
+      "nonBlankNonComment": 41
+    },
+    "fragmentCount": 6
+  },
+  "m2b": {
+    "bytes": 2682,
+    "totalLines": 84,
+    "nonBlank": 75,
+    "nonBlankNonComment": 75
+  },
+  "generatedArtifacts": {
+    "fileCount": 13,
+    "bytes": 313935,
+    "excludedFromAuthoringComparison": true
+  },
+  "comparison": {
+    "locReductionPercent": 83.3,
+    "byteReductionPercent": 80.54,
+    "baselineLocPerBlock": 89.8,
+    "m2bLocPerBlock": 15
+  }
+}

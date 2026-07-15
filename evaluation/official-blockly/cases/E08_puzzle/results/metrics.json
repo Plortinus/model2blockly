@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E08_puzzle",
+  "authoringScope": "Official in-scope definitions/toolbox/generators versus maintained .m2b; generated files and domain runtime excluded.",
+  "blockCount": 3,
+  "baseline": {
+    "total": {
+      "bytes": 9088,
+      "totalLines": 291,
+      "nonBlank": 288,
+      "nonBlankNonComment": 221
+    },
+    "editor": {
+      "bytes": 9088,
+      "totalLines": 291,
+      "nonBlank": 288,
+      "nonBlankNonComment": 221
+    },
+    "generator": {
+      "bytes": 0,
+      "totalLines": 1,
+      "nonBlank": 0,
+      "nonBlankNonComment": 0
+    },
+    "fragmentCount": 7
+  },
+  "m2b": {
+    "bytes": 1310,
+    "totalLines": 50,
+    "nonBlank": 46,
+    "nonBlankNonComment": 46
+  },
+  "generatedArtifacts": {
+    "fileCount": 13,
+    "bytes": 304835,
+    "excludedFromAuthoringComparison": true
+  },
+  "comparison": {
+    "locReductionPercent": 79.19,
+    "byteReductionPercent": 85.59,
+    "baselineLocPerBlock": 73.67,
+    "m2bLocPerBlock": 15.33
+  }
+}

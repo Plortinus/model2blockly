@@ -1,0 +1,104 @@
+domain Music
+codeLanguage "javascript"
+codeFileExtension "js"
+
+workspace {
+  renderer: "geras"
+  toolboxType: "category"
+  trashcan: false
+}
+
+category Music colour 160
+
+abstract class MusicCommand {
+}
+
+abstract output class Number {
+}
+
+output as Number class music_pitch extends Number category Music colour 230
+  label "pitch"
+  message0 "%1"
+  tooltip "One note (C4 is 7)."
+  inputsInline false
+  code "{{PITCH}}" {
+  attribute PITCH : int [0..1] default "7" min "0" max "12"
+    widget number uiLabel "Pitch" help "0=C3, 7=C4, 12=A4" order 1 variant default
+}
+
+class music_note extends MusicCommand category Music colour 160
+  label "play note"
+  message0 "play %1 note %2"
+  tooltip "Plays one musical note of the specified duration and pitch."
+  inputsInline true
+  code "play({{DURATION}}, {{value:PITCH}});" {
+  attribute DURATION : enum {
+    whole = "1/1",
+    half = "1/2",
+    quarter = "1/4",
+    eighth = "1/8",
+    sixteenth = "1/16"
+  } [0..1] default "whole"
+    widget select uiLabel "Duration" order 1 variant default
+  value Number PITCH shadow music_pitch
+    widget expression-slot uiLabel "Pitch" order 2 variant default
+}
+
+class music_rest_whole extends MusicCommand category Music colour 160
+  label "whole rest"
+  message0 "rest %1"
+  tooltip "Waits for one whole note."
+  inputsInline true
+  code "rest(1);" {
+  attribute REST_IMAGE : image [0..1] default ""
+    src "music/rest1.png" width 10 height 20 alt "1/1"
+    widget image uiLabel "Whole rest" order 1 variant default
+}
+
+class music_rest extends MusicCommand category Music colour 160
+  label "rest"
+  message0 "rest %1"
+  tooltip "Waits for the specified duration."
+  inputsInline true
+  code "rest({{DURATION}});" {
+  attribute DURATION : enum {
+    whole = "1/1",
+    half = "1/2",
+    quarter = "1/4",
+    eighth = "1/8",
+    sixteenth = "1/16"
+  } [0..1] default "whole"
+    widget select uiLabel "Duration" order 1 variant default
+}
+
+class music_instrument extends MusicCommand category Music colour 160
+  label "set instrument"
+  message0 "set instrument to %1"
+  tooltip "Switches to the specified instrument when playing subsequent musical notes."
+  inputsInline true
+  code "setInstrument('{{INSTRUMENT}}');" {
+  attribute INSTRUMENT : enum {
+    piano = "piano",
+    trumpet = "trumpet",
+    banjo = "banjo",
+    violin = "violin",
+    guitar = "guitar",
+    flute = "flute",
+    drum = "drum",
+    choir = "choir"
+  } [0..1] default "piano"
+    widget select uiLabel "Instrument" order 1 variant default
+}
+
+class music_start category Music colour 0
+  label "when play clicked"
+  message0 "when %1 clicked%2"
+  tooltip "Executes the blocks inside when the 'Run Program' button is clicked."
+  inputsInline false
+  code "function start{{counter}}() {\n{{statements:STACK}}\n}" {
+  attribute PLAY_IMAGE : image [0..1] default ""
+    src "music/play.png" width 17 height 17 alt "▶"
+    widget image uiLabel "Run" order 1 variant default
+  contains MusicCommand STACK [0..50]
+    widget slot uiLabel "Stack" order 2 variant default
+}

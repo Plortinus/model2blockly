@@ -1,0 +1,66 @@
+[
+  {
+    "_type": "movie_circle",
+    "_blockId": "sample_movie_circle_1",
+    "X": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_1"
+    },
+    "Y": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_2"
+    },
+    "RADIUS": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_3"
+    }
+  },
+  {
+    "_type": "movie_rect",
+    "_blockId": "sample_movie_rect_1",
+    "X": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_4"
+    },
+    "Y": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_5"
+    },
+    "WIDTH": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_6"
+    },
+    "HEIGHT": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_7"
+    }
+  },
+  {
+    "_type": "movie_line",
+    "_blockId": "sample_movie_line_1",
+    "X1": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_8"
+    },
+    "Y1": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_9"
+    },
+    "X2": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_10"
+    },
+    "Y2": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_11"
+    },
+    "WIDTH": {
+      "_type": "movie_time",
+      "_blockId": "sample_movie_time_12"
+    }
+  },
+  {
+    "_type": "movie_colour",
+    "_blockId": "sample_movie_colour_1"
+  }
+]

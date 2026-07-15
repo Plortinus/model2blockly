@@ -1,0 +1,2834 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E10_pond_duck",
+  "treatment": "baseline",
+  "controls": {
+    "blocklyVersion": "13.1.1",
+    "browserViewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "locale": "en",
+    "renderer": "geras",
+    "theme": "classic",
+    "workspaceViewport": {
+      "height": 640,
+      "width": 1024
+    }
+  },
+  "blocks": [
+    {
+      "type": "pond_scan",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "DEGREE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "DEGREE",
+          "kind": "value",
+          "check": [
+            "Angle",
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "scan",
+              "text": "scan",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ")",
+              "text": ")",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": true,
+      "colour": "#995ba5",
+      "tooltip": "Scan for enemies. Specify a direction (0-360). Returns the distance to the closest enemy in that direction. Returns Infinity if no enemy found.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_cannon",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "DEGREE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "input",
+          "name": "RANGE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "RANGE"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "DEGREE",
+          "kind": "value",
+          "check": [
+            "Angle",
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "cannon",
+              "text": "cannon",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "RANGE",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ",",
+              "text": ",",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ");",
+              "text": ");",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#995ba5",
+      "tooltip": "Fire the cannon. Specify a direction (0-360) and a range (0-70).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_swim",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "DEGREE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DEGREE"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "DEGREE",
+          "kind": "value",
+          "check": [
+            "Angle",
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "swim",
+              "text": "swim",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ");",
+              "text": ");",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#995ba5",
+      "tooltip": "Swim forward. Specify a direction (0-360).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_stop",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "stop",
+              "text": "stop",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ");",
+              "text": ");",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Stop swimming. Player will slow to a stop.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_health",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "health",
+              "text": "health",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ")",
+              "text": ")",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Returns the player's current health (0 is dead, 100 is healthy).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_speed",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "speed",
+              "text": "speed",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ")",
+              "text": ")",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Returns the current speed of the player (0 is stopped, 100 is full speed).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_getX",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "getX",
+              "text": "getX",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ")",
+              "text": ")",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Returns the X coordinate of the player (0 is the left edge, 100 is the right edge).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_getY",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "getY",
+              "text": "getY",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ")",
+              "text": ")",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Returns the Y coordinate of the player (0 is the bottom edge, 100 is the top edge).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_log",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "VALUE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "VALUE"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "VALUE"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "VALUE",
+          "kind": "value",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "log",
+              "text": "log",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ");",
+              "text": ");",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#995ba5",
+      "tooltip": "Prints a number to your browser's console.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "controls_if",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "IF0",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "IF0"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "input",
+          "name": "DO0",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "input",
+          "name": "TAIL",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "TAIL"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "IF0",
+          "kind": "value",
+          "check": [
+            "Boolean"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "if (",
+              "text": "if (",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ") {",
+              "text": ") {",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "DO0",
+          "kind": "statement",
+          "check": null,
+          "alignment": -1,
+          "fields": []
+        },
+        {
+          "name": "TAIL",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "}",
+              "text": "}",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#5b80a5",
+      "tooltip": "If a value is true, then do some statements.",
+      "helpUrl": "https://github.com/RaspberryPiFoundation/blockly/wiki/IfElse",
+      "dynamicBehaviour": [
+        "dom-to-mutation",
+        "dynamic-elseif-else-shape",
+        "legacy-mutator:controls_if",
+        "mutation-to-dom",
+        "mutator",
+        "tooltip-from-mutator-state"
+      ]
+    },
+    {
+      "type": "logic_compare",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "A",
+          "inputKind": "value"
+        },
+        {
+          "kind": "input",
+          "name": "B",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": "OP",
+          "fieldKind": "field_dropdown",
+          "inputName": "B"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "A",
+          "kind": "value",
+          "check": null,
+          "alignment": -1,
+          "fields": []
+        },
+        {
+          "name": "B",
+          "kind": "value",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "OP",
+              "kind": "field_dropdown",
+              "value": "EQ",
+              "text": "==",
+              "options": [
+                {
+                  "label": "==",
+                  "value": "EQ"
+                },
+                {
+                  "label": "!=",
+                  "value": "NEQ"
+                },
+                {
+                  "label": "‏<",
+                  "value": "LT"
+                },
+                {
+                  "label": "‏<=",
+                  "value": "LTE"
+                },
+                {
+                  "label": "‏>",
+                  "value": "GT"
+                },
+                {
+                  "label": "‏>=",
+                  "value": "GTE"
+                }
+              ],
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Boolean"
+          ]
+        }
+      },
+      "inputsInline": true,
+      "colour": "#5b80a5",
+      "tooltip": "Return true if both inputs equal each other.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Inequality_(mathematics)",
+      "dynamicBehaviour": [
+        "connection-type-validator",
+        "dropdown-dependent-tooltip",
+        "onchange"
+      ]
+    },
+    {
+      "type": "logic_operation",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "A",
+          "inputKind": "value"
+        },
+        {
+          "kind": "input",
+          "name": "B",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": "OP",
+          "fieldKind": "field_dropdown",
+          "inputName": "B"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "A",
+          "kind": "value",
+          "check": [
+            "Boolean"
+          ],
+          "alignment": -1,
+          "fields": []
+        },
+        {
+          "name": "B",
+          "kind": "value",
+          "check": [
+            "Boolean"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "OP",
+              "kind": "field_dropdown",
+              "value": "AND",
+              "text": "&&",
+              "options": [
+                {
+                  "label": "&&",
+                  "value": "AND"
+                },
+                {
+                  "label": "||",
+                  "value": "OR"
+                }
+              ],
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Boolean"
+          ]
+        }
+      },
+      "inputsInline": true,
+      "colour": "#5b80a5",
+      "tooltip": "Return true if both inputs are true.",
+      "helpUrl": "https://github.com/RaspberryPiFoundation/blockly/wiki/Logic#logical-operations",
+      "dynamicBehaviour": [
+        "dropdown-dependent-tooltip"
+      ]
+    },
+    {
+      "type": "logic_boolean",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": "BOOL",
+          "fieldKind": "field_dropdown",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "BOOL",
+              "kind": "field_dropdown",
+              "value": "TRUE",
+              "text": "true",
+              "options": [
+                {
+                  "label": "true",
+                  "value": "TRUE"
+                },
+                {
+                  "label": "false",
+                  "value": "FALSE"
+                }
+              ],
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Boolean"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#5b80a5",
+      "tooltip": "Returns either true or false.",
+      "helpUrl": "https://github.com/RaspberryPiFoundation/blockly/wiki/Logic#values",
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "controls_whileUntil",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "BOOL",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "BOOL"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "input",
+          "name": "DO",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "BOOL",
+          "kind": "value",
+          "check": [
+            "Boolean"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "while (",
+              "text": "while (",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ") {",
+              "text": ") {",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "DO",
+          "kind": "statement",
+          "check": null,
+          "alignment": -1,
+          "fields": []
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "}",
+              "text": "}",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#5ba55b",
+      "tooltip": "While a value is true, then do some statements.",
+      "helpUrl": "https://github.com/RaspberryPiFoundation/blockly/wiki/Loops#repeat",
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "pond_math_number",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": "NUM",
+          "fieldKind": "field_number",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "NUM",
+              "kind": "field_number",
+              "value": 0,
+              "text": "0",
+              "options": null,
+              "constraints": {
+                "min": null,
+                "max": null,
+                "precision": 0
+              }
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#5b67a5",
+      "tooltip": "A number.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Number",
+      "dynamicBehaviour": [
+        "angle-field-switch",
+        "dom-to-mutation",
+        "mutation-to-dom",
+        "onchange",
+        "parent-tooltip-when-inline"
+      ]
+    },
+    {
+      "type": "math_arithmetic",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "A",
+          "inputKind": "value"
+        },
+        {
+          "kind": "input",
+          "name": "B",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": "OP",
+          "fieldKind": "field_dropdown",
+          "inputName": "B"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "A",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": []
+        },
+        {
+          "name": "B",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "OP",
+              "kind": "field_dropdown",
+              "value": "ADD",
+              "text": "+",
+              "options": [
+                {
+                  "label": "+",
+                  "value": "ADD"
+                },
+                {
+                  "label": "-",
+                  "value": "MINUS"
+                },
+                {
+                  "label": "*",
+                  "value": "MULTIPLY"
+                },
+                {
+                  "label": "/",
+                  "value": "DIVIDE"
+                }
+              ],
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": true,
+      "colour": "#5b67a5",
+      "tooltip": "Return the sum of the two numbers.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Arithmetic",
+      "dynamicBehaviour": [
+        "dropdown-dependent-tooltip"
+      ]
+    },
+    {
+      "type": "pond_math_single",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "NUM",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": "OP",
+          "fieldKind": "field_dropdown",
+          "inputName": "NUM"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "NUM"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "NUM",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "OP",
+              "kind": "field_dropdown",
+              "value": "ROOT",
+              "text": "Math.sqrt",
+              "options": [
+                {
+                  "label": "Math.sqrt",
+                  "value": "ROOT"
+                },
+                {
+                  "label": "Math.abs",
+                  "value": "ABS"
+                },
+                {
+                  "label": "Math.sin_deg",
+                  "value": "SIN"
+                },
+                {
+                  "label": "Math.cos_deg",
+                  "value": "COS"
+                },
+                {
+                  "label": "Math.tan_deg",
+                  "value": "TAN"
+                },
+                {
+                  "label": "Math.asin_deg",
+                  "value": "ASIN"
+                },
+                {
+                  "label": "Math.acos_deg",
+                  "value": "ACOS"
+                },
+                {
+                  "label": "Math.atan_deg",
+                  "value": "ATAN"
+                }
+              ],
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ")",
+              "text": ")",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": true,
+      "colour": "#5b67a5",
+      "tooltip": "Return the square root of a number.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Square_root",
+      "dynamicBehaviour": [
+        "dropdown-dependent-tooltip"
+      ]
+    },
+    {
+      "type": "math_random_float",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "Math.random  (  )",
+              "text": "Math.random  (  )",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#5b67a5",
+      "tooltip": "Return a random fraction between 0.0 (inclusive) and 1.0 (exclusive).",
+      "helpUrl": "https://en.wikipedia.org/wiki/Random_number_generation",
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "math_change",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "DELTA",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": "VAR",
+          "fieldKind": "field_variable",
+          "inputName": "DELTA"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DELTA"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "DELTA",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "VAR",
+              "kind": "field_variable",
+              "value": ")#Iz+D=lTeSjww/%R.U!",
+              "text": "name",
+              "options": [
+                {
+                  "label": "name",
+                  "value": ")#Iz+D=lTeSjww/%R.U!"
+                },
+                {
+                  "label": "Rename the 'name' variable",
+                  "value": "RENAME_VARIABLE_ID"
+                },
+                {
+                  "label": "Delete the 'name' variable",
+                  "value": "DELETE_VARIABLE_ID"
+                }
+              ],
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "+=",
+              "text": "+=",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ";",
+              "text": ";",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#a55b80",
+      "tooltip": "Add a number to variable 'name'.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Programming_idiom#Incrementing_a_counter",
+      "dynamicBehaviour": [
+        "variable-dependent-tooltip",
+        "variable-field"
+      ]
+    },
+    {
+      "type": "variables_set",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "VALUE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "VALUE"
+        },
+        {
+          "kind": "field",
+          "name": "VAR",
+          "fieldKind": "field_variable",
+          "inputName": "VALUE"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "VALUE"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "VALUE",
+          "kind": "value",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "var",
+              "text": "var",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "VAR",
+              "kind": "field_variable",
+              "value": ")#Iz+D=lTeSjww/%R.U!",
+              "text": "name",
+              "options": [
+                {
+                  "label": "name",
+                  "value": ")#Iz+D=lTeSjww/%R.U!"
+                },
+                {
+                  "label": "Rename the 'name' variable",
+                  "value": "RENAME_VARIABLE_ID"
+                },
+                {
+                  "label": "Delete the 'name' variable",
+                  "value": "DELETE_VARIABLE_ID"
+                }
+              ],
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "=",
+              "text": "=",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ";",
+              "text": ";",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#a55b80",
+      "tooltip": "Sets this variable to be equal to the input.",
+      "helpUrl": "https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#set",
+      "dynamicBehaviour": [
+        "variable-context-menu",
+        "variable-field"
+      ]
+    },
+    {
+      "type": "procedures_defnoreturn",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": "NAME",
+          "fieldKind": "field_textinput",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": "PARAMS",
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "input",
+          "name": "STACK",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "function",
+              "text": "function",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "NAME",
+              "kind": "field_textinput",
+              "value": "",
+              "text": "",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "PARAMS",
+              "kind": "field_label",
+              "value": "",
+              "text": "",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ") {",
+              "text": ") {",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "STACK",
+          "kind": "statement",
+          "check": null,
+          "alignment": -1,
+          "fields": []
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "}",
+              "text": "}",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Creates a function with no output.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Subroutine",
+      "dynamicBehaviour": [
+        "dom-to-mutation",
+        "dynamic-parameter-list",
+        "legacy-mutator:procedure-arguments",
+        "load-extra-state",
+        "mutation-to-dom",
+        "mutator",
+        "procedure-rename",
+        "save-extra-state",
+        "statement-body-toggle"
+      ]
+    },
+    {
+      "type": "procedures_defreturn",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": "NAME",
+          "fieldKind": "field_textinput",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": "PARAMS",
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "input",
+          "name": "STACK",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "input",
+          "name": "RETURN",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "RETURN"
+        },
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "function",
+              "text": "function",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "NAME",
+              "kind": "field_textinput",
+              "value": "",
+              "text": "",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "PARAMS",
+              "kind": "field_label",
+              "value": "",
+              "text": "",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ") {",
+              "text": ") {",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "STACK",
+          "kind": "statement",
+          "check": null,
+          "alignment": -1,
+          "fields": []
+        },
+        {
+          "name": "RETURN",
+          "kind": "value",
+          "check": null,
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "return",
+              "text": "return",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "}",
+              "text": "}",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#995ba5",
+      "tooltip": "Creates a function with an output.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Subroutine",
+      "dynamicBehaviour": [
+        "dom-to-mutation",
+        "dynamic-parameter-list",
+        "legacy-mutator:procedure-arguments",
+        "load-extra-state",
+        "mutation-to-dom",
+        "mutator",
+        "procedure-rename",
+        "save-extra-state",
+        "statement-body-toggle"
+      ]
+    },
+    {
+      "type": "procedures_callnoreturn",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": "NAME",
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "input",
+          "name": "TAIL",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "TAIL"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "NAME",
+              "kind": "field_label",
+              "value": "",
+              "text": "",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "TAIL",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ");",
+              "text": ");",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#995ba5",
+      "tooltip": "Run the user-defined function '%1'.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Subroutine",
+      "dynamicBehaviour": [
+        "dom-to-mutation",
+        "dynamic-argument-inputs",
+        "load-extra-state",
+        "mutation-to-dom",
+        "onchange",
+        "procedure-rename",
+        "save-extra-state"
+      ]
+    },
+    {
+      "type": "procedures_callreturn",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": "NAME",
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "input",
+          "name": "TAIL",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "TAIL"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "NAME",
+              "kind": "field_label",
+              "value": "",
+              "text": "",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "(",
+              "text": "(",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "TAIL",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": ")",
+              "text": ")",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": null
+        }
+      },
+      "inputsInline": true,
+      "colour": "#995ba5",
+      "tooltip": "Run the user-defined function '%1' and use its output.",
+      "helpUrl": "https://en.wikipedia.org/wiki/Subroutine",
+      "dynamicBehaviour": [
+        "dom-to-mutation",
+        "dynamic-argument-inputs",
+        "load-extra-state",
+        "mutation-to-dom",
+        "onchange",
+        "procedure-rename",
+        "save-extra-state"
+      ]
+    }
+  ],
+  "toolbox": {
+    "contents": [
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "inputs": {
+              "DEGREE": {
+                "shadow": {
+                  "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"true\"></mutation>",
+                  "fields": {
+                    "NUM": 0
+                  },
+                  "type": "pond_math_number"
+                }
+              },
+              "RANGE": {
+                "shadow": {
+                  "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"false\"></mutation>",
+                  "fields": {
+                    "NUM": 70
+                  },
+                  "type": "pond_math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "pond_cannon"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "DEGREE": {
+                "shadow": {
+                  "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"true\"></mutation>",
+                  "fields": {
+                    "NUM": 0
+                  },
+                  "type": "pond_math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "pond_scan"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "DEGREE": {
+                "shadow": {
+                  "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"true\"></mutation>",
+                  "fields": {
+                    "NUM": 0
+                  },
+                  "type": "pond_math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "pond_swim"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "pond_stop"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "pond_getX"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "pond_getY"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "pond_speed"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "pond_health"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "VALUE": {
+                "shadow": {
+                  "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"false\"></mutation>",
+                  "fields": {
+                    "NUM": 123
+                  },
+                  "type": "pond_math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "pond_log"
+          }
+        ],
+        "kind": "category",
+        "name": "Pond"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_compare"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_operation"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_boolean"
+          }
+        ],
+        "kind": "category",
+        "name": "Logic"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_whileUntil"
+          }
+        ],
+        "kind": "category",
+        "name": "Loops"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"false\"></mutation>",
+            "kind": "block",
+            "type": "pond_math_number"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "A": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "B": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_arithmetic"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 9
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "pond_math_single"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "math_random_float"
+          }
+        ],
+        "kind": "category",
+        "name": "Math"
+      },
+      {
+        "kind": "sep"
+      },
+      {
+        "custom": "VARIABLE",
+        "kind": "category",
+        "name": "Variables"
+      },
+      {
+        "custom": "PROCEDURE",
+        "kind": "category",
+        "name": "Functions"
+      }
+    ],
+    "kind": "categoryToolbox"
+  },
+  "initialWorkspace": {
+    "blocks": {
+      "blocks": [
+        {
+          "id": "{*pI3Btcv[u:;tMDNme}",
+          "inputs": {
+            "DEGREE": {
+              "shadow": {
+                "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"true\"></mutation>",
+                "fields": {
+                  "NUM": 0
+                },
+                "id": "nfNWqz|3qKQjadig2KG=",
+                "type": "pond_math_number"
+              }
+            },
+            "RANGE": {
+              "shadow": {
+                "extraState": "<mutation xmlns=\"http://www.w3.org/1999/xhtml\" angle_field=\"false\"></mutation>",
+                "fields": {
+                  "NUM": 70
+                },
+                "id": "{IM`*$YD:.HphwutYE.,",
+                "type": "pond_math_number"
+              }
+            }
+          },
+          "type": "pond_cannon",
+          "x": 70,
+          "y": 70
+        }
+      ],
+      "languageVersion": 0
+    }
+  },
+  "generators": [
+    {
+      "type": "pond_scan",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "sideEffects": [
+          "missing-degree-default-zero"
+        ],
+        "template": "scan({{value:DEGREE}})"
+      }
+    },
+    {
+      "type": "pond_cannon",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-degree-default-zero",
+          "missing-range-default-zero"
+        ],
+        "template": "cannon({{value:DEGREE}}, {{value:RANGE}});"
+      }
+    },
+    {
+      "type": "pond_swim",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-degree-default-zero"
+        ],
+        "template": "swim({{value:DEGREE}});"
+      }
+    },
+    {
+      "type": "pond_stop",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "stop();"
+      }
+    },
+    {
+      "type": "pond_health",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "health()"
+      }
+    },
+    {
+      "type": "pond_speed",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "speed()"
+      }
+    },
+    {
+      "type": "pond_getX",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "getX()"
+      }
+    },
+    {
+      "type": "pond_getY",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "getY()"
+      }
+    },
+    {
+      "type": "pond_log",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-value-default-empty-string"
+        ],
+        "template": "log({{value:VALUE}});"
+      }
+    },
+    {
+      "type": "controls_if",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-condition-default-false"
+        ],
+        "template": "if ({{value:IF0}}) {\n{{statements:DO0}}\n}{{mutated:elseif-else}}"
+      }
+    },
+    {
+      "type": "logic_compare",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "sideEffects": [
+          "missing-operands-default-empty-string"
+        ],
+        "template": "{{value:A}} {{mapped:OP:EQ===,NEQ=!=,LT=<,LTE=<=,GT=>,GTE=>=}} {{value:B}}"
+      }
+    },
+    {
+      "type": "logic_operation",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "sideEffects": [
+          "missing-operands-default-false"
+        ],
+        "template": "{{value:A}} {{mapped:OP:AND=&&,OR=||}} {{value:B}}"
+      }
+    },
+    {
+      "type": "logic_boolean",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "{{mapped:BOOL:TRUE=true,FALSE=false}}"
+      }
+    },
+    {
+      "type": "controls_whileUntil",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-condition-default-false",
+          "infinite-loop-trap"
+        ],
+        "template": "while ({{value:BOOL}}) {\n{{statements:DO}}\n}"
+      }
+    },
+    {
+      "type": "pond_math_number",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "{{NUM}}"
+      }
+    },
+    {
+      "type": "math_arithmetic",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "sideEffects": [
+          "missing-operands-default-zero"
+        ],
+        "template": "{{value:A}} {{mapped:OP:ADD=+,MINUS=-,MULTIPLY=*,DIVIDE=/}} {{value:B}}"
+      }
+    },
+    {
+      "type": "pond_math_single",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "sideEffects": [
+          "missing-operand-default-zero"
+        ],
+        "template": "Math.{{mapped:OP:ROOT=sqrt,ABS=abs,SIN=sin_deg,COS=cos_deg,TAN=tan_deg,ASIN=asin_deg,ACOS=acos_deg,ATAN=atan_deg}}({{value:NUM}})"
+      }
+    },
+    {
+      "type": "math_random_float",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "Math.random()"
+      }
+    },
+    {
+      "type": "math_change",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-delta-default-zero",
+          "variable-name-database"
+        ],
+        "template": "{{variable:VAR}} += {{value:DELTA}};"
+      }
+    },
+    {
+      "type": "variables_set",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-value-default-zero",
+          "variable-name-database"
+        ],
+        "template": "var {{variable:VAR}} = {{value:VALUE}};"
+      }
+    },
+    {
+      "type": "procedures_defnoreturn",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "procedure-definition-database"
+        ],
+        "template": "function {{procedure:NAME}}({{mutated:parameters}}) {\n{{statements:STACK}}\n}"
+      }
+    },
+    {
+      "type": "procedures_defreturn",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "procedure-definition-database",
+          "missing-return-default-empty-string"
+        ],
+        "template": "function {{procedure:NAME}}({{mutated:parameters}}) {\n{{statements:STACK}}\nreturn {{value:RETURN}};\n}"
+      }
+    },
+    {
+      "type": "procedures_callnoreturn",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "procedure-name-database"
+        ],
+        "template": "{{procedure:NAME}}({{mutated:arguments}});"
+      }
+    },
+    {
+      "type": "procedures_callreturn",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "sideEffects": [
+          "procedure-name-database"
+        ],
+        "template": "{{procedure:NAME}}({{mutated:arguments}})"
+      }
+    }
+  ],
+  "errors": []
+}

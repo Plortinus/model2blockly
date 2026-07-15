@@ -1,0 +1,528 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E03_maze",
+  "treatment": "m2b",
+  "controls": {
+    "blocklyVersion": "13.1.1",
+    "browserViewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "locale": "en",
+    "renderer": "geras",
+    "theme": "classic",
+    "workspaceViewport": {
+      "height": 640,
+      "width": 1024
+    }
+  },
+  "blocks": [
+    {
+      "type": "maze_moveForward",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "move forward",
+              "text": "move forward",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": [
+            "Command"
+          ]
+        },
+        "next": {
+          "check": [
+            "Command"
+          ]
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Moves the player forward one space.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "maze_turn",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": "DIR",
+          "fieldKind": "field_dropdown",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "turn",
+              "text": "turn",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "DIR",
+              "kind": "field_dropdown",
+              "value": "turnLeft",
+              "text": "left ↺",
+              "options": [
+                {
+                  "label": "left ↺",
+                  "value": "turnLeft"
+                },
+                {
+                  "label": "right ↻",
+                  "value": "turnRight"
+                }
+              ],
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": [
+            "Command"
+          ]
+        },
+        "next": {
+          "check": [
+            "Command"
+          ]
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "Turns the player left or right by 90 degrees.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "maze_forever",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "DO",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DO"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_image",
+          "inputName": "DO"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DO"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "DO",
+          "kind": "statement",
+          "check": [
+            "Command"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "repeat until",
+              "text": "repeat until",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_image",
+              "value": "maze/marker.png",
+              "text": "",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "do",
+              "text": "do",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": [
+            "Command"
+          ]
+        },
+        "next": {
+          "check": [
+            "Command"
+          ]
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#5ba55b",
+      "tooltip": "Repeat the enclosed actions until finish point is reached.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "maze_if",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "DO",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DO"
+        },
+        {
+          "kind": "field",
+          "name": "DIR",
+          "fieldKind": "field_dropdown",
+          "inputName": "DO"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DO"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "DO",
+          "kind": "statement",
+          "check": [
+            "Command"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "if path",
+              "text": "if path",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "DIR",
+              "kind": "field_dropdown",
+              "value": "isPathForward",
+              "text": "ahead",
+              "options": [
+                {
+                  "label": "ahead",
+                  "value": "isPathForward"
+                },
+                {
+                  "label": "to the left ↺",
+                  "value": "isPathLeft"
+                },
+                {
+                  "label": "to the right ↻",
+                  "value": "isPathRight"
+                }
+              ],
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "do",
+              "text": "do",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": [
+            "Command"
+          ]
+        },
+        "next": {
+          "check": [
+            "Command"
+          ]
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#5b80a5",
+      "tooltip": "If there is a path in the specified direction, then do some actions.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "maze_ifElse",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "DO",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DO"
+        },
+        {
+          "kind": "field",
+          "name": "DIR",
+          "fieldKind": "field_dropdown",
+          "inputName": "DO"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "DO"
+        },
+        {
+          "kind": "input",
+          "name": "ELSE",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "ELSE"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "DO",
+          "kind": "statement",
+          "check": [
+            "Command"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "if path",
+              "text": "if path",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "DIR",
+              "kind": "field_dropdown",
+              "value": "isPathForward",
+              "text": "ahead",
+              "options": [
+                {
+                  "label": "ahead",
+                  "value": "isPathForward"
+                },
+                {
+                  "label": "to the left ↺",
+                  "value": "isPathLeft"
+                },
+                {
+                  "label": "to the right ↻",
+                  "value": "isPathRight"
+                }
+              ],
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "do",
+              "text": "do",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "ELSE",
+          "kind": "statement",
+          "check": [
+            "Command"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "else",
+              "text": "else",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": [
+            "Command"
+          ]
+        },
+        "next": {
+          "check": [
+            "Command"
+          ]
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#5b80a5",
+      "tooltip": "If there is a path in the specified direction, then do the first block of actions. Otherwise, do the second block of actions.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    }
+  ],
+  "toolbox": {
+    "contents": [
+      {
+        "enabled": true,
+        "kind": "block",
+        "type": "maze_moveForward"
+      },
+      {
+        "enabled": true,
+        "kind": "block",
+        "type": "maze_turn"
+      },
+      {
+        "enabled": true,
+        "kind": "block",
+        "type": "maze_forever"
+      },
+      {
+        "enabled": true,
+        "kind": "block",
+        "type": "maze_if"
+      },
+      {
+        "enabled": true,
+        "kind": "block",
+        "type": "maze_ifElse"
+      }
+    ],
+    "kind": "flyoutToolbox"
+  },
+  "initialWorkspace": null,
+  "generators": [
+    {
+      "type": "maze_moveForward",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "moveForward();"
+      }
+    },
+    {
+      "type": "maze_turn",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "{{DIR}}();"
+      }
+    },
+    {
+      "type": "maze_forever",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "while (notDone()) {\n{{statements:DO}}\n}"
+      }
+    },
+    {
+      "type": "maze_if",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "if ({{DIR}}()) {\n{{statements:DO}}\n}"
+      }
+    },
+    {
+      "type": "maze_ifElse",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "if ({{DIR}}()) {\n{{statements:DO}}\n} else {\n{{statements:ELSE}}\n}"
+      }
+    }
+  ],
+  "errors": []
+}

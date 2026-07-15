@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E05_movie",
+  "configuration": "Blockly Movie, nivel 10",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "block-definitions",
+      "path": "appengine/movie/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E05_movie/baseline/upstream/block-definitions.js",
+      "startLine": 37,
+      "endLine": 132,
+      "sha256": "8168f87f90fcf4cadc3d8d00ad5dd753367067839415a601ab4c59c708349829",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "generators",
+      "path": "appengine/movie/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E05_movie/baseline/upstream/generators.js",
+      "startLine": 134,
+      "endLine": 183,
+      "sha256": "c072cc61c028367b6be822a1ec5cc62d630706c59fe731d72d9f467dc937aedb",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-10-toolbox",
+      "path": "appengine/movie/src/html.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E05_movie/baseline/upstream/level-10-toolbox.js",
+      "startLine": 116,
+      "endLine": 419,
+      "sha256": "4257a36ff2cbd26401359b1ceb2824eff48147ed206cb1358a1c8217b1403a2b",
+      "kinds": [
+        "toolbox"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "game-name-message",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E05_movie/baseline/upstream/game-name-message.jsonfrag",
+      "startLine": 12,
+      "endLine": 12,
+      "sha256": "f1a9aee668f1ba63bf91da0dd16bfc435b419cdcc708fee77bf8a055c843ac71",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "category-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E05_movie/baseline/upstream/category-messages.jsonfrag",
+      "startLine": 27,
+      "endLine": 34,
+      "sha256": "22965c96ee7d15c44fbbcc4b894bdea92f0c1efb63b67609bc2b85e4b90c53e8",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "movie-editor-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E05_movie/baseline/upstream/movie-editor-messages.jsonfrag",
+      "startLine": 167,
+      "endLine": 184,
+      "sha256": "d8a3aa879284169a76f142640e815207a020dfaf85894817618461caf6199bb6",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": [
+        "Only the English messages used by the selected block definitions are included."
+      ]
+    }
+  ]
+}

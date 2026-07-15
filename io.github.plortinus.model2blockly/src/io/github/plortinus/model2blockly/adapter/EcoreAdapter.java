@@ -370,8 +370,8 @@ public class EcoreAdapter {
 			fs.setFieldType(FieldSpec.FieldType.DROPDOWN);
 			for (EEnumLiteral lit : eEnum.getELiterals()) {
 				fs.getOptions().add(new DropdownOption(
-					lit.getLiteral(),
-					lit.getName()
+					lit.getName(),
+					lit.getLiteral()
 				));
 			}
 		} else {

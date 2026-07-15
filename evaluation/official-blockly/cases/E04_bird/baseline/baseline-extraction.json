@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E04_bird",
+  "configuration": "Blockly Bird, nivel 10",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "block-definitions",
+      "path": "appengine/bird/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E04_bird/baseline/upstream/block-definitions.js",
+      "startLine": 29,
+      "endLine": 181,
+      "sha256": "3e917ad40b440506c0deea1cd3ab0fa33045d70dbdc685126bdc4b5b0335532a",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "bird-generators",
+      "path": "appengine/bird/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E04_bird/baseline/upstream/bird-generators.js",
+      "startLine": 184,
+      "endLine": 240,
+      "sha256": "dee0955206b3fde3f8c81578f5a35f430f0f28b0aaa758cd232387faaf358977",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "controls-if-singleton",
+      "path": "appengine/bird/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E04_bird/baseline/upstream/controls-if-singleton.js",
+      "startLine": 242,
+      "endLine": 253,
+      "sha256": "5289f9d80435ce3ece4dab46d20b969e9bab8af7cc7a56acf9992a263ee7777e",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": [
+        "Bird removes the previous and next connections from the stock controls_if block."
+      ]
+    },
+    {
+      "id": "math-number-generator",
+      "path": "appengine/bird/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E04_bird/baseline/upstream/math-number-generator.js",
+      "startLine": 255,
+      "endLine": 261,
+      "sha256": "cb9a045dd60e518f18fe0efc88dda8b04ea7ba2756a3ac73f2a8c779f93bb259",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-10-toolbox",
+      "path": "appengine/bird/src/html.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E04_bird/baseline/upstream/level-10-toolbox.js",
+      "startLine": 66,
+      "endLine": 109,
+      "sha256": "0d1f02b053455b681a9783225e2c1b45e87eeefcd9c4a09e7a8db1b26ec08025",
+      "kinds": [
+        "toolbox"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-10-initial-workspace",
+      "path": "appengine/bird/src/main.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E04_bird/baseline/upstream/level-10-initial-workspace.js",
+      "startLine": 409,
+      "endLine": 418,
+      "sha256": "4cef6f1c0fc68c8776340d1a67d54347d89ae9d16e9518e127a371f058fb3c74",
+      "kinds": [
+        "initial-workspace"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "english-editor-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E04_bird/baseline/upstream/english-editor-messages.jsonfrag",
+      "startLine": 107,
+      "endLine": 111,
+      "sha256": "8f626be3cb3136b2e04a2b51e4dd13f0fd0f058fdbefdf28ccfcb6794c5445e7",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": [
+        "Only the English messages used by the selected Bird block definitions are included."
+      ]
+    }
+  ]
+}

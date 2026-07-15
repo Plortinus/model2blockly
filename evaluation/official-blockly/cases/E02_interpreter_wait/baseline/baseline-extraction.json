@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E02_interpreter_wait",
+  "configuration": "JS-Interpreter, demostración de ejecución asíncrona",
+  "source": {
+    "repository": "https://github.com/google/blockly-samples.git",
+    "commit": "62ce120977078bf9179c5633681ee70446e5073b",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "wait-block-definition",
+      "path": "examples/interpreter-demo/wait_block.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E02_interpreter_wait/baseline/upstream/wait-block-definition.js",
+      "startLine": 15,
+      "endLine": 32,
+      "sha256": "3d8007e2010c7278163cce8edf6870166189291788cab8b74df1fae8be2a234b",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "wait-generator",
+      "path": "examples/interpreter-demo/wait_block.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E02_interpreter_wait/baseline/upstream/wait-generator.js",
+      "startLine": 38,
+      "endLine": 42,
+      "sha256": "10f13086b048cabc118331000a63479d9e37036aa4255fa0218f896acc6622ff",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "interpreter-runtime-binding",
+      "path": "examples/interpreter-demo/wait_block.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E02_interpreter_wait/baseline/upstream/interpreter-runtime-binding.js",
+      "startLine": 44,
+      "endLine": 59,
+      "sha256": "d33a8be2204ecf980886d447e5148386ed9bce61a0c1cae5fd59fee04fa7afe2",
+      "kinds": [
+        "domain-runtime"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": false,
+      "sharedSourceKey": null,
+      "notes": [
+        "Traceable but excluded: asynchronous JS-Interpreter binding and timer runtime."
+      ]
+    },
+    {
+      "id": "selected-toolbox",
+      "path": "examples/interpreter-demo/async-execution.html",
+      "snapshotPath": "evaluation/official-blockly/cases/E02_interpreter_wait/baseline/upstream/selected-toolbox.js",
+      "startLine": 58,
+      "endLine": 218,
+      "sha256": "b78267a8458710b0987d738b1b413034025225494ea067a7497f6ec93363996e",
+      "kinds": [
+        "toolbox"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": [
+        "Exact toolbox embedded by the selected asynchronous-execution page."
+      ]
+    },
+    {
+      "id": "initial-workspace",
+      "path": "examples/interpreter-demo/async-execution.html",
+      "snapshotPath": "evaluation/official-blockly/cases/E02_interpreter_wait/baseline/upstream/initial-workspace.js",
+      "startLine": 220,
+      "endLine": 317,
+      "sha256": "722dc8b638bf6b2340b86ffc3dc28751ad85bbedf45651bfebe035a0530ee28f",
+      "kinds": [
+        "initial-workspace"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    }
+  ]
+}

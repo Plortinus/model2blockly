@@ -1,0 +1,447 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E01_graph",
+  "treatment": "ecore",
+  "controls": {
+    "blocklyVersion": "13.1.1",
+    "browserViewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "locale": "en",
+    "renderer": "geras",
+    "theme": "classic",
+    "workspaceViewport": {
+      "height": 640,
+      "width": 1024
+    }
+  },
+  "blocks": [
+    {
+      "type": "graph_get_x",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "x",
+              "text": "x",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#a55b80",
+      "tooltip": "Returns the value of this variable.",
+      "helpUrl": "https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#get",
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "graph_set_y",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "VALUE",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "VALUE"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "VALUE",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "y =",
+              "text": "y =",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#a55b80",
+      "tooltip": "Sets this variable to be equal to the input.",
+      "helpUrl": "https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#set",
+      "dynamicBehaviour": []
+    }
+  ],
+  "toolbox": {
+    "contents": [
+      {
+        "colour": "330",
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "graph_get_x"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "graph_set_y"
+          }
+        ],
+        "kind": "category",
+        "name": "Variables"
+      },
+      {
+        "gap": "32",
+        "kind": "sep"
+      },
+      {
+        "colour": "210",
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "enabled": true,
+            "extraState": {
+              "hasElse": true
+            },
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_compare"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_operation"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_negate"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_boolean"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_null"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_ternary"
+          }
+        ],
+        "kind": "category",
+        "name": "Logic"
+      },
+      {
+        "colour": "120",
+        "contents": [
+          {
+            "enabled": true,
+            "inputs": {
+              "TIMES": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "controls_repeat_ext"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_whileUntil"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "BY": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "FROM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "TO": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "controls_for"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_forEach"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_flow_statements"
+          }
+        ],
+        "kind": "category",
+        "name": "Loops"
+      },
+      {
+        "colour": "230",
+        "contents": [
+          {
+            "enabled": true,
+            "fields": {
+              "NUM": 0
+            },
+            "kind": "block",
+            "type": "math_number"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "A": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "B": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_arithmetic"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 9
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_single"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 3.1
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_round"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "DIVIDEND": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 64
+                  },
+                  "type": "math_number"
+                }
+              },
+              "DIVISOR": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_modulo"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "HIGH": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 100
+                  },
+                  "type": "math_number"
+                }
+              },
+              "LOW": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "VALUE": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 50
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_constrain"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "FROM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "TO": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 100
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_random_int"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "math_random_float"
+          }
+        ],
+        "kind": "category",
+        "name": "Math"
+      },
+      {
+        "colour": "330",
+        "custom": "VARIABLE",
+        "kind": "category",
+        "name": "Variables"
+      },
+      {
+        "colour": "290",
+        "custom": "PROCEDURE",
+        "kind": "category",
+        "name": "Functions"
+      }
+    ],
+    "kind": "categoryToolbox"
+  },
+  "initialWorkspace": null,
+  "generators": [
+    {
+      "type": "graph_get_x",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "x"
+      }
+    },
+    {
+      "type": "graph_set_y",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "y = {{value:VALUE}};"
+      }
+    }
+  ],
+  "errors": []
+}

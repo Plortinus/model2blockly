@@ -1,0 +1,47 @@
+domain CodegenWorkspace
+codeLanguage "javascript"
+codeFileExtension "js"
+runtimeKind "workflow"
+
+workspace {
+  zoom: {
+    controls: true
+    maxScale: 3
+    startScale: 1
+  }
+  renderer: "zelos"
+  trashcan: true
+  toolboxType: "flyout"
+  grid: {
+    snap: true
+    spacing: 24
+  }
+}
+
+category Programs colour 260
+category Commands colour 30
+category Expressions colour 230
+
+class Program category Programs colour 260 inputsInline false
+  code "program('{{name}}', () => { {{statements:steps}} });" {
+  attribute name : string [1..1] default "Demo"
+  contains Command steps [1..4]
+}
+
+abstract class Command category Commands colour 30 inputsInline false {
+}
+
+class Log extends Command category Commands colour 30 inputsInline false
+  code "console.log('{{message}}');" {
+  attribute message : string [1..1] default "Ready"
+}
+
+class Wait extends Command category Commands colour 30 inputsInline false
+  code "wait({{milliseconds}});" {
+  attribute milliseconds : int [1..1] default "250"
+}
+
+output class BooleanLiteral category Expressions colour 230 inputsInline false
+  code "{{literal}}" {
+  attribute literal : boolean [0..1] default "true"
+}

@@ -79,7 +79,7 @@ en bloques. La documentación oficial describe Blockly como una biblioteca que
 permite integrar un editor de código visual en una aplicación web; el
 desarrollador define los bloques y la semántica asociada, mientras que la
 biblioteca proporciona la infraestructura de interacción visual, arrastre,
-encaje, toolbox y serialización \cite{blocklyWhatIs,blocklyDocs}.
+encaje, paleta y serialización \cite{blocklyWhatIs,blocklyDocs}.
 
 La biblioteca permite definir bloques con campos, entradas de valor, entradas
 de sentencias, conexiones previas y posteriores, colores, tooltips y
@@ -92,11 +92,11 @@ dominio.
 
 Antes de definir elementos específicos del dominio, el desarrollador debe
 cargar las dependencias, proporcionar un contenedor HTML e inicializar el
-workspace. El Listado \ref{lst:blockly-infraestructura-minima} resume esta
+espacio de trabajo. El Listado \ref{lst:blockly-infraestructura-minima} resume esta
 infraestructura mínima siguiendo el codelab oficial
 \cite{blocklyGettingStartedCodelab}.
 
-\begin{lstlisting}[caption={Infraestructura mínima para crear un workspace Blockly}, label={lst:blockly-infraestructura-minima}]
+\begin{lstlisting}[style=tfmhtml, caption={Infraestructura mínima para crear un espacio de trabajo Blockly}, label={lst:blockly-infraestructura-minima}]
 <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
 <script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
 <script src="https://unpkg.com/blockly/javascript_compressed.js"></script>
@@ -111,11 +111,11 @@ El Listado \ref{lst:blockly-music-maker-config} muestra un ejemplo reducido de
 esa configuración, tomado del codelab oficial Music Maker
 \cite{blocklyGettingStartedCodelab}. El primer objeto define un bloque con un
 campo desplegable para seleccionar una nota y con conexiones anterior y
-posterior. El segundo determina qué tipos de bloque aparecen en la toolbox.
+posterior. El segundo determina qué tipos de bloque aparecen en la paleta.
 Aunque se habla habitualmente de definiciones JSON, en este caso se expresan
 como objetos JavaScript cuyos valores son serializables como JSON.
 
-\begin{lstlisting}[caption={Definición de un bloque y configuración mínima de una toolbox en Blockly}, label={lst:blockly-music-maker-config}]
+\begin{lstlisting}[style=tfmjavascript, caption={Definición de un bloque y configuración mínima de una paleta en Blockly}, label={lst:blockly-music-maker-config}]
 Blockly.common.defineBlocksWithJsonArray([{
   "type": "play_sound",
   "message0": "Play %1",
@@ -142,13 +142,13 @@ const toolbox = {
 \end{lstlisting}
 
 La Figura \ref{fig:blockly-music-maker-toolbox} muestra el editor resultante: la
-toolbox ofrece el bloque de repetición y el bloque musical, que pueden
-arrastrarse al workspace para construir el programa.
+paleta ofrece el bloque de repetición y el bloque musical, que pueden
+arrastrarse al espacio de trabajo para construir el programa.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.48\textwidth]{assets/blockly/workspace_with_toolbox.png}
-  \caption{Workspace y toolbox obtenidos tras registrar el bloque
+  \caption{Espacio de trabajo y paleta obtenidos tras registrar el bloque
   \texttt{play\_sound}. Fuente: codelab oficial de Blockly
   \cite{blocklyGettingStartedCodelab}}
   \label{fig:blockly-music-maker-toolbox}
@@ -156,8 +156,8 @@ arrastrarse al workspace para construir el programa.
 
 Aunque el editor resultante solo ofrece un bucle y una operación musical, su
 construcción exige gestionar dependencias, preparar el contenedor, configurar
-el workspace y declarar manualmente la estructura, los campos, las conexiones y
-la toolbox. Todavía habría que añadir el generador de código y la lógica de
+el espacio de trabajo y declarar manualmente la estructura, los campos, las conexiones y
+la paleta. Todavía habría que añadir el generador de código y la lógica de
 ejecución. Este esfuerzo crece con el número de conceptos y restricciones del
 dominio y se repite para cada editor. La Figura
 \ref{fig:blockly-music-maker}, presentada en la sección anterior, muestra cómo
@@ -272,7 +272,7 @@ anotación con \texttt{source="blockly"} define \texttt{colour},
 Esta capacidad de separar estructura e información de presentación es esencial
 para el trabajo. No todos los detalles de un editor Blockly existen de forma
 natural en un metamodelo Ecore: por ejemplo, el color de un bloque o la
-organización de la toolbox son decisiones de sintaxis concreta. Por ello, el
+organización de la paleta son decisiones de sintaxis concreta. Por ello, el
 proyecto permite enriquecer el metamodelo con anotaciones específicas, sin
 perder la posibilidad de generar un editor básico a partir de la estructura
 Ecore.
@@ -344,22 +344,26 @@ En este proyecto, Xtext se usa para definir el lenguaje textual
 abstracción: el autor declara conceptos del dominio, propiedades y relaciones,
 en lugar de programar directamente llamadas a la API JavaScript de Blockly.
 
-\begin{lstlisting}[caption={Ejemplo breve de una definición textual \texttt{.m2b}}, label={lst:xtext-m2b-breve}]
-domain Appmaker
-category Pages label "Pages" colour 260
-
-abstract class Component { }
-class Page category Pages {
-  attribute title : string default "Home" required
-  contains Component components [1..40]
-}
+\begin{lstlisting}[style=tfmm2b, caption={Ejemplo breve de una definición textual \texttt{.m2b}}, label={lst:xtext-m2b-breve}]
+// Define el nombre del dominio que se transformara.
+domain BasicStructure
+// Declara una clase concreta y desactiva los campos en linea.
+class Board inputsInline false {
+  // Define un atributo de texto opcional con valor inicial.
+  attribute name : string [0..1] default "Sprint board"
+  // Expresa una contencion de uno a cuatro elementos.
+  contains WorkItem items [1..4]
+} // Finaliza la declaracion de Board.
+// Declara el tipo abstracto usado por la contencion.
+abstract class WorkItem inputsInline false {
+} // Finaliza la declaracion de WorkItem.
 \end{lstlisting}
 
-La declaración \texttt{class Page} representa un concepto que podrá convertirse
-en un tipo de bloque; \texttt{title} aporta una propiedad editable y
-\texttt{components} expresa una relación jerárquica con cardinalidad. Xtext
+La declaración \texttt{class Board} representa un concepto que podrá convertirse
+en un tipo de bloque; \texttt{name} aporta una propiedad editable e
+\texttt{items} expresa una relación jerárquica con cardinalidad. Xtext
 comprueba que la entrada respeta la gramática y que nombres como
-\texttt{Pages} y \texttt{Component} se pueden resolver. El resultado es un
+\texttt{Board} y \texttt{WorkItem} se pueden resolver. El resultado es un
 modelo EMF que la cadena de Model2Blockly puede transformar posteriormente.
 Este mecanismo concreto se desarrolla desde el punto de vista arquitectónico
 en la Sección \ref{sec:ruta-xtext} y desde el punto de vista de implementación
@@ -370,7 +374,7 @@ resulta adecuado cuando ya existe un metamodelo EMF o cuando se quiere mantener
 la definición del dominio dentro de dicho ecosistema. La ruta \texttt{.m2b}
 resulta útil cuando se desea reunir en un fichero legible la estructura del
 dominio y las decisiones de sintaxis concreta, como etiquetas, colores,
-widgets, organización de la toolbox y plantillas de código. La convergencia en
+widgets, organización de la paleta y plantillas de código. La convergencia en
 \texttt{EditorSpec} evita mantener dos generadores diferentes.
 
 \section{Xtend}
@@ -392,7 +396,7 @@ indentación que ayudan a mantener legibles tanto la plantilla como la salida
 generada \cite{xtendDocs}. El Listado \ref{lst:xtend-plantilla} muestra un
 fragmento simplificado, basado en el generador del proyecto.
 
-\begin{lstlisting}[caption={Ejemplo de una plantilla Xtend usada para generar JavaScript}, label={lst:xtend-plantilla}]
+\begin{lstlisting}[style=tfmxtend, caption={Ejemplo de una plantilla Xtend usada para generar JavaScript}, label={lst:xtend-plantilla}]
 def String generateBlocksJs(EditorSpec spec) '''
   // Block definitions for domain "«spec.domainName»".
   window.BLOCKLY_BLOCKS = «generateBlocksArray(spec)»;
@@ -410,7 +414,7 @@ parte del editor generado. Se utiliza como tecnología de implementación en dos
 puntos: \texttt{Model2Blockly}\allowbreak\texttt{Generator} integra la
 generación con el flujo de Xtext, y
 \texttt{BlocklyCode}\allowbreak\texttt{Generator} contiene las transformaciones y
-plantillas que producen bloques, toolbox, validaciones y páginas HTML. Gracias
+plantillas que producen bloques, paleta, validaciones y páginas HTML. Gracias
 a la interoperabilidad con Java, estas clases invocan los adaptadores,
 serializadores y utilidades Java del proyecto, y también pueden ser invocadas
 desde las entradas independientes escritas en Java. Los detalles de esta
@@ -471,7 +475,7 @@ permita derivar una sintaxis concreta visual desde una descripción de dominio.
     Enfoque & Aportación principal & Limitación respecto al objetivo del TFM \\
     \hline
     Desarrollo manual con Blockly & Permite construir editores visuales ricos y
-    ejecutables en la web. & Requiere codificar bloques, toolbox, conexiones,
+    ejecutables en la web. & Requiere codificar bloques, paleta, conexiones,
     validaciones y generadores para cada dominio. \\
     Metamodelado con Ecore & Define de forma precisa la estructura abstracta del
     dominio. & No produce automáticamente una sintaxis concreta basada en
@@ -488,8 +492,9 @@ permita derivar una sintaxis concreta visual desde una descripción de dominio.
     contrato XMI explícito para la generación. \\
 	    Model2Blockly & Conecta metamodelos Ecore anotados y modelos
 	    \texttt{.m2b} con editores Blockly mediante transformación, modelo
-	    intermedio y generación. & Su validación y evaluación se
-    limitan al conjunto de casos y reglas estructurales estudiados. \\
+	    intermedio y generación. & Su evaluación cubre un corpus intencional y no
+    reproduce todavía todas las políticas de conexión, paletas programáticas ni
+    generadores con estado. \\
     \hline
   \end{tabular}
   \caption{Posicionamiento de Model2Blockly frente a enfoques relacionados}
@@ -518,7 +523,7 @@ del proyecto.
     \hline
     Tecnología & Papel en el TFM \\
     \hline
-    Blockly & Plataforma web para representar bloques, toolbox, workspace,
+    Blockly & Plataforma web para representar bloques, paleta, espacio de trabajo,
     conexiones y generación asociada. \\
     EMF/Ecore & Definición estructural del dominio mediante metamodelos,
     clases, atributos, referencias y cardinalidades. \\

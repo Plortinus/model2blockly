@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="CompositionInputs" nsURI="http://www.example.org/compositioninputs" nsPrefix="compositioninputs" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Composition" label="Composition"/>
+  <categories name="Expressions" label="Expressions" colour="230"/>
+  <blockTypes typeName="Document" label="Document" categoryName="Composition" connectionType="NONE" inputsInline="false">
+    <orderedInputNames>title</orderedInputNames>
+    <orderedInputNames>sections</orderedInputNames>
+    <fields name="title" defaultValue="Release notes" uiWidget="text" uiLabel="Title" uiOrder="1" uiVariant="default"/>
+    <statementInputs name="sections" checkType="Section" lowerBound="1" upperBound="4" uiWidget="slot" uiLabel="Sections" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="Section" label="Section" colour="120" categoryName="Composition" abstract="true" connectionType="TYPED" connectionTypeName="Section" inputsInline="false"/>
+  <blockTypes typeName="Paragraph" label="Paragraph" colour="120" categoryName="Composition" superTypeName="Section" connectionType="TYPED" connectionTypeName="Section" inputsInline="false">
+    <orderedInputNames>heading</orderedInputNames>
+    <orderedInputNames>content</orderedInputNames>
+    <orderedInputNames>emphasis</orderedInputNames>
+    <fields name="heading" defaultValue="Summary" uiWidget="text" uiLabel="Heading" uiOrder="1" uiVariant="default"/>
+    <fields name="emphasis" fieldType="BOOLEAN" defaultValue="false" uiWidget="checkbox" uiLabel="Emphasis" uiOrder="3" uiVariant="default"/>
+    <valueInputs name="content" checkType="TextExpression" shadowBlockType="TextLiteral" uiWidget="expression-slot" uiLabel="Content" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="TextExpression" label="TextExpression" colour="230" categoryName="Expressions" abstract="true" connectionType="OUTPUT" outputType="TextExpression" inputsInline="false"/>
+  <blockTypes typeName="TextLiteral" label="TextLiteral" colour="230" categoryName="Expressions" superTypeName="TextExpression" connectionType="OUTPUT_TYPED" outputType="TextExpression" inputsInline="false">
+    <orderedInputNames>textValue</orderedInputNames>
+    <fields name="textValue" defaultValue="Ready" uiWidget="text" uiLabel="Text" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <validations type="CARDINALITY" name="Document_sections" ownerType="Document" containmentName="sections" lowerBound="1" upperBound="4">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Document"/>
+      <fields name="INPUT" value="sections"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="4"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="sections"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="sections"/>
+        <children kind="NUMBER_LITERAL" literal="4"/>
+      </children>
+    </visualExpression>
+  </validations>
+</blocklyspec:EditorSpec>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Maze" nsURI="http://www.example.org/maze" nsPrefix="maze" toolboxType="flyout" codeLanguage="javascript" codeFileExtension="js">
+  <categories name="Command" label="Command" colour="0"/>
+  <blockTypes typeName="Command" label="Command" abstract="true" connectionType="TYPED" connectionTypeName="Command" inputsInline="true"/>
+  <blockTypes typeName="maze_moveForward" label="move forward" colour="290" categoryName="Command" superTypeName="Command" connectionType="TYPED" connectionTypeName="Command" message0="move forward" inputsInline="false" tooltip="Moves the player forward one space." codeTemplate="moveForward();"/>
+  <blockTypes typeName="maze_turn" label="turn" colour="290" categoryName="Command" superTypeName="Command" connectionType="TYPED" connectionTypeName="Command" message0="%1" inputsInline="false" tooltip="Turns the player left or right by 90 degrees." codeTemplate="{{DIR}}();">
+    <orderedInputNames>DIR</orderedInputNames>
+    <fields name="DIR" fieldType="DROPDOWN" defaultValue="turnLeft" uiWidget="select" uiLabel="Direction" uiOrder="1" uiVariant="default">
+      <options value="turnLeft" label="turn left ↺"/>
+      <options value="turnRight" label="turn right ↻"/>
+    </fields>
+  </blockTypes>
+  <blockTypes typeName="maze_forever" label="repeat until" colour="120" categoryName="Command" superTypeName="Command" connectionType="TYPED" connectionTypeName="Command" message0="repeat until %1 do %2" inputsInline="false" tooltip="Repeat the enclosed actions until finish point is reached." codeTemplate="while (notDone()) {&#xA;{{statements:DO}}&#xA;}">
+    <orderedInputNames>MARKER</orderedInputNames>
+    <orderedInputNames>DO</orderedInputNames>
+    <fields name="MARKER" fieldType="IMAGE" defaultValue="" imageUrl="maze/marker.png" imageWidth="12" imageHeight="16" imageAlt="" uiWidget="image" uiLabel="Finish" uiOrder="1" uiVariant="default"/>
+    <statementInputs name="DO" checkType="Command" upperBound="10" uiWidget="slot" uiLabel="Do" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="maze_if" label="if path" colour="210" categoryName="Command" superTypeName="Command" connectionType="TYPED" connectionTypeName="Command" message0="%1 do %2" inputsInline="false" tooltip="If there is a path in the specified direction, then do some actions." codeTemplate="if ({{DIR}}()) {&#xA;{{statements:DO}}&#xA;}">
+    <orderedInputNames>DIR</orderedInputNames>
+    <orderedInputNames>DO</orderedInputNames>
+    <fields name="DIR" fieldType="DROPDOWN" defaultValue="isPathForward" uiWidget="select" uiLabel="Direction" uiOrder="1" uiVariant="default">
+      <options value="isPathForward" label="if path ahead"/>
+      <options value="isPathLeft" label="if path to the left ↺"/>
+      <options value="isPathRight" label="if path to the right ↻"/>
+    </fields>
+    <statementInputs name="DO" checkType="Command" upperBound="10" uiWidget="slot" uiLabel="Do" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="maze_ifElse" label="if path, else" colour="210" categoryName="Command" superTypeName="Command" connectionType="TYPED" connectionTypeName="Command" message0="%1 do %2 else %3" inputsInline="false" tooltip="If there is a path in the specified direction, then do the first block of actions. Otherwise, do the second block of actions." codeTemplate="if ({{DIR}}()) {&#xA;{{statements:DO}}&#xA;} else {&#xA;{{statements:ELSE}}&#xA;}">
+    <orderedInputNames>DIR</orderedInputNames>
+    <orderedInputNames>DO</orderedInputNames>
+    <orderedInputNames>ELSE</orderedInputNames>
+    <fields name="DIR" fieldType="DROPDOWN" defaultValue="isPathForward" uiWidget="select" uiLabel="Direction" uiOrder="1" uiVariant="default">
+      <options value="isPathForward" label="if path ahead"/>
+      <options value="isPathLeft" label="if path to the left ↺"/>
+      <options value="isPathRight" label="if path to the right ↻"/>
+    </fields>
+    <statementInputs name="DO" checkType="Command" upperBound="10" uiWidget="slot" uiLabel="Do" uiOrder="2" uiVariant="default"/>
+    <statementInputs name="ELSE" checkType="Command" upperBound="10" uiWidget="slot" uiLabel="Else" uiOrder="3" uiVariant="default"/>
+  </blockTypes>
+  <validations type="CARDINALITY" name="maze_forever_DO" ownerType="maze_forever" containmentName="DO" upperBound="10">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="maze_forever"/>
+      <fields name="INPUT" value="DO"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="10"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="DO"/>
+      <children kind="NUMBER_LITERAL" literal="10"/>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="maze_if_DO" ownerType="maze_if" containmentName="DO" upperBound="10">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="maze_if"/>
+      <fields name="INPUT" value="DO"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="10"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="DO"/>
+      <children kind="NUMBER_LITERAL" literal="10"/>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="maze_ifElse_DO" ownerType="maze_ifElse" containmentName="DO" upperBound="10">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="maze_ifElse"/>
+      <fields name="INPUT" value="DO"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="10"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="DO"/>
+      <children kind="NUMBER_LITERAL" literal="10"/>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="maze_ifElse_ELSE" ownerType="maze_ifElse" containmentName="ELSE" upperBound="10">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="maze_ifElse"/>
+      <fields name="INPUT" value="ELSE"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="10"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="ELSE"/>
+      <children kind="NUMBER_LITERAL" literal="10"/>
+    </visualExpression>
+  </validations>
+  <workspaceOptions key="renderer" value="geras"/>
+  <workspaceOptions key="trashcan" value="false" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

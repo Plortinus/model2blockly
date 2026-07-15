@@ -9,6 +9,7 @@ Use este mapa para elegir la página correcta sin leer todo el repositorio.
 | Explicar arquitectura, diagramas e implementación | [Arquitectura](ARCHITECTURE.md) |
 | Instalar el plugin y generar el primer editor | [Guía rápida](GETTING_STARTED.md) |
 | Revisar el ejemplo completo AppMaker | [Caso AppMaker](RUNNING_EXAMPLE.md) |
+| Consultar la evaluación con diez editores oficiales | [Evaluación externa](EVALUATION.md) |
 | Entender el proyecto | [Vista general](PROJECT.md) |
 | Usar anotaciones Ecore | [Mapeo de Ecore a Blockly](ECORE_TO_BLOCKLY_MAPPING.md) |
 | Resolver errores de instalación o generación | [Solución de problemas](TROUBLESHOOTING.md) |

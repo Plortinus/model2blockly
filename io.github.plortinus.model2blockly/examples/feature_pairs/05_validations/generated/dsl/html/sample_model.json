@@ -1,0 +1,26 @@
+[
+  {
+    "_type": "Page",
+    "_blockId": "sample_Page_1",
+    "pageId": "page-1",
+    "title": "Home",
+    "route": "/home",
+    "actions": [
+      {
+        "_type": "Alert",
+        "_blockId": "sample_Alert_1",
+        "message": "Saved"
+      },
+      {
+        "_type": "Navigate",
+        "_blockId": "sample_Navigate_1",
+        "target": "sample_Page_1"
+      },
+      {
+        "_type": "Alert",
+        "_blockId": "sample_Alert_2",
+        "message": "Saved"
+      }
+    ]
+  }
+]

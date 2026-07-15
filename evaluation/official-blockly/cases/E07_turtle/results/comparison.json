@@ -1,0 +1,4193 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E07_turtle",
+  "baselineTreatment": "baseline",
+  "actualTreatment": "m2b",
+  "editor": {
+    "summary": {
+      "totalObserved": 427,
+      "applicable": 427,
+      "matches": 349,
+      "partial": 7,
+      "mismatches": 0,
+      "unsupported": 71,
+      "errors": 0,
+      "excluded": 0,
+      "differences": 78,
+      "parityPercent": 81.73,
+      "classification": "partial"
+    },
+    "loadErrors": [],
+    "properties": [
+      {
+        "property": "blocks.noUnexpectedTypes",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_move.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:VALUE"
+        ],
+        "actual": [
+          "value:VALUE"
+        ]
+      },
+      {
+        "property": "blocks.turtle_move.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_move.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_move.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_move.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.turtle_move.tooltip",
+        "status": "match",
+        "expected": "Moves the turtle forward or backward by the specified amount.",
+        "actual": "Moves the turtle forward or backward by the specified amount."
+      },
+      {
+        "property": "blocks.turtle_move.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:",
+          "field_dropdown:DIR",
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:DIR",
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.0.value",
+        "status": "match",
+        "expected": "move",
+        "actual": "move"
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.0.text",
+        "status": "match",
+        "expected": "move",
+        "actual": "move"
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.1.name",
+        "status": "match",
+        "expected": "DIR",
+        "actual": "DIR"
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.1.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.1.value",
+        "status": "match",
+        "expected": "moveForward",
+        "actual": "moveForward"
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.1.text",
+        "status": "match",
+        "expected": "forward",
+        "actual": "forward"
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.1.options",
+        "status": "match",
+        "expected": [
+          {
+            "label": "forward",
+            "value": "moveForward"
+          },
+          {
+            "label": "backward",
+            "value": "moveBackward"
+          }
+        ],
+        "actual": [
+          {
+            "label": "forward",
+            "value": "moveForward"
+          },
+          {
+            "label": "backward",
+            "value": "moveBackward"
+          }
+        ]
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.2.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.2.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.2.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.2.value",
+        "status": "match",
+        "expected": "by",
+        "actual": "by"
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.2.text",
+        "status": "match",
+        "expected": "by",
+        "actual": "by"
+      },
+      {
+        "property": "blocks.turtle_move.inputs.value:VALUE.fields.2.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move_internal.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_move_internal.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_move_internal.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_move_internal.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_move_internal.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.turtle_move_internal.tooltip",
+        "status": "match",
+        "expected": "Moves the turtle forward or backward by the specified amount.",
+        "actual": "Moves the turtle forward or backward by the specified amount."
+      },
+      {
+        "property": "blocks.turtle_move_internal.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move_internal.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:",
+          "field_dropdown:DIR",
+          "field_label:",
+          "field_dropdown:VALUE"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:DIR",
+          "field_label:",
+          "field_dropdown:VALUE"
+        ]
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "move",
+        "actual": "move"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "move",
+        "actual": "move"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.1.name",
+        "status": "match",
+        "expected": "DIR",
+        "actual": "DIR"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.1.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.1.value",
+        "status": "match",
+        "expected": "moveForward",
+        "actual": "moveForward"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.1.text",
+        "status": "match",
+        "expected": "forward",
+        "actual": "forward"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.1.options",
+        "status": "match",
+        "expected": [
+          {
+            "label": "forward",
+            "value": "moveForward"
+          },
+          {
+            "label": "backward",
+            "value": "moveBackward"
+          }
+        ],
+        "actual": [
+          {
+            "label": "forward",
+            "value": "moveForward"
+          },
+          {
+            "label": "backward",
+            "value": "moveBackward"
+          }
+        ]
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.2.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.2.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.2.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.2.value",
+        "status": "match",
+        "expected": "by",
+        "actual": "by"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.2.text",
+        "status": "match",
+        "expected": "by",
+        "actual": "by"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.2.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.3.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.3.name",
+        "status": "match",
+        "expected": "VALUE",
+        "actual": "VALUE"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.3.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.3.value",
+        "status": "partial",
+        "expected": "20",
+        "actual": "distance20",
+        "capability": "numeric-dropdown-values",
+        "boundary": "model2blockly",
+        "rationale": "Se conservan las cuatro etiquetas de distancia, pero los identificadores válidos del enum se almacenan en lugar de los valores numéricos 20, 50, 100 y 150."
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.3.text",
+        "status": "match",
+        "expected": "20",
+        "actual": "20"
+      },
+      {
+        "property": "blocks.turtle_move_internal.inputs.dummy:<anonymous>.fields.3.options",
+        "status": "partial",
+        "expected": [
+          {
+            "label": "20",
+            "value": "20"
+          },
+          {
+            "label": "50",
+            "value": "50"
+          },
+          {
+            "label": "100",
+            "value": "100"
+          },
+          {
+            "label": "150",
+            "value": "150"
+          }
+        ],
+        "actual": [
+          {
+            "label": "20",
+            "value": "distance20"
+          },
+          {
+            "label": "50",
+            "value": "distance50"
+          },
+          {
+            "label": "100",
+            "value": "distance100"
+          },
+          {
+            "label": "150",
+            "value": "distance150"
+          }
+        ],
+        "capability": "numeric-dropdown-values",
+        "boundary": "model2blockly",
+        "rationale": "Se conservan las cuatro etiquetas de distancia, pero los identificadores válidos del enum se almacenan en lugar de los valores numéricos 20, 50, 100 y 150."
+      },
+      {
+        "property": "blocks.turtle_turn.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:VALUE"
+        ],
+        "actual": [
+          "value:VALUE"
+        ]
+      },
+      {
+        "property": "blocks.turtle_turn.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_turn.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_turn.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_turn.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.turtle_turn.tooltip",
+        "status": "match",
+        "expected": "Turns the turtle left or right by the specified number of degrees.",
+        "actual": "Turns the turtle left or right by the specified number of degrees."
+      },
+      {
+        "property": "blocks.turtle_turn.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn.dynamicBehaviour",
+        "status": "partial",
+        "expected": [
+          "extension:turtle_turn_arrows"
+        ],
+        "actual": [],
+        "capability": "block-extension",
+        "boundary": "model2blockly",
+        "rationale": "Las flechas y opciones visibles se reproducen estáticamente, pero el DSL no registra la extensión turtle_turn_arrows que las añade dinámicamente en la referencia."
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:",
+          "field_dropdown:DIR",
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:DIR",
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.0.value",
+        "status": "match",
+        "expected": "turn",
+        "actual": "turn"
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.0.text",
+        "status": "match",
+        "expected": "turn",
+        "actual": "turn"
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.1.name",
+        "status": "match",
+        "expected": "DIR",
+        "actual": "DIR"
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.1.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.1.value",
+        "status": "match",
+        "expected": "turnRight",
+        "actual": "turnRight"
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.1.text",
+        "status": "match",
+        "expected": "right ↻",
+        "actual": "right ↻"
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.1.options",
+        "status": "match",
+        "expected": [
+          {
+            "label": "right ↻",
+            "value": "turnRight"
+          },
+          {
+            "label": "left ↺",
+            "value": "turnLeft"
+          }
+        ],
+        "actual": [
+          {
+            "label": "right ↻",
+            "value": "turnRight"
+          },
+          {
+            "label": "left ↺",
+            "value": "turnLeft"
+          }
+        ]
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.2.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.2.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.2.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.2.value",
+        "status": "match",
+        "expected": "by",
+        "actual": "by"
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.2.text",
+        "status": "match",
+        "expected": "by",
+        "actual": "by"
+      },
+      {
+        "property": "blocks.turtle_turn.inputs.value:VALUE.fields.2.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn_internal.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_turn_internal.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_turn_internal.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_turn_internal.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_turn_internal.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.tooltip",
+        "status": "match",
+        "expected": "Turns the turtle left or right by the specified number of degrees.",
+        "actual": "Turns the turtle left or right by the specified number of degrees."
+      },
+      {
+        "property": "blocks.turtle_turn_internal.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn_internal.dynamicBehaviour",
+        "status": "partial",
+        "expected": [
+          "extension:turtle_turn_arrows"
+        ],
+        "actual": [],
+        "capability": "block-extension",
+        "boundary": "model2blockly",
+        "rationale": "Las flechas y opciones visibles se reproducen estáticamente, pero el DSL no registra la extensión turtle_turn_arrows que las añade dinámicamente en la referencia."
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:",
+          "field_dropdown:DIR",
+          "field_label:",
+          "field_dropdown:VALUE"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:DIR",
+          "field_label:",
+          "field_dropdown:VALUE"
+        ]
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "turn",
+        "actual": "turn"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "turn",
+        "actual": "turn"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.1.name",
+        "status": "match",
+        "expected": "DIR",
+        "actual": "DIR"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.1.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.1.value",
+        "status": "match",
+        "expected": "turnRight",
+        "actual": "turnRight"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.1.text",
+        "status": "match",
+        "expected": "right ↻",
+        "actual": "right ↻"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.1.options",
+        "status": "match",
+        "expected": [
+          {
+            "label": "right ↻",
+            "value": "turnRight"
+          },
+          {
+            "label": "left ↺",
+            "value": "turnLeft"
+          }
+        ],
+        "actual": [
+          {
+            "label": "right ↻",
+            "value": "turnRight"
+          },
+          {
+            "label": "left ↺",
+            "value": "turnLeft"
+          }
+        ]
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.2.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.2.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.2.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.2.value",
+        "status": "match",
+        "expected": "by",
+        "actual": "by"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.2.text",
+        "status": "match",
+        "expected": "by",
+        "actual": "by"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.2.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.3.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.3.name",
+        "status": "match",
+        "expected": "VALUE",
+        "actual": "VALUE"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.3.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.3.value",
+        "status": "partial",
+        "expected": "1",
+        "actual": "angle1",
+        "capability": "numeric-dropdown-values",
+        "boundary": "model2blockly",
+        "rationale": "Se conservan los seis ángulos y sus símbolos de grado, pero el enum almacena identificadores declarativos en vez de las cadenas numéricas oficiales."
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.3.text",
+        "status": "match",
+        "expected": "1°",
+        "actual": "1°"
+      },
+      {
+        "property": "blocks.turtle_turn_internal.inputs.dummy:<anonymous>.fields.3.options",
+        "status": "partial",
+        "expected": [
+          {
+            "label": "1°",
+            "value": "1"
+          },
+          {
+            "label": "45°",
+            "value": "45"
+          },
+          {
+            "label": "72°",
+            "value": "72"
+          },
+          {
+            "label": "90°",
+            "value": "90"
+          },
+          {
+            "label": "120°",
+            "value": "120"
+          },
+          {
+            "label": "144°",
+            "value": "144"
+          }
+        ],
+        "actual": [
+          {
+            "label": "1°",
+            "value": "angle1"
+          },
+          {
+            "label": "45°",
+            "value": "angle45"
+          },
+          {
+            "label": "72°",
+            "value": "angle72"
+          },
+          {
+            "label": "90°",
+            "value": "angle90"
+          },
+          {
+            "label": "120°",
+            "value": "angle120"
+          },
+          {
+            "label": "144°",
+            "value": "angle144"
+          }
+        ],
+        "capability": "numeric-dropdown-values",
+        "boundary": "model2blockly",
+        "rationale": "Se conservan los seis ángulos y sus símbolos de grado, pero el enum almacena identificadores declarativos en vez de las cadenas numéricas oficiales."
+      },
+      {
+        "property": "blocks.turtle_width.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_width.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:WIDTH"
+        ],
+        "actual": [
+          "value:WIDTH"
+        ]
+      },
+      {
+        "property": "blocks.turtle_width.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_width.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_width.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_width.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_width.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.turtle_width.tooltip",
+        "status": "match",
+        "expected": "Changes the width of the pen.",
+        "actual": "Changes the width of the pen."
+      },
+      {
+        "property": "blocks.turtle_width.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_width.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_width.inputs.value:WIDTH.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_width.inputs.value:WIDTH.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.turtle_width.inputs.value:WIDTH.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_width.inputs.value:WIDTH.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_width.inputs.value:WIDTH.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_width.inputs.value:WIDTH.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_width.inputs.value:WIDTH.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_width.inputs.value:WIDTH.fields.0.value",
+        "status": "match",
+        "expected": "set width to",
+        "actual": "set width to"
+      },
+      {
+        "property": "blocks.turtle_width.inputs.value:WIDTH.fields.0.text",
+        "status": "match",
+        "expected": "set width to",
+        "actual": "set width to"
+      },
+      {
+        "property": "blocks.turtle_width.inputs.value:WIDTH.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_pen.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_pen.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_pen.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_pen.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_pen.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_pen.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_pen.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.turtle_pen.tooltip",
+        "status": "match",
+        "expected": "Lifts or lowers the pen, to stop or start drawing.",
+        "actual": "Lifts or lowers the pen, to stop or start drawing."
+      },
+      {
+        "property": "blocks.turtle_pen.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_pen.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:",
+          "field_dropdown:PEN"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:PEN"
+        ]
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "pen",
+        "actual": "pen"
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "pen",
+        "actual": "pen"
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.1.name",
+        "status": "match",
+        "expected": "PEN",
+        "actual": "PEN"
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.1.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.1.value",
+        "status": "match",
+        "expected": "penUp",
+        "actual": "penUp"
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.1.text",
+        "status": "match",
+        "expected": "up",
+        "actual": "up"
+      },
+      {
+        "property": "blocks.turtle_pen.inputs.dummy:<anonymous>.fields.1.options",
+        "status": "match",
+        "expected": [
+          {
+            "label": "up",
+            "value": "penUp"
+          },
+          {
+            "label": "down",
+            "value": "penDown"
+          }
+        ],
+        "actual": [
+          {
+            "label": "up",
+            "value": "penUp"
+          },
+          {
+            "label": "down",
+            "value": "penDown"
+          }
+        ]
+      },
+      {
+        "property": "blocks.turtle_colour.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_colour.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:COLOUR"
+        ],
+        "actual": [
+          "value:COLOUR"
+        ]
+      },
+      {
+        "property": "blocks.turtle_colour.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_colour.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_colour.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_colour.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_colour.colour",
+        "status": "match",
+        "expected": "#a5745b",
+        "actual": "#a5745b"
+      },
+      {
+        "property": "blocks.turtle_colour.tooltip",
+        "status": "match",
+        "expected": "Changes the colour of the pen.",
+        "actual": "Changes the colour of the pen."
+      },
+      {
+        "property": "blocks.turtle_colour.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_colour.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_colour.inputs.value:COLOUR.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_colour.inputs.value:COLOUR.check",
+        "status": "match",
+        "expected": [
+          "Colour"
+        ],
+        "actual": [
+          "Colour"
+        ]
+      },
+      {
+        "property": "blocks.turtle_colour.inputs.value:COLOUR.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_colour.inputs.value:COLOUR.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_colour.inputs.value:COLOUR.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_colour.inputs.value:COLOUR.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_colour.inputs.value:COLOUR.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_colour.inputs.value:COLOUR.fields.0.value",
+        "status": "match",
+        "expected": "set colour to",
+        "actual": "set colour to"
+      },
+      {
+        "property": "blocks.turtle_colour.inputs.value:COLOUR.fields.0.text",
+        "status": "match",
+        "expected": "set colour to",
+        "actual": "set colour to"
+      },
+      {
+        "property": "blocks.turtle_colour.inputs.value:COLOUR.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_colour_internal.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_colour_internal.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_colour_internal.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_colour_internal.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_colour_internal.colour",
+        "status": "match",
+        "expected": "#a5745b",
+        "actual": "#a5745b"
+      },
+      {
+        "property": "blocks.turtle_colour_internal.tooltip",
+        "status": "match",
+        "expected": "Changes the colour of the pen.",
+        "actual": "Changes the colour of the pen."
+      },
+      {
+        "property": "blocks.turtle_colour_internal.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_colour_internal.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "set colour to",
+        "actual": "set colour to"
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "set colour to",
+        "actual": "set colour to"
+      },
+      {
+        "property": "blocks.turtle_colour_internal.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_visibility.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_visibility.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_visibility.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_visibility.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_visibility.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_visibility.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_visibility.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.turtle_visibility.tooltip",
+        "status": "match",
+        "expected": "Makes the turtle (circle and arrow) visible or invisible.",
+        "actual": "Makes the turtle (circle and arrow) visible or invisible."
+      },
+      {
+        "property": "blocks.turtle_visibility.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_visibility.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_dropdown:VISIBILITY",
+          "field_label:"
+        ],
+        "actual": [
+          "field_dropdown:VISIBILITY",
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": "VISIBILITY",
+        "actual": "VISIBILITY"
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "hideTurtle",
+        "actual": "hideTurtle"
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "hide",
+        "actual": "hide"
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": [
+          {
+            "label": "hide",
+            "value": "hideTurtle"
+          },
+          {
+            "label": "show",
+            "value": "showTurtle"
+          }
+        ],
+        "actual": [
+          {
+            "label": "hide",
+            "value": "hideTurtle"
+          },
+          {
+            "label": "show",
+            "value": "showTurtle"
+          }
+        ]
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.1.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.1.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.1.value",
+        "status": "match",
+        "expected": "turtle",
+        "actual": "turtle"
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.1.text",
+        "status": "match",
+        "expected": "turtle",
+        "actual": "turtle"
+      },
+      {
+        "property": "blocks.turtle_visibility.inputs.dummy:<anonymous>.fields.1.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_print.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_print.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:TEXT"
+        ],
+        "actual": [
+          "value:TEXT"
+        ]
+      },
+      {
+        "property": "blocks.turtle_print.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_print.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_print.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_print.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_print.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.turtle_print.tooltip",
+        "status": "match",
+        "expected": "Draws text in the turtle's direction at its location.",
+        "actual": "Draws text in the turtle's direction at its location."
+      },
+      {
+        "property": "blocks.turtle_print.helpUrl",
+        "status": "match",
+        "expected": "https://en.wikipedia.org/wiki/Printing",
+        "actual": "https://en.wikipedia.org/wiki/Printing"
+      },
+      {
+        "property": "blocks.turtle_print.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_print.inputs.value:TEXT.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_print.inputs.value:TEXT.check",
+        "status": "unsupported",
+        "expected": null,
+        "actual": [
+          "Text"
+        ],
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "El modelo exige un tipo para la entrada de valor y genera la comprobación Text, mientras que la entrada TEXT oficial acepta cualquier bloque de salida."
+      },
+      {
+        "property": "blocks.turtle_print.inputs.value:TEXT.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_print.inputs.value:TEXT.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.turtle_print.inputs.value:TEXT.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_print.inputs.value:TEXT.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_print.inputs.value:TEXT.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_print.inputs.value:TEXT.fields.0.value",
+        "status": "match",
+        "expected": "print",
+        "actual": "print"
+      },
+      {
+        "property": "blocks.turtle_print.inputs.value:TEXT.fields.0.text",
+        "status": "match",
+        "expected": "print",
+        "actual": "print"
+      },
+      {
+        "property": "blocks.turtle_print.inputs.value:TEXT.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_font.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_font.inputOrder",
+        "status": "unsupported",
+        "expected": [
+          "dummy:",
+          "dummy:",
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ],
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "Turtle separa familia, tamaño y estilo en tres filas mediante dos input_dummy explícitos; el DSL solo compone una fila desde message0."
+      },
+      {
+        "property": "blocks.turtle_font.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_font.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_font.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_font.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_font.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.turtle_font.tooltip",
+        "status": "match",
+        "expected": "Sets the font used by the print block.",
+        "actual": "Sets the font used by the print block."
+      },
+      {
+        "property": "blocks.turtle_font.helpUrl",
+        "status": "match",
+        "expected": "https://en.wikipedia.org/wiki/Font",
+        "actual": "https://en.wikipedia.org/wiki/Font"
+      },
+      {
+        "property": "blocks.turtle_font.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "unsupported",
+        "expected": [
+          "field_label:",
+          "field_dropdown:FONT"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:FONT",
+          "field_label:",
+          "field_number:FONTSIZE",
+          "field_dropdown:FONTSTYLE"
+        ],
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "Al no poder declarar las tres filas dummy, los tres campos se concentran en la primera fila generada."
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "font",
+        "actual": "font"
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "font",
+        "actual": "font"
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.1.name",
+        "status": "match",
+        "expected": "FONT",
+        "actual": "FONT"
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.1.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.1.value",
+        "status": "match",
+        "expected": "Arial",
+        "actual": "Arial"
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.1.text",
+        "status": "match",
+        "expected": "Arial",
+        "actual": "Arial"
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.fields.1.options",
+        "status": "partial",
+        "expected": [
+          {
+            "label": "Arial",
+            "value": "Arial"
+          },
+          {
+            "label": "Courier New",
+            "value": "Courier New"
+          },
+          {
+            "label": "Georgia",
+            "value": "Georgia"
+          },
+          {
+            "label": "Impact",
+            "value": "Impact"
+          },
+          {
+            "label": "Times New Roman",
+            "value": "Times New Roman"
+          },
+          {
+            "label": "Trebuchet MS",
+            "value": "Trebuchet MS"
+          },
+          {
+            "label": "Verdana",
+            "value": "Verdana"
+          }
+        ],
+        "actual": [
+          {
+            "label": "Arial",
+            "value": "Arial"
+          },
+          {
+            "label": "Courier New",
+            "value": "CourierNew"
+          },
+          {
+            "label": "Georgia",
+            "value": "Georgia"
+          },
+          {
+            "label": "Impact",
+            "value": "Impact"
+          },
+          {
+            "label": "Times New Roman",
+            "value": "TimesNewRoman"
+          },
+          {
+            "label": "Trebuchet MS",
+            "value": "TrebuchetMS"
+          },
+          {
+            "label": "Verdana",
+            "value": "Verdana"
+          }
+        ],
+        "capability": "dropdown-stored-values",
+        "boundary": "model2blockly",
+        "rationale": "Las cinco familias tipográficas aparecen en el selector, pero el enum conserva identificadores declarativos en lugar de los valores oficiales que contienen espacios."
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "Solo una de las tres filas dummy oficiales puede emparejarse; las filas independientes de tamaño y estilo no existen en el bloque generado."
+      },
+      {
+        "property": "blocks.turtle_font.inputs.dummy:<anonymous>.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "Solo una de las tres filas dummy oficiales puede emparejarse; las filas independientes de tamaño y estilo no existen en el bloque generado."
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputOrder",
+        "status": "unsupported",
+        "expected": [
+          "dummy:",
+          "statement:DO"
+        ],
+        "actual": [
+          "statement:DO"
+        ],
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "El bloque oficial coloca TIMES en una fila dummy antes de DO; el DSL adjunta los elementos de message0 a la entrada de sentencia."
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "TurtleCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía TurtleCommand necesaria para modelar qué sentencias pueden encadenarse produce conexiones tipadas; Turtle declara conexiones anterior y siguiente sin restricción."
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.colour",
+        "status": "match",
+        "expected": "#5ba55b",
+        "actual": "#5ba55b"
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.tooltip",
+        "status": "match",
+        "expected": "Do some statements several times.",
+        "actual": "Do some statements several times."
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.helpUrl",
+        "status": "match",
+        "expected": "https://en.wikipedia.org/wiki/For_loop",
+        "actual": "https://en.wikipedia.org/wiki/For_loop"
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.dummy:<anonymous>.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "No se puede declarar explícitamente la fila dummy que contiene el selector de repeticiones."
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.statement:DO.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.statement:DO.check",
+        "status": "unsupported",
+        "expected": null,
+        "actual": [
+          "TurtleCommand"
+        ],
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La contención DO se restringe a TurtleCommand, mientras que el bloque oficial permite cualquier sentencia."
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.statement:DO.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.statement:DO.fieldOrder",
+        "status": "unsupported",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:TIMES",
+          "field_label:"
+        ],
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "TIMES y las etiquetas de repetición quedan unidos a DO porque el metamodelo no representa una fila dummy anterior independiente."
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.statement:DO.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.statement:DO.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.statement:DO.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.statement:DO.fields.0.value",
+        "status": "match",
+        "expected": "do",
+        "actual": "do"
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.statement:DO.fields.0.text",
+        "status": "match",
+        "expected": "do",
+        "actual": "do"
+      },
+      {
+        "property": "blocks.turtle_repeat_internal.inputs.statement:DO.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.kind",
+        "status": "match",
+        "expected": "categoryToolbox",
+        "actual": "categoryToolbox"
+      },
+      {
+        "property": "toolbox.categoryOrder",
+        "status": "unsupported",
+        "expected": [
+          "Turtle",
+          "Colour",
+          "Logic",
+          "Loops",
+          "Math",
+          "Lists",
+          "Variables",
+          "Functions"
+        ],
+        "actual": [
+          "Turtle",
+          "Colour",
+          "Logic",
+          "Loops",
+          "Math",
+          "Variables",
+          "Functions"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla de categorías estándar no genera Lists y por ello no conserva la secuencia completa del nivel 10."
+      },
+      {
+        "property": "toolbox.nonCategoryItems",
+        "status": "unsupported",
+        "expected": [
+          {
+            "kind": "sep"
+          }
+        ],
+        "actual": [
+          {
+            "gap": "32",
+            "kind": "sep"
+          }
+        ],
+        "capability": "toolbox-separator-configuration",
+        "boundary": "model2blockly",
+        "rationale": "El separador automático incluye gap 32, mientras que la paleta oficial declara un separador sin ese parámetro antes de Variables."
+      },
+      {
+        "property": "toolbox.categories.Turtle.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Turtle.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "160",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "La referencia omite colour y delega el estilo de sus ocho categorías; Model2Blockly materializa colores para las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Turtle.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_move.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_move.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "VALUE": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no permite configurar por entrada las sombras oficiales math_number y text con los valores 10, 90 y 1."
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_turn.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_turn.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "VALUE": {
+              "shadow": {
+                "fields": {
+                  "NUM": 90
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no permite configurar por entrada las sombras oficiales math_number y text con los valores 10, 90 y 1."
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_width.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_width.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "WIDTH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no permite configurar por entrada las sombras oficiales math_number y text con los valores 10, 90 y 1."
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_pen.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_pen.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_visibility.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_visibility.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_print.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_print.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "TEXT": {
+              "shadow": {
+                "type": "text"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no permite configurar por entrada las sombras oficiales math_number y text con los valores 10, 90 y 1."
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_font.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Turtle.blocks.turtle_font.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Turtle.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "turtle_move_internal",
+          "turtle_turn_internal",
+          "turtle_repeat_internal"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La categoría generada incluye automáticamente tres variantes internas definidas en el modelo que el nivel 10 oficial oculta."
+      },
+      {
+        "property": "toolbox.categories.Colour.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Colour.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "20",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "La referencia omite colour y delega el estilo de sus ocho categorías; Model2Blockly materializa colores para las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Colour.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.turtle_colour.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.turtle_colour.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.colour_picker.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La categoría Colour generada no puede incorporar selectivamente los cuatro bloques estándar colour_picker, colour_random, colour_rgb y colour_blend."
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.colour_random.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La categoría Colour generada no puede incorporar selectivamente los cuatro bloques estándar colour_picker, colour_random, colour_rgb y colour_blend."
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.colour_rgb.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La categoría Colour generada no puede incorporar selectivamente los cuatro bloques estándar colour_picker, colour_random, colour_rgb y colour_blend."
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.colour_blend.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La categoría Colour generada no puede incorporar selectivamente los cuatro bloques estándar colour_picker, colour_random, colour_rgb y colour_blend."
+      },
+      {
+        "property": "toolbox.categories.Colour.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "turtle_colour_internal"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La variante turtle_colour_internal se incluye automáticamente en Colour aunque el nivel 10 solo ofrece turtle_colour."
+      },
+      {
+        "property": "toolbox.categories.Logic.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "210",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "La referencia omite colour y delega el estilo de sus ocho categorías; Model2Blockly materializa colores para las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Logic.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.controls_if.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.controls_if.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_compare.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_compare.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_operation.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_operation.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_negate.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_negate.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_boolean.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_boolean.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_ternary.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_ternary.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "controls_if",
+          "logic_null"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla fija añade una segunda variante controls_if y logic_null que Turtle no incluye."
+      },
+      {
+        "property": "toolbox.categories.Loops.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "120",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "La referencia omite colour y delega el estilo de sus ocho categorías; Model2Blockly materializa colores para las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Loops.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_repeat_ext.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_repeat_ext.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "TIMES": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "TIMES": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_whileUntil.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_whileUntil.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_for.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_for.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "BY": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "BY": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_flow_statements.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_flow_statements.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "controls_forEach"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla fija añade controls_forEach, ausente en la paleta oficial."
+      },
+      {
+        "property": "toolbox.categories.Math.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "230",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "La referencia omite colour y delega el estilo de sus ocho categorías; Model2Blockly materializa colores para las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Math.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true,
+          "fields": {
+            "NUM": 0
+          }
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla generada fija NUM=0, mientras que Turtle declara math_number sin configuración de campo."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_arithmetic.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_arithmetic.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "A": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "B": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "A": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "B": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_single.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_single.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 9
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 9
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_trig.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La composición estándar fija no contiene math_trig, math_constant ni math_number_property."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constant.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La composición estándar fija no contiene math_trig, math_constant ni math_number_property."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number_property.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La composición estándar fija no contiene math_trig, math_constant ni math_number_property."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_round.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_round.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 3.1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 3.1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_modulo.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_modulo.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "DIVIDEND": {
+              "shadow": {
+                "fields": {
+                  "NUM": 64
+                },
+                "type": "math_number"
+              }
+            },
+            "DIVISOR": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "DIVIDEND": {
+              "shadow": {
+                "fields": {
+                  "NUM": 64
+                },
+                "type": "math_number"
+              }
+            },
+            "DIVISOR": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constrain.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constrain.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "HIGH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            },
+            "LOW": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "VALUE": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "HIGH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            },
+            "LOW": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "VALUE": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_int.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_int.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_float.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_float.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.categories.Lists.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla estándar actual no genera la categoría Lists."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_create_with.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_create_with.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_repeat.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_length.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_isEmpty.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_indexOf.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_getIndex.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_setIndex.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_getSublist.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_sort.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_reverse.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Variables.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Variables.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "330",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "La referencia omite colour y delega el estilo de sus ocho categorías; Model2Blockly materializa colores para las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Variables.custom",
+        "status": "match",
+        "expected": "VARIABLE",
+        "actual": "VARIABLE"
+      },
+      {
+        "property": "toolbox.categories.Variables.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.categories.Functions.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Functions.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "290",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "La referencia omite colour y delega el estilo de sus ocho categorías; Model2Blockly materializa colores para las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Functions.custom",
+        "status": "match",
+        "expected": "PROCEDURE",
+        "actual": "PROCEDURE"
+      },
+      {
+        "property": "toolbox.categories.Functions.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.unexpectedCategories",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "initialWorkspace.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "initial-workspace",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no puede declarar el turtle_move inicial del nivel 10 con posición y sombra math_number=10."
+      }
+    ]
+  },
+  "generators": {
+    "scope": "Presence and domain-code template; execution engine excluded.",
+    "summary": {
+      "totalObserved": 48,
+      "applicable": 40,
+      "matches": 30,
+      "partial": 0,
+      "mismatches": 0,
+      "unsupported": 10,
+      "errors": 0,
+      "excluded": 8,
+      "differences": 18,
+      "parityPercent": 75
+    },
+    "properties": [
+      {
+        "property": "generators.turtle_move.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_move.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_move.template",
+        "status": "excluded",
+        "expected": "{{DIR}}({{value:VALUE}}, 'block_id_{{id}}');",
+        "actual": "{{DIR}}({{value:VALUE}});",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La llamada de dominio se conserva; la única diferencia es block_id, usado por la aplicación para animar la ejecución."
+      },
+      {
+        "property": "generators.turtle_move.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "missing-value-default-zero"
+        ],
+        "actual": [],
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla no expresa el cero alternativo aplicado cuando VALUE está vacío."
+      },
+      {
+        "property": "generators.turtle_move_internal.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_move_internal.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_move_internal.template",
+        "status": "unsupported",
+        "expected": "{{DIR}}(Number({{VALUE}}), 'block_id_{{id}}');",
+        "actual": "{{DIR}}({{VALUE}});",
+        "capability": "generator-enum-mapping",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla no puede convertir el identificador del enum de distancia al número oficial ni añadir el trazador block_id."
+      },
+      {
+        "property": "generators.turtle_move_internal.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.turtle_turn.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_turn.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_turn.template",
+        "status": "excluded",
+        "expected": "{{DIR}}({{value:VALUE}}, 'block_id_{{id}}');",
+        "actual": "{{DIR}}({{value:VALUE}});",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La llamada de giro se conserva y solo se omite el identificador empleado para sincronizar la animación."
+      },
+      {
+        "property": "generators.turtle_turn.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "missing-value-default-zero"
+        ],
+        "actual": [],
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla no expresa el cero alternativo aplicado cuando el ángulo está vacío."
+      },
+      {
+        "property": "generators.turtle_turn_internal.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_turn_internal.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_turn_internal.template",
+        "status": "unsupported",
+        "expected": "{{DIR}}(Number({{VALUE}}), 'block_id_{{id}}');",
+        "actual": "{{DIR}}({{VALUE}});",
+        "capability": "generator-enum-mapping",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla no puede mapear los identificadores de ángulo a números mediante Number ni reproducir el trazador."
+      },
+      {
+        "property": "generators.turtle_turn_internal.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.turtle_width.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_width.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_width.template",
+        "status": "excluded",
+        "expected": "penWidth({{value:WIDTH}}, 'block_id_{{id}}');",
+        "actual": "penWidth({{value:WIDTH}});",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La plantilla conserva penWidth y omite únicamente el identificador de bloque del motor de animación."
+      },
+      {
+        "property": "generators.turtle_width.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "missing-width-default-one"
+        ],
+        "actual": [],
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla no expresa el valor alternativo 1 para WIDTH ausente."
+      },
+      {
+        "property": "generators.turtle_pen.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_pen.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_pen.template",
+        "status": "excluded",
+        "expected": "{{PEN}}('block_id_{{id}}');",
+        "actual": "{{PEN}}();",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La selección penUp/penDown se conserva; block_id pertenece al seguimiento visual excluido."
+      },
+      {
+        "property": "generators.turtle_pen.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.turtle_colour.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_colour.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_colour.template",
+        "status": "excluded",
+        "expected": "penColour({{value:COLOUR}}, 'block_id_{{id}}');",
+        "actual": "penColour({{value:COLOUR}});",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La llamada penColour se conserva y solo falta el identificador de animación."
+      },
+      {
+        "property": "generators.turtle_colour.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "missing-colour-default-black"
+        ],
+        "actual": [],
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla no expresa el negro alternativo cuando COLOUR está vacío."
+      },
+      {
+        "property": "generators.turtle_colour_internal.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_colour_internal.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_colour_internal.template",
+        "status": "excluded",
+        "expected": "penColour(quote({{COLOUR}}), 'block_id_{{id}}');",
+        "actual": "penColour('{{COLOUR}}');",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La cita literal del color es equivalente; la diferencia funcional restante es el block_id usado por el renderizador de ejecución."
+      },
+      {
+        "property": "generators.turtle_colour_internal.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.turtle_visibility.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_visibility.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_visibility.template",
+        "status": "excluded",
+        "expected": "{{VISIBILITY}}('block_id_{{id}}');",
+        "actual": "{{VISIBILITY}}();",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "hideTurtle/showTurtle se conserva y se omite únicamente el identificador de seguimiento."
+      },
+      {
+        "property": "generators.turtle_visibility.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.turtle_print.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_print.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_print.template",
+        "status": "excluded",
+        "expected": "print({{value:TEXT}}, 'block_id_{{id}}');",
+        "actual": "print({{value:TEXT}});",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La llamada print conserva su entrada y solo omite block_id, ajeno al editor generado."
+      },
+      {
+        "property": "generators.turtle_print.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "missing-text-default-empty-string"
+        ],
+        "actual": [],
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla no expresa la cadena vacía alternativa cuando TEXT no está conectado."
+      },
+      {
+        "property": "generators.turtle_font.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_font.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_font.template",
+        "status": "unsupported",
+        "expected": "font(quote({{FONT}}), Number({{FONTSIZE}}), quote({{FONTSTYLE}}), 'block_id_{{id}}');",
+        "actual": "font('{{FONT}}', {{FONTSIZE}}, '{{FONTSTYLE}}');",
+        "capability": "generator-enum-mapping",
+        "boundary": "model2blockly",
+        "rationale": "Las comillas y el número se generan, pero las familias con espacios requieren un mapeo de enum y la referencia añade además block_id."
+      },
+      {
+        "property": "generators.turtle_font.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.turtle_repeat_internal.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.turtle_repeat_internal.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.turtle_repeat_internal.template",
+        "status": "unsupported",
+        "expected": "{{builtin:controls_repeat}}",
+        "actual": "for (let count = 0; count < {{TIMES}}; count++) {\n{{statements:DO}}\n}",
+        "capability": "builtin-generator-reuse",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no puede delegar en controls_repeat para reutilizar su asignación segura de variable y su instrumentación de bucle."
+      },
+      {
+        "property": "generators.turtle_repeat_internal.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "loop-variable-allocation",
+          "infinite-loop-trap"
+        ],
+        "actual": [],
+        "capability": "builtin-generator-reuse",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla declarativa no reutiliza la asignación segura de variable ni el trap de bucle del generador incorporado."
+      }
+    ]
+  }
+}

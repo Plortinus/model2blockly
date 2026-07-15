@@ -1,0 +1,83 @@
+{
+  "caseId": "E04_bird",
+  "configuration": "Blockly Bird, nivel 10",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "block-definitions",
+      "sourcePath": "appengine/bird/src/blocks.js",
+      "startLine": 29,
+      "endLine": 181,
+      "snapshot": "baseline/upstream/block-definitions.js",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "bird-generators",
+      "sourcePath": "appengine/bird/src/blocks.js",
+      "startLine": 184,
+      "endLine": 240,
+      "snapshot": "baseline/upstream/bird-generators.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "controls-if-singleton",
+      "sourcePath": "appengine/bird/src/blocks.js",
+      "startLine": 242,
+      "endLine": 253,
+      "snapshot": "baseline/upstream/controls-if-singleton.js",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true,
+      "notes": ["Bird removes the previous and next connections from the stock controls_if block."]
+    },
+    {
+      "id": "math-number-generator",
+      "sourcePath": "appengine/bird/src/blocks.js",
+      "startLine": 255,
+      "endLine": 261,
+      "snapshot": "baseline/upstream/math-number-generator.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-10-toolbox",
+      "sourcePath": "appengine/bird/src/html.js",
+      "startLine": 66,
+      "endLine": 109,
+      "snapshot": "baseline/upstream/level-10-toolbox.js",
+      "kinds": ["toolbox"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-10-initial-workspace",
+      "sourcePath": "appengine/bird/src/main.js",
+      "startLine": 409,
+      "endLine": 418,
+      "snapshot": "baseline/upstream/level-10-initial-workspace.js",
+      "kinds": ["initial-workspace"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "english-editor-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 107,
+      "endLine": 111,
+      "snapshot": "baseline/upstream/english-editor-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true,
+      "notes": ["Only the English messages used by the selected Bird block definitions are included."]
+    }
+  ]
+}

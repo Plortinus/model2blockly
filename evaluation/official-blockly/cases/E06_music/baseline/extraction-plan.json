@@ -1,0 +1,126 @@
+{
+  "caseId": "E06_music",
+  "configuration": "Blockly Music, nivel 10",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "assets": [
+    {"id": "note-whole", "sourcePath": "appengine/music/note1.png", "snapshot": "assets/music/note1.png", "mediaType": "image/png"},
+    {"id": "note-half", "sourcePath": "appengine/music/note0.5.png", "snapshot": "assets/music/note0.5.png", "mediaType": "image/png"},
+    {"id": "note-quarter", "sourcePath": "appengine/music/note0.25.png", "snapshot": "assets/music/note0.25.png", "mediaType": "image/png"},
+    {"id": "note-eighth", "sourcePath": "appengine/music/note0.125.png", "snapshot": "assets/music/note0.125.png", "mediaType": "image/png"},
+    {"id": "note-sixteenth", "sourcePath": "appengine/music/note0.0625.png", "snapshot": "assets/music/note0.0625.png", "mediaType": "image/png"},
+    {"id": "rest-whole", "sourcePath": "appengine/music/rest1.png", "snapshot": "assets/music/rest1.png", "mediaType": "image/png"},
+    {"id": "rest-half", "sourcePath": "appengine/music/rest0.5.png", "snapshot": "assets/music/rest0.5.png", "mediaType": "image/png"},
+    {"id": "rest-quarter", "sourcePath": "appengine/music/rest0.25.png", "snapshot": "assets/music/rest0.25.png", "mediaType": "image/png"},
+    {"id": "rest-eighth", "sourcePath": "appengine/music/rest0.125.png", "snapshot": "assets/music/rest0.125.png", "mediaType": "image/png"},
+    {"id": "rest-sixteenth", "sourcePath": "appengine/music/rest0.0625.png", "snapshot": "assets/music/rest0.0625.png", "mediaType": "image/png"},
+    {"id": "play-icon", "sourcePath": "appengine/music/play.png", "snapshot": "assets/music/play.png", "mediaType": "image/png"},
+    {"id": "pitch-picker-sprite", "sourcePath": "appengine/music/notes.png", "snapshot": "assets/notes.png", "mediaType": "image/png"}
+  ],
+  "fragments": [
+    {
+      "id": "block-definitions",
+      "sourcePath": "appengine/music/src/blocks.js",
+      "startLine": 41,
+      "endLine": 228,
+      "snapshot": "baseline/upstream/block-definitions.js",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "generators",
+      "sourcePath": "appengine/music/src/blocks.js",
+      "startLine": 230,
+      "endLine": 264,
+      "snapshot": "baseline/upstream/generators.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "start-counter",
+      "sourcePath": "appengine/music/src/startcount.js",
+      "startLine": 19,
+      "endLine": 35,
+      "snapshot": "baseline/upstream/start-counter.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "field-pitch",
+      "sourcePath": "appengine/music/src/field_pitch.js",
+      "startLine": 28,
+      "endLine": 242,
+      "snapshot": "baseline/upstream/field-pitch.js",
+      "kinds": ["custom-field"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "pitch-picker-style",
+      "sourcePath": "appengine/music/style.css",
+      "startLine": 97,
+      "endLine": 102,
+      "snapshot": "baseline/upstream/pitch-picker-style.css",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-10-toolbox",
+      "sourcePath": "appengine/music/src/html.js",
+      "startLine": 139,
+      "endLine": 346,
+      "snapshot": "baseline/upstream/level-10-toolbox.js",
+      "kinds": ["toolbox"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-10-initial-workspace",
+      "sourcePath": "appengine/music/src/main.js",
+      "startLine": 158,
+      "endLine": 164,
+      "snapshot": "baseline/upstream/level-10-initial-workspace.js",
+      "kinds": ["initial-workspace"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "game-name-message",
+      "sourcePath": "json/en.json",
+      "startLine": 13,
+      "endLine": 13,
+      "snapshot": "baseline/upstream/game-name-message.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "category-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 27,
+      "endLine": 34,
+      "snapshot": "baseline/upstream/category-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "music-editor-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 203,
+      "endLine": 221,
+      "snapshot": "baseline/upstream/music-editor-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true,
+      "notes": ["Only the English messages used by the selected Music blocks are included."]
+    }
+  ]
+}

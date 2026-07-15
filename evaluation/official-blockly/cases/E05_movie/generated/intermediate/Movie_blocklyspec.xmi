@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Movie" nsURI="http://www.example.org/movie" nsPrefix="movie" toolboxType="category" codeLanguage="javascript" codeFileExtension="js">
+  <categories name="Movie" label="Movie" colour="160"/>
+  <categories name="Colour" label="Colour" colour="20"/>
+  <blockTypes typeName="Number" label="Number" abstract="true" connectionType="OUTPUT" outputType="Number" inputsInline="true"/>
+  <blockTypes typeName="Colour" label="Colour" abstract="true" connectionType="OUTPUT" outputType="Colour" inputsInline="true"/>
+  <blockTypes typeName="movie_circle" label="circle" colour="160" categoryName="Movie" message0="circle x%1y%2radius%3" inputsInline="false" tooltip="Draws a circle at the specified location and with the specified radius." codeTemplate="circle({{value:X}}, {{value:Y}}, {{value:RADIUS}});">
+    <orderedInputNames>X</orderedInputNames>
+    <orderedInputNames>Y</orderedInputNames>
+    <orderedInputNames>RADIUS</orderedInputNames>
+    <valueInputs name="X" checkType="Number" uiWidget="expression-slot" uiLabel="X" uiOrder="1" uiVariant="default"/>
+    <valueInputs name="Y" checkType="Number" uiWidget="expression-slot" uiLabel="Y" uiOrder="2" uiVariant="default"/>
+    <valueInputs name="RADIUS" checkType="Number" uiWidget="expression-slot" uiLabel="Radius" uiOrder="3" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="movie_rect" label="rectangle" colour="160" categoryName="Movie" message0="rectangle x%1y%2width%3height%4" inputsInline="false" tooltip="Draws a rectangle at the specified location and with the specified width and height." codeTemplate="rect({{value:X}}, {{value:Y}}, {{value:WIDTH}}, {{value:HEIGHT}});">
+    <orderedInputNames>X</orderedInputNames>
+    <orderedInputNames>Y</orderedInputNames>
+    <orderedInputNames>WIDTH</orderedInputNames>
+    <orderedInputNames>HEIGHT</orderedInputNames>
+    <valueInputs name="X" checkType="Number" uiWidget="expression-slot" uiLabel="X" uiOrder="1" uiVariant="default"/>
+    <valueInputs name="Y" checkType="Number" uiWidget="expression-slot" uiLabel="Y" uiOrder="2" uiVariant="default"/>
+    <valueInputs name="WIDTH" checkType="Number" uiWidget="expression-slot" uiLabel="Width" uiOrder="3" uiVariant="default"/>
+    <valueInputs name="HEIGHT" checkType="Number" uiWidget="expression-slot" uiLabel="Height" uiOrder="4" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="movie_line" label="line" colour="160" categoryName="Movie" message0="line start x%1start y%2end x%3end y%4width%5" inputsInline="false" tooltip="Draws a line from one point to another with the specified width." codeTemplate="line({{value:X1}}, {{value:Y1}}, {{value:X2}}, {{value:Y2}}, {{value:WIDTH}});">
+    <orderedInputNames>X1</orderedInputNames>
+    <orderedInputNames>Y1</orderedInputNames>
+    <orderedInputNames>X2</orderedInputNames>
+    <orderedInputNames>Y2</orderedInputNames>
+    <orderedInputNames>WIDTH</orderedInputNames>
+    <valueInputs name="X1" checkType="Number" uiWidget="expression-slot" uiLabel="Start X" uiOrder="1" uiVariant="default"/>
+    <valueInputs name="Y1" checkType="Number" uiWidget="expression-slot" uiLabel="Start Y" uiOrder="2" uiVariant="default"/>
+    <valueInputs name="X2" checkType="Number" uiWidget="expression-slot" uiLabel="End X" uiOrder="3" uiVariant="default"/>
+    <valueInputs name="Y2" checkType="Number" uiWidget="expression-slot" uiLabel="End Y" uiOrder="4" uiVariant="default"/>
+    <valueInputs name="WIDTH" checkType="Number" uiWidget="expression-slot" uiLabel="Width" uiOrder="5" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="movie_time" label="time" colour="330" categoryName="Movie" superTypeName="Number" connectionType="OUTPUT_TYPED" outputType="Number" message0="time (0→100)" inputsInline="false" tooltip="Returns the current time in the animation (0-100)." codeTemplate="time()"/>
+  <blockTypes typeName="movie_colour" label="set colour to" colour="20" categoryName="Colour" message0="set colour to%1" inputsInline="false" tooltip="Changes the colour of the pen." codeTemplate="penColour({{value:COLOUR}});">
+    <orderedInputNames>COLOUR</orderedInputNames>
+    <valueInputs name="COLOUR" checkType="Colour" uiWidget="expression-slot" uiLabel="Colour" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <workspaceOptions key="renderer" value="geras"/>
+  <workspaceOptions key="trashcan" value="false" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

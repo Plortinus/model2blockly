@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E01_graph",
+  "rules": [
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.graph_set_y.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "Las conexiones de sentencia se derivan de la clase y no pueden desactivarse de forma independiente en la especificación actual."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.graph_set_y.dynamicBehaviour",
+      "status": "unsupported",
+      "capability": "editor-side-effects",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no declara el efecto setDeletable(false) ejecutado por el generador oficial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categoryOrder",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "La paleta por categorías añade un conjunto fijo de categorías Blockly y no permite declarar el orden oficial completo."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.nonCategoryItems",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "El separador entre bloques de dominio y categorías estándar es generado automáticamente."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.blocks.*.present",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "La lista fija de bloques matemáticos generados no puede ampliarse desde el modelo con estos cuatro tipos oficiales."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.blocks.*.configuration",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "Los valores, sombras y entradas preconfigurados de cada bloque matemático proceden de una plantilla fija y no pueden ajustarse desde el modelo del caso."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Variables.unexpectedBlocks",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "La ubicación exacta de los bloques de dominio frente a la categoría dinámica de variables no es configurable."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Logic.unexpectedBlocks",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "El contenido de la categoría Logic se genera con una plantilla fija más amplia que la referencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.unexpectedCategories",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "Las categorías estándar Loops, Variables y Functions se añaden automáticamente y no pueden suprimirse desde el modelo."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "initialWorkspace.present",
+      "status": "unsupported",
+      "capability": "initial-workspace",
+      "boundary": "model2blockly",
+      "rationale": "La especificación actual no permite declarar el programa inicial y = x² incluido en Graph Demo."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.graph_set_y.sideEffects",
+      "status": "unsupported",
+      "capability": "editor-side-effects",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla de código coincide, pero no existe una construcción declarativa para modificar la propiedad deletable del bloque."
+    }
+  ]
+}

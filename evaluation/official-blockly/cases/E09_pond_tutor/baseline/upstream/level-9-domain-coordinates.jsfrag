@@ -1,0 +1,19 @@
+    // Block for X coordinate.
+    {
+      "type": "pond_getX",
+      "message0": "%1(%2)",
+      "args0": ["getX", ""],
+      "output": "Number",
+      "colour": POND_HUE,
+      "tooltip": BlocklyGames.getMsg('Pond.locXTooltip', false),
+    },
+
+    // Block for Y coordinate.
+    {
+      "type": "pond_getY",
+      "message0": "%1(%2)",
+      "args0": ["getY", ""],
+      "output": "Number",
+      "colour": POND_HUE,
+      "tooltip": BlocklyGames.getMsg('Pond.locYTooltip', false),
+    },

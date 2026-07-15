@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E01_graph",
+  "referenceTreatment": "m2b",
+  "candidateTreatment": "ecore",
+  "equivalent": true,
+  "comparedSections": [
+    "controls",
+    "blocks",
+    "toolbox",
+    "initialWorkspace",
+    "generators",
+    "errors",
+    "loadability"
+  ]
+}

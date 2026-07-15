@@ -20,49 +20,56 @@ The plugin contributes:
 - a command named `Apply Validation Blocks to Source`;
 - context-menu support for `.ecore`, `.m2b` and `.model2blockly` files.
 
-## Generate from Ecore
+## Choose an Input Route
 
-The reference input is:
+| Input | Use it when | Adapter |
+| --- | --- | --- |
+| `.ecore` | An EMF metamodel already exists or EMF features such as inheritance, opposites and Ecore constraints are central. | `EcoreAdapter` |
+| `.m2b` | A concise textual definition of blocks, categories, fields, references, validation and code templates is preferable. | `DomainModelAdapter` |
+| `.model2blockly` | An existing project still uses the legacy extension. Its language is the same as `.m2b`. | `DomainModelAdapter` |
 
-```text
-io.github.plortinus.model2blockly/model/app_maker.ecore
-```
+Both recommended routes produce the same EMF `EditorSpec` contract before
+generation. Neither is a shortcut around the intermediate model.
 
-In Eclipse:
+## Generate in Eclipse
 
-1. Import the plugin projects into the workspace.
-2. Open the `io.github.plortinus.model2blockly` project.
-3. Select `model/app_maker.ecore`.
-4. Right-click and choose `Generate Blockly Editor`.
-5. Open the generated `generation_report.html`.
+1. Import or open a project containing an `.ecore` or `.m2b` source.
+2. Select the source in Project Explorer.
+3. Right-click and choose `Generate Blockly Editor`.
+4. Wait for the output directory to be refreshed.
+5. Open `generation_report.html` and then `html/*_standalone.html`.
 
-The same Ecore route is implemented by:
-
-```text
-io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/standalone/EcoreToBlocklyMain.java
-```
-
-The checked-in launch configuration `Generate AppMaker from Ecore.launch`
-passes these arguments:
+The equivalent Java entry points are:
 
 ```text
-model/app_maker.ecore
-examples/generated/app_maker_ecore
+standalone/EcoreToBlocklyMain.java
+standalone/Model2BlocklyToBlocklyMain.java
 ```
+
+AppMaker provides checked-in examples of both routes:
+
+| Route | Source | Generated output |
+| --- | --- | --- |
+| Ecore | `model/app_maker.ecore` | `examples/generated/app_maker_ecore` |
+| `.m2b` | `examples/app_maker.m2b` | `examples/generated/app_maker_dsl` |
+
+All paths in this table are relative to
+`io.github.plortinus.model2blockly/`.
 
 ## Generated Folder
 
-The AppMaker generated output in this repository is:
+The checked-in AppMaker outputs are:
 
 ```text
 io.github.plortinus.model2blockly/examples/generated/app_maker_ecore
+io.github.plortinus.model2blockly/examples/generated/app_maker_dsl
 ```
 
 The generator writes:
 
 | Path | Purpose |
 | --- | --- |
-| `generation_report.html` | Human-readable mapping from Ecore to generated Blockly output. |
+| `generation_report.html` | Human-readable trace from the selected source to generated Blockly output. |
 | `README.md` | Short guide for the generated folder. |
 | `intermediate/Appmaker_blocklyspec.xmi` | Serialized EMF `EditorSpec` intermediate model. |
 | `html/Appmaker_standalone.html` | Self-contained browser editor entry point. |
@@ -78,10 +85,11 @@ The generator writes:
 
 ## Use the Generated Editor
 
-Open:
+Open either checked-in editor:
 
 ```text
 io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
+io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/html/Appmaker_standalone.html
 ```
 
 Then:
@@ -115,11 +123,13 @@ What these checks cover:
 | `npm run verify:domain-xmi` | Loads the exported AppMaker domain XMI with EMF against `app_maker.ecore`. |
 | `npm run verify:plugin` | Checks Eclipse plugin metadata, generated examples and HTML-only cleanup assumptions. |
 
-## When to Use the Xtext Route
+## Continue Editing
 
-Use `.m2b` or `.model2blockly` only when you need the auxiliary textual syntax.
-The Eclipse command and `Model2BlocklyToBlocklyMain` still support it, and both
-routes normalize into the same `EditorSpec` model before generation.
+If the result does not match the intended editor, modify the selected source
+and generate again. In Ecore, adjust classes, attributes, references,
+cardinalities or `blockly`, `ui`, `validation` and `code` annotations. In
+`.m2b`, adjust `category`, `class`, `attribute`, `contains`, `reference`,
+`value`, `validation` or code-template declarations.
 
-For the project narrative and the AppMaker case, use Ecore as the source of
-truth.
+Use the [Ecore mapping guide](./ECORE_TO_BLOCKLY_MAPPING.md) for the metamodel
+route and the [textual DSL guide](./TEXTUAL_DSL.md) for `.m2b`.

@@ -1,0 +1,61 @@
+{
+  "caseId": "E03_maze",
+  "configuration": "Blockly Maze, nivel 10",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "assets": [
+    {
+      "id": "goal-marker",
+      "sourcePath": "appengine/maze/marker.png",
+      "snapshot": "assets/maze/marker.png",
+      "mediaType": "image/png",
+      "notes": ["Image displayed by the maze_forever block."]
+    }
+  ],
+  "fragments": [
+    {
+      "id": "block-definitions",
+      "sourcePath": "appengine/maze/src/blocks.js",
+      "startLine": 26,
+      "endLine": 178,
+      "snapshot": "baseline/upstream/block-definitions.js",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "generators",
+      "sourcePath": "appengine/maze/src/blocks.js",
+      "startLine": 181,
+      "endLine": 214,
+      "snapshot": "baseline/upstream/generators.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-10-toolbox",
+      "sourcePath": "appengine/maze/src/html.js",
+      "startLine": 78,
+      "endLine": 96,
+      "snapshot": "baseline/upstream/level-10-toolbox.js",
+      "kinds": ["toolbox"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "english-editor-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 77,
+      "endLine": 90,
+      "snapshot": "baseline/upstream/english-editor-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true,
+      "notes": ["Only the English messages used by the selected Maze block definitions are included."]
+    }
+  ]
+}

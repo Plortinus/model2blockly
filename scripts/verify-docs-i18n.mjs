@@ -17,6 +17,7 @@ const requiredFiles = [
   'docs/en/TEXTUAL_DSL.md',
   'docs/en/ECORE_TO_BLOCKLY_MAPPING.md',
   'docs/en/RUNNING_EXAMPLE.md',
+  'docs/en/EVALUATION.md',
   'docs/en/TROUBLESHOOTING.md',
   'docs/en/RELEASE_CHECKLIST.md',
   'docs/es/README.md',
@@ -26,6 +27,7 @@ const requiredFiles = [
   'docs/es/TEXTUAL_DSL.md',
   'docs/es/ECORE_TO_BLOCKLY_MAPPING.md',
   'docs/es/RUNNING_EXAMPLE.md',
+  'docs/es/EVALUATION.md',
   'docs/es/TROUBLESHOOTING.md',
   'docs/es/RELEASE_CHECKLIST.md',
   'docs/zh/README.md',
@@ -35,6 +37,7 @@ const requiredFiles = [
   'docs/zh/TEXTUAL_DSL.md',
   'docs/zh/ECORE_TO_BLOCKLY_MAPPING.md',
   'docs/zh/RUNNING_EXAMPLE.md',
+  'docs/zh/EVALUATION.md',
   'docs/zh/TROUBLESHOOTING.md',
   'docs/zh/RELEASE_CHECKLIST.md',
 ];
@@ -46,6 +49,10 @@ const requiredAssets = [
   'docs/assets/diagrams/generation-flow.svg',
   'docs/assets/diagrams/output-artifacts.svg',
   'docs/assets/diagrams/model2blockly-concept.svg',
+  'evaluation/official-blockly/cases/E03_maze/results/screenshots/baseline.png',
+  'evaluation/official-blockly/cases/E03_maze/results/screenshots/m2b.png',
+  'evaluation/official-blockly/cases/E10_pond_duck/results/screenshots/baseline.png',
+  'evaluation/official-blockly/cases/E10_pond_duck/results/screenshots/m2b.png',
 ];
 
 const featureManifestFile = 'docs/assets/ecore-feature-gallery/manifest.json';
@@ -77,6 +84,7 @@ for (const file of [
   'en/textual-dsl.html',
   'en/ecore-to-blockly-mapping.html',
   'en/running-example.html',
+  'en/evaluation.html',
   'en/troubleshooting.html',
   'en/release-checklist.html',
   'es/index.html',
@@ -86,6 +94,7 @@ for (const file of [
   'es/textual-dsl.html',
   'es/ecore-to-blockly-mapping.html',
   'es/running-example.html',
+  'es/evaluation.html',
   'es/troubleshooting.html',
   'es/release-checklist.html',
   'zh/index.html',
@@ -95,6 +104,7 @@ for (const file of [
   'zh/textual-dsl.html',
   'zh/ecore-to-blockly-mapping.html',
   'zh/running-example.html',
+  'zh/evaluation.html',
   'zh/troubleshooting.html',
   'zh/release-checklist.html',
   'assets/screenshots/appmaker-editor.png',
@@ -103,6 +113,10 @@ for (const file of [
   'assets/diagrams/generation-flow.svg',
   'assets/diagrams/output-artifacts.svg',
   'assets/diagrams/model2blockly-concept.svg',
+  'assets/evaluation/E03_maze/baseline.png',
+  'assets/evaluation/E03_maze/m2b.png',
+  'assets/evaluation/E10_pond_duck/baseline.png',
+  'assets/evaluation/E10_pond_duck/m2b.png',
   'assets/ecore-feature-gallery/manifest.json',
 ]) {
   if (!existsSync(path.join(docsOutputDir, file))) {
@@ -122,6 +136,17 @@ for (const entry of featureExamples) {
       fail(`Generated VitePress site missing ${file}`);
     }
   }
+
+  const generatedReport = readFileSync(
+    path.join(docsOutputDir, `assets/ecore-feature-gallery/${entry.report}`),
+    'utf8',
+  );
+  assertNotIncludes(generatedReport, 'href="README.md"', `feature report ${entry.slug} has no broken README link`);
+  assertIncludes(
+    generatedReport,
+    `/model2blockly/en/ecore-to-blockly-mapping.html#feature-${entry.slug}`,
+    `feature report ${entry.slug} links back to its documentation anchor`,
+  );
 }
 
 const generatedRootIndex = readGeneratedDoc('index.html');
@@ -132,32 +157,38 @@ const generatedArchitecture = readGeneratedDoc('en/architecture.html');
 const generatedEnTextualDsl = readGeneratedDoc('en/textual-dsl.html');
 const generatedEnMapping = readGeneratedDoc('en/ecore-to-blockly-mapping.html');
 const generatedCase = readGeneratedDoc('en/running-example.html');
+const generatedEnEvaluation = readGeneratedDoc('en/evaluation.html');
 const generatedTroubleshooting = readGeneratedDoc('en/troubleshooting.html');
 const generatedEsIndex = readGeneratedDoc('es/index.html');
 const generatedEsInstall = readGeneratedDoc('es/install.html');
 const generatedEsArchitecture = readGeneratedDoc('es/architecture.html');
 const generatedEsTextualDsl = readGeneratedDoc('es/textual-dsl.html');
 const generatedEsMapping = readGeneratedDoc('es/ecore-to-blockly-mapping.html');
+const generatedEsEvaluation = readGeneratedDoc('es/evaluation.html');
 const generatedZhIndex = readGeneratedDoc('zh/index.html');
 const generatedZhInstall = readGeneratedDoc('zh/install.html');
 const generatedZhArchitecture = readGeneratedDoc('zh/architecture.html');
 const generatedZhTextualDsl = readGeneratedDoc('zh/textual-dsl.html');
 const generatedZhMapping = readGeneratedDoc('zh/ecore-to-blockly-mapping.html');
 const generatedZhCase = readGeneratedDoc('zh/running-example.html');
+const generatedZhEvaluation = readGeneratedDoc('zh/evaluation.html');
 
 assertIncludes(generatedRootIndex, 'Opening the English documentation', 'root page redirects to the English locale');
 assertIncludes(generatedRootIndex, '/model2blockly/es/', 'root page links to the Spanish locale');
 assertIncludes(generatedRootIndex, '/model2blockly/zh/', 'root page links to the Chinese locale');
 assertNotIncludes(generatedRootIndex, '/model2blockly/docs/', 'root page no longer publishes under /docs/');
 
-assertIncludes(generatedEnIndex, 'Ecore is the main input', 'English home explains the current input route');
+assertIncludes(generatedEnIndex, 'Two input routes, one generator', 'English home explains the dual-input pipeline');
+assertIncludes(generatedEnIndex, 'Evaluated against existing editors', 'English home links the external evaluation');
 assertIncludes(generatedEnIndex, 'Español', 'English pages expose the Spanish language option');
 assertIncludes(generatedEnIndex, '中文', 'English pages expose the Chinese language option');
 assertIncludes(generatedInstall, 'Install the Eclipse Plugin', 'install page is generated');
 assertIncludes(generatedInstall, 'https://plortinus.github.io/model2blockly/update-site/', 'install page includes the update-site URL');
 assertIncludes(generatedInstall, 'Group items by category', 'install page includes the empty-list troubleshooting step');
 assertIncludes(generatedUserGuide, 'EcoreToBlocklyMain.java', 'user guide names the current Ecore standalone entry point');
-assertIncludes(generatedUserGuide, 'model/app_maker.ecore', 'user guide starts from the checked-in AppMaker Ecore source');
+assertIncludes(generatedUserGuide, 'Model2BlocklyToBlocklyMain.java', 'user guide names the current textual standalone entry point');
+assertIncludes(generatedUserGuide, 'model/app_maker.ecore', 'user guide names the checked-in AppMaker Ecore source');
+assertIncludes(generatedUserGuide, 'examples/app_maker.m2b', 'user guide names the checked-in AppMaker textual source');
 assertIncludes(generatedUserGuide, 'Generate Blockly Editor', 'user guide documents the Eclipse command');
 assertIncludes(generatedArchitecture, 'EcoreAdapter', 'architecture page names the real adapter');
 assertIncludes(generatedArchitecture, 'src-gen', 'architecture page explains Xtext-generated code location');
@@ -173,14 +204,23 @@ assertIncludes(generatedEnMapping, 'source=&quot;blockly&quot;', 'English mappin
 assertIncludes(generatedEnMapping, 'source=&quot;validation&quot;', 'English mapping page documents validation annotation keys');
 assertIncludes(generatedCase, 'Appmaker_blocklyspec.xmi', 'AppMaker case documents the intermediate XMI');
 assertIncludes(generatedCase, 'Smoke Test', 'AppMaker case documents the browser smoke test');
+assertIncludes(generatedEnEvaluation, '2315/2762', 'English evaluation page reports the verified editor parity');
+assertIncludes(generatedEnEvaluation, '72.48%', 'English evaluation page reports the verified LOC reduction');
+assertIncludes(generatedEnEvaluation, 'Graph Demo', 'English evaluation page includes per-case results');
+assertIncludes(generatedEnEvaluation, 'assets/evaluation/E03_maze/baseline.png', 'English evaluation page publishes the Maze baseline screenshot locally');
+assertIncludes(generatedEnEvaluation, 'assets/evaluation/E10_pond_duck/m2b.png', 'English evaluation page publishes the Pond M2B screenshot locally');
 assertIncludes(generatedTroubleshooting, 'GitHub Actions', 'troubleshooting explains Pages source configuration');
 assertIncludes(generatedTroubleshooting, 'update-site', 'troubleshooting keeps plugin installation endpoint visible');
-assertIncludes(generatedEsIndex, 'Genera editores Blockly desde Ecore anotado', 'Spanish home is generated from the current Ecore narrative');
+assertIncludes(generatedEsIndex, 'Genera editores Blockly desde Ecore o .m2b', 'Spanish home explains the dual-input pipeline');
 assertIncludes(generatedEsInstall, 'Instalar el plugin de Eclipse', 'Spanish install page is generated');
 assertIncludes(generatedEsArchitecture, 'Arquitectura', 'Spanish architecture page is generated');
 assertIncludes(generatedEsTextualDsl, 'DSL textual de Model2Blockly', 'Spanish textual DSL page is generated');
 assertIncludes(generatedEsMapping, 'Mapeo de Ecore a Blockly', 'Spanish mapping page is generated');
 assertIncludes(generatedEsMapping, 'Editor completo', 'Spanish mapping page localizes generated resource links');
+assertIncludes(generatedEsEvaluation, '2315/2762', 'Spanish evaluation page reports the verified editor parity');
+assertIncludes(generatedEsEvaluation, '72,48 %', 'Spanish evaluation page reports the verified LOC reduction');
+assertIncludes(generatedEsEvaluation, '10/10', 'Spanish evaluation page distinguishes the complete executed corpus');
+assertIncludes(generatedEsEvaluation, 'assets/evaluation/E03_maze/m2b.png', 'Spanish evaluation page publishes the Maze M2B screenshot locally');
 assertIncludes(generatedZhIndex, '用 MDE 生成 Blockly 编辑器', 'Chinese home is generated from the MDE dual-route narrative');
 assertIncludes(generatedZhIndex, '给领域用户使用的 Blockly 编辑器', 'Chinese home explains who uses the generated editor');
 assertIncludes(generatedZhIndex, '文本 DSL', 'Chinese home links to the textual DSL page');
@@ -225,6 +265,10 @@ assertIncludes(generatedZhCase, 'Ecore route', 'Chinese AppMaker case documents 
 assertIncludes(generatedZhCase, 'DSL route', 'Chinese AppMaker case documents the DSL route');
 assertIncludes(generatedZhCase, 'app_maker.m2b', 'Chinese AppMaker case links to the textual DSL source');
 assertIncludes(generatedZhCase, 'EClass 到 Blockly 对照', 'Chinese AppMaker case shows an EClass-to-block mapping summary');
+assertIncludes(generatedZhEvaluation, '2315/2762', 'Chinese evaluation page reports the verified editor parity');
+assertIncludes(generatedZhEvaluation, '72.48%', 'Chinese evaluation page reports the verified LOC reduction');
+assertIncludes(generatedZhEvaluation, '部分复现', 'Chinese evaluation page states that the ten cases are partial reproductions');
+assertIncludes(generatedZhEvaluation, 'assets/evaluation/E10_pond_duck/baseline.png', 'Chinese evaluation page publishes the Pond baseline screenshot locally');
 
 if (featureExamples.length < 29) {
   fail(`Generated feature gallery should contain at least 29 examples, found ${featureExamples.length}`);

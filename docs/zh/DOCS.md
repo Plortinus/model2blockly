@@ -9,6 +9,7 @@
 | 解释架构、流程图和实现模块 | [架构与实现](ARCHITECTURE.md) |
 | 安装插件并生成第一个编辑器 | [快速开始](GETTING_STARTED.md) |
 | 查看完整 AppMaker 示例 | [AppMaker 案例](RUNNING_EXAMPLE.md) |
+| 查看10个官方编辑器的评估结果 | [外部评估](EVALUATION.md) |
 | 了解项目概况 | [项目概览](PROJECT.md) |
 | 使用 Ecore 注解 | [Ecore 到 Blockly 映射规则](ECORE_TO_BLOCKLY_MAPPING.md) |
 | 解决安装或生成错误 | [排错](TROUBLESHOOTING.md) |

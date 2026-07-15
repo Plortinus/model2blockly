@@ -1,0 +1,24 @@
+[
+  {
+    "_type": "bird_ifElse",
+    "_blockId": "sample_bird_ifElse_1",
+    "CONDITION": {
+      "_type": "bird_noWorm",
+      "_blockId": "sample_bird_noWorm_1"
+    },
+    "DO": [
+      {
+        "_type": "bird_heading",
+        "_blockId": "sample_bird_heading_1",
+        "ANGLE": "90"
+      }
+    ],
+    "ELSE": [
+      {
+        "_type": "bird_heading",
+        "_blockId": "sample_bird_heading_2",
+        "ANGLE": "90"
+      }
+    ]
+  }
+]

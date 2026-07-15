@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="turtle"
+    nsURI="http://www.example.org/turtle"
+    nsPrefix="turtle">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="geras"/>
+    <details key="workspace.toolboxType" value="category"/>
+    <details key="workspace.trashcan" value="false"/>
+  </eAnnotations>
+  <eAnnotations source="code">
+    <details key="language" value="javascript"/>
+    <details key="fileExtension" value="js"/>
+  </eAnnotations>
+
+  <eClassifiers xsi:type="ecore:EClass" name="TurtleCommand" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Number" abstract="true">
+    <eAnnotations source="blockly"><details key="output" value="true"/></eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Colour" abstract="true">
+    <eAnnotations source="blockly"><details key="output" value="true"/></eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Text" abstract="true">
+    <eAnnotations source="blockly"><details key="output" value="true"/></eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_move" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly">
+      <details key="category" value="Turtle"/><details key="colour" value="160"/>
+      <details key="message0" value="%1%2"/>
+      <details key="tooltip" value="Moves the turtle forward or backward by the specified amount."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="move"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="{{DIR}}({{value:VALUE}});"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DIR" eType="#//MoveDirection" defaultValueLiteral="moveForward">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Direction"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="VALUE" eType="#//Number" containment="true">
+      <eAnnotations source="blockly"><details key="type" value="input_value"/><details key="check" value="Number"/></eAnnotations>
+      <eAnnotations source="ui"><details key="widget" value="expression-slot"/><details key="label" value="Distance"/><details key="order" value="2"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_move_internal" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly">
+      <details key="category" value="Turtle"/><details key="colour" value="160"/>
+      <details key="message0" value="%1%2"/>
+      <details key="tooltip" value="Moves the turtle forward or backward by the specified amount."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="move with fixed distance"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="{{DIR}}({{VALUE}});"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DIR" eType="#//MoveDirection" defaultValueLiteral="moveForward">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Direction"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="VALUE" eType="#//Distance" defaultValueLiteral="distance20">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Distance"/><details key="order" value="2"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_turn" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly">
+      <details key="category" value="Turtle"/><details key="colour" value="160"/>
+      <details key="message0" value="turn %1 by%2"/>
+      <details key="tooltip" value="Turns the turtle left or right by the specified number of degrees."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="turn"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="{{DIR}}({{value:VALUE}});"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DIR" eType="#//TurnDirection" defaultValueLiteral="turnRight">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Direction"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="VALUE" eType="#//Number" containment="true">
+      <eAnnotations source="blockly"><details key="type" value="input_value"/><details key="check" value="Number"/></eAnnotations>
+      <eAnnotations source="ui"><details key="widget" value="expression-slot"/><details key="label" value="Angle"/><details key="order" value="2"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_turn_internal" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly">
+      <details key="category" value="Turtle"/><details key="colour" value="160"/>
+      <details key="message0" value="turn %1 by%2"/>
+      <details key="tooltip" value="Turns the turtle left or right by the specified number of degrees."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="turn with fixed angle"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="{{DIR}}({{VALUE}});"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DIR" eType="#//TurnDirection" defaultValueLiteral="turnRight">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Direction"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="VALUE" eType="#//AngleValue" defaultValueLiteral="angle1">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Angle"/><details key="order" value="2"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_width" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly"><details key="category" value="Turtle"/><details key="colour" value="160"/><details key="message0" value="set width to%1"/><details key="tooltip" value="Changes the width of the pen."/><details key="inputsInline" value="false"/></eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="set width"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="penWidth({{value:WIDTH}});"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="WIDTH" eType="#//Number" containment="true">
+      <eAnnotations source="blockly"><details key="type" value="input_value"/><details key="check" value="Number"/></eAnnotations>
+      <eAnnotations source="ui"><details key="widget" value="expression-slot"/><details key="label" value="Width"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_pen" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly"><details key="category" value="Turtle"/><details key="colour" value="160"/><details key="message0" value="%1"/><details key="tooltip" value="Lifts or lowers the pen, to stop or start drawing."/><details key="inputsInline" value="false"/></eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="pen"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="{{PEN}}();"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="PEN" eType="#//PenState" defaultValueLiteral="penUp">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Pen state"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_colour" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly"><details key="category" value="Colour"/><details key="colour" value="20"/><details key="message0" value="set colour to%1"/><details key="tooltip" value="Changes the colour of the pen."/><details key="inputsInline" value="false"/></eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="set colour"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="penColour({{value:COLOUR}});"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="COLOUR" eType="#//Colour" containment="true">
+      <eAnnotations source="blockly"><details key="type" value="input_value"/><details key="check" value="Colour"/></eAnnotations>
+      <eAnnotations source="ui"><details key="widget" value="expression-slot"/><details key="label" value="Colour"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_colour_internal" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly"><details key="category" value="Colour"/><details key="colour" value="20"/><details key="message0" value="set colour to%1"/><details key="tooltip" value="Changes the colour of the pen."/><details key="inputsInline" value="false"/></eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="set fixed colour"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="penColour('{{COLOUR}}');"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="COLOUR" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="#ff0000">
+      <eAnnotations source="blockly"><details key="type" value="field_colour"/></eAnnotations>
+      <eAnnotations source="ui"><details key="widget" value="color"/><details key="label" value="Colour"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_visibility" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly"><details key="category" value="Turtle"/><details key="colour" value="160"/><details key="message0" value="%1"/><details key="tooltip" value="Makes the turtle (circle and arrow) visible or invisible."/><details key="inputsInline" value="false"/></eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="turtle visibility"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="{{VISIBILITY}}();"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="VISIBILITY" eType="#//Visibility" defaultValueLiteral="hideTurtle">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Visibility"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_print" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly"><details key="category" value="Turtle"/><details key="colour" value="160"/><details key="message0" value="print%1"/><details key="tooltip" value="Draws text in the turtle's direction at its location."/><details key="helpUrl" value="https://en.wikipedia.org/wiki/Printing"/><details key="inputsInline" value="false"/></eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="print"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="print({{value:TEXT}});"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="TEXT" eType="#//Text" containment="true">
+      <eAnnotations source="blockly"><details key="type" value="input_value"/><details key="check" value="Text"/></eAnnotations>
+      <eAnnotations source="ui"><details key="widget" value="expression-slot"/><details key="label" value="Text"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_font" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly"><details key="category" value="Turtle"/><details key="colour" value="160"/><details key="message0" value="font%1font size%2%3"/><details key="tooltip" value="Sets the font used by the print block."/><details key="helpUrl" value="https://en.wikipedia.org/wiki/Font"/><details key="inputsInline" value="false"/></eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="font"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="font('{{FONT}}', {{FONTSIZE}}, '{{FONTSTYLE}}');"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="FONT" eType="#//FontFamily" defaultValueLiteral="Arial">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Font"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="FONTSIZE" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat" defaultValueLiteral="18">
+      <eAnnotations source="blockly"><details key="min" value="1"/><details key="max" value="1000"/></eAnnotations>
+      <eAnnotations source="ui"><details key="widget" value="number"/><details key="label" value="Font size"/><details key="order" value="2"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="FONTSTYLE" eType="#//FontStyle" defaultValueLiteral="normal">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Font style"/><details key="order" value="3"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="turtle_repeat_internal" eSuperTypes="#//TurtleCommand">
+    <eAnnotations source="blockly"><details key="category" value="Turtle"/><details key="colour" value="120"/><details key="message0" value="repeat%1do%2"/><details key="tooltip" value="Do some statements several times."/><details key="helpUrl" value="https://en.wikipedia.org/wiki/For_loop"/><details key="inputsInline" value="false"/></eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="repeat"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="for (let count = 0; count &lt; {{TIMES}}; count++) {&#10;{{statements:DO}}&#10;}"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="TIMES" eType="#//RepeatCount" defaultValueLiteral="times3">
+      <eAnnotations source="ui"><details key="widget" value="select"/><details key="label" value="Times"/><details key="order" value="1"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="DO" upperBound="50" eType="#//TurtleCommand" containment="true">
+      <eAnnotations source="ui"><details key="widget" value="slot"/><details key="label" value="Do"/><details key="order" value="2"/><details key="variant" value="default"/></eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="MoveDirection">
+    <eLiterals name="moveForward" literal="move forward by"/><eLiterals name="moveBackward" value="1" literal="move backward by"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Distance">
+    <eLiterals name="distance20" literal="20"/><eLiterals name="distance50" value="1" literal="50"/><eLiterals name="distance100" value="2" literal="100"/><eLiterals name="distance150" value="3" literal="150"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="TurnDirection">
+    <eLiterals name="turnRight" literal="right ↻"/><eLiterals name="turnLeft" value="1" literal="left ↺"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="AngleValue">
+    <eLiterals name="angle1" literal="1°"/><eLiterals name="angle45" value="1" literal="45°"/><eLiterals name="angle72" value="2" literal="72°"/><eLiterals name="angle90" value="3" literal="90°"/><eLiterals name="angle120" value="4" literal="120°"/><eLiterals name="angle144" value="5" literal="144°"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PenState">
+    <eLiterals name="penUp" literal="pen up"/><eLiterals name="penDown" value="1" literal="pen down"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Visibility">
+    <eLiterals name="hideTurtle" literal="hide turtle"/><eLiterals name="showTurtle" value="1" literal="show turtle"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FontFamily">
+    <eLiterals name="Arial" literal="Arial"/><eLiterals name="CourierNew" value="1" literal="Courier New"/><eLiterals name="Georgia" value="2" literal="Georgia"/><eLiterals name="Impact" value="3" literal="Impact"/><eLiterals name="TimesNewRoman" value="4" literal="Times New Roman"/><eLiterals name="TrebuchetMS" value="5" literal="Trebuchet MS"/><eLiterals name="Verdana" value="6" literal="Verdana"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FontStyle">
+    <eLiterals name="normal" literal="normal"/><eLiterals name="italic" value="1" literal="italic"/><eLiterals name="bold" value="2" literal="bold"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RepeatCount">
+    <eLiterals name="times3" literal="3"/><eLiterals name="times4" value="1" literal="4"/><eLiterals name="times5" value="2" literal="5"/><eLiterals name="times360" value="3" literal="360"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E07_turtle",
+  "configuration": "Blockly Turtle, nivel 10",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "block-definitions",
+      "path": "appengine/turtle/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E07_turtle/baseline/upstream/block-definitions.js",
+      "startLine": 42,
+      "endLine": 365,
+      "sha256": "8772fa7a6c2b6f0446abf00730c6e0b3b00edf78c1f733b57744334d6372af10",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "generators",
+      "path": "appengine/turtle/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E07_turtle/baseline/upstream/generators.js",
+      "startLine": 367,
+      "endLine": 439,
+      "sha256": "3f7f47bc3c5c2799b5cda69496596c3c462f2f824b223541933209a97e6a1532",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-10-toolbox",
+      "path": "appengine/turtle/src/html.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E07_turtle/baseline/upstream/level-10-toolbox.js",
+      "startLine": 140,
+      "endLine": 415,
+      "sha256": "2996ec2e616bb4cc1c307f78dcbfb43e0350afdfcd77c377be4e6a66a7437bdb",
+      "kinds": [
+        "toolbox"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-10-initial-workspace",
+      "path": "appengine/turtle/src/main.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E07_turtle/baseline/upstream/level-10-initial-workspace.js",
+      "startLine": 136,
+      "endLine": 157,
+      "sha256": "baa7231a34f0fea83c55230c870939aeaa19342bc6b9d2cc183ce744bd875664",
+      "kinds": [
+        "initial-workspace"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "game-name-message",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E07_turtle/baseline/upstream/game-name-message.jsonfrag",
+      "startLine": 11,
+      "endLine": 11,
+      "sha256": "1996630c9afafd016a2e6247a1ef7f14060489d071237c6dcfb1e56b3b108bed",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "category-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E07_turtle/baseline/upstream/category-messages.jsonfrag",
+      "startLine": 27,
+      "endLine": 34,
+      "sha256": "22965c96ee7d15c44fbbcc4b894bdea92f0c1efb63b67609bc2b85e4b90c53e8",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "turtle-editor-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E07_turtle/baseline/upstream/turtle-editor-messages.jsonfrag",
+      "startLine": 119,
+      "endLine": 144,
+      "sha256": "ec1266b4be5bff32d290f65bf6964ec5e481cbcf25f851e87d09ba59bae836ce",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": [
+        "Only English messages used by block definitions are included."
+      ]
+    }
+  ]
+}

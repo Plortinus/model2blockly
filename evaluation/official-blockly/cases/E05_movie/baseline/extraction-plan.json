@@ -1,0 +1,72 @@
+{
+  "caseId": "E05_movie",
+  "configuration": "Blockly Movie, nivel 10",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "block-definitions",
+      "sourcePath": "appengine/movie/src/blocks.js",
+      "startLine": 37,
+      "endLine": 132,
+      "snapshot": "baseline/upstream/block-definitions.js",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "generators",
+      "sourcePath": "appengine/movie/src/blocks.js",
+      "startLine": 134,
+      "endLine": 183,
+      "snapshot": "baseline/upstream/generators.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-10-toolbox",
+      "sourcePath": "appengine/movie/src/html.js",
+      "startLine": 116,
+      "endLine": 419,
+      "snapshot": "baseline/upstream/level-10-toolbox.js",
+      "kinds": ["toolbox"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "game-name-message",
+      "sourcePath": "json/en.json",
+      "startLine": 12,
+      "endLine": 12,
+      "snapshot": "baseline/upstream/game-name-message.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "category-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 27,
+      "endLine": 34,
+      "snapshot": "baseline/upstream/category-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "movie-editor-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 167,
+      "endLine": 184,
+      "snapshot": "baseline/upstream/movie-editor-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true,
+      "notes": ["Only the English messages used by the selected block definitions are included."]
+    }
+  ]
+}

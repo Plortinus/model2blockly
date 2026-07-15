@@ -105,6 +105,8 @@ public class BlocklyCodeGenerator {
     {
       final ArrayList<String> argsList = new ArrayList<String>();
       final ArrayList<String> msgParts = new ArrayList<String>();
+      final ArrayList<String> rowMessages = new ArrayList<String>();
+      final ArrayList<String> rowArgs = new ArrayList<String>();
       String _elvis = null;
       String _label = bt.getLabel();
       if (_label != null) {
@@ -168,26 +170,70 @@ public class BlocklyCodeGenerator {
       for (final String inputName : ordered) {
         boolean _containsKey = fieldMap.containsKey(inputName);
         if (_containsKey) {
+          final FieldSpec field = fieldMap.get(inputName);
           msgParts.add(("%" + Integer.valueOf(argIdx)));
-          argsList.add(this.fieldToArg(fieldMap.get(inputName)));
+          argsList.add(this.fieldToArg(field));
+          String _elvis_1 = null;
+          String _uiLabel = field.getUiLabel();
+          if (_uiLabel != null) {
+            _elvis_1 = _uiLabel;
+          } else {
+            _elvis_1 = inputName;
+          }
+          String _plus = (_elvis_1 + " %1");
+          rowMessages.add(_plus);
+          rowArgs.add(this.fieldToArg(field));
           argIdx++;
         } else {
           boolean _containsKey_1 = refMap.containsKey(inputName);
           if (_containsKey_1) {
+            final ReferenceFieldSpec reference = refMap.get(inputName);
             msgParts.add(("%" + Integer.valueOf(argIdx)));
-            argsList.add(this.referenceToArg(refMap.get(inputName)));
+            argsList.add(this.referenceToArg(reference));
+            String _elvis_2 = null;
+            String _uiLabel_1 = reference.getUiLabel();
+            if (_uiLabel_1 != null) {
+              _elvis_2 = _uiLabel_1;
+            } else {
+              _elvis_2 = inputName;
+            }
+            String _plus_1 = (_elvis_2 + " %1");
+            rowMessages.add(_plus_1);
+            rowArgs.add(this.referenceToArg(reference));
             argIdx++;
           } else {
             boolean _containsKey_2 = viMap.containsKey(inputName);
             if (_containsKey_2) {
+              final ValueInputSpec valueInput = viMap.get(inputName);
               msgParts.add(("%" + Integer.valueOf(argIdx)));
-              argsList.add(this.valueInputToArg(viMap.get(inputName)));
+              argsList.add(this.valueInputToArg(valueInput));
+              String _elvis_3 = null;
+              String _uiLabel_2 = valueInput.getUiLabel();
+              if (_uiLabel_2 != null) {
+                _elvis_3 = _uiLabel_2;
+              } else {
+                _elvis_3 = inputName;
+              }
+              String _plus_2 = (_elvis_3 + " %1");
+              rowMessages.add(_plus_2);
+              rowArgs.add(this.valueInputToArg(valueInput));
               argIdx++;
             } else {
               boolean _containsKey_3 = siMap.containsKey(inputName);
               if (_containsKey_3) {
+                final StatementInputSpec statementInput = siMap.get(inputName);
                 msgParts.add(("%" + Integer.valueOf(argIdx)));
-                argsList.add(this.statementInputToArg(siMap.get(inputName)));
+                argsList.add(this.statementInputToArg(statementInput));
+                String _elvis_4 = null;
+                String _uiLabel_3 = statementInput.getUiLabel();
+                if (_uiLabel_3 != null) {
+                  _elvis_4 = _uiLabel_3;
+                } else {
+                  _elvis_4 = inputName;
+                }
+                String _plus_3 = (_elvis_4 + " %1");
+                rowMessages.add(_plus_3);
+                rowArgs.add(this.statementInputToArg(statementInput));
                 argIdx++;
               }
             }
@@ -195,15 +241,78 @@ public class BlocklyCodeGenerator {
         }
       }
       final String generatedMessage0 = IterableExtensions.join(msgParts, " ");
-      String _elvis_1 = null;
+      String _elvis_5 = null;
       String _message0 = bt.getMessage0();
       if (_message0 != null) {
-        _elvis_1 = _message0;
+        _elvis_5 = _message0;
       } else {
-        _elvis_1 = generatedMessage0;
+        _elvis_5 = generatedMessage0;
       }
-      final String message0 = _elvis_1;
+      final String message0 = _elvis_5;
       final String args0 = IterableExtensions.join(argsList, ", ");
+      final boolean useStackedRows = (((bt.getMessage0() == null) && Boolean.FALSE.equals(bt.getInputsInline())) && (!rowArgs.isEmpty()));
+      String _xifexpression_1 = null;
+      if (useStackedRows) {
+        String _xblockexpression_2 = null;
+        {
+          final ArrayList<String> rows = new ArrayList<String>();
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("\"message0\": ");
+          String _elvis_6 = null;
+          String _label_1 = bt.getLabel();
+          if (_label_1 != null) {
+            _elvis_6 = _label_1;
+          } else {
+            String _typeName_1 = bt.getTypeName();
+            _elvis_6 = _typeName_1;
+          }
+          String _jsonString = this.toJsonString(_elvis_6);
+          _builder.append(_jsonString);
+          _builder.append(",");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t\t\t\t");
+          _builder.append("\"args0\": [],");
+          rows.add(_builder.toString());
+          int rowIndex = 0;
+          while ((rowIndex < rowArgs.size())) {
+            {
+              final int messageIndex = (rowIndex + 1);
+              StringConcatenation _builder_1 = new StringConcatenation();
+              _builder_1.append("\"message");
+              _builder_1.append(messageIndex);
+              _builder_1.append("\": ");
+              String _jsonString_1 = this.toJsonString(rowMessages.get(rowIndex));
+              _builder_1.append(_jsonString_1);
+              _builder_1.append(",");
+              _builder_1.newLineIfNotEmpty();
+              _builder_1.append("\t\t\t\t\t");
+              _builder_1.append("\"args");
+              _builder_1.append(messageIndex, "\t\t\t\t\t");
+              _builder_1.append("\": [");
+              String _get = rowArgs.get(rowIndex);
+              _builder_1.append(_get, "\t\t\t\t\t");
+              _builder_1.append("],");
+              rows.add(_builder_1.toString());
+              rowIndex++;
+            }
+          }
+          _xblockexpression_2 = IterableExtensions.join(rows, "\n");
+        }
+        _xifexpression_1 = _xblockexpression_2;
+      } else {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("\"message0\": ");
+        String _jsonString = this.toJsonString(message0);
+        _builder.append(_jsonString);
+        _builder.append(",");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t\t");
+        _builder.append("\"args0\": [");
+        _builder.append(args0, "\t\t\t\t");
+        _builder.append("],");
+        _xifexpression_1 = _builder.toString();
+      }
+      final String messageJson = _xifexpression_1;
       String _switchResult = null;
       ConnectionType _connectionType = bt.getConnectionType();
       if (_connectionType != null) {
@@ -212,15 +321,15 @@ public class BlocklyCodeGenerator {
             _switchResult = "";
             break;
           case TYPED:
-            StringConcatenation _builder = new StringConcatenation();
-            _builder.append("\"previousStatement\": \"");
+            StringConcatenation _builder_1 = new StringConcatenation();
+            _builder_1.append("\"previousStatement\": \"");
             String _connectionTypeName = bt.getConnectionTypeName();
-            _builder.append(_connectionTypeName);
-            _builder.append("\", \"nextStatement\": \"");
+            _builder_1.append(_connectionTypeName);
+            _builder_1.append("\", \"nextStatement\": \"");
             String _connectionTypeName_1 = bt.getConnectionTypeName();
-            _builder.append(_connectionTypeName_1);
-            _builder.append("\",");
-            _switchResult = _builder.toString();
+            _builder_1.append(_connectionTypeName_1);
+            _builder_1.append("\",");
+            _switchResult = _builder_1.toString();
             break;
           case FREE:
             _switchResult = "\"previousStatement\": null, \"nextStatement\": null,";
@@ -229,101 +338,93 @@ public class BlocklyCodeGenerator {
             _switchResult = "\"output\": null,";
             break;
           case OUTPUT_TYPED:
-            StringConcatenation _builder_1 = new StringConcatenation();
-            _builder_1.append("\"output\": \"");
+            StringConcatenation _builder_2 = new StringConcatenation();
+            _builder_2.append("\"output\": \"");
             String _outputType = bt.getOutputType();
-            _builder_1.append(_outputType);
-            _builder_1.append("\",");
-            _switchResult = _builder_1.toString();
+            _builder_2.append(_outputType);
+            _builder_2.append("\",");
+            _switchResult = _builder_2.toString();
             break;
           default:
             break;
         }
       }
       final String connectionJson = _switchResult;
-      String _xifexpression_1 = null;
+      String _xifexpression_2 = null;
       Boolean _inputsInline = bt.getInputsInline();
       boolean _tripleNotEquals = (_inputsInline != null);
       if (_tripleNotEquals) {
-        StringConcatenation _builder_2 = new StringConcatenation();
-        _builder_2.append("\"inputsInline\": ");
+        StringConcatenation _builder_3 = new StringConcatenation();
+        _builder_3.append("\"inputsInline\": ");
         Boolean _inputsInline_1 = bt.getInputsInline();
-        _builder_2.append(_inputsInline_1);
-        _builder_2.append(",");
-        _xifexpression_1 = _builder_2.toString();
+        _builder_3.append(_inputsInline_1);
+        _builder_3.append(",");
+        _xifexpression_2 = _builder_3.toString();
       } else {
-        _xifexpression_1 = "";
+        _xifexpression_2 = "";
       }
-      final String inlineJson = _xifexpression_1;
-      String _elvis_2 = null;
-      String _elvis_3 = null;
+      final String inlineJson = _xifexpression_2;
+      String _elvis_6 = null;
+      String _elvis_7 = null;
       String _tooltip = bt.getTooltip();
       if (_tooltip != null) {
-        _elvis_3 = _tooltip;
+        _elvis_7 = _tooltip;
       } else {
         String _label_1 = bt.getLabel();
-        _elvis_3 = _label_1;
+        _elvis_7 = _label_1;
       }
-      if (_elvis_3 != null) {
-        _elvis_2 = _elvis_3;
+      if (_elvis_7 != null) {
+        _elvis_6 = _elvis_7;
       } else {
         String _typeName_1 = bt.getTypeName();
-        _elvis_2 = _typeName_1;
+        _elvis_6 = _typeName_1;
       }
-      final String tooltipText = _elvis_2;
-      String _elvis_4 = null;
+      final String tooltipText = _elvis_6;
+      String _elvis_8 = null;
       String _helpUrl = bt.getHelpUrl();
       if (_helpUrl != null) {
-        _elvis_4 = _helpUrl;
+        _elvis_8 = _helpUrl;
       } else {
-        _elvis_4 = "";
+        _elvis_8 = "";
       }
-      final String helpUrlText = _elvis_4;
-      StringConcatenation _builder_3 = new StringConcatenation();
-      _builder_3.append("{");
-      _builder_3.newLine();
-      _builder_3.append("\t");
-      _builder_3.append("\"type\": \"");
+      final String helpUrlText = _elvis_8;
+      StringConcatenation _builder_4 = new StringConcatenation();
+      _builder_4.append("{");
+      _builder_4.newLine();
+      _builder_4.append("\t");
+      _builder_4.append("\"type\": \"");
       String _typeName_2 = bt.getTypeName();
-      _builder_3.append(_typeName_2, "\t");
-      _builder_3.append("\",");
-      _builder_3.newLineIfNotEmpty();
-      _builder_3.append("\t");
-      _builder_3.append("\"message0\": ");
-      String _jsonString = this.toJsonString(message0);
-      _builder_3.append(_jsonString, "\t");
-      _builder_3.append(",");
-      _builder_3.newLineIfNotEmpty();
-      _builder_3.append("\t");
-      _builder_3.append("\"args0\": [");
-      _builder_3.append(args0, "\t");
-      _builder_3.append("],");
-      _builder_3.newLineIfNotEmpty();
-      _builder_3.append("\t");
-      _builder_3.append(connectionJson, "\t");
-      _builder_3.newLineIfNotEmpty();
-      _builder_3.append("\t");
-      _builder_3.append(inlineJson, "\t");
-      _builder_3.newLineIfNotEmpty();
-      _builder_3.append("\t");
-      _builder_3.append("\"colour\": ");
+      _builder_4.append(_typeName_2, "\t");
+      _builder_4.append("\",");
+      _builder_4.newLineIfNotEmpty();
+      _builder_4.append("\t");
+      _builder_4.append(messageJson, "\t");
+      _builder_4.newLineIfNotEmpty();
+      _builder_4.append("\t");
+      _builder_4.append(connectionJson, "\t");
+      _builder_4.newLineIfNotEmpty();
+      _builder_4.append("\t");
+      _builder_4.append(inlineJson, "\t");
+      _builder_4.newLineIfNotEmpty();
+      _builder_4.append("\t");
+      _builder_4.append("\"colour\": ");
       int _colour = bt.getColour();
-      _builder_3.append(_colour, "\t");
-      _builder_3.append(",");
-      _builder_3.newLineIfNotEmpty();
-      _builder_3.append("\t");
-      _builder_3.append("\"tooltip\": ");
+      _builder_4.append(_colour, "\t");
+      _builder_4.append(",");
+      _builder_4.newLineIfNotEmpty();
+      _builder_4.append("\t");
+      _builder_4.append("\"tooltip\": ");
       String _jsonString_1 = this.toJsonString(tooltipText);
-      _builder_3.append(_jsonString_1, "\t");
-      _builder_3.append(",");
-      _builder_3.newLineIfNotEmpty();
-      _builder_3.append("\t");
-      _builder_3.append("\"helpUrl\": ");
+      _builder_4.append(_jsonString_1, "\t");
+      _builder_4.append(",");
+      _builder_4.newLineIfNotEmpty();
+      _builder_4.append("\t");
+      _builder_4.append("\"helpUrl\": ");
       String _jsonString_2 = this.toJsonString(helpUrlText);
-      _builder_3.append(_jsonString_2, "\t");
-      _builder_3.newLineIfNotEmpty();
-      _builder_3.append("}");
-      _xblockexpression = _builder_3.toString();
+      _builder_4.append(_jsonString_2, "\t");
+      _builder_4.newLineIfNotEmpty();
+      _builder_4.append("}");
+      _xblockexpression = _builder_4.toString();
     }
     return _xblockexpression;
   }
@@ -760,6 +861,163 @@ public class BlocklyCodeGenerator {
       _builder.newLine();
       _builder.append("  ");
       _builder.append("if (typeof Blockly === \'undefined\' || !Blockly.FieldTextInput || !Blockly.fieldRegistry) return;");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("function hasRegisteredField(type) {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("return Blockly.fieldRegistry.getClass && Blockly.fieldRegistry.getClass(type);");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("// Blockly distributes colour and angle fields as optional plugins.  Generated");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("// editors provide small compatible fallbacks so these widgets also work when");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("// only the core Blockly bundle is loaded.");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("if (!hasRegisteredField(\'field_colour\')) {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("class FieldColourFallback extends Blockly.FieldTextInput {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("constructor(value, validator, config) {");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("super(value || \'#ff0000\', validator, config);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("static fromJson(options) {");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("return new FieldColourFallback(options.colour || \'#ff0000\', undefined, options);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("doClassValidation_(value) {");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("var colour = String(value || \'\').trim().toLowerCase();");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("return /^#[0-9a-f]{6}$/.test(colour) ? colour : null;");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("showEditor_() {");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("var field = this;");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("var picker = document.createElement(\'input\');");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("picker.type = \'color\';");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("picker.value = this.getValue();");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("picker.setAttribute(\'aria-label\', this.name || \'Colour\');");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("picker.style.position = \'fixed\';");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("picker.style.left = \'-1000px\';");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("picker.addEventListener(\'input\', function() { field.setValue(picker.value); });");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("picker.addEventListener(\'change\', function() {");
+      _builder.newLine();
+      _builder.append("          ");
+      _builder.append("field.setValue(picker.value);");
+      _builder.newLine();
+      _builder.append("          ");
+      _builder.append("picker.remove();");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("picker.addEventListener(\'blur\', function() {");
+      _builder.newLine();
+      _builder.append("          ");
+      _builder.append("window.setTimeout(function() { picker.remove(); }, 0);");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("});");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("document.body.appendChild(picker);");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("picker.click();");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("Blockly.fieldRegistry.register(\'field_colour\', FieldColourFallback);");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("if (!hasRegisteredField(\'field_angle\') && Blockly.FieldNumber) {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("class FieldAngleFallback extends Blockly.FieldNumber {");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("constructor(value, validator, config) {");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("super(value === null || value === undefined ? 90 : value, 0, 360, 1, validator, config);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("static fromJson(options) {");
+      _builder.newLine();
+      _builder.append("        ");
+      _builder.append("return new FieldAngleFallback(options.angle === undefined ? 90 : options.angle, undefined, options);");
+      _builder.newLine();
+      _builder.append("      ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("Blockly.fieldRegistry.register(\'field_angle\', FieldAngleFallback);");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
       _builder.newLine();
       _builder.append("  ");
       _builder.append("if (Blockly.fieldRegistry.getClass && Blockly.fieldRegistry.getClass(\'field_reference_multiselect\')) return;");
@@ -2008,6 +2266,9 @@ public class BlocklyCodeGenerator {
     _builder.append("window.parseBlocklyListField = parseBlocklyListField;");
     _builder.newLine();
     _builder.newLine();
+    String _generateBuiltinBlockGenerators = this.generateBuiltinBlockGenerators();
+    _builder.append(_generateBuiltinBlockGenerators);
+    _builder.newLineIfNotEmpty();
     {
       List<BlockTypeSpec> _concreteBlockTypes = BlocklySpecModelQueries.concreteBlockTypes(spec);
       for(final BlockTypeSpec bt : _concreteBlockTypes) {
@@ -2016,9 +2277,6 @@ public class BlocklyCodeGenerator {
         _builder.newLineIfNotEmpty();
       }
     }
-    String _generateBuiltinBlockGenerators = this.generateBuiltinBlockGenerators();
-    _builder.append(_generateBuiltinBlockGenerators);
-    _builder.newLineIfNotEmpty();
     String _generateDomainCodegenBody = this.generateDomainCodegenBody(spec);
     _builder.append(_generateDomainCodegenBody);
     _builder.newLineIfNotEmpty();
@@ -5393,6 +5651,9 @@ public class BlocklyCodeGenerator {
     _builder.append("#modelView{background:#fff;font-family:Arial,sans-serif}");
     _builder.newLine();
     _builder.append("\t");
+    _builder.append("#codeView{background:#172033;color:#d4d4d4;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82em;white-space:pre-wrap;tab-size:2}");
+    _builder.newLine();
+    _builder.append("\t");
     _builder.append("#jsonView{background:#f5f5f5;font-family:monospace;white-space:pre-wrap}");
     _builder.newLine();
     _builder.append("\t");
@@ -5729,6 +5990,9 @@ public class BlocklyCodeGenerator {
     _builder.append("<button class=\"active\" data-tab=\"model\" onclick=\"switchTab(\'model\')\">Model</button>");
     _builder.newLine();
     _builder.append("\t\t");
+    _builder.append("<button data-tab=\"code\" onclick=\"switchTab(\'code\')\">Code</button>");
+    _builder.newLine();
+    _builder.append("\t\t");
     String _tabButton = AppMakerHtmlRuntimeGenerator.tabButton(spec);
     _builder.append(_tabButton, "\t\t");
     _builder.newLineIfNotEmpty();
@@ -5749,6 +6013,9 @@ public class BlocklyCodeGenerator {
     _builder.newLine();
     _builder.append("\t");
     _builder.append("<div id=\"modelView\" class=\"tab-content active\"></div>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("<div id=\"codeView\" class=\"tab-content\"></div>");
     _builder.newLine();
     _builder.append("\t");
     String _tabContent = AppMakerHtmlRuntimeGenerator.tabContent(spec);
@@ -5959,10 +6226,10 @@ public class BlocklyCodeGenerator {
       _builder.append("subtitle.textContent = developer");
       _builder.newLine();
       _builder.append("\t\t\t");
-      _builder.append("? \'Model, preview, JSON, runtime and validation internals\'");
+      _builder.append("? \'Model, generated code, JSON, runtime and validation internals\'");
       _builder.newLine();
       _builder.append("\t\t\t");
-      _builder.append(": \'Model, preview and validation issues\';");
+      _builder.append(": \'Model, generated code and validation issues\';");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("}");
@@ -6165,6 +6432,9 @@ public class BlocklyCodeGenerator {
       _builder.append("var modelView = document.getElementById(\'modelView\');");
       _builder.newLine();
       _builder.append("\t");
+      _builder.append("var codeView = document.getElementById(\'codeView\');");
+      _builder.newLine();
+      _builder.append("\t");
       _builder.append("var jsonView = document.getElementById(\'jsonView\');");
       _builder.newLine();
       _builder.append("\t");
@@ -6172,6 +6442,9 @@ public class BlocklyCodeGenerator {
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("modelView.innerHTML = \'<p style=\"color:#999;text-align:center;margin-top:40px\">Drag blocks to build your model</p>\';");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("codeView.textContent = \'// Empty workspace\';");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("jsonView.textContent = \'// Empty workspace\';");
@@ -6193,6 +6466,24 @@ public class BlocklyCodeGenerator {
       _builder.newLine();
       _builder.append("\t");
       _builder.append("modelView.innerHTML = html;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var generatedCode = typeof generateDomainCode === \'function\'");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("? generateDomainCode(workspace)");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append(": \'\';");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("codeView.textContent = generatedCode && generatedCode.trim()");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("? generatedCode");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append(": \'// No code generated for the current model\';");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("jsonView.textContent = JSON.stringify(model, null, 2);");
@@ -6439,34 +6730,46 @@ public class BlocklyCodeGenerator {
       _builder.append("\t\t");
       _builder.append("if (Blockly.Events.disable) Blockly.Events.disable();");
       _builder.newLine();
-      _builder.append("\t\t");
+      _builder.append("\t");
       _builder.append("try {");
       _builder.newLine();
-      _builder.append("\t\t\t");
+      _builder.append("\t\t");
       _builder.append("workspace.clear();");
       _builder.newLine();
-      _builder.append("\t\t\t");
+      _builder.append("\t\t");
       _builder.append("var x = 40;");
       _builder.newLine();
-      _builder.append("\t\t\t");
+      _builder.append("\t\t");
       _builder.append("var y = 40;");
       _builder.newLine();
-      _builder.append("\t\t\t");
+      _builder.append("\t\t");
       _builder.append("roots.forEach(function(node) {");
       _builder.newLine();
-      _builder.append("\t\t\t\t");
+      _builder.append("\t\t\t");
       _builder.append("if (!node || !node._type || !config[node._type]) return;");
       _builder.newLine();
-      _builder.append("\t\t\t\t");
-      _builder.append("createImportedModelNode(node, x, y, idMap, pendingReferences);");
-      _builder.newLine();
-      _builder.append("\t\t\t\t");
-      _builder.append("x += 300;");
-      _builder.newLine();
-      _builder.append("\t\t\t\t");
-      _builder.append("if (x > 640) { x = 40; y += 170; }");
+      _builder.append("\t\t\t");
+      _builder.append("var rootBlock = createImportedModelNode(node, x, y, idMap, pendingReferences);");
       _builder.newLine();
       _builder.append("\t\t\t");
+      _builder.append("var rootHeight = 120;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("if (rootBlock && rootBlock.getHeightWidth) {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("var rootSize = rootBlock.getHeightWidth();");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("if (rootSize && typeof rootSize.height === \'number\') rootHeight = rootSize.height;");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("y += Math.max(170, Math.ceil(rootHeight) + 48);");
+      _builder.newLine();
+      _builder.append("\t\t");
       _builder.append("});");
       _builder.newLine();
       _builder.append("\t\t");

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="PondTutor" nsURI="http://www.example.org/pondtutor" nsPrefix="pondtutor" toolboxType="category" codeLanguage="javascript" codeFileExtension="js">
+  <categories name="Pond" label="Pond" colour="290"/>
+  <categories name="Logic" label="Logic" colour="210"/>
+  <categories name="Loops" label="Loops" colour="120"/>
+  <categories name="Math" label="Math" colour="230"/>
+  <blockTypes typeName="PondCommand" label="PondCommand" abstract="true" connectionType="TYPED" connectionTypeName="PondCommand" inputsInline="true"/>
+  <blockTypes typeName="Number" label="Number" abstract="true" connectionType="OUTPUT" outputType="Number" inputsInline="true"/>
+  <blockTypes typeName="Boolean" label="Boolean" abstract="true" connectionType="OUTPUT" outputType="Boolean" inputsInline="true"/>
+  <blockTypes typeName="pond_scan" label="scan" colour="290" categoryName="Pond" superTypeName="Number" connectionType="OUTPUT_TYPED" outputType="Number" message0="%1(%2)" inputsInline="true" tooltip="Scan for enemies. Specify a direction (0-360). Returns the distance to the closest enemy in that direction. Returns Infinity if no enemy found." codeTemplate="scan({{value:DEGREE}})">
+    <orderedInputNames>CALL</orderedInputNames>
+    <orderedInputNames>DEGREE</orderedInputNames>
+    <fields name="CALL" fieldType="LABEL" defaultValue="scan" uiWidget="text" uiLabel="Function" uiOrder="1" uiReadonly="true" uiVariant="default"/>
+    <valueInputs name="DEGREE" checkType="Number" shadowBlockType="pond_math_number" uiWidget="expression-slot" uiLabel="Direction" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="pond_cannon" label="cannon" colour="290" categoryName="Pond" superTypeName="PondCommand" connectionType="TYPED" connectionTypeName="PondCommand" message0="%1(%2, %3);" inputsInline="true" tooltip="Fire the cannon. Specify a direction (0-360) and a range (0-70)." codeTemplate="cannon({{value:DEGREE}}, {{value:RANGE}});">
+    <orderedInputNames>CALL</orderedInputNames>
+    <orderedInputNames>DEGREE</orderedInputNames>
+    <orderedInputNames>RANGE</orderedInputNames>
+    <fields name="CALL" fieldType="LABEL" defaultValue="cannon" uiWidget="text" uiLabel="Function" uiOrder="1" uiReadonly="true" uiVariant="default"/>
+    <valueInputs name="DEGREE" checkType="Number" shadowBlockType="pond_math_number" uiWidget="expression-slot" uiLabel="Direction" uiOrder="2" uiVariant="default"/>
+    <valueInputs name="RANGE" checkType="Number" shadowBlockType="pond_math_number" uiWidget="expression-slot" uiLabel="Range" uiOrder="3" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="pond_swim" label="swim" colour="290" categoryName="Pond" superTypeName="PondCommand" connectionType="TYPED" connectionTypeName="PondCommand" message0="%1(%2);" inputsInline="true" tooltip="Swim forward. Specify a direction (0-360)." codeTemplate="swim({{value:DEGREE}});">
+    <orderedInputNames>CALL</orderedInputNames>
+    <orderedInputNames>DEGREE</orderedInputNames>
+    <fields name="CALL" fieldType="LABEL" defaultValue="swim" uiWidget="text" uiLabel="Function" uiOrder="1" uiReadonly="true" uiVariant="default"/>
+    <valueInputs name="DEGREE" checkType="Number" shadowBlockType="pond_math_number" uiWidget="expression-slot" uiLabel="Direction" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="pond_stop" label="stop" colour="290" categoryName="Pond" superTypeName="PondCommand" connectionType="TYPED" connectionTypeName="PondCommand" message0="%1(%2);" inputsInline="false" tooltip="Stop swimming. Player will slow to a stop." codeTemplate="stop();">
+    <orderedInputNames>CALL</orderedInputNames>
+    <orderedInputNames>EMPTY</orderedInputNames>
+    <fields name="CALL" fieldType="LABEL" defaultValue="stop" uiWidget="text" uiLabel="Function" uiOrder="1" uiReadonly="true" uiVariant="default"/>
+    <fields name="EMPTY" fieldType="LABEL" defaultValue="" uiWidget="text" uiLabel="Empty argument" uiOrder="2" uiReadonly="true" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="pond_getX" label="getX" colour="290" categoryName="Pond" superTypeName="Number" connectionType="OUTPUT_TYPED" outputType="Number" message0="%1(%2)" inputsInline="false" tooltip="Returns the X coordinate of the player (0 is the left edge, 100 is the right edge)." codeTemplate="getX()">
+    <orderedInputNames>CALL</orderedInputNames>
+    <orderedInputNames>EMPTY</orderedInputNames>
+    <fields name="CALL" fieldType="LABEL" defaultValue="getX" uiWidget="text" uiLabel="Function" uiOrder="1" uiReadonly="true" uiVariant="default"/>
+    <fields name="EMPTY" fieldType="LABEL" defaultValue="" uiWidget="text" uiLabel="Empty argument" uiOrder="2" uiReadonly="true" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="pond_getY" label="getY" colour="290" categoryName="Pond" superTypeName="Number" connectionType="OUTPUT_TYPED" outputType="Number" message0="%1(%2)" inputsInline="false" tooltip="Returns the Y coordinate of the player (0 is the bottom edge, 100 is the top edge)." codeTemplate="getY()">
+    <orderedInputNames>CALL</orderedInputNames>
+    <orderedInputNames>EMPTY</orderedInputNames>
+    <fields name="CALL" fieldType="LABEL" defaultValue="getY" uiWidget="text" uiLabel="Function" uiOrder="1" uiReadonly="true" uiVariant="default"/>
+    <fields name="EMPTY" fieldType="LABEL" defaultValue="" uiWidget="text" uiLabel="Empty argument" uiOrder="2" uiReadonly="true" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="controls_if" label="if" colour="210" categoryName="Logic" superTypeName="PondCommand" connectionType="TYPED" connectionTypeName="PondCommand" message0="if (%1) {%2}" inputsInline="true" tooltip="If a value is true, then do some statements." helpUrl="https://github.com/RaspberryPiFoundation/blockly/wiki/IfElse" codeTemplate="if ({{value:IF0}}) {&#xA;{{statements:DO0}}&#xA;}">
+    <orderedInputNames>IF0</orderedInputNames>
+    <orderedInputNames>DO0</orderedInputNames>
+    <statementInputs name="DO0" checkType="PondCommand" upperBound="50" uiWidget="slot" uiLabel="Do" uiOrder="2" uiVariant="default"/>
+    <valueInputs name="IF0" checkType="Boolean" uiWidget="expression-slot" uiLabel="Condition" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="logic_compare" label="compare" colour="210" categoryName="Logic" superTypeName="Boolean" connectionType="OUTPUT_TYPED" outputType="Boolean" message0="%1 %2 %3" inputsInline="true" tooltip="Return true if both inputs equal each other." helpUrl="https://en.wikipedia.org/wiki/Inequality_(mathematics)" codeTemplate="{{value:A}} {{OP}} {{value:B}}">
+    <orderedInputNames>A</orderedInputNames>
+    <orderedInputNames>OP</orderedInputNames>
+    <orderedInputNames>B</orderedInputNames>
+    <fields name="OP" fieldType="DROPDOWN" defaultValue="EQ" uiWidget="select" uiLabel="Operator" uiOrder="2" uiVariant="default">
+      <options value="EQ" label="=="/>
+      <options value="NEQ" label="!="/>
+      <options value="LT" label="‏&lt;"/>
+      <options value="LTE" label="‏&lt;="/>
+      <options value="GT" label="‏>"/>
+      <options value="GTE" label="‏>="/>
+    </fields>
+    <valueInputs name="A" checkType="Number" uiWidget="expression-slot" uiLabel="Left operand" uiOrder="1" uiVariant="default"/>
+    <valueInputs name="B" checkType="Number" uiWidget="expression-slot" uiLabel="Right operand" uiOrder="3" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="logic_boolean" label="boolean" colour="210" categoryName="Logic" superTypeName="Boolean" connectionType="OUTPUT_TYPED" outputType="Boolean" message0="%1" inputsInline="false" tooltip="Returns either true or false." helpUrl="https://github.com/RaspberryPiFoundation/blockly/wiki/Logic#values" codeTemplate="{{BOOL}}">
+    <orderedInputNames>BOOL</orderedInputNames>
+    <fields name="BOOL" fieldType="DROPDOWN" defaultValue="TRUE" uiWidget="select" uiLabel="Boolean" uiOrder="1" uiVariant="default">
+      <options value="TRUE" label="true"/>
+      <options value="FALSE" label="false"/>
+    </fields>
+  </blockTypes>
+  <blockTypes typeName="controls_whileUntil" label="while" colour="120" categoryName="Loops" superTypeName="PondCommand" connectionType="TYPED" connectionTypeName="PondCommand" message0="while (%1) {%2}" inputsInline="true" tooltip="While a value is true, then do some statements." helpUrl="https://github.com/RaspberryPiFoundation/blockly/wiki/Loops#repeat" codeTemplate="while ({{value:BOOL}}) {&#xA;{{statements:DO}}&#xA;}">
+    <orderedInputNames>BOOL</orderedInputNames>
+    <orderedInputNames>DO</orderedInputNames>
+    <statementInputs name="DO" checkType="PondCommand" upperBound="50" uiWidget="slot" uiLabel="Do" uiOrder="2" uiVariant="default"/>
+    <valueInputs name="BOOL" checkType="Boolean" uiWidget="expression-slot" uiLabel="Condition" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="pond_math_number" label="number or angle" colour="230" categoryName="Math" superTypeName="Number" connectionType="OUTPUT_TYPED" outputType="Number" message0="%1" inputsInline="false" tooltip="A number." helpUrl="https://en.wikipedia.org/wiki/Number" codeTemplate="{{NUM}}">
+    <orderedInputNames>NUM</orderedInputNames>
+    <fields name="NUM" fieldType="FLOAT" defaultValue="0" uiWidget="number" uiLabel="Number" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <validations type="CARDINALITY" name="controls_if_DO0" ownerType="controls_if" containmentName="DO0" upperBound="50">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="controls_if"/>
+      <fields name="INPUT" value="DO0"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="50"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="DO0"/>
+      <children kind="NUMBER_LITERAL" literal="50"/>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="controls_whileUntil_DO" ownerType="controls_whileUntil" containmentName="DO" upperBound="50">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="controls_whileUntil"/>
+      <fields name="INPUT" value="DO"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="50"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="DO"/>
+      <children kind="NUMBER_LITERAL" literal="50"/>
+    </visualExpression>
+  </validations>
+  <workspaceOptions key="renderer" value="geras"/>
+  <workspaceOptions key="trashcan" value="true" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

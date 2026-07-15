@@ -17,6 +17,19 @@ import { fileURLToPath } from 'node:url';
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const projectDir = path.join(repoRoot, 'io.github.plortinus.model2blockly');
 const pairsRoot = path.join(projectDir, 'examples', 'feature_pairs');
+const ecoreSpecificRoot = path.join(projectDir, 'examples', 'ecore_specific', '07_ecore_specific');
+const persistOutputs = process.argv.includes('--persist');
+const unsupportedArgs = process.argv.slice(2).filter((arg) => arg !== '--persist');
+if (unsupportedArgs.includes('--help') || unsupportedArgs.includes('-h')) {
+  console.log(`Usage: node scripts/verify-feature-pairs.mjs [--persist]
+
+Options:
+  --persist  Keep each Ecore and DSL editor under its feature-pair directory.`);
+  process.exit(0);
+}
+if (unsupportedArgs.length > 0) {
+  throw new Error(`Unsupported arguments: ${unsupportedArgs.join(', ')}`);
+}
 const eclipsePlugins = process.env.ECLIPSE_PLUGINS
   || '/Applications/Eclipse.app/Contents/Eclipse/plugins';
 const javaHome = findJavaHome(eclipsePlugins);
@@ -37,7 +50,10 @@ try {
   const smokeTargets = [];
 
   for (const pair of pairs) {
-    const pairOutput = path.join(generatedRoot, pair.name);
+    const pairOutput = persistOutputs
+      ? path.join(pair.dir, 'generated')
+      : path.join(generatedRoot, pair.name);
+    if (persistOutputs) rmSync(pairOutput, { recursive: true, force: true });
     const ecoreOutput = path.join(pairOutput, 'ecore');
     const dslOutput = path.join(pairOutput, 'dsl');
 
@@ -59,13 +75,37 @@ try {
     smokeTargets.push(ecoreOutput, dslOutput);
   }
 
-  execFileSync(process.execPath, [
+  const ecoreSpecificOutput = persistOutputs
+    ? path.join(ecoreSpecificRoot, 'generated', 'ecore')
+    : path.join(generatedRoot, '07_ecore_specific', 'ecore');
+  if (persistOutputs) rmSync(ecoreSpecificOutput, { recursive: true, force: true });
+  const ecoreSpecificSource = path.join(ecoreSpecificRoot, 'source.ecore');
+  if (!existsSync(ecoreSpecificSource)) {
+    throw new Error(`Missing Ecore-only source: ${ecoreSpecificSource}`);
+  }
+  runJava(classpath,
+    'io.github.plortinus.model2blockly.standalone.EcoreToBlocklyMain',
+    ecoreSpecificSource, ecoreSpecificOutput);
+  const ecoreSpecificXmi = findIntermediateXmi(ecoreSpecificOutput);
+  runJava(classpath,
+    'io.github.plortinus.model2blockly.standalone.EcoreSpecificVerifierMain',
+    ecoreSpecificXmi);
+  console.log('[PASS] 07_ecore_specific: Ecore-only capability assertions.');
+  smokeTargets.push(ecoreSpecificOutput);
+
+  const smokeArgs = [
     path.join(repoRoot, 'scripts', 'smoke-test-generated.mjs'),
     '--generic',
-    ...smokeTargets,
-  ], { cwd: repoRoot, stdio: 'inherit' });
+  ];
+  if (persistOutputs) smokeArgs.push('--persist-sample-code');
+  smokeArgs.push(...smokeTargets);
+  execFileSync(process.execPath, smokeArgs, { cwd: repoRoot, stdio: 'inherit' });
 
-  console.log(`\n${pairs.length}/${pairs.length} feature pairs passed generation, canonical comparison, artifact comparison, and browser smoke tests.`);
+  console.log(`\n${pairs.length}/${pairs.length} feature pairs and 1/1 Ecore-only example passed generation, comparison, capability assertions, and browser smoke tests.`);
+  if (persistOutputs) {
+    console.log(`Persistent paired editors written below ${pairsRoot}.`);
+    console.log(`Persistent Ecore-only editor written below ${ecoreSpecificRoot}.`);
+  }
   completed = true;
 } finally {
   if (completed && !keepOutput) {
@@ -79,9 +119,11 @@ function discoverPairs() {
   const names = readdirSync(pairsRoot)
     .filter((name) => /^\d{2}_[a-z0-9_]+$/.test(name))
     .filter((name) => statSync(path.join(pairsRoot, name)).isDirectory())
+    .filter((name) => existsSync(path.join(pairsRoot, name, 'source.ecore'))
+      && existsSync(path.join(pairsRoot, name, 'source.m2b')))
     .sort();
-  if (names.length !== 4) {
-    throw new Error(`Expected 4 feature-pair directories, found ${names.length}: ${names.join(', ')}`);
+  if (names.length !== 6) {
+    throw new Error(`Expected 6 feature-pair directories, found ${names.length}: ${names.join(', ')}`);
   }
   return names.map((name) => {
     const dir = path.join(pairsRoot, name);
@@ -90,7 +132,7 @@ function discoverPairs() {
     if (!existsSync(ecore) || !existsSync(dsl)) {
       throw new Error(`Pair ${name} must contain source.ecore and source.m2b.`);
     }
-    return { name, ecore, dsl };
+    return { name, dir, ecore, dsl };
   });
 }
 

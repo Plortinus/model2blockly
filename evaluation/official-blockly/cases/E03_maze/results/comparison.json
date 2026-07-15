@@ -1,0 +1,1255 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E03_maze",
+  "baselineTreatment": "baseline",
+  "actualTreatment": "m2b",
+  "editor": {
+    "summary": {
+      "totalObserved": 137,
+      "applicable": 137,
+      "matches": 111,
+      "partial": 0,
+      "mismatches": 0,
+      "unsupported": 26,
+      "errors": 0,
+      "excluded": 0,
+      "differences": 26,
+      "parityPercent": 81.02,
+      "classification": "partial"
+    },
+    "loadErrors": [],
+    "properties": [
+      {
+        "property": "blocks.noUnexpectedTypes",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.maze_moveForward.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_moveForward.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.maze_moveForward.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "Command"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+      },
+      {
+        "property": "blocks.maze_moveForward.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "Command"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+      },
+      {
+        "property": "blocks.maze_moveForward.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_moveForward.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.maze_moveForward.colour",
+        "status": "match",
+        "expected": "#995ba5",
+        "actual": "#995ba5"
+      },
+      {
+        "property": "blocks.maze_moveForward.tooltip",
+        "status": "match",
+        "expected": "Moves the player forward one space.",
+        "actual": "Moves the player forward one space."
+      },
+      {
+        "property": "blocks.maze_moveForward.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_moveForward.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.maze_moveForward.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_moveForward.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_moveForward.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.maze_moveForward.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.maze_moveForward.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_moveForward.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_moveForward.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.maze_moveForward.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "move forward",
+        "actual": "move forward"
+      },
+      {
+        "property": "blocks.maze_moveForward.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "move forward",
+        "actual": "move forward"
+      },
+      {
+        "property": "blocks.maze_moveForward.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_turn.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_turn.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.maze_turn.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "Command"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+      },
+      {
+        "property": "blocks.maze_turn.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "Command"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+      },
+      {
+        "property": "blocks.maze_turn.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_turn.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.maze_turn.colour",
+        "status": "match",
+        "expected": "#995ba5",
+        "actual": "#995ba5"
+      },
+      {
+        "property": "blocks.maze_turn.tooltip",
+        "status": "match",
+        "expected": "Turns the player left or right by 90 degrees.",
+        "actual": "Turns the player left or right by 90 degrees."
+      },
+      {
+        "property": "blocks.maze_turn.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_turn.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:",
+          "field_dropdown:DIR"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:DIR"
+        ]
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "turn",
+        "actual": "turn"
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "turn",
+        "actual": "turn"
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.1.name",
+        "status": "match",
+        "expected": "DIR",
+        "actual": "DIR"
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.1.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.1.value",
+        "status": "match",
+        "expected": "turnLeft",
+        "actual": "turnLeft"
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.1.text",
+        "status": "match",
+        "expected": "left ↺",
+        "actual": "left ↺"
+      },
+      {
+        "property": "blocks.maze_turn.inputs.dummy:<anonymous>.fields.1.options",
+        "status": "match",
+        "expected": [
+          {
+            "label": "left ↺",
+            "value": "turnLeft"
+          },
+          {
+            "label": "right ↻",
+            "value": "turnRight"
+          }
+        ],
+        "actual": [
+          {
+            "label": "left ↺",
+            "value": "turnLeft"
+          },
+          {
+            "label": "right ↻",
+            "value": "turnRight"
+          }
+        ]
+      },
+      {
+        "property": "blocks.maze_forever.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_forever.inputOrder",
+        "status": "unsupported",
+        "expected": [
+          "dummy:",
+          "statement:DO"
+        ],
+        "actual": [
+          "statement:DO"
+        ],
+        "capability": "explicit-dummy-input",
+        "boundary": "model2blockly",
+        "rationale": "No existe una construcción del DSL para separar explícitamente la cabecera en una entrada input_dummy."
+      },
+      {
+        "property": "blocks.maze_forever.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "Command"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+      },
+      {
+        "property": "blocks.maze_forever.connections.next",
+        "status": "unsupported",
+        "expected": null,
+        "actual": {
+          "check": [
+            "Command"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+      },
+      {
+        "property": "blocks.maze_forever.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_forever.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.maze_forever.colour",
+        "status": "match",
+        "expected": "#5ba55b",
+        "actual": "#5ba55b"
+      },
+      {
+        "property": "blocks.maze_forever.tooltip",
+        "status": "match",
+        "expected": "Repeat the enclosed actions until finish point is reached.",
+        "actual": "Repeat the enclosed actions until finish point is reached."
+      },
+      {
+        "property": "blocks.maze_forever.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_forever.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.maze_forever.inputs.dummy:<anonymous>.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "explicit-dummy-input",
+        "boundary": "model2blockly",
+        "rationale": "La entrada ficticia usada por la definición JSON oficial no forma parte del metamodelo intermedio actual."
+      },
+      {
+        "property": "blocks.maze_forever.inputs.statement:DO.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_forever.inputs.statement:DO.check",
+        "status": "unsupported",
+        "expected": null,
+        "actual": [
+          "Command"
+        ],
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Las contenciones de tipo Command producen comprobaciones de entrada tipadas, mientras que Maze acepta cualquier bloque de sentencia."
+      },
+      {
+        "property": "blocks.maze_forever.inputs.statement:DO.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.maze_forever.inputs.statement:DO.fieldOrder",
+        "status": "unsupported",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:",
+          "field_image:",
+          "field_label:"
+        ],
+        "capability": "explicit-dummy-input",
+        "boundary": "model2blockly",
+        "rationale": "Al no poder declarar input_dummy, los campos de cabecera se adjuntan a la entrada de sentencias y cambia su disposición."
+      },
+      {
+        "property": "blocks.maze_forever.inputs.statement:DO.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_forever.inputs.statement:DO.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_forever.inputs.statement:DO.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.maze_forever.inputs.statement:DO.fields.0.value",
+        "status": "match",
+        "expected": "do",
+        "actual": "do"
+      },
+      {
+        "property": "blocks.maze_forever.inputs.statement:DO.fields.0.text",
+        "status": "match",
+        "expected": "do",
+        "actual": "do"
+      },
+      {
+        "property": "blocks.maze_forever.inputs.statement:DO.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_if.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_if.inputOrder",
+        "status": "unsupported",
+        "expected": [
+          "dummy:",
+          "statement:DO"
+        ],
+        "actual": [
+          "statement:DO"
+        ],
+        "capability": "explicit-dummy-input",
+        "boundary": "model2blockly",
+        "rationale": "No existe una construcción del DSL para separar explícitamente la cabecera en una entrada input_dummy."
+      },
+      {
+        "property": "blocks.maze_if.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "Command"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+      },
+      {
+        "property": "blocks.maze_if.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "Command"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+      },
+      {
+        "property": "blocks.maze_if.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_if.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.maze_if.colour",
+        "status": "match",
+        "expected": "#5b80a5",
+        "actual": "#5b80a5"
+      },
+      {
+        "property": "blocks.maze_if.tooltip",
+        "status": "match",
+        "expected": "If there is a path in the specified direction, then do some actions.",
+        "actual": "If there is a path in the specified direction, then do some actions."
+      },
+      {
+        "property": "blocks.maze_if.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_if.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.maze_if.inputs.dummy:<anonymous>.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "explicit-dummy-input",
+        "boundary": "model2blockly",
+        "rationale": "La entrada ficticia usada por la definición JSON oficial no forma parte del metamodelo intermedio actual."
+      },
+      {
+        "property": "blocks.maze_if.inputs.statement:DO.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_if.inputs.statement:DO.check",
+        "status": "unsupported",
+        "expected": null,
+        "actual": [
+          "Command"
+        ],
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Las contenciones de tipo Command producen comprobaciones de entrada tipadas, mientras que Maze acepta cualquier bloque de sentencia."
+      },
+      {
+        "property": "blocks.maze_if.inputs.statement:DO.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.maze_if.inputs.statement:DO.fieldOrder",
+        "status": "unsupported",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:DIR",
+          "field_label:"
+        ],
+        "capability": "explicit-dummy-input",
+        "boundary": "model2blockly",
+        "rationale": "Al no poder declarar input_dummy, los campos de cabecera se adjuntan a la entrada de sentencias y cambia su disposición."
+      },
+      {
+        "property": "blocks.maze_if.inputs.statement:DO.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_if.inputs.statement:DO.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_if.inputs.statement:DO.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.maze_if.inputs.statement:DO.fields.0.value",
+        "status": "match",
+        "expected": "do",
+        "actual": "do"
+      },
+      {
+        "property": "blocks.maze_if.inputs.statement:DO.fields.0.text",
+        "status": "match",
+        "expected": "do",
+        "actual": "do"
+      },
+      {
+        "property": "blocks.maze_if.inputs.statement:DO.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_ifElse.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_ifElse.inputOrder",
+        "status": "unsupported",
+        "expected": [
+          "dummy:",
+          "statement:DO",
+          "statement:ELSE"
+        ],
+        "actual": [
+          "statement:DO",
+          "statement:ELSE"
+        ],
+        "capability": "explicit-dummy-input",
+        "boundary": "model2blockly",
+        "rationale": "No existe una construcción del DSL para separar explícitamente la cabecera en una entrada input_dummy."
+      },
+      {
+        "property": "blocks.maze_ifElse.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "Command"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+      },
+      {
+        "property": "blocks.maze_ifElse.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "Command"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+      },
+      {
+        "property": "blocks.maze_ifElse.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_ifElse.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.maze_ifElse.colour",
+        "status": "match",
+        "expected": "#5b80a5",
+        "actual": "#5b80a5"
+      },
+      {
+        "property": "blocks.maze_ifElse.tooltip",
+        "status": "match",
+        "expected": "If there is a path in the specified direction, then do the first block of actions. Otherwise, do the second block of actions.",
+        "actual": "If there is a path in the specified direction, then do the first block of actions. Otherwise, do the second block of actions."
+      },
+      {
+        "property": "blocks.maze_ifElse.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_ifElse.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.dummy:<anonymous>.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "explicit-dummy-input",
+        "boundary": "model2blockly",
+        "rationale": "La entrada ficticia usada por la definición JSON oficial no forma parte del metamodelo intermedio actual."
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:DO.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:DO.check",
+        "status": "unsupported",
+        "expected": null,
+        "actual": [
+          "Command"
+        ],
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Las contenciones de tipo Command producen comprobaciones de entrada tipadas, mientras que Maze acepta cualquier bloque de sentencia."
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:DO.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:DO.fieldOrder",
+        "status": "unsupported",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:DIR",
+          "field_label:"
+        ],
+        "capability": "explicit-dummy-input",
+        "boundary": "model2blockly",
+        "rationale": "Al no poder declarar input_dummy, los campos de cabecera se adjuntan a la entrada de sentencias y cambia su disposición."
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:DO.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:DO.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:DO.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:DO.fields.0.value",
+        "status": "match",
+        "expected": "do",
+        "actual": "do"
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:DO.fields.0.text",
+        "status": "match",
+        "expected": "do",
+        "actual": "do"
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:DO.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:ELSE.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:ELSE.check",
+        "status": "unsupported",
+        "expected": null,
+        "actual": [
+          "Command"
+        ],
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Las contenciones de tipo Command producen comprobaciones de entrada tipadas, mientras que Maze acepta cualquier bloque de sentencia."
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:ELSE.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:ELSE.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:ELSE.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:ELSE.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:ELSE.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:ELSE.fields.0.value",
+        "status": "match",
+        "expected": "else",
+        "actual": "else"
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:ELSE.fields.0.text",
+        "status": "match",
+        "expected": "else",
+        "actual": "else"
+      },
+      {
+        "property": "blocks.maze_ifElse.inputs.statement:ELSE.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.kind",
+        "status": "match",
+        "expected": "flyoutToolbox",
+        "actual": "flyoutToolbox"
+      },
+      {
+        "property": "toolbox.blockOrder",
+        "status": "unsupported",
+        "expected": [
+          "maze_moveForward",
+          "maze_turn",
+          "maze_turn",
+          "maze_forever",
+          "maze_if",
+          "maze_ifElse"
+        ],
+        "actual": [
+          "maze_moveForward",
+          "maze_turn",
+          "maze_forever",
+          "maze_if",
+          "maze_ifElse"
+        ],
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "La paleta generada contiene una entrada por tipo y no puede repetir maze_turn dos veces."
+      },
+      {
+        "property": "toolbox.nonBlockItems",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.blocks.maze_moveForward#1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.blocks.maze_moveForward#1.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.blocks.maze_turn#1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.blocks.maze_turn#1.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "fields": {
+            "DIR": "turnLeft"
+          }
+        },
+        "actual": {
+          "enabled": true
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no permite preconfigurar DIR en una instancia concreta de la paleta."
+      },
+      {
+        "property": "toolbox.blocks.maze_turn#2.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "No se puede declarar una segunda instancia del mismo tipo con una configuración diferente."
+      },
+      {
+        "property": "toolbox.blocks.maze_forever#1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.blocks.maze_forever#1.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.blocks.maze_if#1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.blocks.maze_if#1.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.blocks.maze_ifElse#1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.blocks.maze_ifElse#1.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "initialWorkspace.present",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      }
+    ]
+  },
+  "generators": {
+    "scope": "Presence and domain-code template; execution engine excluded.",
+    "summary": {
+      "totalObserved": 20,
+      "applicable": 15,
+      "matches": 15,
+      "partial": 0,
+      "mismatches": 0,
+      "unsupported": 0,
+      "errors": 0,
+      "excluded": 5,
+      "differences": 5,
+      "parityPercent": 100
+    },
+    "properties": [
+      {
+        "property": "generators.maze_moveForward.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.maze_moveForward.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.maze_moveForward.template",
+        "status": "excluded",
+        "expected": "moveForward('block_id_{{id}}');",
+        "actual": "moveForward();",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La diferencia se limita al identificador block_id usado por Maze para animar la ejecución; el mapa, la animación y su motor están fuera del alcance."
+      },
+      {
+        "property": "generators.maze_moveForward.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.maze_turn.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.maze_turn.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.maze_turn.template",
+        "status": "excluded",
+        "expected": "{{DIR}}('block_id_{{id}}');",
+        "actual": "{{DIR}}();",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La diferencia se limita al identificador block_id usado por Maze para animar la ejecución; el mapa, la animación y su motor están fuera del alcance."
+      },
+      {
+        "property": "generators.maze_turn.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.maze_forever.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.maze_forever.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.maze_forever.template",
+        "status": "match",
+        "expected": "while (notDone()) {\n{{statements:DO}}\n}",
+        "actual": "while (notDone()) {\n{{statements:DO}}\n}"
+      },
+      {
+        "property": "generators.maze_forever.sideEffects",
+        "status": "excluded",
+        "expected": [
+          "infinite-loop-trap"
+        ],
+        "actual": [],
+        "capability": "execution-loop-trap",
+        "boundary": "domain-runtime",
+        "rationale": "INFINITE_LOOP_TRAP pertenece al motor de ejecución de Blockly Games y no a la generación estructural del editor."
+      },
+      {
+        "property": "generators.maze_if.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.maze_if.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.maze_if.template",
+        "status": "excluded",
+        "expected": "if ({{DIR}}('block_id_{{id}}')) {\n{{statements:DO}}\n}",
+        "actual": "if ({{DIR}}()) {\n{{statements:DO}}\n}",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La diferencia se limita al identificador block_id usado por Maze para animar la ejecución; el mapa, la animación y su motor están fuera del alcance."
+      },
+      {
+        "property": "generators.maze_if.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.maze_ifElse.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.maze_ifElse.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.maze_ifElse.template",
+        "status": "excluded",
+        "expected": "if ({{DIR}}('block_id_{{id}}')) {\n{{statements:DO}}\n} else {\n{{statements:ELSE}}\n}",
+        "actual": "if ({{DIR}}()) {\n{{statements:DO}}\n} else {\n{{statements:ELSE}}\n}",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "La diferencia se limita al identificador block_id usado por Maze para animar la ejecución; el mapa, la animación y su motor están fuera del alcance."
+      },
+      {
+        "property": "generators.maze_ifElse.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      }
+    ]
+  }
+}

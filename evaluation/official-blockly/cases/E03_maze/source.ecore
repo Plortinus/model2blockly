@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="maze"
+    nsURI="http://www.example.org/maze"
+    nsPrefix="maze">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="geras"/>
+    <details key="workspace.toolboxType" value="flyout"/>
+    <details key="workspace.trashcan" value="false"/>
+  </eAnnotations>
+  <eAnnotations source="code">
+    <details key="language" value="javascript"/>
+    <details key="fileExtension" value="js"/>
+  </eAnnotations>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Command" abstract="true"/>
+
+  <eClassifiers xsi:type="ecore:EClass" name="maze_moveForward" eSuperTypes="#//Command">
+    <eAnnotations source="blockly">
+      <details key="colour" value="290"/>
+      <details key="message0" value="move forward"/>
+      <details key="tooltip" value="Moves the player forward one space."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="move forward"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="moveForward();"/></eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="maze_turn" eSuperTypes="#//Command">
+    <eAnnotations source="blockly">
+      <details key="colour" value="290"/>
+      <details key="message0" value="%1"/>
+      <details key="tooltip" value="Turns the player left or right by 90 degrees."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="turn"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="{{DIR}}();"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DIR" eType="#//TurnDirection" defaultValueLiteral="turnLeft">
+      <eAnnotations source="ui">
+        <details key="widget" value="select"/><details key="label" value="Direction"/>
+        <details key="order" value="1"/><details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="maze_forever" eSuperTypes="#//Command">
+    <eAnnotations source="blockly">
+      <details key="colour" value="120"/>
+      <details key="message0" value="repeat until %1 do %2"/>
+      <details key="tooltip" value="Repeat the enclosed actions until finish point is reached."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="repeat until"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="while (notDone()) {&#10;{{statements:DO}}&#10;}"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="MARKER"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="">
+      <eAnnotations source="blockly">
+        <details key="type" value="field_image"/><details key="src" value="maze/marker.png"/>
+        <details key="width" value="12"/><details key="height" value="16"/><details key="alt" value=""/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="image"/><details key="label" value="Finish"/>
+        <details key="order" value="1"/><details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="DO" upperBound="10" eType="#//Command" containment="true">
+      <eAnnotations source="ui">
+        <details key="widget" value="slot"/><details key="label" value="Do"/>
+        <details key="order" value="2"/><details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="maze_if" eSuperTypes="#//Command">
+    <eAnnotations source="blockly">
+      <details key="colour" value="210"/>
+      <details key="message0" value="%1 do %2"/>
+      <details key="tooltip" value="If there is a path in the specified direction, then do some actions."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="if path"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="if ({{DIR}}()) {&#10;{{statements:DO}}&#10;}"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DIR" eType="#//PathDirection" defaultValueLiteral="isPathForward">
+      <eAnnotations source="ui">
+        <details key="widget" value="select"/><details key="label" value="Direction"/>
+        <details key="order" value="1"/><details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="DO" upperBound="10" eType="#//Command" containment="true">
+      <eAnnotations source="ui">
+        <details key="widget" value="slot"/><details key="label" value="Do"/>
+        <details key="order" value="2"/><details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="maze_ifElse" eSuperTypes="#//Command">
+    <eAnnotations source="blockly">
+      <details key="colour" value="210"/>
+      <details key="message0" value="%1 do %2 else %3"/>
+      <details key="tooltip" value="If there is a path in the specified direction, then do the first block of actions. Otherwise, do the second block of actions."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui"><details key="label" value="if path, else"/></eAnnotations>
+    <eAnnotations source="code"><details key="template" value="if ({{DIR}}()) {&#10;{{statements:DO}}&#10;} else {&#10;{{statements:ELSE}}&#10;}"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="DIR" eType="#//PathDirection" defaultValueLiteral="isPathForward">
+      <eAnnotations source="ui">
+        <details key="widget" value="select"/><details key="label" value="Direction"/>
+        <details key="order" value="1"/><details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="DO" upperBound="10" eType="#//Command" containment="true">
+      <eAnnotations source="ui">
+        <details key="widget" value="slot"/><details key="label" value="Do"/>
+        <details key="order" value="2"/><details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ELSE" upperBound="10" eType="#//Command" containment="true">
+      <eAnnotations source="ui">
+        <details key="widget" value="slot"/><details key="label" value="Else"/>
+        <details key="order" value="3"/><details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="TurnDirection">
+    <eLiterals name="turnLeft" literal="turn left ↺"/>
+    <eLiterals name="turnRight" value="1" literal="turn right ↻"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PathDirection">
+    <eLiterals name="isPathForward" literal="if path ahead"/>
+    <eLiterals name="isPathLeft" value="1" literal="if path to the left ↺"/>
+    <eLiterals name="isPathRight" value="2" literal="if path to the right ↻"/>
+  </eClassifiers>
+</ecore:EPackage>

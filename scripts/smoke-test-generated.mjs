@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { createReadStream } from 'node:fs';
-import { readdir, stat } from 'node:fs/promises';
+import { readdir, stat, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -14,6 +14,7 @@ const options = {
   allowIssues: false,
   generic: false,
   headed: false,
+  persistSampleCode: false,
 };
 
 const defaultTargets = [
@@ -26,6 +27,7 @@ for (const arg of process.argv.slice(2)) {
   if (arg === '--allow-issues') options.allowIssues = true;
   else if (arg === '--generic') options.generic = true;
   else if (arg === '--headed') options.headed = true;
+  else if (arg === '--persist-sample-code') options.persistSampleCode = true;
   else if (arg === '--help' || arg === '-h') {
     printUsage();
     process.exit(0);
@@ -73,6 +75,8 @@ Options:
   --allow-issues   Do not fail when the generated editor reports validation issues.
   --generic        Use domain-neutral assertions for compact feature examples.
   --headed         Show the browser while running the smoke test.
+  --persist-sample-code
+                   Write sample_generated.<extension> next to the generated editor.
   -h, --help       Show this help.
 
 Default targets:
@@ -224,6 +228,39 @@ async function testTarget(browser, baseUrl, target, opts) {
       throw new Error(`Domain instance XMI export is not EMF-style: ${JSON.stringify(domainXmi)}`);
     }
     result.domainXmi = domainXmi;
+    const codegen = await page.evaluate(() => {
+      const config = window.BLOCKLY_DOMAIN_CODEGEN || {};
+      const blocks = Object.values(config.blocks || {});
+      const templateCount = blocks.filter((block) => block && block.template).length;
+      const code = typeof window.generateDomainCode === 'function'
+        ? window.generateDomainCode(window.workspace)
+        : '';
+      return {
+        language: config.language || '',
+        extension: config.fileExtension || '',
+        templateCount,
+        code,
+      };
+    });
+    if (codegen.templateCount > 0 && !codegen.code.trim()) {
+      throw new Error(`Configured code templates produced empty output: ${JSON.stringify(codegen)}`);
+    }
+    if (target.name.includes('06_codegen_workspace')
+        && (codegen.language !== 'javascript'
+          || codegen.extension !== 'js'
+          || codegen.templateCount !== 4
+          || !codegen.code.includes('program(Demo')
+          || !codegen.code.includes('console.log(Ready);')
+          || !codegen.code.includes('wait(250);'))) {
+      throw new Error(`Code-generation example did not expand its templates: ${JSON.stringify(codegen)}`);
+    }
+    if (opts.persistSampleCode && codegen.templateCount > 0 && codegen.code.trim()) {
+      const extension = (codegen.extension || 'txt').replace(/^\./, '');
+      const sampleCodeFile = path.join(path.dirname(target.html), `sample_generated.${extension}`);
+      await writeFile(sampleCodeFile, codegen.code, 'utf8');
+      result.sampleCodeFile = path.relative(repoRoot, sampleCodeFile);
+    }
+    result.codegen = codegen;
     const previewButton = page.getByRole('button', { name: 'Preview', exact: true });
     if (await previewButton.count()) {
       await previewButton.click();
@@ -262,9 +299,22 @@ async function testTarget(browser, baseUrl, target, opts) {
       await validationFrame.locator('.blocklySvg').waitFor({ state: 'visible', timeout: 10000 });
       const ruleCountText = (await validationFrame.locator('#ruleCount').textContent({ timeout: 10000 })) || '';
       const draggableCount = await validationFrame.locator('.blocklyDraggable').count();
-      if (!/\d+\s+rules?/.test(ruleCountText) || draggableCount === 0) {
+      const ruleCountMatch = ruleCountText.match(/(\d+)\s+rules?/);
+      const declaredRuleCount = ruleCountMatch ? Number(ruleCountMatch[1]) : -1;
+      if (declaredRuleCount < 0
+          || (declaredRuleCount === 0 && draggableCount !== 0)
+          || (declaredRuleCount > 0 && draggableCount === 0)) {
         throw new Error(`Validation Blocks tab did not render Blockly rules. ruleCount="${ruleCountText}", blocks=${draggableCount}`);
       }
+      if (declaredRuleCount === 0) {
+        result.validationBlocks = {
+          ruleCount: ruleCountText.trim(),
+          blocks: draggableCount,
+          runtimeRules: 0,
+          syncProbe: false,
+          sourceSnippets: false,
+        };
+      } else {
       await page.waitForFunction(() => {
         const iframe = document.querySelector('#validationBlocksView iframe');
         return Boolean(iframe?.contentWindow?.workspaceToValidationBlockModel)
@@ -349,6 +399,7 @@ async function testTarget(browser, baseUrl, target, opts) {
         syncProbe: true,
         sourceSnippets: true,
       };
+      }
     }
     result.ok = true;
   } catch (error) {
@@ -371,7 +422,10 @@ function printResults(results) {
       const domainXmi = result.domainXmi
         ? `; domainXmi=${result.domainXmi.length} bytes/${result.domainXmi.firstRoot || '-'}`
         : '';
-      console.log(`[PASS] ${result.name}: roots=${result.roots.join(', ') || '-'}; issues=${result.issues || 'none'}${domainXmi}${preview}${validationBlocks}`);
+      const codegen = result.codegen && result.codegen.templateCount > 0
+        ? `; codegen=${result.codegen.templateCount} templates/${result.codegen.language}.${result.codegen.extension}/${result.codegen.code.length} chars${result.sampleCodeFile ? `/saved=${result.sampleCodeFile}` : ''}`
+        : '';
+      console.log(`[PASS] ${result.name}: roots=${result.roots.join(', ') || '-'}; issues=${result.issues || 'none'}${domainXmi}${codegen}${preview}${validationBlocks}`);
     } else {
       console.error(`[FAIL] ${result.name}: ${result.error}`);
     }

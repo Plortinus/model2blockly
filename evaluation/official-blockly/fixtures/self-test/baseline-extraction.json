@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "caseId": "SELF_harness",
+  "configuration": "Synthetic infrastructure self-test; excluded from the empirical corpus",
+  "source": {
+    "repository": "local-self-test",
+    "commit": "not-applicable",
+    "license": "project-internal"
+  },
+  "fragments": [
+    {
+      "id": "self-test-baseline",
+      "path": "evaluation/official-blockly/fixtures/self-test/baseline.mjs",
+      "startLine": 1,
+      "endLine": 70,
+      "sha256": "4cdeadad56db2b347a7d9b6f4476e9593082cd237df597a3973da3b51d612ebe",
+      "kinds": [
+        "block-definition",
+        "toolbox",
+        "generator"
+      ],
+      "metricGroups": [
+        "editor",
+        "generator"
+      ],
+      "countForMetrics": false,
+      "sharedSourceKey": null,
+      "notes": [
+        "This fixture validates the extraction format and is not an evaluation result."
+      ]
+    }
+  ]
+}

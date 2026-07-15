@@ -1,0 +1,34 @@
+[
+  {
+    "_type": "music_start",
+    "_blockId": "sample_music_start_1",
+    "PLAY_IMAGE": "music/play.png",
+    "STACK": [
+      {
+        "_type": "music_note",
+        "_blockId": "sample_music_note_1",
+        "DURATION": "whole",
+        "PITCH": {
+          "_type": "music_pitch",
+          "_blockId": "sample_music_pitch_1",
+          "PITCH": "7"
+        }
+      },
+      {
+        "_type": "music_rest_whole",
+        "_blockId": "sample_music_rest_whole_1",
+        "REST_IMAGE": "music/rest1.png"
+      },
+      {
+        "_type": "music_rest",
+        "_blockId": "sample_music_rest_1",
+        "DURATION": "whole"
+      },
+      {
+        "_type": "music_instrument",
+        "_blockId": "sample_music_instrument_1",
+        "INSTRUMENT": "piano"
+      }
+    ]
+  }
+]

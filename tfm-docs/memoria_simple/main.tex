@@ -14,6 +14,7 @@
 \usepackage{tikz}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{amsmath}
 \usepackage{csquotes}
 \usepackage{listings}
 \usepackage{float}
@@ -30,6 +31,11 @@
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \renewcommand{\lstlistingname}{Listado}
 \renewcommand{\lstlistlistingname}{Índice de listados}
+\definecolor{codeKeyword}{HTML}{1F4E79}
+\definecolor{codeComment}{HTML}{3F6B3F}
+\definecolor{codeString}{HTML}{8A4B08}
+\definecolor{codeEmfType}{HTML}{006B6B}
+\definecolor{codeProjectType}{HTML}{6A3D7A}
 \lstdefinestyle{tfmcode}{
   basicstyle=\ttfamily\scriptsize,
   breaklines=true,
@@ -45,6 +51,86 @@
   aboveskip=0.8em,
   belowskip=0.8em,
   captionpos=b
+}
+\lstdefinestyle{tfmcolored}{
+  style=tfmcode,
+  keywordstyle=\color{codeKeyword}\bfseries,
+  keywordstyle=[2]{\color{codeEmfType}\bfseries},
+  keywordstyle=[3]{\color{codeProjectType}\bfseries},
+  commentstyle=\color{codeComment}\itshape,
+  stringstyle=\color{codeString},
+  identifierstyle=\color{black},
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\ttfamily\tiny\color{black!50},
+  numbersep=6pt,
+  xleftmargin=2.5em,
+  framexleftmargin=2em
+}
+\lstdefinestyle{tfmjava}{
+  style=tfmcolored,
+  language=Java,
+  morekeywords=[2]{Injector,ResourceSet,Resource,XtextResource,CheckMode,CancelIndicator,Map,String},
+  morekeywords=[3]{EditorSpec,DomainModel,Model2BlocklyStandaloneSetup,Model2BlocklyValidationDiagnostics,BlocklySpecDiagnostics,BlocklySpecXmiSerializer,BlocklyCodeGenerator,Feature,Attribute,Containment,Reference,ValueInput,FieldSpec,StatementInputSpec,ReferenceFieldSpec,ValueInputSpec,BlockTypeSpec}
+}
+\lstdefinestyle{tfmjavaecore}{
+  style=tfmjava,
+  morekeywords=[2]{EPackage,EClassifier,EClass,EAttribute,EDataType,EEnum,EEnumLiteral,EReference,EAnnotation},
+  morekeywords=[3]{BlocklyEditorSpec,BlocklySpecModelMapper,DropdownOption,CategorySpec}
+}
+\lstdefinelanguage{M2B}{
+  sensitive=true,
+  alsoletter={-},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morekeywords={domain,codeLanguage,codeFileExtension,runtimeKind,workspace,category,label,colour,abstract,output,as,class,extends,message0,tooltip,helpUrl,inputsInline,inline,code,attribute,default,min,max,src,width,height,alt,required,modelId,unique,nonUnique,ordered,unordered,contains,reference,opposite,value,shadow,widget,uiLabel,help,placeholder,group,order,readonly,hidden,variant,referenceLabelField,enum,constraint,on,must,follow,validation,errorMessage,true,false},
+  morekeywords=[2]{string,int,boolean,float,angle,image},
+  morekeywords=[3]{text,textarea,number,slider,switch,checkbox,select,radio,color,reference-select,slot,expression-slot,compact,prominent,expression,condition,js,ocl}
+}
+\lstdefinestyle{tfmm2b}{
+  style=tfmcolored,
+  language=M2B
+}
+\lstdefinelanguage{M2BJavaScript}{
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  morekeywords={async,await,break,case,catch,class,const,continue,debugger,default,delete,do,else,export,extends,finally,for,function,if,import,in,instanceof,let,new,return,super,switch,this,throw,try,typeof,var,void,while,with,yield,of,true,false,null,undefined}
+}
+\lstdefinestyle{tfmjavascript}{
+  style=tfmcolored,
+  language=M2BJavaScript,
+  morekeywords=[3]{Blockly}
+}
+\lstdefinestyle{tfmhtml}{
+  style=tfmcolored,
+  language=HTML,
+  morekeywords=[3]{Blockly}
+}
+\lstdefinelanguage{Xtend}{
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morekeywords={package,import,class,interface,extends,implements,override,def,val,var,new,return,if,else,for,while,do,switch,case,default,try,catch,finally,throw,throws,typeof,as,instanceof,public,private,protected,static}
+}
+\lstdefinestyle{tfmxtend}{
+  style=tfmcolored,
+  language=Xtend,
+  morekeywords=[2]{String,Map,LinkedHashMap},
+  morekeywords=[3]{EditorSpec,ValidationWorkspaceHtmlGenerator,ValidationBlockModelGenerator,ValidationRuntimeGenerator,SampleModelGenerator}
+}
+\lstdefinelanguage{M2BCLI}{
+  sensitive=true,
+  morecomment=[l]{//},
+  morekeywords=[3]{EcoreToBlocklyMain,Model2BlocklyToBlocklyMain,ValidationPatchMain}
+}
+\lstdefinestyle{tfmcli}{
+  style=tfmcolored,
+  language=M2BCLI
 }
 \lstset{style=tfmcode}
 \makeatletter
@@ -152,7 +238,9 @@
 \begin{document}
 
 \pagestyle{tfm}
+\hypersetup{pageanchor=false}
 \makeTFMtitle
+\hypersetup{pageanchor=true}
 \setcounter{page}{1}
 \input{frontmatter/resumen}
 \tableofcontents

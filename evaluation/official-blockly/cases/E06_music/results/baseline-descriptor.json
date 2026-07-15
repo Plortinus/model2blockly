@@ -1,0 +1,1081 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E06_music",
+  "treatment": "baseline",
+  "controls": {
+    "blocklyVersion": "13.1.1",
+    "browserViewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "locale": "en",
+    "renderer": "geras",
+    "theme": "classic",
+    "workspaceViewport": {
+      "height": 640,
+      "width": 1024
+    }
+  },
+  "blocks": [
+    {
+      "type": "music_pitch",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": "PITCH",
+          "fieldKind": "custom:FieldPitch",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "PITCH",
+              "kind": "custom:FieldPitch",
+              "value": "",
+              "text": "C3",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      "inputsInline": false,
+      "colour": "#5b67a5",
+      "tooltip": "One note (C4 is 7).",
+      "helpUrl": null,
+      "dynamicBehaviour": [
+        "pitch-note-conversion",
+        "pitch-picker",
+        "pitch-range-validation"
+      ]
+    },
+    {
+      "type": "music_note",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "PITCH",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "PITCH"
+        },
+        {
+          "kind": "field",
+          "name": "DURATION",
+          "fieldKind": "field_dropdown",
+          "inputName": "PITCH"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "PITCH"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "PITCH",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "play",
+              "text": "play",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "DURATION",
+              "kind": "field_dropdown",
+              "value": "1",
+              "text": "1/1",
+              "options": [
+                {
+                  "label": {
+                    "alt": "1/1",
+                    "height": 19,
+                    "src": "music/note1.png",
+                    "width": 9
+                  },
+                  "value": "1"
+                },
+                {
+                  "label": {
+                    "alt": "1/2",
+                    "height": 19,
+                    "src": "music/note0.5.png",
+                    "width": 9
+                  },
+                  "value": "0.5"
+                },
+                {
+                  "label": {
+                    "alt": "1/4",
+                    "height": 19,
+                    "src": "music/note0.25.png",
+                    "width": 9
+                  },
+                  "value": "0.25"
+                },
+                {
+                  "label": {
+                    "alt": "1/8",
+                    "height": 19,
+                    "src": "music/note0.125.png",
+                    "width": 9
+                  },
+                  "value": "0.125"
+                },
+                {
+                  "label": {
+                    "alt": "1/16",
+                    "height": 19,
+                    "src": "music/note0.0625.png",
+                    "width": 9
+                  },
+                  "value": "0.0625"
+                }
+              ],
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "note",
+              "text": "note",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#5ba58c",
+      "tooltip": "Plays one musical note of the specified duration and pitch.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "music_rest_whole",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_image",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "rest",
+              "text": "rest",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_image",
+              "value": "music/rest1.png",
+              "text": "1/1",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#5ba58c",
+      "tooltip": "Waits for one whole note.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "music_rest",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": "DURATION",
+          "fieldKind": "field_dropdown",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "rest",
+              "text": "rest",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "DURATION",
+              "kind": "field_dropdown",
+              "value": "1",
+              "text": "1/1",
+              "options": [
+                {
+                  "label": {
+                    "alt": "1/1",
+                    "height": 20,
+                    "src": "music/rest1.png",
+                    "width": 10
+                  },
+                  "value": "1"
+                },
+                {
+                  "label": {
+                    "alt": "1/2",
+                    "height": 20,
+                    "src": "music/rest0.5.png",
+                    "width": 10
+                  },
+                  "value": "0.5"
+                },
+                {
+                  "label": {
+                    "alt": "1/4",
+                    "height": 20,
+                    "src": "music/rest0.25.png",
+                    "width": 10
+                  },
+                  "value": "0.25"
+                },
+                {
+                  "label": {
+                    "alt": "1/8",
+                    "height": 20,
+                    "src": "music/rest0.125.png",
+                    "width": 10
+                  },
+                  "value": "0.125"
+                },
+                {
+                  "label": {
+                    "alt": "1/16",
+                    "height": 20,
+                    "src": "music/rest0.0625.png",
+                    "width": 10
+                  },
+                  "value": "0.0625"
+                }
+              ],
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#5ba58c",
+      "tooltip": "Waits for the specified duration.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "music_instrument",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": "INSTRUMENT",
+          "fieldKind": "field_dropdown",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "set instrument to",
+              "text": "set instrument to",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "INSTRUMENT",
+              "kind": "field_dropdown",
+              "value": "piano",
+              "text": "piano",
+              "options": [
+                {
+                  "label": "piano",
+                  "value": "piano"
+                },
+                {
+                  "label": "trumpet",
+                  "value": "trumpet"
+                },
+                {
+                  "label": "banjo",
+                  "value": "banjo"
+                },
+                {
+                  "label": "violin",
+                  "value": "violin"
+                },
+                {
+                  "label": "guitar",
+                  "value": "guitar"
+                },
+                {
+                  "label": "flute",
+                  "value": "flute"
+                },
+                {
+                  "label": "drum",
+                  "value": "drum"
+                },
+                {
+                  "label": "choir",
+                  "value": "choir"
+                }
+              ],
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": true,
+      "colour": "#5ba58c",
+      "tooltip": "Switches to the specified instrument when playing subsequent musical notes.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "music_start",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_image",
+          "inputName": ""
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        },
+        {
+          "kind": "input",
+          "name": "STACK",
+          "inputKind": "statement"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "when",
+              "text": "when",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_image",
+              "value": "music/play.png",
+              "text": "▶",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "clicked",
+              "text": "clicked",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "STACK",
+          "kind": "statement",
+          "check": null,
+          "alignment": -1,
+          "fields": []
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#a55b5b",
+      "tooltip": "Executes the blocks inside when the 'Run Program' button is clicked.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    }
+  ],
+  "toolbox": {
+    "contents": [
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "fields": {
+              "PITCH": "7"
+            },
+            "kind": "block",
+            "type": "music_pitch"
+          },
+          {
+            "enabled": true,
+            "fields": {
+              "DURATION": "0.25"
+            },
+            "inputs": {
+              "PITCH": {
+                "shadow": {
+                  "fields": {
+                    "PITCH": "7"
+                  },
+                  "type": "music_pitch"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "music_note"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "music_rest"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "music_instrument"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "music_start"
+          }
+        ],
+        "kind": "category",
+        "name": "Music"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_compare"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_operation"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_negate"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_boolean"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_ternary"
+          }
+        ],
+        "kind": "category",
+        "name": "Logic"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "inputs": {
+              "TIMES": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "controls_repeat_ext"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_whileUntil"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "BY": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "FROM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "TO": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "controls_for"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_forEach"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_flow_statements"
+          }
+        ],
+        "kind": "category",
+        "name": "Loops"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "math_number"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "A": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "B": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_arithmetic"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 9
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_single"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUMBER_TO_CHECK": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 0
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_number_property"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 3.1
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_round"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "DIVIDEND": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 64
+                  },
+                  "type": "math_number"
+                }
+              },
+              "DIVISOR": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_modulo"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "HIGH": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 100
+                  },
+                  "type": "math_number"
+                }
+              },
+              "LOW": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "VALUE": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 50
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_constrain"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "FROM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "TO": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 100
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_random_int"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "math_random_float"
+          }
+        ],
+        "kind": "category",
+        "name": "Math"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "extraState": {
+              "itemCount": 0
+            },
+            "kind": "block",
+            "type": "lists_create_with"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "lists_create_with"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 5
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "lists_repeat"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "lists_length"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "lists_isEmpty"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "VALUE": {
+                "block": {
+                  "fields": {
+                    "VAR": {
+                      "id": "|(4z~=aCWb@]/(9`o831",
+                      "name": "list",
+                      "type": ""
+                    }
+                  },
+                  "type": "variables_get"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "lists_indexOf"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "VALUE": {
+                "block": {
+                  "fields": {
+                    "VAR": {
+                      "id": "HFNL(E}H4;v|Xo?D}G@=",
+                      "name": "list",
+                      "type": ""
+                    }
+                  },
+                  "type": "variables_get"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "lists_getIndex"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "LIST": {
+                "block": {
+                  "fields": {
+                    "VAR": {
+                      "id": "j88:)jLXSiZs%}GMF56[",
+                      "name": "list",
+                      "type": ""
+                    }
+                  },
+                  "type": "variables_get"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "lists_setIndex"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "LIST": {
+                "block": {
+                  "fields": {
+                    "VAR": {
+                      "id": "$z/QmgQ[y1+$!ha]6EBa",
+                      "name": "list",
+                      "type": ""
+                    }
+                  },
+                  "type": "variables_get"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "lists_getSublist"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "lists_sort"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "lists_reverse"
+          }
+        ],
+        "kind": "category",
+        "name": "Lists"
+      },
+      {
+        "kind": "sep"
+      },
+      {
+        "custom": "VARIABLE",
+        "kind": "category",
+        "name": "Variables"
+      },
+      {
+        "custom": "PROCEDURE",
+        "kind": "category",
+        "name": "Functions"
+      }
+    ],
+    "kind": "categoryToolbox"
+  },
+  "initialWorkspace": {
+    "blocks": {
+      "blocks": [
+        {
+          "id": "krVtxBM_87:2]Jxsup5)",
+          "type": "music_start",
+          "x": 180,
+          "y": 50
+        }
+      ],
+      "languageVersion": 0
+    }
+  },
+  "generators": [
+    {
+      "type": "music_pitch",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "{{PITCH}}"
+      }
+    },
+    {
+      "type": "music_note",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-pitch-default-seven"
+        ],
+        "template": "play({{DURATION}}, {{value:PITCH}}, 'block_id_{{id}}');"
+      }
+    },
+    {
+      "type": "music_rest_whole",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "rest(1, 'block_id_{{id}}');"
+      }
+    },
+    {
+      "type": "music_rest",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "rest({{DURATION}}, 'block_id_{{id}}');"
+      }
+    },
+    {
+      "type": "music_instrument",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": "setInstrument('{{INSTRUMENT}}');"
+      }
+    },
+    {
+      "type": "music_start",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "definition-injection-thread-counter"
+        ],
+        "template": "function start{{counter}}() {\n{{statements:STACK}}\n}"
+      }
+    }
+  ],
+  "errors": []
+}

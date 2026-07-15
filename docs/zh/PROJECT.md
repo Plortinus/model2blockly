@@ -16,6 +16,7 @@ Ecore 元模型会被 EMF 加载成 `EPackage`，再转换成 `EditorSpec` 中�
 
 - [快速开始](GETTING_STARTED.md)
 - [AppMaker 案例](RUNNING_EXAMPLE.md)
+- [10个官方编辑器的外部评估](EVALUATION.md)
 - [Ecore 到 Blockly 映射规则](ECORE_TO_BLOCKLY_MAPPING.md)
 - [排错](TROUBLESHOOTING.md)
 

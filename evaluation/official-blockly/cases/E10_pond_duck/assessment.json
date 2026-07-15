@@ -1,0 +1,702 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E10_pond_duck",
+  "rules": [
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.pond_*.inputs.value:DEGREE.check",
+      "status": "unsupported",
+      "capability": "multi-type-input-check",
+      "boundary": "model2blockly",
+      "rationale": "Las entradas de dirección oficiales aceptan Number o Angle; cada value del metamodelo común solo puede referenciar un tipo objetivo y se conserva Number."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.pond_*.inputs.*.fieldOrder",
+      "status": "partial",
+      "capability": "readonly-call-labels",
+      "boundary": "model2blockly",
+      "rationale": "La llamada se ve con el mismo nombre y puntuación, pero el DSL representa el nombre como atributo label con identidad y, en las llamadas sin argumentos, conserva además el marcador vacío."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.pond_*.inputs.*.fields.0.name",
+      "status": "partial",
+      "capability": "readonly-call-labels",
+      "boundary": "model2blockly",
+      "rationale": "El texto visible coincide, aunque el label declarativo recibe el nombre CALL mientras que la cadena de la definición oficial es anónima."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.pond_*.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "Pond deja sin tipo las conexiones de sus sentencias; la jerarquía PondCommand necesaria para las contenciones genera conexiones anterior y siguiente tipadas."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_if.inputOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "La sintaxis JavaScript oficial separa IF0, la apertura del cuerpo, DO0 y TAIL en cuatro filas; message0 no permite declarar ambas filas dummy de forma independiente."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_if.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "La redefinición oficial conserva conexiones anterior y siguiente sin comprobación; el modelo deriva PondCommand."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_if.dynamicBehaviour",
+      "status": "partial",
+      "capability": "mutator-driven-block-shape",
+      "boundary": "model2blockly",
+      "rationale": "La rama if inicial y su tooltip se reproducen, pero el DSL no declara el mutador que añade else-if y else ni la forma y tooltip dependientes de ese estado."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_if.inputs.dummy:<anonymous>.fields.0.*",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "La fila dummy oficial con ') {' no existe separadamente; el emparejamiento encuentra en su lugar el cierre final generado."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_if.inputs.statement:DO0.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "La contención DO0 exige PondCommand para preservar el modelo, mientras que el bloque oficial admite cualquier sentencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_if.inputs.statement:DO0.fieldOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "El cierre de la sintaxis queda unido a DO0 porque no se puede materializar como la fila TAIL oficial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_if.inputs.dummy:TAIL.present",
+      "status": "unsupported",
+      "capability": "named-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no permite declarar la entrada dummy nombrada TAIL que el mutador oficial mantiene al final del bloque."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.logic_compare.connections.output",
+      "status": "mismatch",
+      "capability": "reserved-block-redefinition",
+      "boundary": "model2blockly",
+      "rationale": "La especificación solicita salida Boolean, pero al redefinir el nombre reservado logic_compare Blockly conserva una salida sin comprobación; es una discrepancia directa del artefacto generado."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.logic_compare.dynamicBehaviour",
+      "status": "partial",
+      "capability": "standard-block-extension",
+      "boundary": "model2blockly",
+      "rationale": "Se conservan el estado EQ, las seis opciones y el tooltip inicial, pero no el validador de compatibilidad de conexiones ni el tooltip dependiente del operador."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.logic_compare.inputs.value:*.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "A y B deben referenciar una clase de salida y se restringen a Number; la redefinición oficial acepta cualquier valor y valida dinámicamente la pareja."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.logic_boolean.connections.output",
+      "status": "mismatch",
+      "capability": "reserved-block-redefinition",
+      "boundary": "model2blockly",
+      "rationale": "La salida Boolean declarada se pierde al redefinir el nombre estándar logic_boolean, aunque el campo y sus dos opciones se mantienen."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_whileUntil.inputOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "La referencia separa la condición, la apertura del cuerpo, DO y el cierre en cuatro entradas; el DSL compone tres."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_whileUntil.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "Las conexiones oficiales no tienen tipo y las generadas se derivan de PondCommand."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_whileUntil.inputs.dummy:<anonymous>.fields.0.*",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "La apertura ') {' se declara en una fila dummy independiente que message0 no puede reproducir; el cierre generado es el único campo emparejable."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_whileUntil.inputs.statement:DO.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "DO se tipa como PondCommand en el modelo, frente a la entrada de sentencia sin restricción de Pond Tutor."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_whileUntil.inputs.statement:DO.fieldOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "El cierre queda unido a DO al no existir una fila dummy final declarable."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.controls_whileUntil.inputs.dummy:<anonymous>.present",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "De las dos filas dummy oficiales solo puede emparejarse la que contiene el cierre."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.pond_math_number.dynamicBehaviour",
+      "status": "partial",
+      "capability": "adaptive-angle-field",
+      "boundary": "model2blockly",
+      "rationale": "El modo numérico inicial y su uso como sombra se conservan, pero el campo no cambia a FieldAngle al conectarse a una entrada Angle ni serializa ese estado."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.pond_math_number.inputs.dummy:<anonymous>.fields.0.constraints.precision",
+      "status": "unsupported",
+      "capability": "numeric-field-precision",
+      "boundary": "model2blockly",
+      "rationale": "El float del DSL fija precisión 0,1; la referencia deja libre la precisión del FieldNumber con valor 0."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categoryOrder",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla conserva las seis categorías declaradas, pero añade después otras cinco categorías estándar; el DSL no permite sustituir esa composición global por la paleta oficial de Pond."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.nonCategoryItems",
+      "status": "unsupported",
+      "capability": "toolbox-separator-configuration",
+      "boundary": "model2blockly",
+      "rationale": "La generación introduce automáticamente un separador con gap 32 antes de las categorías estándar."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.*.colour",
+      "status": "unsupported",
+      "capability": "category-colour-omission",
+      "boundary": "model2blockly",
+      "rationale": "La referencia omite colour en sus cuatro categorías; Model2Blockly materializa los colores declarados para conservar su aspecto."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Pond.blocks.pond_*.configuration",
+      "status": "partial",
+      "capability": "toolbox-shadow-configuration",
+      "boundary": "model2blockly",
+      "rationale": "Se conservan los tipos de sombra, pero el DSL no configura por entrada NUM=0, 70 o 123 ni la mutación que selecciona Angle o Number."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.blocks.pond_math_number.configuration",
+      "status": "partial",
+      "capability": "toolbox-shadow-configuration",
+      "boundary": "model2blockly",
+      "rationale": "La entrada está presente, pero no puede incluir la mutación angle_field=false declarada por la paleta oficial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.unexpectedCategories",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla añade una segunda serie de Logic, Loops, Math, Variables y Functions después de las seis categorías declaradas y no ofrece una opción para desactivarla."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "initialWorkspace.present",
+      "status": "unsupported",
+      "capability": "initial-workspace",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no declara el pond_cannon inicial del pato editable, colocado en x=70, y=70, con sus sombras adaptativas de dirección y alcance."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.pond_*.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-empty-input-defaults",
+      "boundary": "model2blockly",
+      "rationale": "Las plantillas conservan las llamadas y la operación unaria, pero no expresan los valores alternativos de las entradas vacías: cero para dirección, alcance y operando, y cadena vacía para log."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.controls_if.template",
+      "status": "partial",
+      "capability": "mutator-aware-generator",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla coincide para la rama if inicial, pero no puede recorrer las ramas else-if y else añadidas por el mutador."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.controls_if.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-empty-input-defaults",
+      "boundary": "model2blockly",
+      "rationale": "No se declara el false alternativo usado por el generador estándar cuando IF0 está vacío."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.logic_compare.template",
+      "status": "unsupported",
+      "capability": "generator-enum-mapping",
+      "boundary": "model2blockly",
+      "rationale": "El generador oficial traduce EQ, NEQ, LT, LTE, GT y GTE a operadores JavaScript; la plantilla inserta el identificador almacenado directamente."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.logic_compare.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-empty-input-defaults",
+      "boundary": "model2blockly",
+      "rationale": "Los operandos vacíos reciben una cadena vacía en el generador estándar y el DSL no expresa esa regla."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.logic_boolean.template",
+      "status": "unsupported",
+      "capability": "generator-enum-mapping",
+      "boundary": "model2blockly",
+      "rationale": "TRUE y FALSE deben convertirse en los literales true y false; el enum declarativo conserva sus identificadores."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.controls_whileUntil.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-control-flow-safety",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla principal coincide, pero no incluye el false alternativo ni la protección de bucle que aplica el generador estándar en la aplicación."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.logic_operation.connections.output",
+      "status": "mismatch",
+      "capability": "reserved-block-redefinition",
+      "boundary": "model2blockly",
+      "rationale": "La especificación solicita salida Boolean, pero la redefinición del nombre estándar logic_operation conserva una salida sin comprobación en el artefacto cargado."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.pond_log.inputs.value:VALUE.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "VALUE debe referenciar una clase de salida y se modela como Number; pond_log acepta cualquier valor en la referencia oficial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.logic_operation.dynamicBehaviour",
+      "status": "partial",
+      "capability": "standard-block-extension",
+      "boundary": "model2blockly",
+      "rationale": "Se conservan la forma inicial y las opciones AND y OR, pero no el tooltip que cambia con el operador."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.math_arithmetic.connections.output",
+      "status": "mismatch",
+      "capability": "reserved-block-redefinition",
+      "boundary": "model2blockly",
+      "rationale": "La salida Number declarada no se conserva al redefinir el nombre estándar math_arithmetic; es una discrepancia directa del artefacto generado."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.math_arithmetic.dynamicBehaviour",
+      "status": "partial",
+      "capability": "standard-block-extension",
+      "boundary": "model2blockly",
+      "rationale": "La forma y los cuatro operadores están presentes, pero no el tooltip dependiente del operador."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.pond_math_single.dynamicBehaviour",
+      "status": "partial",
+      "capability": "standard-block-extension",
+      "boundary": "model2blockly",
+      "rationale": "La forma inicial y las ocho funciones matemáticas están presentes, pero no el tooltip que cambia con la función elegida."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.math_random_float.connections.output",
+      "status": "mismatch",
+      "capability": "reserved-block-redefinition",
+      "boundary": "model2blockly",
+      "rationale": "La salida Number declarada se pierde al redefinir el bloque estándar math_random_float en el artefacto cargado."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.math_change.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "La jerarquía PondCommand introduce comprobaciones tipadas en las conexiones anterior y siguiente, mientras que la referencia acepta cualquier sentencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.math_change.dynamicBehaviour",
+      "status": "partial",
+      "capability": "variable-field",
+      "boundary": "model2blockly",
+      "rationale": "Se reproduce el estado inicial de la asignación incremental, pero no FieldVariable ni el tooltip dependiente del nombre seleccionado."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.math_change.inputs.value:DELTA.fieldOrder",
+      "status": "unsupported",
+      "capability": "variable-field",
+      "boundary": "model2blockly",
+      "rationale": "El atributo string produce FieldTextInput; el DSL no dispone de un widget que genere FieldVariable para VAR."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.math_change.inputs.value:DELTA.fields.0.present",
+      "status": "unsupported",
+      "capability": "variable-field",
+      "boundary": "model2blockly",
+      "rationale": "El campo VAR está presente como texto editable, pero no puede emparejarse con el FieldVariable exigido por la referencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.variables_set.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "La jerarquía PondCommand tipa las conexiones de variables_set, frente a las conexiones sin restricción de la referencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.variables_set.dynamicBehaviour",
+      "status": "partial",
+      "capability": "variable-field",
+      "boundary": "model2blockly",
+      "rationale": "Se conserva la asignación visible inicial, pero no FieldVariable ni la entrada de menú contextual que crea el getter correspondiente."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.variables_set.inputs.value:VALUE.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "VALUE debe referenciar un tipo de salida en el modelo y se restringe a Number; el bloque oficial acepta cualquier valor."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.variables_set.inputs.value:VALUE.fieldOrder",
+      "status": "unsupported",
+      "capability": "variable-field",
+      "boundary": "model2blockly",
+      "rationale": "La sintaxis visible se conserva, pero VAR se genera como FieldTextInput en vez de FieldVariable."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.variables_set.inputs.value:VALUE.fields.1.present",
+      "status": "unsupported",
+      "capability": "variable-field",
+      "boundary": "model2blockly",
+      "rationale": "El campo textual generado no puede emparejarse con el FieldVariable oficial aunque ambos muestren el nombre inicial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_def*.inputOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "Las definiciones oficiales separan cabecera, cuerpo, retorno y cierre en entradas distintas; message0 no permite materializar toda esa secuencia de filas."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_def*.dynamicBehaviour",
+      "status": "partial",
+      "capability": "procedure-mutator",
+      "boundary": "model2blockly",
+      "rationale": "Se reproduce la función inicial sin parámetros y su cuerpo, pero no el mutador de argumentos, el renombrado coordinado ni la forma serializable dependiente del estado."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_def*.inputs.dummy:<anonymous>.fieldOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "La cabecera y el cierre oficiales ocupan filas dummy independientes; el generador declarativo asocia la cabecera a STACK y solo conserva el cierre como fila dummy."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_def*.inputs.dummy:<anonymous>.fields.*.*",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "Los campos de la cabecera oficial no pueden emparejarse con la única fila dummy generada, que contiene el cierre de la función."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_def*.inputs.dummy:<anonymous>.present",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "De las dos filas dummy oficiales solo se materializa separadamente la fila de cierre."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_def*.inputs.statement:STACK.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "STACK se tipa como PondCommand para conservar la contención del modelo, mientras que el procedimiento oficial acepta cualquier sentencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_def*.inputs.statement:STACK.fieldOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "Los campos de cabecera quedan unidos a STACK porque no se puede declarar antes una fila dummy independiente."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_defreturn.inputs.value:RETURN.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "RETURN debe referenciar un tipo de salida y se modela como Number; la referencia admite cualquier valor."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_defreturn.inputs.value:RETURN.alignment",
+      "status": "unsupported",
+      "capability": "input-alignment",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no expone la alineación derecha aplicada explícitamente por el bloque oficial a la entrada RETURN."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_call*.inputOrder",
+      "status": "unsupported",
+      "capability": "named-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "La llamada oficial separa la cabecera y TAIL en dos entradas dummy para poder insertar argumentos dinámicos; message0 las fusiona."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_callnoreturn.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "La llamada sin retorno deriva de PondCommand y recibe conexiones tipadas, mientras que la referencia deja ambas sin restricción."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_call*.dynamicBehaviour",
+      "status": "partial",
+      "capability": "procedure-mutator",
+      "boundary": "model2blockly",
+      "rationale": "Se conserva la llamada inicial sin argumentos, pero no las entradas ARGn dinámicas, la serialización del estado ni el renombrado coordinado con la definición."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_call*.inputs.dummy:<anonymous>.fieldOrder",
+      "status": "unsupported",
+      "capability": "named-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "La apertura se representa como label nombrado y TAIL queda en la misma fila; la referencia usa un label anónimo y una entrada TAIL separada."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_call*.inputs.dummy:<anonymous>.fields.*.*",
+      "status": "unsupported",
+      "capability": "named-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "La apertura generada recibe identidad propia, mientras que la referencia la conserva como label anónimo antes de la fila TAIL."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.procedures_call*.inputs.dummy:TAIL.present",
+      "status": "unsupported",
+      "capability": "named-dummy-inputs",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no puede declarar la entrada dummy TAIL que el bloque oficial desplaza después de los argumentos dinámicos."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.blocks.math_arithmetic.configuration",
+      "status": "partial",
+      "capability": "toolbox-shadow-configuration",
+      "boundary": "model2blockly",
+      "rationale": "Se conservan sombras numéricas para A y B, pero se usa pond_math_number y no se pueden fijar el tipo math_number ni NUM=1 por entrada."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.blocks.pond_math_single.configuration",
+      "status": "partial",
+      "capability": "toolbox-shadow-configuration",
+      "boundary": "model2blockly",
+      "rationale": "La entrada NUM conserva una sombra numérica, pero no se puede seleccionar math_number ni configurar NUM=9 en la paleta."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Variables.custom",
+      "status": "unsupported",
+      "capability": "dynamic-toolbox-category",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no permite declarar una categoría de dominio con callback custom=VARIABLE."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Variables.unexpectedBlocks",
+      "status": "unsupported",
+      "capability": "dynamic-toolbox-category",
+      "boundary": "model2blockly",
+      "rationale": "Al no poder integrar los bloques modelados en la categoría dinámica, math_change y variables_set aparecen como entradas estáticas adicionales."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Functions.custom",
+      "status": "unsupported",
+      "capability": "dynamic-toolbox-category",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no permite declarar una categoría de dominio con callback custom=PROCEDURE."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Functions.unexpectedBlocks",
+      "status": "unsupported",
+      "capability": "dynamic-toolbox-category",
+      "boundary": "model2blockly",
+      "rationale": "Las cuatro formas de procedimiento modeladas aparecen como entradas estáticas porque no pueden integrarse en el flyout dinámico oficial."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.logic_operation.template",
+      "status": "unsupported",
+      "capability": "generator-enum-mapping",
+      "boundary": "model2blockly",
+      "rationale": "El generador oficial traduce AND y OR a && y ||; la plantilla declarativa inserta directamente el identificador almacenado."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.logic_operation.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-empty-input-defaults",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla no expresa los valores false alternativos que usa el generador estándar cuando faltan operandos."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.math_arithmetic.template",
+      "status": "unsupported",
+      "capability": "generator-enum-mapping",
+      "boundary": "model2blockly",
+      "rationale": "ADD, MINUS, MULTIPLY y DIVIDE requieren una tabla de conversión a operadores JavaScript que no se puede declarar en la plantilla."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.math_arithmetic.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-empty-input-defaults",
+      "boundary": "model2blockly",
+      "rationale": "No se pueden declarar los ceros alternativos usados por el generador aritmético cuando faltan A o B."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.pond_math_single.template",
+      "status": "unsupported",
+      "capability": "generator-enum-mapping",
+      "boundary": "model2blockly",
+      "rationale": "ROOT, ABS y las seis funciones trigonométricas requieren mapear el identificador a un nombre de función Math; la plantilla solo puede insertar el campo directamente."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.math_change.template",
+      "status": "partial",
+      "capability": "generator-variable-database",
+      "boundary": "model2blockly",
+      "rationale": "La operación += y DELTA se conservan, pero VAR se toma como texto directo en vez de resolverse mediante la base de nombres de Blockly."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.math_change.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-variable-database",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla no aplica ni el cero alternativo de DELTA ni la normalización de nombres de variable."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.variables_set.template",
+      "status": "partial",
+      "capability": "generator-variable-database",
+      "boundary": "model2blockly",
+      "rationale": "La declaración var y VALUE se conservan, pero VAR no pasa por la base de nombres de Blockly."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.variables_set.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-variable-database",
+      "boundary": "model2blockly",
+      "rationale": "No se expresan el cero alternativo para VALUE ni la normalización del nombre de variable."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.procedures_def*.template",
+      "status": "partial",
+      "capability": "mutator-aware-generator",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla reproduce una definición sin parámetros y su cuerpo, pero no puede recorrer parámetros añadidos por el mutador ni registrar la definición en Blockly."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.procedures_def*.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-procedure-database",
+      "boundary": "model2blockly",
+      "rationale": "La generación declarativa no usa la base de definiciones y nombres de procedimientos ni las reglas de retorno vacío del generador estándar."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.procedures_call*.template",
+      "status": "partial",
+      "capability": "mutator-aware-generator",
+      "boundary": "model2blockly",
+      "rationale": "La llamada inicial sin argumentos se conserva, pero no se pueden recorrer las entradas ARGn creadas dinámicamente ni resolver el nombre coordinado."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.procedures_call*.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-procedure-database",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla no consulta la base de nombres de procedimientos que mantiene la correspondencia entre definiciones y llamadas."
+    }
+  ]
+}

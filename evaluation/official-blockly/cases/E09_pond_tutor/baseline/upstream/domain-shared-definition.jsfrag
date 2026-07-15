@@ -1,0 +1,7 @@
+Pond.Blocks.init = function() {
+  /**
+   * Common HSV hue for all pond blocks.
+   */
+  const POND_HUE = 290;
+
+  Blockly.defineBlocksWithJsonArray([

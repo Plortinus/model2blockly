@@ -1,0 +1,182 @@
+{
+  "caseId": "E10_pond_duck",
+  "configuration": "Editor Blockly completo de Pond Duck",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "domain-blocks",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 29,
+      "endLine": 166,
+      "snapshot": "baseline/upstream/domain-blocks.js",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "domain-generators",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 168,
+      "endLine": 222,
+      "snapshot": "baseline/upstream/domain-generators.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "adaptive-number-block",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 225,
+      "endLine": 318,
+      "snapshot": "baseline/upstream/adaptive-number-block.js",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "advanced-unary-math-block",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 320,
+      "endLine": 356,
+      "snapshot": "baseline/upstream/advanced-unary-math-block.js",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "advanced-unary-math-generator",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 358,
+      "endLine": 373,
+      "snapshot": "baseline/upstream/advanced-unary-math-generator.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "adaptive-number-generator",
+      "sourcePath": "appengine/pond/src/blocks.js",
+      "startLine": 375,
+      "endLine": 375,
+      "snapshot": "baseline/upstream/adaptive-number-generator.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "standard-block-runtime",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 35,
+      "endLine": 474,
+      "snapshot": "baseline/upstream/standard-block-runtime.js",
+      "kinds": ["block-definition", "editor-extension", "generator"],
+      "metricGroups": ["editor", "generator"],
+      "countForMetrics": false,
+      "notes": ["Loaded unchanged; precise fragments below prevent the shared runtime from being counted twice."]
+    },
+    {
+      "id": "standard-logic-and-loop-blocks",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 35,
+      "endLine": 226,
+      "snapshot": "baseline/upstream/standard-logic-and-loop-blocks.jsfrag",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "standard-math-blocks",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 228,
+      "endLine": 291,
+      "snapshot": "baseline/upstream/standard-math-blocks.jsfrag",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "math-change-generator",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 293,
+      "endLine": 307,
+      "snapshot": "baseline/upstream/math-change-generator.jsfrag",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "random-number-and-variable-blocks",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 309,
+      "endLine": 338,
+      "snapshot": "baseline/upstream/random-number-and-variable-blocks.jsfrag",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "procedure-blocks",
+      "sourcePath": "appengine/pond/src/js-blocks.js",
+      "startLine": 340,
+      "endLine": 474,
+      "snapshot": "baseline/upstream/procedure-blocks.jsfrag",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "full-toolbox",
+      "sourcePath": "appengine/pond/duck/src/html.js",
+      "startLine": 53,
+      "endLine": 140,
+      "snapshot": "baseline/upstream/full-toolbox.js",
+      "kinds": ["toolbox"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "default-editable-duck-workspace",
+      "sourcePath": "appengine/pond/duck/default-ducks.js",
+      "startLine": 13,
+      "endLine": 30,
+      "snapshot": "baseline/upstream/default-editable-duck-workspace.js",
+      "kinds": ["initial-workspace"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "pond-category-message",
+      "sourcePath": "json/en.json",
+      "startLine": 15,
+      "endLine": 15,
+      "snapshot": "baseline/upstream/pond-category-message.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "standard-category-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 27,
+      "endLine": 34,
+      "snapshot": "baseline/upstream/standard-category-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "pond-block-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 243,
+      "endLine": 251,
+      "snapshot": "baseline/upstream/pond-block-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    }
+  ]
+}

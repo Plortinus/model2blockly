@@ -1,0 +1,82 @@
+{
+  "caseId": "E07_turtle",
+  "configuration": "Blockly Turtle, nivel 10",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "block-definitions",
+      "sourcePath": "appengine/turtle/src/blocks.js",
+      "startLine": 42,
+      "endLine": 365,
+      "snapshot": "baseline/upstream/block-definitions.js",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "generators",
+      "sourcePath": "appengine/turtle/src/blocks.js",
+      "startLine": 367,
+      "endLine": 439,
+      "snapshot": "baseline/upstream/generators.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-10-toolbox",
+      "sourcePath": "appengine/turtle/src/html.js",
+      "startLine": 140,
+      "endLine": 415,
+      "snapshot": "baseline/upstream/level-10-toolbox.js",
+      "kinds": ["toolbox"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "level-10-initial-workspace",
+      "sourcePath": "appengine/turtle/src/main.js",
+      "startLine": 136,
+      "endLine": 157,
+      "snapshot": "baseline/upstream/level-10-initial-workspace.js",
+      "kinds": ["initial-workspace"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "game-name-message",
+      "sourcePath": "json/en.json",
+      "startLine": 11,
+      "endLine": 11,
+      "snapshot": "baseline/upstream/game-name-message.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "category-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 27,
+      "endLine": 34,
+      "snapshot": "baseline/upstream/category-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "turtle-editor-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 119,
+      "endLine": 144,
+      "snapshot": "baseline/upstream/turtle-editor-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true,
+      "notes": ["Only English messages used by block definitions are included."]
+    }
+  ]
+}

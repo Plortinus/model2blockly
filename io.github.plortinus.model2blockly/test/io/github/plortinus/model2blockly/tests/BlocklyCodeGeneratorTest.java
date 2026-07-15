@@ -201,6 +201,8 @@ class BlocklyCodeGeneratorTest {
 				"Should generate field_colour type");
 		assertTrue(blocks.contains("\"name\": \"bg\""));
 		assertTrue(blocks.contains("\"colour\": \"#ff0000\""));
+		assertTrue(blocks.contains("fieldRegistry.register('field_colour', FieldColourFallback)"),
+				"Generated editors must register a fallback when the optional Blockly colour plugin is absent");
 	}
 
 	@Test
@@ -216,6 +218,8 @@ class BlocklyCodeGeneratorTest {
 				"Should generate field_angle type");
 		assertTrue(blocks.contains("\"name\": \"dir\""));
 		assertTrue(blocks.contains("\"angle\": 90"));
+		assertTrue(blocks.contains("super(value === null || value === undefined ? 90 : value, 0, 360, 1"),
+				"Angle fallback must constrain values to the 0–360 degree range");
 	}
 
 	@Test
@@ -496,6 +500,28 @@ class BlocklyCodeGeneratorTest {
 
 		String blocks = generator.generate(spec).get("T_blocks.js");
 		assertTrue(blocks.contains("\"inputsInline\": false"));
+	}
+
+	@Test
+	@DisplayName("Generated non-inline blocks place labelled fields on separate rows")
+	void testInputsInlineFalseUsesLabelledRows() {
+		BlocklyEditorSpec spec = minimalSpec("T");
+		BlockTypeSpec bt = makeBlock("Form", "Content form", 200,
+				BlockTypeSpec.ConnectionType.FREE);
+		bt.setInputsInline(Boolean.FALSE);
+		FieldSpec title = makeField("title", FieldSpec.FieldType.TEXT, "Welcome");
+		title.setUiLabel("Title");
+		FieldSpec quantity = makeField("quantity", FieldSpec.FieldType.INTEGER, "3");
+		quantity.setUiLabel("Quantity");
+		bt.getFields().add(title);
+		bt.getFields().add(quantity);
+		spec.getBlockTypes().add(bt);
+
+		String blocks = generator.generate(spec).get("T_blocks.js");
+		assertTrue(blocks.contains("\"message0\": \"Content form\""));
+		assertTrue(blocks.contains("\"args0\": []"));
+		assertTrue(blocks.contains("\"message1\": \"Title %1\""));
+		assertTrue(blocks.contains("\"message2\": \"Quantity %1\""));
 	}
 
 	@Test
@@ -838,6 +864,8 @@ class BlocklyCodeGeneratorTest {
 		assertTrue(generators.contains("function generateDomainCode(workspace)"));
 		assertTrue(generators.contains("function renderFallbackDomainBlock(block, config)"));
 		assertTrue(standalone.contains("<button onclick=\"exportCode()\""));
+		assertTrue(standalone.contains("data-tab=\"code\""));
+		assertTrue(standalone.contains("codeView.textContent = generatedCode"));
 		assertTrue(standalone.contains("var code = generateDomainCode(workspace);"));
 		assertTrue(standalone.contains("if (!confirmExportIfInvalid(workspace)) return;"));
 	}

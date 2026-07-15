@@ -31,17 +31,14 @@ class ContentForm category Content colour 180 label "Content form"
     widget text uiLabel "Internal code" group "System" order 10 hidden variant default
 }
 
-class VisualBadge category Appearance colour 45 label "Visual badge"
-  message0 "badge %1 angle %2 icon %3 %4"
-  tooltip "Visual Blockly field examples."
+class VisualFields category Appearance colour 45 label "Visual fields"
+  message0 "visual fields colour %1 angle %2 image %3 label %4"
+  tooltip "Direct colour, angle, image, and label field mappings."
   helpUrl "https://developers.google.com/blockly" inputsInline false {
-  attribute accent : colour [0..1] default "#1f6feb"
-    widget color uiLabel "Accent" order 1 variant default
-  attribute rotation : angle [0..1] default "45"
-    widget angle uiLabel "Rotation" order 2 variant default
-  attribute icon : image [0..1] default "Blockly"
+  attribute colourValue : colour [0..1] default "#1f6feb"
+  attribute angleValue : angle [0..1] default "45"
+  attribute imageValue : image [0..1]
     src "https://developers.google.com/blockly/images/logos/logo_built_on.svg"
-    width 32 height 32 alt "Blockly" widget image uiLabel "Icon" order 3 variant default
-  attribute caption : label [0..1] default "Preview only"
-    widget text uiLabel "Caption" order 4 readonly variant default
+    width 32 height 32 alt "Blockly"
+  attribute labelValue : label [0..1] default "Label"
 }

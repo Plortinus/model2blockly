@@ -1,0 +1,10 @@
+[
+  {
+    "_type": "graph_set_y",
+    "_blockId": "sample_graph_set_y_1",
+    "VALUE": {
+      "_type": "graph_get_x",
+      "_blockId": "sample_graph_get_x_1"
+    }
+  }
+]

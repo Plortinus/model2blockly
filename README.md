@@ -1,30 +1,29 @@
 # Model2Blockly
 
-Model2Blockly is an Eclipse-based model-driven generator for producing
-Blockly-based DSL editors from EMF metamodel-level descriptions. The main
-route follows the EMF workflow: load an Ecore metamodel, transform it into a
-generated EMF intermediate model, persist that model as XMI, and generate the
-browser editor from the reloaded model.
+Model2Blockly is an Eclipse-based, model-driven generator that produces
+browser-ready Blockly DSL editors from either annotated Ecore metamodels or
+`.m2b` textual DSL specifications. Both input routes normalize their source
+model into the same generated EMF `EditorSpec`, persist it as XMI, reload and
+validate it, and use it to generate the HTML/JavaScript editor.
 
-The Ecore input is transformed into a generated EMF `EditorSpec` instance that
-conforms to the shared `BlocklyEditorSpec` intermediate metamodel. That model
-is serialized to `intermediate/*_blocklyspec.xmi`, reloaded from XMI,
-validated, and then generated into HTML/JavaScript Blockly editor artifacts.
-The generated editor can export user-created blocks as a domain instance model
-in JSON or XMI.
+`EditorSpec` is the serializable root type defined by
+`model/blockly_editor_spec.ecore`. The hand-written Java class
+`BlocklyEditorSpec` is an auxiliary construction view used by the adapters; it
+is not the root object stored in `intermediate/*_blocklyspec.xmi`. Generated
+editors can serialize user-created block models as JSON and, where applicable,
+as domain-instance XMI.
 
 This is a model-driven pipeline, not a direct source-to-HTML shortcut:
 
 ```text
-annotated .ecore
-  -> EMF ResourceSet / EPackage
-  -> model-to-model transformation
-  -> generated EMF EditorSpec
-  -> intermediate/*_blocklyspec.xmi
-  -> reload and validate XMI
-  -> model-to-text generation
-  -> generated Blockly HTML/JavaScript
-  -> user-created domain instance JSON/XMI
+annotated .ecore -> EPackage    -> EcoreAdapter -------\
+                                                        -> EMF EditorSpec
+.m2b             -> DomainModel -> DomainModelAdapter --/
+                                                        -> intermediate/*_blocklyspec.xmi
+                                                        -> reload and validate XMI
+                                                        -> model-to-text generation
+                                                        -> generated Blockly HTML/JavaScript
+                                                        -> user-created domain instance JSON/XMI
 ```
 
 There are two different XMI artifacts in the project:
@@ -51,23 +50,26 @@ scripts/                          Verification helpers
 
 ## Running Example
 
-The included AppMaker case study is based on an annotated Ecore metamodel:
+AppMaker is the checked-in end-to-end integration example. It is available
+through both input routes so their generated outputs can be inspected side by
+side:
 
 ```text
 io.github.plortinus.model2blockly/model/app_maker.ecore
+io.github.plortinus.model2blockly/examples/app_maker.m2b
 ```
 
-Generated editor:
+Generated editors:
 
 ```text
 io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
+io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/html/Appmaker_standalone.html
 ```
 
-See [Running Example: AppMaker](RUNNING_EXAMPLE.md) for the annotated Ecore
-source, the generated EMF intermediate model, and the generated editor
-artifacts. It points to the AppMaker Ecore annotations, intermediate XMI,
-generated JavaScript, screenshots, generation reports, exported domain XMI,
-and validation workspace.
+See [Running Example: AppMaker](RUNNING_EXAMPLE.md) for the two sources, their
+generated EMF intermediate models, browser editors, reports and validation
+artifacts. AppMaker demonstrates integration; the separate ten-editor corpus
+described below provides the external evaluation evidence.
 
 ## Documentation
 
@@ -80,6 +82,8 @@ files under `docs/` and published directly at the GitHub Pages root.
 - Spanish docs under [`docs/es`](docs/es/README.md)
 - Chinese docs under [`docs/zh`](docs/zh/README.md)
 - [AppMaker `.ecore` example](io.github.plortinus.model2blockly/model/app_maker.ecore)
+- [AppMaker `.m2b` example](io.github.plortinus.model2blockly/examples/app_maker.m2b)
+- [External evaluation results](evaluation/official-blockly/results/summary.md)
 
 ## Eclipse Usage
 
@@ -93,20 +97,20 @@ io.github.plortinus.model2blockly.feature
 io.github.plortinus.model2blockly.updatesite
 ```
 
-The UI plugin contributes commands for selected `.ecore`
-files:
+The UI plugin contributes commands for selected `.ecore`, `.m2b` and legacy
+`.model2blockly` files:
 
 - `Generate Blockly Editor`
 - `Apply Validation Blocks to Source`
 
 The bundles require JavaSE-21.
 
-Generation uses a shared generated EMF `EditorSpec` intermediate XMI model. For
-For Ecore files, generator-facing structural problems are reported before
-generation, for example duplicate block feature names, invalid value-input
-shadow blocks, unsupported OCL validation expressions, or invalid
-`referenceLabelField` settings. The Eclipse generate command adds problem
-markers to the source file when validation fails.
+Generation uses the shared generated EMF `EditorSpec` intermediate XMI model.
+Generator-facing structural problems are reported before generation, for
+example duplicate block feature names, invalid value-input shadow blocks,
+unsupported validation expressions or invalid reference-label settings. The
+Eclipse generate command adds problem markers to the source file when
+validation fails.
 
 The Eclipse command and the standalone CLIs use the same path: they materialize
 the intermediate XMI, reload it, validate the reloaded model, and only then emit
@@ -117,7 +121,35 @@ Generated validation rules are emitted both as executable JavaScript and as
 `html/validation_blocks.json` plus `html/validation_workspace.html`. The visual
 workspace can export `validation_blocks.edited.json`; the Eclipse command
 `Apply Validation Blocks to Source` applies supported validation-rule edits back
-to the selected `.ecore` source.
+to supported source files.
+
+## External Evaluation
+
+AppMaker is not used as the sole evaluation case. A reproducible corpus compares
+Model2Blockly with ten editor configurations extracted from the official
+Blockly Games and Blockly samples repositories. The comparison covers the
+Blockly editing subsystem: block structure, fields, inputs, connections,
+toolbox configuration, initial workspace state and code generators. Host
+application layers such as the Maze map, Turtle canvas, Music audio engine and
+Pond simulation are deliberately excluded.
+
+| Measure | Result |
+| --- | ---: |
+| Cases loaded without errors | 10/10 |
+| Weighted editor structural parity | 2315/2762 (83.82%) |
+| Weighted generator parity | 227/291 (78.01%) |
+| Official source LOC / `.m2b` LOC | 4074 / 1121 |
+| Weighted LOC reduction | 72.48% |
+| Conservative deduplicated LOC reduction | 70.00% |
+| Strict Ecore–`.m2b` descriptor equivalence | 3/3 cases |
+
+All ten generated editors load, but all ten are classified as partial
+reproductions. The results therefore do not claim equivalence of the complete
+host applications or measure developer productivity. See the
+[evaluation overview](evaluation/official-blockly/README.md),
+[protocol](evaluation/official-blockly/protocol.md),
+[aggregate results](evaluation/official-blockly/results/summary.md) and
+[observed support boundaries](evaluation/official-blockly/support-boundaries.md).
 
 ## Update Site
 
@@ -177,6 +209,7 @@ Run the basic repository checks:
 npm run verify:docs
 npm run verify:plugin
 npm run smoke
+npm run verify:evaluation-completed
 ```
 
 The EMF domain XMI check and validation patch round-trip checks require

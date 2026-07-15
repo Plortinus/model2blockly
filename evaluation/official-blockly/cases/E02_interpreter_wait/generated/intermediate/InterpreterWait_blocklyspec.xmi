@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="InterpreterWait" nsURI="http://www.example.org/interpreterwait" nsPrefix="interpreterwait" codeLanguage="javascript" codeFileExtension="js">
+  <categories name="Loops" label="Loops" colour="120"/>
+  <blockTypes typeName="wait_seconds" label="wait" colour="120" categoryName="Loops" message0=" wait %1 seconds" inputsInline="false" codeTemplate="waitForSeconds({{SECONDS}});">
+    <orderedInputNames>SECONDS</orderedInputNames>
+    <fields name="SECONDS" fieldType="INTEGER" defaultValue="1" min="0" max="600" uiWidget="number" uiLabel="Seconds" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <workspaceOptions key="renderer" value="geras"/>
+  <workspaceOptions key="trashcan" value="false" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

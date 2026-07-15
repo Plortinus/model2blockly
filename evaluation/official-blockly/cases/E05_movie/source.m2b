@@ -1,0 +1,84 @@
+domain Movie
+codeLanguage "javascript"
+codeFileExtension "js"
+
+workspace {
+  renderer: "geras"
+  toolboxType: "category"
+  trashcan: false
+}
+
+category Movie colour 160
+category Colour colour 20
+
+abstract output class Number {
+}
+
+abstract output class Colour {
+}
+
+class movie_circle category Movie colour 160
+  label "circle"
+  message0 "circle x%1y%2radius%3"
+  tooltip "Draws a circle at the specified location and with the specified radius."
+  inputsInline false
+  code "circle({{value:X}}, {{value:Y}}, {{value:RADIUS}});" {
+  value Number X
+    widget expression-slot uiLabel "X" order 1 variant default
+  value Number Y
+    widget expression-slot uiLabel "Y" order 2 variant default
+  value Number RADIUS
+    widget expression-slot uiLabel "Radius" order 3 variant default
+}
+
+class movie_rect category Movie colour 160
+  label "rectangle"
+  message0 "rectangle x%1y%2width%3height%4"
+  tooltip "Draws a rectangle at the specified location and with the specified width and height."
+  inputsInline false
+  code "rect({{value:X}}, {{value:Y}}, {{value:WIDTH}}, {{value:HEIGHT}});" {
+  value Number X
+    widget expression-slot uiLabel "X" order 1 variant default
+  value Number Y
+    widget expression-slot uiLabel "Y" order 2 variant default
+  value Number WIDTH
+    widget expression-slot uiLabel "Width" order 3 variant default
+  value Number HEIGHT
+    widget expression-slot uiLabel "Height" order 4 variant default
+}
+
+class movie_line category Movie colour 160
+  label "line"
+  message0 "line start x%1start y%2end x%3end y%4width%5"
+  tooltip "Draws a line from one point to another with the specified width."
+  inputsInline false
+  code "line({{value:X1}}, {{value:Y1}}, {{value:X2}}, {{value:Y2}}, {{value:WIDTH}});" {
+  value Number X1
+    widget expression-slot uiLabel "Start X" order 1 variant default
+  value Number Y1
+    widget expression-slot uiLabel "Start Y" order 2 variant default
+  value Number X2
+    widget expression-slot uiLabel "End X" order 3 variant default
+  value Number Y2
+    widget expression-slot uiLabel "End Y" order 4 variant default
+  value Number WIDTH
+    widget expression-slot uiLabel "Width" order 5 variant default
+}
+
+output as Number class movie_time extends Number category Movie colour 330
+  label "time"
+  message0 "time (0→100)"
+  tooltip "Returns the current time in the animation (0-100)."
+  inputsInline false
+  code "time()" {
+}
+
+class movie_colour category Colour colour 20
+  label "set colour to"
+  message0 "set colour to%1"
+  tooltip "Changes the colour of the pen."
+  inputsInline false
+  code "penColour({{value:COLOUR}});" {
+  value Colour COLOUR
+    widget expression-slot uiLabel "Colour" order 1 variant default
+}

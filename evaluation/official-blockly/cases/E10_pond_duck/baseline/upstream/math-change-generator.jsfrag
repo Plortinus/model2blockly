@@ -1,0 +1,15 @@
+/**
+ * Defines the JavaScript generation for the change block, without checks as to
+ * whether the variable is a number because users of games that use JsBlocks
+ * are advanced and this reduces complexity in generated code.
+ * @param {Blockly.Block} block
+ * @returns {string}
+ */
+Blockly.JavaScript['math_change'] = function(block) {
+  // Add to a variable in place.
+  const delta = Blockly.JavaScript.valueToCode(block, 'DELTA',
+      Blockly.JavaScript.ORDER_ADDITION) || '0';
+  const varName = Blockly.JavaScript.nameDB_.getName(
+      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+  return varName + ' += ' + delta + ';\n';
+};

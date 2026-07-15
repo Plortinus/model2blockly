@@ -1,0 +1,700 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E08_puzzle",
+  "baselineTreatment": "baseline",
+  "actualTreatment": "m2b",
+  "editor": {
+    "summary": {
+      "totalObserved": 75,
+      "applicable": 75,
+      "matches": 59,
+      "partial": 3,
+      "mismatches": 0,
+      "unsupported": 13,
+      "errors": 0,
+      "excluded": 0,
+      "differences": 16,
+      "parityPercent": 78.67,
+      "classification": "partial"
+    },
+    "loadErrors": [],
+    "properties": [
+      {
+        "property": "blocks.noUnexpectedTypes",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.animal.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.animal.inputOrder",
+        "status": "unsupported",
+        "expected": [
+          "dummy:",
+          "value:PIC",
+          "dummy:",
+          "statement:TRAITS"
+        ],
+        "actual": [
+          "value:PIC",
+          "statement:TRAITS"
+        ],
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "Puzzle separa nombre, imagen, patas y rasgos en cuatro filas mediante dos input_dummy explícitos; el DSL solo materializa las entradas estructurales PIC y TRAITS."
+      },
+      {
+        "property": "blocks.animal.connections.previous",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.animal.connections.next",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.animal.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.animal.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.animal.colour",
+        "status": "match",
+        "expected": "#5ba55b",
+        "actual": "#5ba55b"
+      },
+      {
+        "property": "blocks.animal.tooltip",
+        "status": "match",
+        "expected": "",
+        "actual": ""
+      },
+      {
+        "property": "blocks.animal.helpUrl",
+        "status": "match",
+        "expected": "https://en.wikipedia.org/wiki/Duck",
+        "actual": "https://en.wikipedia.org/wiki/Duck"
+      },
+      {
+        "property": "blocks.animal.dynamicBehaviour",
+        "status": "partial",
+        "expected": [
+          "data-driven-leg-menu",
+          "data-driven-populate",
+          "dom-to-mutation",
+          "help-url-from-mutation",
+          "mutation-to-dom"
+        ],
+        "actual": [],
+        "capability": "data-driven-block-state",
+        "boundary": "model2blockly",
+        "rationale": "El modelo reproduce el estado representativo del pato, incluido su nombre y selector de patas, pero no puede ejecutar populate ni cambiar menú, ayuda y mutación según uno de los cuatro animales."
+      },
+      {
+        "property": "blocks.animal.inputs.dummy:<anonymous>.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "Las filas dummy independientes que alojan el nombre y el selector de patas no son declarables en el metamodelo común."
+      },
+      {
+        "property": "blocks.animal.inputs.value:PIC.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.animal.inputs.value:PIC.check",
+        "status": "unsupported",
+        "expected": null,
+        "actual": [
+          "picture"
+        ],
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "El valor PIC debe referenciar una clase y por ello se restringe a picture; la conexión oficial no tiene comprobación de tipo."
+      },
+      {
+        "property": "blocks.animal.inputs.value:PIC.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "La referencia alinea PIC a la derecha, mientras que el DSL no expone la alineación individual de una entrada."
+      },
+      {
+        "property": "blocks.animal.inputs.value:PIC.fieldOrder",
+        "status": "unsupported",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:NAME",
+          "field_label:"
+        ],
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar la primera fila dummy, el nombre representativo del animal se incorpora a la fila de PIC además de su etiqueta oficial."
+      },
+      {
+        "property": "blocks.animal.inputs.value:PIC.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.animal.inputs.value:PIC.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.animal.inputs.value:PIC.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.animal.inputs.value:PIC.fields.0.value",
+        "status": "match",
+        "expected": "picture:",
+        "actual": "picture:"
+      },
+      {
+        "property": "blocks.animal.inputs.value:PIC.fields.0.text",
+        "status": "match",
+        "expected": "picture:",
+        "actual": "picture:"
+      },
+      {
+        "property": "blocks.animal.inputs.value:PIC.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.animal.inputs.dummy:<anonymous>.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "Las filas dummy independientes que alojan el nombre y el selector de patas no son declarables en el metamodelo común."
+      },
+      {
+        "property": "blocks.animal.inputs.statement:TRAITS.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.animal.inputs.statement:TRAITS.check",
+        "status": "unsupported",
+        "expected": null,
+        "actual": [
+          "trait"
+        ],
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La contención TRAITS se restringe a trait para preservar el metamodelo; la entrada oficial admite cualquier sentencia."
+      },
+      {
+        "property": "blocks.animal.inputs.statement:TRAITS.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.animal.inputs.statement:TRAITS.fieldOrder",
+        "status": "unsupported",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:LEGS",
+          "field_label:"
+        ],
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "Al no existir la fila dummy de patas, su desplegable queda unido a la entrada TRAITS junto con las etiquetas generadas."
+      },
+      {
+        "property": "blocks.animal.inputs.statement:TRAITS.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.animal.inputs.statement:TRAITS.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.animal.inputs.statement:TRAITS.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.animal.inputs.statement:TRAITS.fields.0.value",
+        "status": "match",
+        "expected": "traits:",
+        "actual": "traits:"
+      },
+      {
+        "property": "blocks.animal.inputs.statement:TRAITS.fields.0.text",
+        "status": "match",
+        "expected": "traits:",
+        "actual": "traits:"
+      },
+      {
+        "property": "blocks.animal.inputs.statement:TRAITS.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.picture.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.picture.inputOrder",
+        "status": "unsupported",
+        "expected": [
+          "dummy:PIC"
+        ],
+        "actual": [
+          "dummy:"
+        ],
+        "capability": "named-dummy-inputs",
+        "boundary": "model2blockly",
+        "rationale": "La imagen y sus dimensiones se conservan, pero el DSL genera una fila dummy anónima y no permite asignarle el nombre PIC usado por Puzzle."
+      },
+      {
+        "property": "blocks.picture.connections.previous",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.picture.connections.next",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.picture.connections.output",
+        "status": "match",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": null
+        }
+      },
+      {
+        "property": "blocks.picture.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.picture.colour",
+        "status": "match",
+        "expected": "#a5805b",
+        "actual": "#a5805b"
+      },
+      {
+        "property": "blocks.picture.tooltip",
+        "status": "match",
+        "expected": "",
+        "actual": ""
+      },
+      {
+        "property": "blocks.picture.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.picture.dynamicBehaviour",
+        "status": "partial",
+        "expected": [
+          "data-driven-image",
+          "data-driven-populate",
+          "dom-to-mutation",
+          "mutation-to-dom"
+        ],
+        "actual": [],
+        "capability": "data-driven-block-state",
+        "boundary": "model2blockly",
+        "rationale": "El bloque generado contiene la fotografía representativa del pato con sus dimensiones exactas, pero no puede sustituirla mediante populate para gato, abeja o caracol ni persistir esa elección como mutación."
+      },
+      {
+        "property": "blocks.picture.inputs.dummy:PIC.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.picture.inputs.dummy:PIC.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.picture.inputs.dummy:PIC.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.picture.inputs.dummy:PIC.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_image:"
+        ],
+        "actual": [
+          "field_image:"
+        ]
+      },
+      {
+        "property": "blocks.picture.inputs.dummy:PIC.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.picture.inputs.dummy:PIC.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.picture.inputs.dummy:PIC.fields.0.kind",
+        "status": "match",
+        "expected": "field_image",
+        "actual": "field_image"
+      },
+      {
+        "property": "blocks.picture.inputs.dummy:PIC.fields.0.value",
+        "status": "match",
+        "expected": "puzzle/duck.jpg",
+        "actual": "puzzle/duck.jpg"
+      },
+      {
+        "property": "blocks.picture.inputs.dummy:PIC.fields.0.text",
+        "status": "match",
+        "expected": "",
+        "actual": ""
+      },
+      {
+        "property": "blocks.picture.inputs.dummy:PIC.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.trait.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.trait.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.trait.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "trait"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La clase trait produce conexiones anterior y siguiente tipadas para mantener la cadena homogénea; Puzzle deja ambas conexiones sin restricción."
+      },
+      {
+        "property": "blocks.trait.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "trait"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La clase trait produce conexiones anterior y siguiente tipadas para mantener la cadena homogénea; Puzzle deja ambas conexiones sin restricción."
+      },
+      {
+        "property": "blocks.trait.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.trait.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.trait.colour",
+        "status": "match",
+        "expected": "#995ba5",
+        "actual": "#995ba5"
+      },
+      {
+        "property": "blocks.trait.tooltip",
+        "status": "match",
+        "expected": "",
+        "actual": ""
+      },
+      {
+        "property": "blocks.trait.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.trait.dynamicBehaviour",
+        "status": "partial",
+        "expected": [
+          "data-driven-label",
+          "data-driven-populate",
+          "dom-to-mutation",
+          "mutation-to-dom"
+        ],
+        "actual": [],
+        "capability": "data-driven-block-state",
+        "boundary": "model2blockly",
+        "rationale": "Se conserva el rasgo representativo Feathers, pero no los ocho estados seleccionables por animal y rasgo ni su serialización mediante mutación."
+      },
+      {
+        "property": "blocks.trait.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.trait.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.trait.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.trait.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:NAME"
+        ],
+        "actual": [
+          "field_label:NAME"
+        ]
+      },
+      {
+        "property": "blocks.trait.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.trait.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": "NAME",
+        "actual": "NAME"
+      },
+      {
+        "property": "blocks.trait.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.trait.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "Feathers",
+        "actual": "Feathers"
+      },
+      {
+        "property": "blocks.trait.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "Feathers",
+        "actual": "Feathers"
+      },
+      {
+        "property": "blocks.trait.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.present",
+        "status": "unsupported",
+        "expected": false,
+        "actual": true,
+        "capability": "toolbox-suppression",
+        "boundary": "model2blockly",
+        "rationale": "Puzzle no usa paleta porque sus dieciséis bloques se crean al iniciar; el DSL exige generar una paleta flyout o por categorías."
+      },
+      {
+        "property": "initialWorkspace.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "initial-workspace",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no declara el inventario inicial no eliminable formado por cuatro animales, cuatro imágenes y ocho rasgos; sus posiciones aleatorias se normalizan fuera de la comparación."
+      }
+    ]
+  },
+  "generators": {
+    "scope": "Presence and domain-code template; execution engine excluded.",
+    "summary": {
+      "totalObserved": 12,
+      "applicable": 12,
+      "matches": 6,
+      "partial": 0,
+      "mismatches": 6,
+      "unsupported": 0,
+      "errors": 0,
+      "excluded": 0,
+      "differences": 6,
+      "parityPercent": 50
+    },
+    "properties": [
+      {
+        "property": "generators.animal.registered",
+        "status": "mismatch",
+        "expected": false,
+        "actual": true,
+        "capability": "automatic-model-serializer",
+        "boundary": "model2blockly",
+        "rationale": "Puzzle es un ejercicio de asociación y no registra generadores; Model2Blockly añade serializadores JavaScript de respaldo para los tres tipos, una capacidad extra que no equivale al comportamiento oficial."
+      },
+      {
+        "property": "generators.animal.kind",
+        "status": "mismatch",
+        "expected": null,
+        "actual": "statement",
+        "capability": "automatic-model-serializer",
+        "boundary": "model2blockly",
+        "rationale": "Puzzle es un ejercicio de asociación y no registra generadores; Model2Blockly añade serializadores JavaScript de respaldo para los tres tipos, una capacidad extra que no equivale al comportamiento oficial."
+      },
+      {
+        "property": "generators.animal.template",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "generators.animal.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.picture.registered",
+        "status": "mismatch",
+        "expected": false,
+        "actual": true,
+        "capability": "automatic-model-serializer",
+        "boundary": "model2blockly",
+        "rationale": "Puzzle es un ejercicio de asociación y no registra generadores; Model2Blockly añade serializadores JavaScript de respaldo para los tres tipos, una capacidad extra que no equivale al comportamiento oficial."
+      },
+      {
+        "property": "generators.picture.kind",
+        "status": "mismatch",
+        "expected": null,
+        "actual": "value",
+        "capability": "automatic-model-serializer",
+        "boundary": "model2blockly",
+        "rationale": "Puzzle es un ejercicio de asociación y no registra generadores; Model2Blockly añade serializadores JavaScript de respaldo para los tres tipos, una capacidad extra que no equivale al comportamiento oficial."
+      },
+      {
+        "property": "generators.picture.template",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "generators.picture.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.trait.registered",
+        "status": "mismatch",
+        "expected": false,
+        "actual": true,
+        "capability": "automatic-model-serializer",
+        "boundary": "model2blockly",
+        "rationale": "Puzzle es un ejercicio de asociación y no registra generadores; Model2Blockly añade serializadores JavaScript de respaldo para los tres tipos, una capacidad extra que no equivale al comportamiento oficial."
+      },
+      {
+        "property": "generators.trait.kind",
+        "status": "mismatch",
+        "expected": null,
+        "actual": "statement",
+        "capability": "automatic-model-serializer",
+        "boundary": "model2blockly",
+        "rationale": "Puzzle es un ejercicio de asociación y no registra generadores; Model2Blockly añade serializadores JavaScript de respaldo para los tres tipos, una capacidad extra que no equivale al comportamiento oficial."
+      },
+      {
+        "property": "generators.trait.template",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "generators.trait.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      }
+    ]
+  }
+}

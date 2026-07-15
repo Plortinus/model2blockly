@@ -1,0 +1,7 @@
+[
+  {
+    "_type": "wait_seconds",
+    "_blockId": "sample_wait_seconds_1",
+    "SECONDS": "1"
+  }
+]

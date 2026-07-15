@@ -1,0 +1,66 @@
+{
+  "caseId": "E01_graph",
+  "configuration": "Editor único de Graph Demo",
+  "source": {
+    "repository": "https://github.com/google/blockly-samples.git",
+    "commit": "62ce120977078bf9179c5633681ee70446e5073b",
+    "path": "examples/graph-demo/index.html",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "toolbox",
+      "startLine": 103,
+      "endLine": 342,
+      "snapshot": "baseline/upstream/toolbox.js",
+      "kinds": ["toolbox"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "initial-workspace",
+      "startLine": 344,
+      "endLine": 392,
+      "snapshot": "baseline/upstream/initial-workspace.js",
+      "kinds": ["initial-workspace"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "graph-get-x-block",
+      "startLine": 395,
+      "endLine": 404,
+      "snapshot": "baseline/upstream/graph-get-x-block.js",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "graph-get-x-generator",
+      "startLine": 406,
+      "endLine": 411,
+      "snapshot": "baseline/upstream/graph-get-x-generator.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "graph-set-y-block",
+      "startLine": 413,
+      "endLine": 428,
+      "snapshot": "baseline/upstream/graph-set-y-block.js",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "graph-set-y-generator",
+      "startLine": 430,
+      "endLine": 442,
+      "snapshot": "baseline/upstream/graph-set-y-generator.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    }
+  ]
+}

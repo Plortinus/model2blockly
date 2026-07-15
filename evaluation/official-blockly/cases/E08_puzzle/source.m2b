@@ -1,0 +1,50 @@
+domain Puzzle
+codeLanguage "javascript"
+codeFileExtension "js"
+
+workspace {
+  renderer: "geras"
+  toolboxType: "flyout"
+  trashcan: false
+}
+
+class animal colour 120
+  label "animal"
+  message0 "%1picture:%2legs:%3traits:%4"
+  tooltip ""
+  helpUrl "https://en.wikipedia.org/wiki/Duck"
+  inputsInline false {
+  attribute NAME : label [0..1] default "Duck"
+    widget text uiLabel "Animal" readonly order 1 variant default
+  value picture PIC
+    widget expression-slot uiLabel "Picture" order 2 variant default
+  attribute LEGS : enum {
+    choose = "choose...",
+    snail = "  0  ",
+    duck = "  2  ",
+    cat = "  4  ",
+    bee = "  6  "
+  } [0..1] default "choose"
+    widget select uiLabel "Legs" order 3 variant default
+  contains trait TRAITS [0..8]
+    widget slot uiLabel "Traits" order 4 variant default
+}
+
+output class picture colour 30
+  label "picture"
+  message0 "%1"
+  tooltip ""
+  inputsInline false {
+  attribute PIC_IMAGE : image [0..1] default ""
+    src "puzzle/duck.jpg" width 100 height 70 alt ""
+    widget image uiLabel "Duck" readonly order 1 variant default
+}
+
+class trait colour 290
+  label "trait"
+  message0 "%1"
+  tooltip ""
+  inputsInline false {
+  attribute NAME : label [0..1] default "Feathers"
+    widget text uiLabel "Trait" readonly order 1 variant default
+}

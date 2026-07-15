@@ -24,12 +24,12 @@ Blockly es una de las bibliotecas más usadas para crear editores de este tipo.
 Su documentación lo describe como una biblioteca web que permite integrar en una
 aplicación un editor visual basado en bloques. Blockly se ocupa de la
 representación visual, el arrastre, el encaje de piezas y la gestión del
-workspace. El desarrollador, en cambio, debe definir los bloques, los campos, las
+espacio de trabajo. El desarrollador, en cambio, debe definir los bloques, los campos, las
 conexiones y la generación asociada \cite{blocklyWhatIs,blocklyDocs}.
 
 Por lo tanto, Blockly facilita la creación de editores visuales, pero no suprime
 todo el esfuerzo necesario. Cada nuevo dominio sigue necesitando tipos de bloque, campos,
-entradas, categorías de toolbox, reglas de conexión, serialización,
+entradas, categorías de la paleta, reglas de conexión, serialización,
 validaciones y, en algunos casos, generación de código. Este esfuerzo debe
 repetirse cuando se quiere crear un editor de bloques para otro dominio. Además, los
 entornos de programación por bloques no siguen un único diseño. La literatura
@@ -64,7 +64,7 @@ describir un dominio y generar de forma automática el código necesario para
 editarlo con Blockly.
 
 La herramienta desarrollada se llama Model2Blockly. Se entrega como un conjunto
-de plugins Eclipse y como una cadena de generación HTML/JavaScript. Admite dos
+de complementos Eclipse y como una cadena de generación HTML/JavaScript. Admite dos
 rutas de entrada. La primera parte de metamodelos Ecore, que pueden enriquecerse
 con anotaciones sobre la sintaxis visual. En esta ruta, las clases se convierten
 en tipos de bloque, los atributos en campos, las referencias de contención en
@@ -75,7 +75,7 @@ lenguaje declarar qué bloques, campos, conexiones, categorías y validaciones
 tendrá el editor Blockly generado.
 
 Ambas rutas se transforman en un modelo intermedio común,
-\texttt{Blockly\allowbreak{}Editor\allowbreak{}Spec}. Este modelo contiene los
+\texttt{EditorSpec}. Este modelo contiene los
 elementos necesarios para generar el editor: tipos de bloque, categorías, campos,
 entradas de valor, referencias, validaciones y metadatos de interfaz. La
 instancia intermedia se serializa como XMI y se recarga antes de producir los
@@ -90,12 +90,15 @@ detectar campos obligatorios vacíos o bloques requeridos que faltan. También s
 incorporaron referencias dinámicas mediante listas desplegables, opciones de
 personalización visual, anotaciones de interfaz, referencias opuestas,
 validaciones semánticas simples, generación de código y exportación del modelo
-creado por el usuario como JSON o XMI de instancia. La herramienta se evalúa
-mediante AppMaker, un ejemplo conductor descrito por las dos rutas: como
-metamodelo Ecore anotado y como fichero textual \texttt{.m2b}. Esta doble
-descripción permite comparar la autoría en Ecore y en el DSL textual, y mostrar
-que ambas entradas se normalizan hacia el mismo modelo intermedio antes de
-generar el editor Blockly.
+creado por el usuario como JSON o XMI de instancia. Seis pares mínimos y
+complementarios, formados por un metamodelo Ecore anotado y un fichero textual
+\texttt{.m2b}, permiten explicar y verificar de forma trazable las capacidades
+comunes de la cadena completa. Un caso Ecore independiente completa la cobertura
+de las construcciones sin equivalente textual. La evaluación principal se
+realiza por separado con diez configuraciones de editores
+publicadas en los repositorios oficiales de Blockly. Esta separación permite
+distinguir los ejemplos de implementación de la evidencia sobre la
+capacidad para reproducir editores que no fueron diseñados para ella.
 
 Las aportaciones principales del TFM son las siguientes. En primer lugar, se
 define una arquitectura que conecta Ecore, un modelo intermedio EMF y Blockly
@@ -104,12 +107,13 @@ implementa el adaptador Ecore que extrae clases, atributos, referencias,
 cardinalidades y anotaciones. En tercer lugar, se implementa una ruta textual
 \texttt{.m2b} con Xtext y un adaptador que transforma ese modelo al mismo
 \texttt{EditorSpec}. En cuarto lugar, se desarrolla un generador de editores
-Blockly con bloques, toolbox, páginas HTML, serialización, validaciones,
+Blockly con bloques, paleta, páginas HTML, serialización, validaciones,
 exportación JSON/XMI e informes de generación. En quinto lugar, se añaden
 referencias, personalización visual, generación de código y una representación
 editable de reglas de validación que puede aplicarse de vuelta a la fuente. Por
-último, se evalúa la solución con un ejemplo conductor, pruebas automáticas y
-artefactos desplegados públicamente.
+último, se aporta una evaluación reproducible con diez editores oficiales,
+comparación de la fuente mantenida, verificación de las rutas Ecore y
+\texttt{.m2b}, pruebas automáticas y artefactos desplegados públicamente.
 
 El alcance del trabajo se centra en la generación de editores Blockly desde
 descripciones de dominio de alto nivel, ya sean metamodelos Ecore anotados o
@@ -125,7 +129,8 @@ El resto del documento se organiza de la siguiente manera. El capítulo 2
 presenta los objetivos, el alcance y los criterios de evaluación del trabajo. El
 capítulo 3 revisa el estado del arte y las tecnologías en las que se apoya la
 propuesta. El capítulo 4 describe el diseño y la arquitectura de la solución,
-mientras que el capítulo 5 detalla la implementación de Model2Blockly. El
-capítulo 6 expone el ejemplo conductor y la evaluación de la herramienta. Por
+mientras que el capítulo 5 detalla la ejecución y la implementación de
+Model2Blockly mediante ejemplos reproducibles. El capítulo 6 evalúa la
+herramienta frente a diez configuraciones de editores Blockly existentes. Por
 último, el capítulo 7 recoge las conclusiones, las limitaciones identificadas y
 las posibles líneas de trabajo futuro.

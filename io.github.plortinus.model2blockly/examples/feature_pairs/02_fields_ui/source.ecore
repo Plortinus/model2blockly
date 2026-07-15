@@ -152,50 +152,37 @@
     </eStructuralFeatures>
   </eClassifiers>
 
-  <eClassifiers xsi:type="ecore:EClass" name="VisualBadge">
+  <eClassifiers xsi:type="ecore:EClass" name="VisualFields">
     <eAnnotations source="blockly">
       <details key="colour" value="45"/>
       <details key="category" value="UI/Appearance"/>
-      <details key="message0" value="badge %1 angle %2 icon %3 %4"/>
-      <details key="tooltip" value="Visual Blockly field examples."/>
+      <details key="message0" value="visual fields colour %1 angle %2 image %3 label %4"/>
+      <details key="tooltip" value="Direct colour, angle, image, and label field mappings."/>
       <details key="helpUrl" value="https://developers.google.com/blockly"/>
       <details key="inputsInline" value="false"/>
     </eAnnotations>
     <eAnnotations source="ui">
-      <details key="label" value="Visual badge"/>
+      <details key="label" value="Visual fields"/>
     </eAnnotations>
 
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="accent"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="colourValue"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="#1f6feb">
       <eAnnotations source="blockly">
         <details key="type" value="field_colour"/>
       </eAnnotations>
-      <eAnnotations source="ui">
-        <details key="widget" value="color"/>
-        <details key="label" value="Accent"/>
-        <details key="order" value="1"/>
-        <details key="variant" value="default"/>
-      </eAnnotations>
     </eStructuralFeatures>
 
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rotation"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="angleValue"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="45">
       <eAnnotations source="blockly">
         <details key="type" value="field_angle"/>
       </eAnnotations>
-      <eAnnotations source="ui">
-        <details key="widget" value="angle"/>
-        <details key="label" value="Rotation"/>
-        <details key="order" value="2"/>
-        <details key="variant" value="default"/>
-      </eAnnotations>
     </eStructuralFeatures>
 
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="icon"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral="Blockly">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imageValue"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="blockly">
         <details key="type" value="field_image"/>
         <details key="src" value="https://developers.google.com/blockly/images/logos/logo_built_on.svg"/>
@@ -203,26 +190,13 @@
         <details key="height" value="32"/>
         <details key="alt" value="Blockly"/>
       </eAnnotations>
-      <eAnnotations source="ui">
-        <details key="widget" value="image"/>
-        <details key="label" value="Icon"/>
-        <details key="order" value="3"/>
-        <details key="variant" value="default"/>
-      </eAnnotations>
     </eStructuralFeatures>
 
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="caption"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelValue"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral="Preview only">
+        defaultValueLiteral="Label">
       <eAnnotations source="blockly">
         <details key="type" value="field_label"/>
-      </eAnnotations>
-      <eAnnotations source="ui">
-        <details key="widget" value="text"/>
-        <details key="label" value="Caption"/>
-        <details key="order" value="4"/>
-        <details key="readonly" value="true"/>
-        <details key="variant" value="default"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>

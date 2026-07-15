@@ -1,0 +1,5 @@
+	"Bird.noWorm": "does not have worm",
+	"Bird.heading": "heading",
+	"Bird.noWormTooltip": "The condition when the bird has not gotten the worm.",
+	"Bird.headingTooltip": "Move in the direction of the given angle: 0 is to the right, 90 is straight up, etc.",
+	"Bird.positionTooltip": "x and y mark the bird's position. When x = 0 the bird is near the left edge, when x = 100 it's near the right edge. When y = 0 the bird is at the bottom, when y = 100 it's at the top.",

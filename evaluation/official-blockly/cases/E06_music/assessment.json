@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E06_music",
+  "rules": [
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.music_pitch.dynamicBehaviour",
+      "status": "partial",
+      "capability": "custom-pitch-field",
+      "boundary": "model2blockly",
+      "rationale": "El campo numérico alternativo conserva el intervalo 0-12, pero no ofrece el selector gráfico, la conversión C3-A4 ni la validación propia de FieldPitch."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.music_pitch.inputs.dummy:<anonymous>.fieldOrder",
+      "status": "partial",
+      "capability": "custom-pitch-field",
+      "boundary": "model2blockly",
+      "rationale": "El bloque conserva un campo PITCH en la misma fila, pero lo genera como field_number en lugar de la clase FieldPitch oficial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.music_pitch.inputs.dummy:<anonymous>.fields.*.present",
+      "status": "partial",
+      "capability": "custom-pitch-field",
+      "boundary": "model2blockly",
+      "rationale": "No existe un campo del mismo tipo personalizado que pueda emparejarse con FieldPitch; el campo numérico alternativo queda reflejado en el orden de campos."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.music_*.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "La jerarquía MusicCommand necesaria para admitir notas, silencios e instrumentos deriva conexiones tipadas, mientras que Music usa conexiones de sentencia sin tipo."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.music_*.inputs.*.fields.1.*",
+      "status": "partial",
+      "capability": "image-dropdown-options",
+      "boundary": "model2blockly",
+      "rationale": "Se conservan las cinco duraciones y sus etiquetas musicales como texto, pero el DSL no admite imágenes como etiquetas ni valores almacenados numéricos que no sean identificadores de enumeración."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.music_start.inputOrder",
+      "status": "unsupported",
+      "capability": "multiple-message-rows",
+      "boundary": "model2blockly",
+      "rationale": "Music usa message0 para la cabecera y message1 para STACK; el DSL solo declara message0 y no conserva la fila dummy separada."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.music_start.inputs.dummy:<anonymous>.present",
+      "status": "unsupported",
+      "capability": "multiple-message-rows",
+      "boundary": "model2blockly",
+      "rationale": "La fila de cabecera independiente creada por message0 no se puede declarar como input_dummy explícito."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.music_start.inputs.statement:STACK.fieldOrder",
+      "status": "unsupported",
+      "capability": "multiple-message-rows",
+      "boundary": "model2blockly",
+      "rationale": "Al faltar una segunda fila de mensaje, la etiqueta y la imagen de ejecución se adjuntan a la entrada STACK generada."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.music_start.inputs.statement:STACK.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "La contención se restringe a MusicCommand, mientras que la entrada oficial acepta cualquier bloque de sentencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categoryOrder",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla estándar generada no incluye Lists y no reproduce exactamente la secuencia oficial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.nonCategoryItems",
+      "status": "unsupported",
+      "capability": "toolbox-separator-configuration",
+      "boundary": "model2blockly",
+      "rationale": "El separador automático usa gap 32 y una posición fija, frente al separador sin parámetro situado antes de Variables."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.*.colour",
+      "status": "unsupported",
+      "capability": "category-colour-omission",
+      "boundary": "model2blockly",
+      "rationale": "Music omite colour en las categorías y delega el estilo; Model2Blockly materializa siempre un color."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Music.blocks.*.configuration",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "No pueden declararse por entrada los valores PITCH=7, DURATION=0.25 y el campo de la sombra music_pitch."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.*.unexpectedBlocks",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La paleta generada añade music_rest_whole y dos bloques lógicos que el nivel 10 oficial no ofrece."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.blocks.math_number.configuration",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla generada fija NUM=0, mientras que Music declara math_number sin configuración."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.blocks.math_number_property.present",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La composición estándar fija no contiene math_number_property."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Lists.present",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla estándar actual no genera la categoría Lists."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Lists.blocks.*.present",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "initialWorkspace.present",
+      "status": "unsupported",
+      "capability": "initial-workspace",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no puede declarar el music_start inicial con posición y propiedad deletable del nivel 10."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.music_*.template",
+      "status": "excluded",
+      "capability": "execution-tracing",
+      "boundary": "domain-runtime",
+      "rationale": "Las tres diferencias de plantilla son exclusivamente los identificadores block_id usados para sincronizar notas y silencios con la reproducción visual."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.music_note.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-empty-input-defaults",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla no expresa el valor alternativo 7 que Music utiliza cuando falta la entrada PITCH."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.music_start.sideEffects",
+      "status": "unsupported",
+      "capability": "definition-generator",
+      "boundary": "model2blockly",
+      "rationale": "El generador declarativo no incrementa un contador de hilos ni inserta cada función startN en definitions_ sin emitir una sentencia local."
+    }
+  ]
+}

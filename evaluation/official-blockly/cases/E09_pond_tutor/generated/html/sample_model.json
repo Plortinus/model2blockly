@@ -1,0 +1,29 @@
+[
+  {
+    "_type": "pond_cannon",
+    "_blockId": "sample_pond_cannon_1",
+    "CALL": "cannon",
+    "DEGREE": {
+      "_type": "pond_scan",
+      "_blockId": "sample_pond_scan_1",
+      "CALL": "scan",
+      "DEGREE": {
+        "_type": "pond_getX",
+        "_blockId": "sample_pond_getX_1",
+        "CALL": "getX",
+        "EMPTY": ""
+      }
+    },
+    "RANGE": {
+      "_type": "pond_scan",
+      "_blockId": "sample_pond_scan_2",
+      "CALL": "scan",
+      "DEGREE": {
+        "_type": "pond_getX",
+        "_blockId": "sample_pond_getX_2",
+        "CALL": "getX",
+        "EMPTY": ""
+      }
+    }
+  }
+]

@@ -134,7 +134,7 @@ intermedio común entre las entradas y la salida.
 Este modelo representa el editor que se desea obtener, no una copia completa del
 artefacto de origen. Su contenido se organiza conceptualmente en tres grupos. El
 primero describe la estructura general del editor, como las categorías de la
-toolbox y su configuración. El segundo define los bloques, sus campos y sus
+paleta y su configuración. El segundo define los bloques, sus campos y sus
 formas de conexión. El tercero conserva la información de comportamiento que
 afecta a la edición, como referencias y reglas de validación. El metamodelo
 intermedio establece las relaciones válidas entre estos conceptos y cada
@@ -178,7 +178,7 @@ relevantes para crear modelos válidos.
 
 Ecore no describe por sí solo todas las decisiones de sintaxis concreta de un
 editor Blockly, como el color, la etiqueta visible, la organización de la
-toolbox o el tipo de control utilizado para editar un valor. Por este motivo, la
+paleta o el tipo de control utilizado para editar un valor. Por este motivo, la
 ruta admite anotaciones que complementan el metamodelo sin alterar su estructura
 esencial. La separación entre estructura del dominio y metadatos de presentación
 permite obtener una salida útil por defecto y personalizarla cuando el dominio
@@ -206,11 +206,11 @@ describir el dominio.
 Una vez construido el modelo intermedio, la generación produce los artefactos
 necesarios para ejecutar el editor en un navegador. Esta etapa puede entenderse
 como una transformación de modelo a texto: la especificación del editor se
-convierte en definiciones de bloques, toolbox, configuración del workspace,
+convierte en definiciones de bloques, paleta, configuración del espacio de trabajo,
 reglas de validación y páginas HTML y JavaScript.
 
 La correspondencia se establece por responsabilidad: la organización del modelo
-intermedio determina la toolbox, la definición de cada tipo determina la forma
+intermedio determina la paleta, la definición de cada tipo determina la forma
 del bloque y sus conexiones, y las reglas conservadas determinan las ayudas y
 advertencias disponibles durante la edición. Así, la salida visual se deriva de
 decisiones expresadas en el modelo y no de una colección de bloques programados
@@ -245,7 +245,7 @@ soportado se presentan en los capítulos siguientes.
 Las referencias no contenidas se tratan de forma distinta a las contenciones.
 Una contención define la estructura jerárquica del modelo y por lo tanto se
 representa como una entrada de sentencias. Una referencia no contenida apunta a
-otro elemento existente en el workspace, por lo que se representa mediante un
+otro elemento existente en el espacio de trabajo, por lo que se representa mediante un
 desplegable dinámico. El generador calcula los candidatos compatibles teniendo
 en cuenta el tipo objetivo y sus subtipos. Esta decisión mantiene una
 diferencia semántica importante del metamodelo: no es lo mismo crear un hijo
@@ -268,26 +268,26 @@ específicos definidos para el TFM. La Tabla
 
 \begin{table}[h]
   \centering
-  \begin{tabular}{|p{0.18\textwidth}|p{0.70\textwidth}|}
+  \begin{tabular}{|L{0.23\textwidth}|L{0.65\textwidth}|}
     \hline
-    Objetivo & Respuesta arquitectónica \\
+    Objetivo específico & Respuesta arquitectónica \\
     \hline
-    OE1 & El modelo intermedio identifica explícitamente los elementos que
+    \textbf{OE1: estructura del editor} & El modelo intermedio identifica explícitamente los elementos que
     necesita un editor de bloques: tipos, campos, conexiones, categorías,
     referencias y validaciones. \\
-    OE2 & La ruta Ecore permite partir de metamodelos y
+    \textbf{OE2: ruta Ecore} & La ruta Ecore permite partir de metamodelos y
     derivar bloques, campos, entradas y reglas. \\
-    OE3 & La gramática Xtext proporciona la ruta textual \texttt{.m2b}
+    \textbf{OE3: ruta \texttt{.m2b}} & La gramática Xtext proporciona la ruta textual \texttt{.m2b}
     para definir lenguajes de bloques de forma compacta. \\
-    OE4 & El modelo intermedio común desacopla las entradas de los generadores
+    \textbf{OE4: modelo común} & El modelo intermedio común desacopla las entradas de los generadores
     y permite compartir la misma lógica de salida. \\
-    OE5 & Los generadores producen editores HTML/JavaScript ejecutables en el
+    \textbf{OE5: editor ejecutable} & Los generadores producen editores HTML/JavaScript ejecutables en el
     navegador. \\
-    OE6 & Las validaciones, referencias dinámicas, anotaciones de interfaz y
+    \textbf{OE6: mecanismos genéricos} & Las validaciones, referencias dinámicas, anotaciones de interfaz y
     plantillas de código se incorporan como capacidades genéricas. \\
-    OE7 & La separación por transformación de entrada, modelo intermedio y
-    generadores facilita probar cada parte y evaluar la convergencia de las dos
-    rutas sobre AppMaker. \\
+    \textbf{OE7: evaluación} & La separación por transformación de entrada, modelo intermedio y
+    generadores permite comparar la salida con editores existentes, localizar
+    diferencias por propiedad y comprobar la coherencia entre rutas. \\
     \hline
   \end{tabular}
   \caption{Trazabilidad entre objetivos y arquitectura}

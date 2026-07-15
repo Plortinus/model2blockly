@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E07_turtle",
+  "authoringScope": "Official in-scope definitions/toolbox/generators versus maintained .m2b; generated files and domain runtime excluded.",
+  "blockCount": 12,
+  "baseline": {
+    "total": {
+      "bytes": 21588,
+      "totalLines": 730,
+      "nonBlank": 702,
+      "nonBlankNonComment": 669
+    },
+    "editor": {
+      "bytes": 18422,
+      "totalLines": 657,
+      "nonBlank": 640,
+      "nonBlankNonComment": 618
+    },
+    "generator": {
+      "bytes": 3166,
+      "totalLines": 73,
+      "nonBlank": 62,
+      "nonBlankNonComment": 51
+    },
+    "fragmentCount": 7
+  },
+  "m2b": {
+    "bytes": 6368,
+    "totalLines": 208,
+    "nonBlank": 190,
+    "nonBlankNonComment": 190
+  },
+  "generatedArtifacts": {
+    "fileCount": 13,
+    "bytes": 340874,
+    "excludedFromAuthoringComparison": true
+  },
+  "comparison": {
+    "locReductionPercent": 71.6,
+    "byteReductionPercent": 70.5,
+    "baselineLocPerBlock": 55.75,
+    "m2bLocPerBlock": 15.83
+  }
+}

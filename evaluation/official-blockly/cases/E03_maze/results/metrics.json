@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E03_maze",
+  "authoringScope": "Official in-scope definitions/toolbox/generators versus maintained .m2b; generated files and domain runtime excluded.",
+  "blockCount": 5,
+  "baseline": {
+    "total": {
+      "bytes": 6944,
+      "totalLines": 220,
+      "nonBlank": 204,
+      "nonBlankNonComment": 178
+    },
+    "editor": {
+      "bytes": 5528,
+      "totalLines": 186,
+      "nonBlank": 174,
+      "nonBlankNonComment": 153
+    },
+    "generator": {
+      "bytes": 1416,
+      "totalLines": 34,
+      "nonBlank": 30,
+      "nonBlankNonComment": 25
+    },
+    "fragmentCount": 4
+  },
+  "m2b": {
+    "bytes": 2540,
+    "totalLines": 80,
+    "nonBlank": 73,
+    "nonBlankNonComment": 73
+  },
+  "generatedArtifacts": {
+    "fileCount": 13,
+    "bytes": 337023,
+    "excludedFromAuthoringComparison": true
+  },
+  "comparison": {
+    "locReductionPercent": 58.99,
+    "byteReductionPercent": 63.42,
+    "baselineLocPerBlock": 35.6,
+    "m2bLocPerBlock": 14.6
+  }
+}

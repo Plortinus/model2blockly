@@ -1,0 +1,28 @@
+Puzzle.Blocks.ANIMAL_HUE = 120;
+
+/**
+ * Common HSV hue for all picture blocks.
+ */
+Puzzle.Blocks.PICTURE_HUE = 30;
+
+/**
+ * Common HSV hue for all trait blocks.
+ */
+Puzzle.Blocks.TRAIT_HUE = 290;
+
+/**
+ * Return a list of all legs.
+ * @returns {!Array<!Array<string>>} Array of human-readable and
+ *   language-neutral tuples.
+ */
+Puzzle.Blocks.legs = function() {
+  const data = Puzzle.data.getData();
+  const padding = '\xa0\xa0';
+  const list = [[BlocklyGames.getMsg('Puzzle.legsChoose', false), '0']];
+  for (let i = 0; i < data.length; i++) {
+    list[i + 1] = [padding + data[i].legs + padding, String(i + 1)];
+  }
+  // Sort numerically.
+  list.sort(function(a, b) {return a[0] - b[0];});
+  return list;
+};

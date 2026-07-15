@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E09_pond_tutor",
+  "authoringScope": "Official in-scope definitions/toolbox/generators versus maintained .m2b; generated files and domain runtime excluded.",
+  "blockCount": 11,
+  "baseline": {
+    "total": {
+      "bytes": 14359,
+      "totalLines": 495,
+      "nonBlank": 484,
+      "nonBlankNonComment": 415
+    },
+    "editor": {
+      "bytes": 12896,
+      "totalLines": 457,
+      "nonBlank": 450,
+      "nonBlankNonComment": 387
+    },
+    "generator": {
+      "bytes": 1463,
+      "totalLines": 38,
+      "nonBlank": 34,
+      "nonBlankNonComment": 28
+    },
+    "fragmentCount": 17
+  },
+  "m2b": {
+    "bytes": 5811,
+    "totalLines": 170,
+    "nonBlank": 154,
+    "nonBlankNonComment": 154
+  },
+  "generatedArtifacts": {
+    "fileCount": 13,
+    "bytes": 348024,
+    "excludedFromAuthoringComparison": true
+  },
+  "comparison": {
+    "locReductionPercent": 62.89,
+    "byteReductionPercent": 59.53,
+    "baselineLocPerBlock": 37.73,
+    "m2bLocPerBlock": 14
+  }
+}

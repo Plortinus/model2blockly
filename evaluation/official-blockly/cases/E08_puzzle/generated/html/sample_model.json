@@ -1,0 +1,20 @@
+[
+  {
+    "_type": "animal",
+    "_blockId": "sample_animal_1",
+    "NAME": "Duck",
+    "LEGS": "choose",
+    "PIC": {
+      "_type": "picture",
+      "_blockId": "sample_picture_1",
+      "PIC_IMAGE": "puzzle/duck.jpg"
+    },
+    "TRAITS": [
+      {
+        "_type": "trait",
+        "_blockId": "sample_trait_1",
+        "NAME": "Feathers"
+      }
+    ]
+  }
+]

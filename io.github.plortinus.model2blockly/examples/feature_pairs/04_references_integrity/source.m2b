@@ -1,0 +1,36 @@
+domain ReferencesIntegrity
+
+category References colour 260
+
+class Workflow category References colour 260 inputsInline false {
+  attribute name : string [0..1] default "Review workflow"
+    widget text uiLabel "Name" order 1 variant default
+  contains Element elements [1..6]
+    widget slot uiLabel "Elements" order 2 variant default
+}
+
+abstract class Element category References colour 120 inputsInline false {
+}
+
+class Card extends Element category References colour 120 inputsInline false {
+  attribute cardId : string [1..1] default "card-1" modelId
+    widget text uiLabel "Card ID" order 1 variant default
+  attribute title : string [0..1] default "Review"
+    widget text uiLabel "Title" order 2 variant default
+  reference Link outgoing [0..3] opposite source unique ordered
+    widget reference-select uiLabel "Outgoing links" order 3 variant default
+    referenceLabelField linkId
+}
+
+class Link extends Element category References colour 120 inputsInline false {
+  attribute linkId : string [1..1] default "link-1" modelId
+    widget text uiLabel "Link ID" order 1 variant default
+  reference Card source [1..1] opposite outgoing required unique ordered
+    widget reference-select uiLabel "Source card" order 2 variant default
+    referenceLabelField title
+  attribute description : string [0..1] default "Continue"
+    widget text uiLabel "Description" order 3 variant default
+  reference Card target [1..2] required nonUnique unordered
+    widget reference-select uiLabel "Target cards" order 4 variant default
+    referenceLabelField title
+}

@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E05_movie",
+  "rules": [
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.movie_*.inputs.value:*.alignment",
+      "status": "unsupported",
+      "capability": "input-alignment",
+      "boundary": "model2blockly",
+      "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.movie_time.connections.output",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "Movie declara una salida sin comprobación de tipo, mientras que la semántica numérica del modelo produce una conexión restringida a Number."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categoryOrder",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla de categorías estándar generada no incluye Lists y no permite reproducir exactamente la secuencia oficial del nivel 10."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.nonCategoryItems",
+      "status": "unsupported",
+      "capability": "toolbox-separator-configuration",
+      "boundary": "model2blockly",
+      "rationale": "Model2Blockly inserta automáticamente un separador con gap 32 entre el dominio y las categorías incorporadas; Movie declara un separador sin ese parámetro antes de Variables."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.*.colour",
+      "status": "unsupported",
+      "capability": "category-colour-omission",
+      "boundary": "model2blockly",
+      "rationale": "Las categorías oficiales delegan su apariencia al editor y omiten colour, mientras que el generador siempre materializa un color en las categorías de dominio y estándar."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Movie.blocks.movie_*.configuration",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no permite preconfigurar estas entradas con sombras math_number estándar y valores distintos para cada parámetro geométrico."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Colour.blocks.*.present",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La categoría de dominio Colour no puede incorporar selectivamente colour_picker, colour_rgb y colour_blend desde la biblioteca estándar."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.*.unexpectedBlocks",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla estándar generada añade bloques de Logic, Loops y Math que la configuración oficial de Movie no incluye."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.blocks.math_number.configuration",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla generada fija explícitamente NUM=0 en math_number, mientras que Movie usa una entrada sin configuración de campo."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.blocks.*.present",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La composición fija de Math no permite añadir math_trig, math_constant y math_number_property seleccionados por Movie."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Lists.present",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla de paleta estándar de Model2Blockly no genera la categoría Lists."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Lists.blocks.*.present",
+      "status": "unsupported",
+      "capability": "toolbox-category-composition",
+      "boundary": "model2blockly",
+      "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.movie_*.sideEffects",
+      "status": "unsupported",
+      "capability": "generator-empty-input-defaults",
+      "boundary": "model2blockly",
+      "rationale": "Las plantillas conservan las llamadas principales, pero no expresan los ceros alternativos para entradas geométricas vacías ni el negro alternativo para un color ausente."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+domain CompositionInputs
+
+category Composition colour 200
+category Expressions colour 230
+
+class Document category Composition colour 200 inputsInline false {
+  attribute title : string [0..1] default "Release notes"
+    widget text uiLabel "Title" order 1 variant default
+  contains Section sections [1..4]
+    widget slot uiLabel "Sections" order 2 variant default
+}
+
+abstract class Section category Composition colour 120 inputsInline false {
+}
+
+class Paragraph extends Section category Composition colour 120 inputsInline false {
+  attribute heading : string [0..1] default "Summary"
+    widget text uiLabel "Heading" order 1 variant default
+  value TextExpression content shadow TextLiteral
+    widget expression-slot uiLabel "Content" order 2 variant default
+  attribute emphasis : boolean [0..1] default "false"
+    widget checkbox uiLabel "Emphasis" order 3 variant default
+}
+
+abstract output class TextExpression category Expressions colour 230 inputsInline false {
+}
+
+output as TextExpression class TextLiteral extends TextExpression
+  category Expressions colour 230 inputsInline false {
+  attribute textValue : string [0..1] default "Ready"
+    widget text uiLabel "Text" order 1 variant default
+}

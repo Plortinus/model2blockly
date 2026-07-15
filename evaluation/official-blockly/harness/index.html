@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Model2Blockly evaluation harness</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="/node_modules/blockly/blockly.min.js"></script>
+    <script src="/node_modules/blockly/javascript_compressed.js"></script>
+    <script type="module" src="./main.mjs"></script>
+  </head>
+  <body>
+    <header>
+      <div>
+        <p class="kicker">Model2Blockly evaluation</p>
+        <h1 id="case-title">Loading treatment…</h1>
+      </div>
+      <dl class="controls">
+        <div><dt>Blockly</dt><dd id="control-blockly">13.1.1</dd></div>
+        <div><dt>Renderer</dt><dd id="control-renderer">geras</dd></div>
+        <div><dt>Theme</dt><dd id="control-theme">classic</dd></div>
+        <div><dt>Locale</dt><dd id="control-locale">en</dd></div>
+      </dl>
+    </header>
+    <main>
+      <section aria-label="Blockly workspace">
+        <div id="workspace"></div>
+      </section>
+      <aside>
+        <div class="status-row">
+          <strong>Status</strong>
+          <output id="status" data-state="loading">loading</output>
+        </div>
+        <pre id="descriptor" aria-label="Canonical editor descriptor"></pre>
+      </aside>
+    </main>
+  </body>
+</html>

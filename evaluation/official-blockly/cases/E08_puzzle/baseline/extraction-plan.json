@@ -1,0 +1,124 @@
+{
+  "caseId": "E08_puzzle",
+  "configuration": "Blockly Puzzle, espacio inicial completo sin paleta",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "assets": [
+    {
+      "id": "duck-picture",
+      "sourcePath": "appengine/puzzle/duck.jpg",
+      "snapshot": "assets/puzzle/duck.jpg",
+      "mediaType": "image/jpeg",
+      "notes": ["Image inserted by picture.populate(1)."]
+    },
+    {
+      "id": "cat-picture",
+      "sourcePath": "appengine/puzzle/cat.jpg",
+      "snapshot": "assets/puzzle/cat.jpg",
+      "mediaType": "image/jpeg",
+      "notes": ["Image inserted by picture.populate(2)."]
+    },
+    {
+      "id": "bee-picture",
+      "sourcePath": "appengine/puzzle/bee.jpg",
+      "snapshot": "assets/puzzle/bee.jpg",
+      "mediaType": "image/jpeg",
+      "notes": ["Image inserted by picture.populate(3)."]
+    },
+    {
+      "id": "snail-picture",
+      "sourcePath": "appengine/puzzle/snail.jpg",
+      "snapshot": "assets/puzzle/snail.jpg",
+      "mediaType": "image/jpeg",
+      "notes": ["Image inserted by picture.populate(4)."]
+    }
+  ],
+  "fragments": [
+    {
+      "id": "complete-block-runtime",
+      "sourcePath": "appengine/puzzle/src/blocks.js",
+      "startLine": 25,
+      "endLine": 205,
+      "snapshot": "baseline/upstream/block-runtime.js",
+      "kinds": ["block-definition", "editor-extension", "domain-runtime"],
+      "metricGroups": ["editor"],
+      "countForMetrics": false,
+      "notes": ["Loaded unchanged by the baseline adapter; isCorrect belongs to excluded answer validation, so precise metric fragments below omit it."]
+    },
+    {
+      "id": "shared-colours-and-leg-menu",
+      "sourcePath": "appengine/puzzle/src/blocks.js",
+      "startLine": 25,
+      "endLine": 52,
+      "snapshot": "baseline/upstream/shared-editor.jsfrag",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "animal-editor-definition",
+      "sourcePath": "appengine/puzzle/src/blocks.js",
+      "startLine": 54,
+      "endLine": 103,
+      "snapshot": "baseline/upstream/animal-editor.jsfrag",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "picture-editor-definition",
+      "sourcePath": "appengine/puzzle/src/blocks.js",
+      "startLine": 113,
+      "endLine": 140,
+      "snapshot": "baseline/upstream/picture-editor.jsfrag",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "trait-editor-definition",
+      "sourcePath": "appengine/puzzle/src/blocks.js",
+      "startLine": 151,
+      "endLine": 196,
+      "snapshot": "baseline/upstream/trait-editor.jsfrag",
+      "kinds": ["block-definition", "editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "puzzle-data",
+      "sourcePath": "appengine/puzzle/src/data.js",
+      "startLine": 22,
+      "endLine": 73,
+      "snapshot": "baseline/upstream/data.js",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "initial-workspace",
+      "sourcePath": "appengine/puzzle/src/main.js",
+      "startLine": 72,
+      "endLine": 138,
+      "snapshot": "baseline/upstream/initial-workspace.jsfrag",
+      "kinds": ["initial-workspace"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true,
+      "notes": ["Positions are randomized by the official application; the adapter normalizes only the semantic inventory and non-deletable state."]
+    },
+    {
+      "id": "puzzle-editor-messages",
+      "sourcePath": "json/en.json",
+      "startLine": 51,
+      "endLine": 70,
+      "snapshot": "baseline/upstream/puzzle-editor-messages.jsonfrag",
+      "kinds": ["editor-extension"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true,
+      "notes": ["Messages used by data-driven block construction; answer-dialog messages are excluded."]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+domain Graph
+codeLanguage "javascript"
+codeFileExtension "js"
+
+workspace {
+  renderer: "geras"
+  trashcan: false
+}
+
+category Variables colour 330
+
+abstract output class Number {
+}
+
+output as Number class graph_get_x extends Number category Variables colour 330
+  label "x"
+  message0 "x"
+  tooltip "Returns the value of this variable."
+  helpUrl "https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#get"
+  inputsInline false
+  code "x" {
+}
+
+class graph_set_y category Variables colour 330
+  label "y ="
+  message0 "y = %1"
+  tooltip "Sets this variable to be equal to the input."
+  helpUrl "https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#set"
+  inputsInline false
+  code "y = {{value:VALUE}};" {
+  value Number VALUE
+    widget expression-slot uiLabel "Value" order 1 variant default
+}

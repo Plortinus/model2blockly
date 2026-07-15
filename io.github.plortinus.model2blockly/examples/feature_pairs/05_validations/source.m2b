@@ -1,0 +1,40 @@
+domain Validations
+
+category Pages colour 260
+category Actions colour 30
+
+class Page category Pages colour 260
+  message0 "Page id %1 title %2 route %3 actions %4"
+  inputsInline false {
+  attribute pageId : string [1..1] default "page-1" modelId
+  attribute title : string [1..1] default "Home"
+  attribute route : string [1..1] default "/home"
+  contains Action actions [1..4]
+}
+
+abstract class Action category Actions colour 30 inputsInline false {
+}
+
+class Alert extends Action category Actions colour 30
+  message0 "Alert message %1"
+  inputsInline false {
+  attribute message : string [1..1] default "Saved"
+}
+
+class Navigate extends Action category Actions colour 30
+  message0 "Navigate target %1"
+  inputsInline false {
+  reference Page target [1..1] required unique ordered
+    widget reference-select uiLabel "Target page" order 1 variant default
+    referenceLabelField title
+}
+
+constraint Navigate_after_Alert on Navigate : must follow Alert
+
+validation titlePresent on Page : condition "has('title')"
+  errorMessage "Page title is required."
+validation routeStartsSlash on Page : expression "value('route').startsWith('/')"
+  errorMessage "Route must start with /."
+validation actionsWithinLimit on Page : js "size('actions') <= 4"
+  errorMessage "A page supports at most four actions."
+validation HasActions on Page : ocl "self.actions->size() >= 1"

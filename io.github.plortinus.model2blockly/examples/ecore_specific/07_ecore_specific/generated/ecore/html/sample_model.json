@@ -1,0 +1,21 @@
+[
+  {
+    "_type": "Catalog",
+    "_blockId": "sample_Catalog_1",
+    "name": "Technical catalog",
+    "featured": "sample_Entry_1",
+    "entries": [
+      {
+        "_type": "Entry",
+        "_blockId": "sample_Entry_1",
+        "title": "Named element",
+        "entryId": "entry-1",
+        "longCount": "1000",
+        "shortCount": "12",
+        "bigCount": "123456789",
+        "doubleRatio": "0.5",
+        "decimalRatio": "0.75"
+      }
+    ]
+  }
+]

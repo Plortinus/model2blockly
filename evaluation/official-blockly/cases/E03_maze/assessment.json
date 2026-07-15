@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E03_maze",
+  "rules": [
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.*.connections.*",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "Model2Blockly deriva conexiones tipadas desde la herencia; no puede solicitar conexiones sin tipo ni eliminar solo la conexión siguiente de maze_forever."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.*.inputs.statement:*.check",
+      "status": "unsupported",
+      "capability": "connection-policy",
+      "boundary": "model2blockly",
+      "rationale": "Las contenciones de tipo Command producen comprobaciones de entrada tipadas, mientras que Maze acepta cualquier bloque de sentencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.maze_*.inputOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-input",
+      "boundary": "model2blockly",
+      "rationale": "No existe una construcción del DSL para separar explícitamente la cabecera en una entrada input_dummy."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.maze_*.inputs.dummy:<anonymous>.present",
+      "status": "unsupported",
+      "capability": "explicit-dummy-input",
+      "boundary": "model2blockly",
+      "rationale": "La entrada ficticia usada por la definición JSON oficial no forma parte del metamodelo intermedio actual."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.maze_*.inputs.statement:*.fieldOrder",
+      "status": "unsupported",
+      "capability": "explicit-dummy-input",
+      "boundary": "model2blockly",
+      "rationale": "Al no poder declarar input_dummy, los campos de cabecera se adjuntan a la entrada de sentencias y cambia su disposición."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.blockOrder",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "La paleta generada contiene una entrada por tipo y no puede repetir maze_turn dos veces."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.blocks.maze_turn#*.configuration",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no permite preconfigurar DIR en una instancia concreta de la paleta."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.blocks.maze_turn#*.present",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "No se puede declarar una segunda instancia del mismo tipo con una configuración diferente."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.*.template",
+      "status": "excluded",
+      "capability": "execution-tracing",
+      "boundary": "domain-runtime",
+      "rationale": "La diferencia se limita al identificador block_id usado por Maze para animar la ejecución; el mapa, la animación y su motor están fuera del alcance."
+    },
+    {
+      "section": "generators",
+      "propertyPattern": "generators.maze_forever.sideEffects",
+      "status": "excluded",
+      "capability": "execution-loop-trap",
+      "boundary": "domain-runtime",
+      "rationale": "INFINITE_LOOP_TRAP pertenece al motor de ejecución de Blockly Games y no a la generación estructural del editor."
+    }
+  ]
+}

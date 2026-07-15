@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="ReferencesIntegrity" nsURI="http://www.example.org/referencesintegrity" nsPrefix="referencesintegrity" codeLanguage="text" codeFileExtension="txt">
+  <categories name="References" label="References" colour="260"/>
+  <blockTypes typeName="Workflow" label="Workflow" colour="260" categoryName="References" connectionType="NONE" inputsInline="false">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>elements</orderedInputNames>
+    <fields name="name" defaultValue="Review workflow" uiWidget="text" uiLabel="Name" uiOrder="1" uiVariant="default"/>
+    <statementInputs name="elements" checkType="Element" lowerBound="1" upperBound="6" uiWidget="slot" uiLabel="Elements" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="Element" label="Element" colour="120" categoryName="References" abstract="true" connectionType="TYPED" connectionTypeName="Element" inputsInline="false"/>
+  <blockTypes typeName="Card" label="Card" colour="120" categoryName="References" superTypeName="Element" connectionType="TYPED" connectionTypeName="Element" inputsInline="false" idFieldName="cardId">
+    <orderedInputNames>cardId</orderedInputNames>
+    <orderedInputNames>title</orderedInputNames>
+    <orderedInputNames>outgoing</orderedInputNames>
+    <fields name="cardId" defaultValue="card-1" required="true" lowerBound="1" id="true" uiWidget="text" uiLabel="Card ID" uiOrder="1" uiVariant="default"/>
+    <fields name="title" defaultValue="Review" uiWidget="text" uiLabel="Title" uiOrder="2" uiVariant="default"/>
+    <referenceFields name="outgoing" targetTypeName="Link" upperBound="3" oppositeName="source" uiWidget="reference-select" uiLabel="Outgoing links" uiOrder="3" uiVariant="default" referenceLabelField="linkId"/>
+  </blockTypes>
+  <blockTypes typeName="Link" label="Link" colour="120" categoryName="References" superTypeName="Element" connectionType="TYPED" connectionTypeName="Element" inputsInline="false" idFieldName="linkId">
+    <orderedInputNames>linkId</orderedInputNames>
+    <orderedInputNames>source</orderedInputNames>
+    <orderedInputNames>description</orderedInputNames>
+    <orderedInputNames>target</orderedInputNames>
+    <fields name="linkId" defaultValue="link-1" required="true" lowerBound="1" id="true" uiWidget="text" uiLabel="Link ID" uiOrder="1" uiVariant="default"/>
+    <fields name="description" defaultValue="Continue" uiWidget="text" uiLabel="Description" uiOrder="3" uiVariant="default"/>
+    <referenceFields name="source" targetTypeName="Card" required="true" lowerBound="1" oppositeName="outgoing" uiWidget="reference-select" uiLabel="Source card" uiOrder="2" uiVariant="default" referenceLabelField="title"/>
+    <referenceFields name="target" targetTypeName="Card" required="true" lowerBound="1" upperBound="2" unique="false" ordered="false" uiWidget="reference-select" uiLabel="Target cards" uiOrder="4" uiVariant="default" referenceLabelField="title"/>
+  </blockTypes>
+  <validations type="CARDINALITY" name="Workflow_elements" ownerType="Workflow" containmentName="elements" lowerBound="1" upperBound="6">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Workflow"/>
+      <fields name="INPUT" value="elements"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="6"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="elements"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="elements"/>
+        <children kind="NUMBER_LITERAL" literal="6"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="REQUIRED" name="Card_cardId_required" ownerType="Card" fieldName="cardId" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Card"/>
+      <fields name="FIELD" value="cardId"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="cardId"/>
+  </validations>
+  <validations type="REQUIRED" name="Link_linkId_required" ownerType="Link" fieldName="linkId" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Link"/>
+      <fields name="FIELD" value="linkId"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="linkId"/>
+  </validations>
+  <validations type="REQUIRED" name="Link_source_required" ownerType="Link" fieldName="source" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Link"/>
+      <fields name="FIELD" value="source"/>
+      <fields name="FIELD_KIND" value="reference"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="source"/>
+  </validations>
+  <validations type="REQUIRED" name="Link_target_required" ownerType="Link" fieldName="target" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Link"/>
+      <fields name="FIELD" value="target"/>
+      <fields name="FIELD_KIND" value="reference"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="target"/>
+  </validations>
+  <validations type="FIELD_CARDINALITY" name="Card_outgoing_cardinality" ownerType="Card" upperBound="3" fieldName="outgoing" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_field_cardinality">
+      <fields name="TYPE" value="Card"/>
+      <fields name="FIELD" value="outgoing"/>
+      <fields name="FIELD_KIND" value="reference"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="3"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="FIELD_COUNT" fieldName="outgoing"/>
+      <children kind="NUMBER_LITERAL" literal="3"/>
+    </visualExpression>
+  </validations>
+  <validations type="FIELD_CARDINALITY" name="Link_target_cardinality" ownerType="Link" lowerBound="1" upperBound="2" fieldName="target" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_field_cardinality">
+      <fields name="TYPE" value="Link"/>
+      <fields name="FIELD" value="target"/>
+      <fields name="FIELD_KIND" value="reference"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="2"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="FIELD_COUNT" fieldName="target"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="FIELD_COUNT" fieldName="target"/>
+        <children kind="NUMBER_LITERAL" literal="2"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="UNIQUE" name="Card_cardId_unique" ownerType="Card" fieldName="cardId" fieldKind="id">
+    <visualBlock blocklyBlockType="validation_type_field_unique">
+      <fields name="TYPE" value="Card"/>
+      <fields name="FIELD" value="cardId"/>
+    </visualBlock>
+    <visualExpression kind="TYPE_FIELD_UNIQUE" fieldName="cardId" typeName="Card"/>
+  </validations>
+  <validations type="UNIQUE" name="Card_outgoing_unique" ownerType="Card" fieldName="outgoing" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_field_unique">
+      <fields name="TYPE" value="Card"/>
+      <fields name="FIELD" value="outgoing"/>
+      <fields name="FIELD_KIND" value="reference"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_UNIQUE" fieldName="outgoing"/>
+  </validations>
+  <validations type="UNIQUE" name="Link_linkId_unique" ownerType="Link" fieldName="linkId" fieldKind="id">
+    <visualBlock blocklyBlockType="validation_type_field_unique">
+      <fields name="TYPE" value="Link"/>
+      <fields name="FIELD" value="linkId"/>
+    </visualBlock>
+    <visualExpression kind="TYPE_FIELD_UNIQUE" fieldName="linkId" typeName="Link"/>
+  </validations>
+</blocklyspec:EditorSpec>

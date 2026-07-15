@@ -1,0 +1,308 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E08_puzzle",
+  "treatment": "m2b",
+  "controls": {
+    "blocklyVersion": "13.1.1",
+    "browserViewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "locale": "en",
+    "renderer": "geras",
+    "theme": "classic",
+    "workspaceViewport": {
+      "height": 640,
+      "width": 1024
+    }
+  },
+  "blocks": [
+    {
+      "type": "animal",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "PIC",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": "NAME",
+          "fieldKind": "field_label",
+          "inputName": "PIC"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "PIC"
+        },
+        {
+          "kind": "input",
+          "name": "TRAITS",
+          "inputKind": "statement"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "TRAITS"
+        },
+        {
+          "kind": "field",
+          "name": "LEGS",
+          "fieldKind": "field_dropdown",
+          "inputName": "TRAITS"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "TRAITS"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "PIC",
+          "kind": "value",
+          "check": [
+            "picture"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "NAME",
+              "kind": "field_label",
+              "value": "Duck",
+              "text": "Duck",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "picture:",
+              "text": "picture:",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "TRAITS",
+          "kind": "statement",
+          "check": [
+            "trait"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "legs:",
+              "text": "legs:",
+              "options": null,
+              "constraints": null
+            },
+            {
+              "name": "LEGS",
+              "kind": "field_dropdown",
+              "value": "choose",
+              "text": "choose...",
+              "options": [
+                {
+                  "label": "choose...",
+                  "value": "choose"
+                },
+                {
+                  "label": "  0  ",
+                  "value": "snail"
+                },
+                {
+                  "label": "  2  ",
+                  "value": "duck"
+                },
+                {
+                  "label": "  4  ",
+                  "value": "cat"
+                },
+                {
+                  "label": "  6  ",
+                  "value": "bee"
+                }
+              ],
+              "constraints": null
+            },
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "traits:",
+              "text": "traits:",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#5ba55b",
+      "tooltip": "",
+      "helpUrl": "https://en.wikipedia.org/wiki/Duck",
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "picture",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_image",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_image",
+              "value": "puzzle/duck.jpg",
+              "text": "",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": null
+        }
+      },
+      "inputsInline": false,
+      "colour": "#a5805b",
+      "tooltip": "",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "trait",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": "NAME",
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": "NAME",
+              "kind": "field_label",
+              "value": "Feathers",
+              "text": "Feathers",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": [
+            "trait"
+          ]
+        },
+        "next": {
+          "check": [
+            "trait"
+          ]
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#995ba5",
+      "tooltip": "",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    }
+  ],
+  "toolbox": {
+    "contents": [
+      {
+        "enabled": true,
+        "kind": "block",
+        "type": "animal"
+      },
+      {
+        "enabled": true,
+        "kind": "block",
+        "type": "picture"
+      },
+      {
+        "enabled": true,
+        "kind": "block",
+        "type": "trait"
+      }
+    ],
+    "kind": "flyoutToolbox"
+  },
+  "initialWorkspace": null,
+  "generators": [
+    {
+      "type": "animal",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": null
+      }
+    },
+    {
+      "type": "picture",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": null
+      }
+    },
+    {
+      "type": "trait",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "template": null
+      }
+    }
+  ],
+  "errors": []
+}

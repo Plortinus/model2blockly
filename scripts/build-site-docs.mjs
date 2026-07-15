@@ -20,6 +20,7 @@ const pages = [
   { source: 'docs/en/TEXTUAL_DSL.md', output: 'en/textual-dsl.md' },
   { source: 'docs/en/ECORE_TO_BLOCKLY_MAPPING.md', output: 'en/ecore-to-blockly-mapping.md' },
   { source: 'docs/en/RUNNING_EXAMPLE.md', output: 'en/running-example.md' },
+  { source: 'docs/en/EVALUATION.md', output: 'en/evaluation.md' },
   { source: 'docs/en/TROUBLESHOOTING.md', output: 'en/troubleshooting.md' },
   { source: 'docs/en/RELEASE_CHECKLIST.md', output: 'en/release-checklist.md' },
   { source: 'docs/es/README.md', output: 'es/index.md' },
@@ -29,6 +30,7 @@ const pages = [
   { source: 'docs/es/TEXTUAL_DSL.md', output: 'es/textual-dsl.md' },
   { source: 'docs/es/ECORE_TO_BLOCKLY_MAPPING.md', output: 'es/ecore-to-blockly-mapping.md' },
   { source: 'docs/es/RUNNING_EXAMPLE.md', output: 'es/running-example.md' },
+  { source: 'docs/es/EVALUATION.md', output: 'es/evaluation.md' },
   { source: 'docs/es/TROUBLESHOOTING.md', output: 'es/troubleshooting.md' },
   { source: 'docs/es/RELEASE_CHECKLIST.md', output: 'es/release-checklist.md' },
   { source: 'docs/zh/README.md', output: 'zh/index.md' },
@@ -38,6 +40,7 @@ const pages = [
   { source: 'docs/zh/TEXTUAL_DSL.md', output: 'zh/textual-dsl.md' },
   { source: 'docs/zh/ECORE_TO_BLOCKLY_MAPPING.md', output: 'zh/ecore-to-blockly-mapping.md' },
   { source: 'docs/zh/RUNNING_EXAMPLE.md', output: 'zh/running-example.md' },
+  { source: 'docs/zh/EVALUATION.md', output: 'zh/evaluation.md' },
   { source: 'docs/zh/TROUBLESHOOTING.md', output: 'zh/troubleshooting.md' },
   { source: 'docs/zh/RELEASE_CHECKLIST.md', output: 'zh/release-checklist.md' },
 ];
@@ -51,6 +54,7 @@ mkdirSync(sourceDir, { recursive: true });
 const docsAssetsDir = path.resolve(repoRoot, 'docs/assets');
 if (existsSync(docsAssetsDir)) {
   cpSync(docsAssetsDir, path.join(sourceDir, 'public/assets'), { recursive: true });
+  rewriteFeatureGalleryReportLinks();
 }
 
 for (const page of pages) {
@@ -94,6 +98,24 @@ function protectInlineMustacheCode(markdown) {
   return markdown.replace(/`([^`\n]*\{\{[^`\n]*\}\}[^`\n]*)`/g, (_, code) => {
     return `<code v-pre>${escapeHtml(code)}</code>`;
   });
+}
+
+function rewriteFeatureGalleryReportLinks() {
+  const manifestPath = path.join(docsAssetsDir, 'ecore-feature-gallery/manifest.json');
+  if (!existsSync(manifestPath)) return;
+
+  const base = docsBase.endsWith('/') ? docsBase : `${docsBase}/`;
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  for (const entry of manifest) {
+    const report = path.join(sourceDir, 'public/assets/ecore-feature-gallery', entry.report);
+    if (!existsSync(report)) continue;
+    const mappingHref = `${base}en/ecore-to-blockly-mapping.html#feature-${entry.slug}`;
+    const html = readFileSync(report, 'utf8').replace(
+      /<tr><td><a href="README\.md">README\.md<\/a><\/td><td>[^<]*<\/td><\/tr>/,
+      `<tr><td><a href="${mappingHref}">Ecore mapping documentation</a></td><td>↗ Documentation for this generated feature example</td></tr>`,
+    );
+    writeFileSync(report, html);
+  }
 }
 
 function injectGeneratedFeatureGallery(markdown, page) {
@@ -285,6 +307,18 @@ function resolveMarkdownTarget(rawTarget, page) {
     return `/assets/${relative.slice('docs/assets/'.length)}${hash}`;
   }
 
+  const evaluationScreenshot = relative.match(
+    /^evaluation\/official-blockly\/cases\/([^/]+)\/results\/screenshots\/([^/]+\.(?:png|jpe?g|webp))$/i,
+  );
+  if (evaluationScreenshot) {
+    const [, caseId, fileName] = evaluationScreenshot;
+    const publicRelative = `evaluation/${caseId}/${fileName}`;
+    const publicTarget = path.join(sourceDir, 'public/assets', publicRelative);
+    mkdirSync(path.dirname(publicTarget), { recursive: true });
+    cpSync(absolute, publicTarget);
+    return `/assets/${publicRelative}${hash}`;
+  }
+
   const targetPage = pagesBySource.get(relative);
   if (targetPage) return relativeMarkdownHref(page.output, targetPage.output) + hash;
 
@@ -323,6 +357,7 @@ const enSidebar = [
       { text: 'Install Plugin', link: '/en/install' },
       { text: 'User Guide', link: '/en/user-guide' },
       { text: 'AppMaker Case', link: '/en/running-example' },
+      { text: 'External Evaluation', link: '/en/evaluation' },
     ],
   },
   {
@@ -340,9 +375,10 @@ const esSidebar = [
     text: 'Inicio',
     items: [
       { text: 'Vista general', link: '/es/' },
-      { text: 'Instalar plugin', link: '/es/install' },
+      { text: 'Instalar complemento', link: '/es/install' },
       { text: 'Guía de uso', link: '/es/user-guide' },
       { text: 'Caso AppMaker', link: '/es/running-example' },
+      { text: 'Evaluación externa', link: '/es/evaluation' },
     ],
   },
   {
@@ -363,6 +399,7 @@ const zhSidebar = [
       { text: '安装插件', link: '/zh/install' },
       { text: '使用指南', link: '/zh/user-guide' },
       { text: 'AppMaker 案例', link: '/zh/running-example' },
+      { text: '外部评估', link: '/zh/evaluation' },
     ],
   },
   {
@@ -393,17 +430,22 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'Home', link: '/en/' },
-          { text: 'Install', link: '/en/install' },
-          { text: 'User Guide', link: '/en/user-guide' },
-          { text: 'AppMaker Case', link: '/en/running-example' },
-          { text: 'Textual DSL', link: '/en/textual-dsl' },
-          { text: 'Mapping', link: '/en/ecore-to-blockly-mapping' },
-          { text: 'Architecture', link: '/en/architecture' },
+          { text: 'Use', items: [
+            { text: 'Install', link: '/en/install' },
+            { text: 'User Guide', link: '/en/user-guide' },
+            { text: 'AppMaker Case', link: '/en/running-example' },
+            { text: 'Demo', link: appMakerDemo },
+          ] },
+          { text: 'Evaluation', link: '/en/evaluation' },
+          { text: 'Design', items: [
+            { text: 'Textual DSL', link: '/en/textual-dsl' },
+            { text: 'Ecore Mapping', link: '/en/ecore-to-blockly-mapping' },
+            { text: 'Architecture', link: '/en/architecture' },
+          ] },
           { text: 'Reference', items: [
             { text: 'Troubleshooting', link: '/en/troubleshooting' },
             { text: 'Release checklist', link: '/en/release-checklist' },
           ] },
-          { text: 'Demo', link: appMakerDemo },
         ],
         sidebar: enSidebar,
         outline: { label: 'On this page', level: [2, 3] },
@@ -417,17 +459,22 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'Inicio', link: '/es/' },
-          { text: 'Instalar', link: '/es/install' },
-          { text: 'Guía de uso', link: '/es/user-guide' },
-          { text: 'Caso AppMaker', link: '/es/running-example' },
-          { text: 'DSL textual', link: '/es/textual-dsl' },
-          { text: 'Mapeo', link: '/es/ecore-to-blockly-mapping' },
-          { text: 'Arquitectura', link: '/es/architecture' },
+          { text: 'Uso', items: [
+            { text: 'Instalar', link: '/es/install' },
+            { text: 'Guía de uso', link: '/es/user-guide' },
+            { text: 'Caso AppMaker', link: '/es/running-example' },
+            { text: 'Demo', link: appMakerDemo },
+          ] },
+          { text: 'Evaluación', link: '/es/evaluation' },
+          { text: 'Diseño', items: [
+            { text: 'DSL textual', link: '/es/textual-dsl' },
+            { text: 'Mapeo Ecore', link: '/es/ecore-to-blockly-mapping' },
+            { text: 'Arquitectura', link: '/es/architecture' },
+          ] },
           { text: 'Referencia', items: [
             { text: 'Solución de problemas', link: '/es/troubleshooting' },
             { text: 'Checklist de publicación', link: '/es/release-checklist' },
           ] },
-          { text: 'Demo', link: appMakerDemo },
         ],
         sidebar: esSidebar,
         outline: { label: 'En esta página', level: [2, 3] },
@@ -441,17 +488,22 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: '首页', link: '/zh/' },
-          { text: '安装', link: '/zh/install' },
-          { text: '使用指南', link: '/zh/user-guide' },
-          { text: 'AppMaker 案例', link: '/zh/running-example' },
-          { text: '文本 DSL', link: '/zh/textual-dsl' },
-          { text: '映射规则', link: '/zh/ecore-to-blockly-mapping' },
-          { text: '架构', link: '/zh/architecture' },
+          { text: '使用', items: [
+            { text: '安装', link: '/zh/install' },
+            { text: '使用指南', link: '/zh/user-guide' },
+            { text: 'AppMaker 案例', link: '/zh/running-example' },
+            { text: '演示', link: appMakerDemo },
+          ] },
+          { text: '评估', link: '/zh/evaluation' },
+          { text: '设计', items: [
+            { text: '文本 DSL', link: '/zh/textual-dsl' },
+            { text: 'Ecore 映射', link: '/zh/ecore-to-blockly-mapping' },
+            { text: '架构', link: '/zh/architecture' },
+          ] },
           { text: '参考', items: [
             { text: '故障排查', link: '/zh/troubleshooting' },
             { text: '发布清单', link: '/zh/release-checklist' },
           ] },
-          { text: '演示', link: appMakerDemo },
         ],
         sidebar: zhSidebar,
         outline: { label: '本页目录', level: [2, 4] },
@@ -514,22 +566,32 @@ export default DefaultTheme;
 
 @media (min-width: 960px) {
   .VPHomeHero .main {
-    max-width: 520px;
+    flex: 0 1 520px;
+    min-width: 0;
+    max-width: 520px !important;
   }
 
   .VPHomeHero .image {
     display: flex;
+    flex: 1 1 0;
     align-items: center;
     justify-content: center;
-    width: min(52vw, 720px);
+    min-width: 0;
+    width: auto;
+    max-width: 680px;
     height: auto;
     margin: 0 0 0 32px;
   }
 
   .VPHomeHero .image-container {
-    width: min(52vw, 720px);
+    width: 100%;
+    max-width: 100%;
     height: auto;
     transform: none;
+  }
+
+  .VPHomeHero .image-src {
+    max-width: 100%;
   }
 }
 
@@ -578,6 +640,20 @@ export default DefaultTheme;
 .VPDoc td,
 .VPDoc th {
   word-break: break-word;
+}
+
+@media (max-width: 767px) {
+  .VPDoc table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .VPDoc td,
+  .VPDoc th {
+    word-break: normal;
+  }
 }
 
 .feature-coverage-index {

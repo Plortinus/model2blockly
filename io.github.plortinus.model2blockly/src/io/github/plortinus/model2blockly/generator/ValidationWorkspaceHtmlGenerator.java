@@ -102,16 +102,18 @@ public final class ValidationWorkspaceHtmlGenerator {
 		    body {
 		      display: flex;
 		      flex-direction: column;
+		      overflow: hidden;
 		      background: var(--bg);
 		      color: var(--text);
 		      font: 14px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 		    }
 		    .topbar {
+		      flex: 0 0 auto;
 		      display: flex;
-		      align-items: flex-end;
+		      align-items: center;
 		      justify-content: space-between;
-		      gap: 24px;
-		      padding: 18px 24px;
+		      gap: 16px;
+		      padding: 12px 18px;
 		      background: var(--surface);
 		      border-bottom: 1px solid var(--line);
 		    }
@@ -129,7 +131,7 @@ public final class ValidationWorkspaceHtmlGenerator {
 		      letter-spacing: 0;
 		    }
 		    h1 {
-		      font-size: 24px;
+		      font-size: 20px;
 		      line-height: 1.2;
 		    }
 		    h2 {
@@ -150,16 +152,17 @@ public final class ValidationWorkspaceHtmlGenerator {
 		      display: flex;
 		      align-items: center;
 		      justify-content: flex-end;
-		      gap: 8px;
-		      flex-wrap: wrap;
+		      gap: 6px;
+		      flex-wrap: nowrap;
 		    }
 		    button {
 		      border: 1px solid var(--line);
 		      border-radius: 8px;
 		      background: var(--surface);
 		      color: var(--text);
-		      padding: 8px 10px;
+		      padding: 6px 8px;
 		      font: inherit;
+		      font-size: 12px;
 		      font-weight: 650;
 		      cursor: pointer;
 		    }
@@ -170,29 +173,43 @@ public final class ValidationWorkspaceHtmlGenerator {
 		      box-shadow: 0 0 0 3px var(--accent-soft);
 		    }
 		    .layout {
-		      flex: 1;
+		      flex: 1 1 auto;
 		      display: grid;
 		      grid-template-columns: minmax(0, 1fr) 320px;
 		      min-height: 0;
+		      overflow: hidden;
 		    }
 		    .workspace-shell {
+		      display: flex;
 		      min-width: 0;
+		      min-height: 0;
 		      padding: 16px;
 		    }
 		    #validationBlockly {
+		      flex: 1 1 auto;
 		      width: 100%;
-		      height: calc(100vh - 115px);
-		      min-height: 560px;
+		      height: auto;
+		      min-height: 0;
 		      border: 1px solid var(--line);
 		      border-radius: 8px;
 		      background: var(--surface);
 		      overflow: hidden;
 		    }
+		    #validationBlockly .blocklyScrollbarHandle {
+		      opacity: 0.18;
+		      transition: opacity 120ms ease;
+		    }
+		    #validationBlockly:hover .blocklyScrollbarHandle {
+		      opacity: 0.48;
+		    }
 		    .side-panel {
+		      min-height: 0;
 		      border-left: 1px solid var(--line);
 		      background: var(--surface-alt);
 		      padding: 18px;
 		      overflow: auto;
+		      scrollbar-width: thin;
+		      scrollbar-color: #cbd5e1 transparent;
 		    }
 		    .side-panel section + section {
 		      margin-top: 22px;
@@ -219,6 +236,11 @@ public final class ValidationWorkspaceHtmlGenerator {
 		      border-color: var(--accent);
 		      outline: none;
 		      box-shadow: 0 0 0 3px var(--accent-soft);
+		    }
+		    .rule-item.active {
+		      border-color: var(--accent);
+		      background: var(--accent-soft);
+		      box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.16);
 		    }
 		    .rule-name {
 		      display: block;
@@ -266,12 +288,22 @@ public final class ValidationWorkspaceHtmlGenerator {
 		      font-size: 12px;
 		    }
 		    @media (max-width: 900px) {
+		      body {
+		        overflow: auto;
+		      }
 		      .topbar {
 		        align-items: flex-start;
 		        flex-direction: column;
 		      }
+		      .top-actions {
+		        flex-wrap: wrap;
+		      }
 		      .layout {
 		        grid-template-columns: 1fr;
+		        overflow: visible;
+		      }
+		      .workspace-shell {
+		        display: block;
 		      }
 		      #validationBlockly {
 		        height: 62vh;
@@ -1545,6 +1577,10 @@ public final class ValidationWorkspaceHtmlGenerator {
       item.addEventListener("click", function() {
         const blockId = item.dataset.blockId;
         if (!blockId || !workspace.getBlockById(blockId)) return;
+		container.querySelectorAll(".rule-item").forEach(function(candidate) {
+		  candidate.classList.toggle("active", candidate === item);
+		});
+		if (workspace.highlightBlock) workspace.highlightBlock(blockId);
         if (workspace.centerOnBlock) workspace.centerOnBlock(blockId);
       });
       container.appendChild(item);

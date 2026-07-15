@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E02_interpreter_wait",
+  "rules": [
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.wait_seconds.tooltip",
+      "status": "unsupported",
+      "capability": "empty-tooltip",
+      "boundary": "model2blockly",
+      "rationale": "La referencia no declara tooltip, pero Model2Blockly genera el label como tooltip predeterminado y no permite suprimirlo."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "blocks.wait_seconds.inputs.*.fields.*.constraints.precision",
+      "status": "unsupported",
+      "capability": "numeric-field-precision",
+      "boundary": "model2blockly",
+      "rationale": "El entero de Model2Blockly fija precisión 1, mientras que el campo oficial no restringe explícitamente el incremento."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categoryOrder",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "La categoría de dominio Loops y las categorías estándar generadas no pueden fusionarse ni reordenarse como en la paleta oficial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.nonCategoryItems",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "El separador generado incluye un gap fijo que no se declara en el modelo del caso."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Logic.unexpectedBlocks",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla Logic generada contiene más entradas que la paleta seleccionada."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Loops.blocks.wait_seconds.present",
+      "status": "unsupported",
+      "capability": "toolbox-category-merge",
+      "boundary": "model2blockly",
+      "rationale": "El bloque de dominio no puede insertarse dentro de la categoría estándar Loops; se genera una segunda categoría con el mismo nombre."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Loops.unexpectedBlocks",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "La categoría estándar Loops generada contiene controles adicionales que no aparecen en la paleta oficial seleccionada."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.blocks.math_number.configuration",
+      "status": "unsupported",
+      "capability": "toolbox-entry-presets",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla generada preconfigura NUM=0, mientras que la entrada oficial no fija un campo."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Math.unexpectedBlocks",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "La categoría Math generada usa una lista fija más amplia que la referencia."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Text.present",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "La plantilla estándar actual no genera la categoría Text usada por la demostración oficial."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.categories.Text.blocks.*.present",
+      "status": "unsupported",
+      "capability": "toolbox-composition",
+      "boundary": "model2blockly",
+      "rationale": "Los cuatro bloques de texto de la categoría oficial no pueden incorporarse mediante la composición de paleta actual."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "toolbox.unexpectedCategories",
+      "status": "unsupported",
+      "capability": "toolbox-category-merge",
+      "boundary": "model2blockly",
+      "rationale": "La categoría Loops declarada para el bloque de dominio queda duplicada frente a la categoría estándar."
+    },
+    {
+      "section": "editor",
+      "propertyPattern": "initialWorkspace.present",
+      "status": "unsupported",
+      "capability": "initial-workspace",
+      "boundary": "model2blockly",
+      "rationale": "El DSL no puede declarar el programa inicial serializado de la demostración asíncrona."
+    }
+  ]
+}

@@ -1,0 +1,1004 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E01_graph",
+  "baselineTreatment": "baseline",
+  "actualTreatment": "m2b",
+  "editor": {
+    "summary": {
+      "totalObserved": 91,
+      "applicable": 91,
+      "matches": 77,
+      "partial": 0,
+      "mismatches": 0,
+      "unsupported": 14,
+      "errors": 0,
+      "excluded": 0,
+      "differences": 14,
+      "parityPercent": 84.62,
+      "classification": "partial"
+    },
+    "loadErrors": [],
+    "properties": [
+      {
+        "property": "blocks.noUnexpectedTypes",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.graph_get_x.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.graph_get_x.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.graph_get_x.connections.previous",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.graph_get_x.connections.next",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.graph_get_x.connections.output",
+        "status": "match",
+        "expected": {
+          "check": [
+            "Number"
+          ]
+        },
+        "actual": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      {
+        "property": "blocks.graph_get_x.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.graph_get_x.colour",
+        "status": "match",
+        "expected": "#a55b80",
+        "actual": "#a55b80"
+      },
+      {
+        "property": "blocks.graph_get_x.tooltip",
+        "status": "match",
+        "expected": "Returns the value of this variable.",
+        "actual": "Returns the value of this variable."
+      },
+      {
+        "property": "blocks.graph_get_x.helpUrl",
+        "status": "match",
+        "expected": "https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#get",
+        "actual": "https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#get"
+      },
+      {
+        "property": "blocks.graph_get_x.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.graph_get_x.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.graph_get_x.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.graph_get_x.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.graph_get_x.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.graph_get_x.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.graph_get_x.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.graph_get_x.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.graph_get_x.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "x",
+        "actual": "x"
+      },
+      {
+        "property": "blocks.graph_get_x.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "x",
+        "actual": "x"
+      },
+      {
+        "property": "blocks.graph_get_x.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.graph_set_y.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.graph_set_y.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:VALUE"
+        ],
+        "actual": [
+          "value:VALUE"
+        ]
+      },
+      {
+        "property": "blocks.graph_set_y.connections.previous",
+        "status": "unsupported",
+        "expected": null,
+        "actual": {
+          "check": null
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Las conexiones de sentencia se derivan de la clase y no pueden desactivarse de forma independiente en la especificación actual."
+      },
+      {
+        "property": "blocks.graph_set_y.connections.next",
+        "status": "unsupported",
+        "expected": null,
+        "actual": {
+          "check": null
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Las conexiones de sentencia se derivan de la clase y no pueden desactivarse de forma independiente en la especificación actual."
+      },
+      {
+        "property": "blocks.graph_set_y.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.graph_set_y.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.graph_set_y.colour",
+        "status": "match",
+        "expected": "#a55b80",
+        "actual": "#a55b80"
+      },
+      {
+        "property": "blocks.graph_set_y.tooltip",
+        "status": "match",
+        "expected": "Sets this variable to be equal to the input.",
+        "actual": "Sets this variable to be equal to the input."
+      },
+      {
+        "property": "blocks.graph_set_y.helpUrl",
+        "status": "match",
+        "expected": "https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#set",
+        "actual": "https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#set"
+      },
+      {
+        "property": "blocks.graph_set_y.dynamicBehaviour",
+        "status": "unsupported",
+        "expected": [
+          "generator-side-effect:set-deletable-false"
+        ],
+        "actual": [],
+        "capability": "editor-side-effects",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no declara el efecto setDeletable(false) ejecutado por el generador oficial."
+      },
+      {
+        "property": "blocks.graph_set_y.inputs.value:VALUE.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.graph_set_y.inputs.value:VALUE.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.graph_set_y.inputs.value:VALUE.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.graph_set_y.inputs.value:VALUE.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.graph_set_y.inputs.value:VALUE.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.graph_set_y.inputs.value:VALUE.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.graph_set_y.inputs.value:VALUE.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.graph_set_y.inputs.value:VALUE.fields.0.value",
+        "status": "match",
+        "expected": "y =",
+        "actual": "y ="
+      },
+      {
+        "property": "blocks.graph_set_y.inputs.value:VALUE.fields.0.text",
+        "status": "match",
+        "expected": "y =",
+        "actual": "y ="
+      },
+      {
+        "property": "blocks.graph_set_y.inputs.value:VALUE.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.kind",
+        "status": "match",
+        "expected": "categoryToolbox",
+        "actual": "categoryToolbox"
+      },
+      {
+        "property": "toolbox.categoryOrder",
+        "status": "unsupported",
+        "expected": [
+          "Math",
+          "Variables",
+          "Logic"
+        ],
+        "actual": [
+          "Variables",
+          "Logic",
+          "Loops",
+          "Math",
+          "Variables",
+          "Functions"
+        ],
+        "capability": "toolbox-composition",
+        "boundary": "model2blockly",
+        "rationale": "La paleta por categorías añade un conjunto fijo de categorías Blockly y no permite declarar el orden oficial completo."
+      },
+      {
+        "property": "toolbox.nonCategoryItems",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          {
+            "gap": "32",
+            "kind": "sep"
+          }
+        ],
+        "capability": "toolbox-composition",
+        "boundary": "model2blockly",
+        "rationale": "El separador entre bloques de dominio y categorías estándar es generado automáticamente."
+      },
+      {
+        "property": "toolbox.categories.Math.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.colour",
+        "status": "match",
+        "expected": "230",
+        "actual": "230"
+      },
+      {
+        "property": "toolbox.categories.Math.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "fields": {
+            "NUM": 123
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "fields": {
+            "NUM": 0
+          }
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "Los valores, sombras y entradas preconfigurados de cada bloque matemático proceden de una plantilla fija y no pueden ajustarse desde el modelo del caso."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_arithmetic.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_arithmetic.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "A": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "B": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "A": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "B": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_single.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_single.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 9
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 9
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_trig.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-composition",
+        "boundary": "model2blockly",
+        "rationale": "La lista fija de bloques matemáticos generados no puede ampliarse desde el modelo con estos cuatro tipos oficiales."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constant.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-composition",
+        "boundary": "model2blockly",
+        "rationale": "La lista fija de bloques matemáticos generados no puede ampliarse desde el modelo con estos cuatro tipos oficiales."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number_property.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-composition",
+        "boundary": "model2blockly",
+        "rationale": "La lista fija de bloques matemáticos generados no puede ampliarse desde el modelo con estos cuatro tipos oficiales."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_round.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_round.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 3.1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 3.1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_modulo.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_modulo.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "DIVIDEND": {
+              "shadow": {
+                "fields": {
+                  "NUM": 64
+                },
+                "type": "math_number"
+              }
+            },
+            "DIVISOR": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "DIVIDEND": {
+              "shadow": {
+                "fields": {
+                  "NUM": 64
+                },
+                "type": "math_number"
+              }
+            },
+            "DIVISOR": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constrain.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constrain.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "HIGH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            },
+            "LOW": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "VALUE": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "HIGH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            },
+            "LOW": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "VALUE": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_int.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_int.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_float.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_float.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_atan2.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-composition",
+        "boundary": "model2blockly",
+        "rationale": "La lista fija de bloques matemáticos generados no puede ampliarse desde el modelo con estos cuatro tipos oficiales."
+      },
+      {
+        "property": "toolbox.categories.Math.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.categories.Variables.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Variables.colour",
+        "status": "match",
+        "expected": "330",
+        "actual": "330"
+      },
+      {
+        "property": "toolbox.categories.Variables.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Variables.blocks.graph_get_x.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Variables.blocks.graph_get_x.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Variables.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "graph_set_y"
+        ],
+        "capability": "toolbox-composition",
+        "boundary": "model2blockly",
+        "rationale": "La ubicación exacta de los bloques de dominio frente a la categoría dinámica de variables no es configurable."
+      },
+      {
+        "property": "toolbox.categories.Logic.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.colour",
+        "status": "match",
+        "expected": "210",
+        "actual": "210"
+      },
+      {
+        "property": "toolbox.categories.Logic.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_compare.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_compare.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_operation.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_operation.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_negate.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_negate.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_boolean.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_boolean.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_ternary.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_ternary.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "controls_if",
+          "controls_if",
+          "logic_null"
+        ],
+        "capability": "toolbox-composition",
+        "boundary": "model2blockly",
+        "rationale": "El contenido de la categoría Logic se genera con una plantilla fija más amplia que la referencia."
+      },
+      {
+        "property": "toolbox.unexpectedCategories",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "Loops",
+          "Variables",
+          "Functions"
+        ],
+        "capability": "toolbox-composition",
+        "boundary": "model2blockly",
+        "rationale": "Las categorías estándar Loops, Variables y Functions se añaden automáticamente y no pueden suprimirse desde el modelo."
+      },
+      {
+        "property": "initialWorkspace.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "initial-workspace",
+        "boundary": "model2blockly",
+        "rationale": "La especificación actual no permite declarar el programa inicial y = x² incluido en Graph Demo."
+      }
+    ]
+  },
+  "generators": {
+    "scope": "Presence and domain-code template; execution engine excluded.",
+    "summary": {
+      "totalObserved": 8,
+      "applicable": 8,
+      "matches": 7,
+      "partial": 0,
+      "mismatches": 0,
+      "unsupported": 1,
+      "errors": 0,
+      "excluded": 0,
+      "differences": 1,
+      "parityPercent": 87.5
+    },
+    "properties": [
+      {
+        "property": "generators.graph_get_x.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.graph_get_x.kind",
+        "status": "match",
+        "expected": "value",
+        "actual": "value"
+      },
+      {
+        "property": "generators.graph_get_x.template",
+        "status": "match",
+        "expected": "x",
+        "actual": "x"
+      },
+      {
+        "property": "generators.graph_get_x.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.graph_set_y.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.graph_set_y.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.graph_set_y.template",
+        "status": "match",
+        "expected": "y = {{value:VALUE}};",
+        "actual": "y = {{value:VALUE}};"
+      },
+      {
+        "property": "generators.graph_set_y.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "set-deletable-false"
+        ],
+        "actual": [],
+        "capability": "editor-side-effects",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla de código coincide, pero no existe una construcción declarativa para modificar la propiedad deletable del bloque."
+      }
+    ]
+  }
+}

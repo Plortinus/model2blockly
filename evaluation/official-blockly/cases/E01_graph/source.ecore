@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="graph"
+    nsURI="http://www.example.org/graph"
+    nsPrefix="graph">
+
+  <eAnnotations source="blockly">
+    <details key="workspace.renderer" value="geras"/>
+    <details key="workspace.toolboxType" value="category"/>
+    <details key="workspace.trashcan" value="false"/>
+  </eAnnotations>
+  <eAnnotations source="code">
+    <details key="language" value="javascript"/>
+    <details key="fileExtension" value="js"/>
+  </eAnnotations>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Number" abstract="true">
+    <eAnnotations source="blockly">
+      <details key="output" value="true"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="graph_get_x" eSuperTypes="#//Number">
+    <eAnnotations source="blockly">
+      <details key="category" value="Variables"/>
+      <details key="colour" value="330"/>
+      <details key="output" value="true"/>
+      <details key="message0" value="x"/>
+      <details key="tooltip" value="Returns the value of this variable."/>
+      <details key="helpUrl" value="https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#get"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="x"/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="x"/>
+    </eAnnotations>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="graph_set_y">
+    <eAnnotations source="blockly">
+      <details key="category" value="Variables"/>
+      <details key="colour" value="330"/>
+      <details key="message0" value="y = %1"/>
+      <details key="tooltip" value="Sets this variable to be equal to the input."/>
+      <details key="helpUrl" value="https://github.com/RaspberryPiFoundation/blockly/wiki/Variables#set"/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="ui">
+      <details key="label" value="y ="/>
+    </eAnnotations>
+    <eAnnotations source="code">
+      <details key="template" value="y = {{value:VALUE}};"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="VALUE" eType="#//Number" containment="true">
+      <eAnnotations source="blockly">
+        <details key="type" value="input_value"/>
+        <details key="check" value="Number"/>
+      </eAnnotations>
+      <eAnnotations source="ui">
+        <details key="widget" value="expression-slot"/>
+        <details key="label" value="Value"/>
+        <details key="order" value="1"/>
+        <details key="variant" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>

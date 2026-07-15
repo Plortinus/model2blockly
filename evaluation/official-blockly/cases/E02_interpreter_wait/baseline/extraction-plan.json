@@ -1,0 +1,63 @@
+{
+  "caseId": "E02_interpreter_wait",
+  "configuration": "JS-Interpreter, demostración de ejecución asíncrona",
+  "source": {
+    "repository": "https://github.com/google/blockly-samples.git",
+    "commit": "62ce120977078bf9179c5633681ee70446e5073b",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "wait-block-definition",
+      "sourcePath": "examples/interpreter-demo/wait_block.js",
+      "startLine": 15,
+      "endLine": 32,
+      "snapshot": "baseline/upstream/wait-block-definition.js",
+      "kinds": ["block-definition"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    },
+    {
+      "id": "wait-generator",
+      "sourcePath": "examples/interpreter-demo/wait_block.js",
+      "startLine": 38,
+      "endLine": 42,
+      "snapshot": "baseline/upstream/wait-generator.js",
+      "kinds": ["generator"],
+      "metricGroups": ["generator"],
+      "countForMetrics": true
+    },
+    {
+      "id": "interpreter-runtime-binding",
+      "sourcePath": "examples/interpreter-demo/wait_block.js",
+      "startLine": 44,
+      "endLine": 59,
+      "snapshot": "baseline/upstream/interpreter-runtime-binding.js",
+      "kinds": ["domain-runtime"],
+      "metricGroups": ["generator"],
+      "countForMetrics": false,
+      "notes": ["Traceable but excluded: asynchronous JS-Interpreter binding and timer runtime."]
+    },
+    {
+      "id": "selected-toolbox",
+      "sourcePath": "examples/interpreter-demo/async-execution.html",
+      "startLine": 58,
+      "endLine": 218,
+      "snapshot": "baseline/upstream/selected-toolbox.js",
+      "kinds": ["toolbox"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true,
+      "notes": ["Exact toolbox embedded by the selected asynchronous-execution page."]
+    },
+    {
+      "id": "initial-workspace",
+      "sourcePath": "examples/interpreter-demo/async-execution.html",
+      "startLine": 220,
+      "endLine": 317,
+      "snapshot": "baseline/upstream/initial-workspace.js",
+      "kinds": ["initial-workspace"],
+      "metricGroups": ["editor"],
+      "countForMetrics": true
+    }
+  ]
+}

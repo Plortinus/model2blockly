@@ -1,0 +1,1077 @@
+{
+  "schemaVersion": 1,
+  "corpus": {
+    "title": "Evaluación de Model2Blockly con editores oficiales de Blockly",
+    "caseCount": 10,
+    "repositories": {
+      "blockly-games": {
+        "url": "https://github.com/google/blockly-games.git",
+        "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+        "branchAtSelection": "master",
+        "officialCatalogue": "https://blockly.games/about?lang=en"
+      },
+      "blockly-samples": {
+        "url": "https://github.com/google/blockly-samples.git",
+        "commit": "62ce120977078bf9179c5633681ee70446e5073b",
+        "branchAtSelection": "main",
+        "officialCatalogue": "https://github.com/google/blockly-samples/tree/main/examples"
+      }
+    },
+    "controls": {
+      "blocklyVersion": "13.1.1",
+      "renderer": "geras",
+      "theme": "classic",
+      "locale": "en",
+      "browserViewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "workspaceViewport": {
+        "width": 1024,
+        "height": 640
+      }
+    }
+  },
+  "perCase": [
+    {
+      "id": "E01_graph",
+      "name": "Graph Demo",
+      "complexity": "simple",
+      "configuration": "Editor único de la demostración",
+      "blockCount": 2,
+      "editor": {
+        "totalObserved": 91,
+        "applicable": 91,
+        "matches": 77,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 14,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 84.62,
+        "classification": "partial"
+      },
+      "generators": {
+        "totalObserved": 8,
+        "applicable": 8,
+        "matches": 7,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 1,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 87.5
+      },
+      "authoring": {
+        "officialLoc": 329,
+        "m2bLoc": 28,
+        "locReductionPercent": 91.49,
+        "officialBytes": 9187,
+        "m2bBytes": 815,
+        "byteReductionPercent": 91.13
+      }
+    },
+    {
+      "id": "E02_interpreter_wait",
+      "name": "JS-Interpreter Wait",
+      "complexity": "simple",
+      "configuration": "Demostración de ejecución asíncrona con el bloque wait_seconds",
+      "blockCount": 1,
+      "editor": {
+        "totalObserved": 89,
+        "applicable": 89,
+        "matches": 73,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 16,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 82.02,
+        "classification": "partial"
+      },
+      "generators": {
+        "totalObserved": 4,
+        "applicable": 4,
+        "matches": 4,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 0,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 100
+      },
+      "authoring": {
+        "officialLoc": 282,
+        "m2bLoc": 16,
+        "locReductionPercent": 94.33,
+        "officialBytes": 8037,
+        "m2bBytes": 429,
+        "byteReductionPercent": 94.66
+      }
+    },
+    {
+      "id": "E03_maze",
+      "name": "Maze",
+      "complexity": "medium",
+      "configuration": "Nivel 10, usado como configuración máxima y estable de la paleta",
+      "blockCount": 5,
+      "editor": {
+        "totalObserved": 137,
+        "applicable": 137,
+        "matches": 111,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 26,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 81.02,
+        "classification": "partial"
+      },
+      "generators": {
+        "totalObserved": 20,
+        "applicable": 15,
+        "matches": 15,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 0,
+        "errors": 0,
+        "excluded": 5,
+        "parityPercent": 100
+      },
+      "authoring": {
+        "officialLoc": 178,
+        "m2bLoc": 73,
+        "locReductionPercent": 58.99,
+        "officialBytes": 6944,
+        "m2bBytes": 2540,
+        "byteReductionPercent": 63.42
+      }
+    },
+    {
+      "id": "E04_bird",
+      "name": "Bird",
+      "complexity": "medium",
+      "configuration": "Nivel 10, usado como configuración máxima de la paleta",
+      "blockCount": 8,
+      "editor": {
+        "totalObserved": 218,
+        "applicable": 218,
+        "matches": 203,
+        "partial": 0,
+        "mismatches": 1,
+        "unsupported": 14,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 93.12,
+        "classification": "partial"
+      },
+      "generators": {
+        "totalObserved": 32,
+        "applicable": 31,
+        "matches": 27,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 4,
+        "errors": 0,
+        "excluded": 1,
+        "parityPercent": 87.1
+      },
+      "authoring": {
+        "officialLoc": 246,
+        "m2bLoc": 93,
+        "locReductionPercent": 62.2,
+        "officialBytes": 8692,
+        "m2bBytes": 3329,
+        "byteReductionPercent": 61.7
+      }
+    },
+    {
+      "id": "E05_movie",
+      "name": "Movie",
+      "complexity": "medium",
+      "configuration": "Nivel 10, editor libre con la paleta completa disponible en ese nivel",
+      "blockCount": 5,
+      "editor": {
+        "totalObserved": 283,
+        "applicable": 283,
+        "matches": 236,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 47,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 83.39,
+        "classification": "partial"
+      },
+      "generators": {
+        "totalObserved": 20,
+        "applicable": 20,
+        "matches": 16,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 4,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 80
+      },
+      "authoring": {
+        "officialLoc": 449,
+        "m2bLoc": 75,
+        "locReductionPercent": 83.3,
+        "officialBytes": 13781,
+        "m2bBytes": 2682,
+        "byteReductionPercent": 80.54
+      }
+    },
+    {
+      "id": "E06_music",
+      "name": "Music",
+      "complexity": "complex",
+      "configuration": "Nivel 10, editor con la paleta completa disponible en ese nivel",
+      "blockCount": 6,
+      "editor": {
+        "totalObserved": 232,
+        "applicable": 232,
+        "matches": 186,
+        "partial": 7,
+        "mismatches": 0,
+        "unsupported": 39,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 80.17,
+        "classification": "partial"
+      },
+      "generators": {
+        "totalObserved": 24,
+        "applicable": 21,
+        "matches": 19,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 2,
+        "errors": 0,
+        "excluded": 3,
+        "parityPercent": 90.48
+      },
+      "authoring": {
+        "officialLoc": 545,
+        "m2bLoc": 94,
+        "locReductionPercent": 82.75,
+        "officialBytes": 19842,
+        "m2bBytes": 3026,
+        "byteReductionPercent": 84.75
+      }
+    },
+    {
+      "id": "E07_turtle",
+      "name": "Turtle",
+      "complexity": "complex",
+      "configuration": "Nivel 10, editor libre con la paleta completa",
+      "blockCount": 12,
+      "editor": {
+        "totalObserved": 427,
+        "applicable": 427,
+        "matches": 349,
+        "partial": 7,
+        "mismatches": 0,
+        "unsupported": 71,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 81.73,
+        "classification": "partial"
+      },
+      "generators": {
+        "totalObserved": 48,
+        "applicable": 40,
+        "matches": 30,
+        "partial": 0,
+        "mismatches": 0,
+        "unsupported": 10,
+        "errors": 0,
+        "excluded": 8,
+        "parityPercent": 75
+      },
+      "authoring": {
+        "officialLoc": 669,
+        "m2bLoc": 190,
+        "locReductionPercent": 71.6,
+        "officialBytes": 21588,
+        "m2bBytes": 6368,
+        "byteReductionPercent": 70.5
+      }
+    },
+    {
+      "id": "E08_puzzle",
+      "name": "Puzzle",
+      "complexity": "complex",
+      "configuration": "Espacio de trabajo inicial del rompecabezas; no utiliza una paleta convencional",
+      "blockCount": 3,
+      "editor": {
+        "totalObserved": 75,
+        "applicable": 75,
+        "matches": 59,
+        "partial": 3,
+        "mismatches": 0,
+        "unsupported": 13,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 78.67,
+        "classification": "partial"
+      },
+      "generators": {
+        "totalObserved": 12,
+        "applicable": 12,
+        "matches": 6,
+        "partial": 0,
+        "mismatches": 6,
+        "unsupported": 0,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 50
+      },
+      "authoring": {
+        "officialLoc": 221,
+        "m2bLoc": 46,
+        "locReductionPercent": 79.19,
+        "officialBytes": 9088,
+        "m2bBytes": 1310,
+        "byteReductionPercent": 85.59
+      }
+    },
+    {
+      "id": "E09_pond_tutor",
+      "name": "Pond Tutor",
+      "complexity": "complex",
+      "configuration": "Nivel 9, último nivel impar y por tanto última configuración Blockly del tutor",
+      "blockCount": 11,
+      "editor": {
+        "totalObserved": 397,
+        "applicable": 397,
+        "matches": 340,
+        "partial": 19,
+        "mismatches": 2,
+        "unsupported": 36,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 85.64,
+        "classification": "partial"
+      },
+      "generators": {
+        "totalObserved": 44,
+        "applicable": 44,
+        "matches": 35,
+        "partial": 1,
+        "mismatches": 0,
+        "unsupported": 8,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 79.55
+      },
+      "authoring": {
+        "officialLoc": 415,
+        "m2bLoc": 154,
+        "locReductionPercent": 62.89,
+        "officialBytes": 14359,
+        "m2bBytes": 5811,
+        "byteReductionPercent": 59.53
+      }
+    },
+    {
+      "id": "E10_pond_duck",
+      "name": "Pond",
+      "complexity": "complex",
+      "configuration": "Editor Blockly completo de Pond Duck",
+      "blockCount": 24,
+      "editor": {
+        "totalObserved": 813,
+        "applicable": 813,
+        "matches": 681,
+        "partial": 37,
+        "mismatches": 5,
+        "unsupported": 90,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 83.76,
+        "classification": "partial"
+      },
+      "generators": {
+        "totalObserved": 96,
+        "applicable": 96,
+        "matches": 68,
+        "partial": 7,
+        "mismatches": 0,
+        "unsupported": 21,
+        "errors": 0,
+        "excluded": 0,
+        "parityPercent": 70.83
+      },
+      "authoring": {
+        "officialLoc": 740,
+        "m2bLoc": 352,
+        "locReductionPercent": 52.43,
+        "officialBytes": 25840,
+        "m2bBytes": 14253,
+        "byteReductionPercent": 44.84
+      }
+    }
+  ],
+  "editor": {
+    "totals": {
+      "totalObserved": 2762,
+      "applicable": 2762,
+      "matches": 2315,
+      "partial": 73,
+      "mismatches": 8,
+      "unsupported": 366,
+      "errors": 0,
+      "excluded": 0
+    },
+    "weightedParityPercent": 83.82,
+    "macroParityPercent": {
+      "mean": 83.41,
+      "median": 82.71,
+      "minimum": {
+        "caseId": "E08_puzzle",
+        "value": 78.67
+      },
+      "maximum": {
+        "caseId": "E04_bird",
+        "value": 93.12
+      }
+    },
+    "classifications": {
+      "partial": 10
+    },
+    "casesWithLoadErrors": []
+  },
+  "generators": {
+    "totals": {
+      "totalObserved": 308,
+      "applicable": 291,
+      "matches": 227,
+      "partial": 8,
+      "mismatches": 6,
+      "unsupported": 50,
+      "errors": 0,
+      "excluded": 17
+    },
+    "weightedParityPercent": 78.01,
+    "macroParityPercent": {
+      "mean": 82.05,
+      "median": 83.55,
+      "minimum": {
+        "caseId": "E08_puzzle",
+        "value": 50
+      },
+      "maximum": {
+        "caseId": "E03_maze",
+        "value": 100
+      }
+    }
+  },
+  "authoring": {
+    "macroLocReductionPercent": {
+      "mean": 73.92,
+      "median": 75.4,
+      "minimum": {
+        "caseId": "E10_pond_duck",
+        "value": 52.43
+      },
+      "maximum": {
+        "caseId": "E02_interpreter_wait",
+        "value": 94.33
+      }
+    },
+    "sumOfIndependentConfigurations": {
+      "officialLoc": 4074,
+      "m2bLoc": 1121,
+      "locReductionPercent": 72.48,
+      "officialBytes": 137358,
+      "m2bBytes": 40563,
+      "byteReductionPercent": 70.47
+    },
+    "conservativeSharedSourceDeduplication": {
+      "rule": "Deduplicate official source only when repository, commit, path and original line number are identical; keep all ten independently maintained .m2b models.",
+      "officialLoc": 3737,
+      "m2bLoc": 1121,
+      "locReductionPercent": 70,
+      "officialBytes": 125470,
+      "m2bBytes": 40563,
+      "byteReductionPercent": 67.67,
+      "officialLocRemoved": 337,
+      "officialBytesRemoved": 11888,
+      "selectedSourceLineInstances": 4722,
+      "uniqueSourceLineCoordinates": 4305,
+      "duplicateSourceLineInstancesRemoved": 417,
+      "crossCaseSharedCoordinates": 398,
+      "sourceFiles": 29
+    },
+    "generatedArtifactsExcluded": true,
+    "domainRuntimeExcluded": true
+  },
+  "inputRoutes": {
+    "planned": 3,
+    "verified": 3,
+    "equivalent": 3,
+    "complete": true,
+    "cases": [
+      {
+        "caseId": "E01_graph",
+        "verified": true,
+        "equivalent": true
+      },
+      {
+        "caseId": "E03_maze",
+        "verified": true,
+        "equivalent": true
+      },
+      {
+        "caseId": "E07_turtle",
+        "verified": true,
+        "equivalent": true
+      }
+    ]
+  },
+  "capabilityDifferences": {
+    "editor": [
+      {
+        "status": "unsupported",
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "propertyCount": 101,
+        "caseIds": [
+          "E01_graph",
+          "E03_maze",
+          "E04_bird",
+          "E05_movie",
+          "E06_music",
+          "E07_turtle",
+          "E08_puzzle",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "propertyCount": 66,
+        "caseIds": [
+          "E05_movie",
+          "E06_music",
+          "E07_turtle",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "explicit-dummy-inputs",
+        "boundary": "model2blockly",
+        "propertyCount": 52,
+        "caseIds": [
+          "E07_turtle",
+          "E08_puzzle",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "readonly-call-labels",
+        "boundary": "model2blockly",
+        "propertyCount": 30,
+        "caseIds": [
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "propertyCount": 30,
+        "caseIds": [
+          "E05_movie",
+          "E06_music",
+          "E07_turtle",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "toolbox-composition",
+        "boundary": "model2blockly",
+        "propertyCount": 19,
+        "caseIds": [
+          "E01_graph",
+          "E02_interpreter_wait"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "propertyCount": 19,
+        "caseIds": [
+          "E01_graph",
+          "E02_interpreter_wait",
+          "E03_maze",
+          "E04_bird",
+          "E05_movie",
+          "E06_music",
+          "E07_turtle"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "propertyCount": 14,
+        "caseIds": [
+          "E05_movie",
+          "E08_puzzle",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "toolbox-shadow-configuration",
+        "boundary": "model2blockly",
+        "propertyCount": 11,
+        "caseIds": [
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "named-dummy-inputs",
+        "boundary": "model2blockly",
+        "propertyCount": 11,
+        "caseIds": [
+          "E08_puzzle",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "explicit-dummy-input",
+        "boundary": "model2blockly",
+        "propertyCount": 9,
+        "caseIds": [
+          "E03_maze"
+        ]
+      },
+      {
+        "status": "mismatch",
+        "capability": "reserved-block-redefinition",
+        "boundary": "model2blockly",
+        "propertyCount": 8,
+        "caseIds": [
+          "E04_bird",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "initial-workspace",
+        "boundary": "model2blockly",
+        "propertyCount": 8,
+        "caseIds": [
+          "E01_graph",
+          "E02_interpreter_wait",
+          "E04_bird",
+          "E06_music",
+          "E07_turtle",
+          "E08_puzzle",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "multi-type-input-check",
+        "boundary": "model2blockly",
+        "propertyCount": 6,
+        "caseIds": [
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "standard-block-extension",
+        "boundary": "model2blockly",
+        "propertyCount": 5,
+        "caseIds": [
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "toolbox-separator-configuration",
+        "boundary": "model2blockly",
+        "propertyCount": 5,
+        "caseIds": [
+          "E05_movie",
+          "E06_music",
+          "E07_turtle",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "image-dropdown-options",
+        "boundary": "model2blockly",
+        "propertyCount": 4,
+        "caseIds": [
+          "E06_music"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "numeric-dropdown-values",
+        "boundary": "model2blockly",
+        "propertyCount": 4,
+        "caseIds": [
+          "E07_turtle"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "procedure-mutator",
+        "boundary": "model2blockly",
+        "propertyCount": 4,
+        "caseIds": [
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "dynamic-toolbox-category",
+        "boundary": "model2blockly",
+        "propertyCount": 4,
+        "caseIds": [
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "variable-field",
+        "boundary": "model2blockly",
+        "propertyCount": 4,
+        "caseIds": [
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "custom-pitch-field",
+        "boundary": "model2blockly",
+        "propertyCount": 3,
+        "caseIds": [
+          "E06_music"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "data-driven-block-state",
+        "boundary": "model2blockly",
+        "propertyCount": 3,
+        "caseIds": [
+          "E08_puzzle"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "multiple-message-rows",
+        "boundary": "model2blockly",
+        "propertyCount": 3,
+        "caseIds": [
+          "E06_music"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "numeric-field-precision",
+        "boundary": "model2blockly",
+        "propertyCount": 3,
+        "caseIds": [
+          "E02_interpreter_wait",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "adaptive-angle-field",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "block-extension",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E07_turtle"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "mutator-driven-block-shape",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "variable-field",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "editor-extension",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E04_bird"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "stock-block-extension",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E04_bird"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "toolbox-category-merge",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E02_interpreter_wait"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "toolbox-entry-selection",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E04_bird"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "dropdown-stored-values",
+        "boundary": "model2blockly",
+        "propertyCount": 1,
+        "caseIds": [
+          "E07_turtle"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "editor-side-effects",
+        "boundary": "model2blockly",
+        "propertyCount": 1,
+        "caseIds": [
+          "E01_graph"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "empty-tooltip",
+        "boundary": "model2blockly",
+        "propertyCount": 1,
+        "caseIds": [
+          "E02_interpreter_wait"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "number-field-precision",
+        "boundary": "model2blockly",
+        "propertyCount": 1,
+        "caseIds": [
+          "E04_bird"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "toolbox-suppression",
+        "boundary": "model2blockly",
+        "propertyCount": 1,
+        "caseIds": [
+          "E08_puzzle"
+        ]
+      }
+    ],
+    "generators": [
+      {
+        "status": "unsupported",
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "propertyCount": 27,
+        "caseIds": [
+          "E04_bird",
+          "E05_movie",
+          "E06_music",
+          "E07_turtle",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "excluded",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "propertyCount": 16,
+        "caseIds": [
+          "E03_maze",
+          "E04_bird",
+          "E06_music",
+          "E07_turtle"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "generator-enum-mapping",
+        "boundary": "model2blockly",
+        "propertyCount": 10,
+        "caseIds": [
+          "E07_turtle",
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "mismatch",
+        "capability": "automatic-model-serializer",
+        "boundary": "model2blockly",
+        "propertyCount": 6,
+        "caseIds": [
+          "E08_puzzle"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "mutator-aware-generator",
+        "boundary": "model2blockly",
+        "propertyCount": 6,
+        "caseIds": [
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "generator-procedure-database",
+        "boundary": "model2blockly",
+        "propertyCount": 4,
+        "caseIds": [
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "partial",
+        "capability": "generator-variable-database",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "builtin-generator-reuse",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E07_turtle"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "generator-control-flow-safety",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E09_pond_tutor",
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "generator-variable-database",
+        "boundary": "model2blockly",
+        "propertyCount": 2,
+        "caseIds": [
+          "E10_pond_duck"
+        ]
+      },
+      {
+        "status": "excluded",
+        "capability": "execution-loop-trap",
+        "boundary": "domain-runtime",
+        "propertyCount": 1,
+        "caseIds": [
+          "E03_maze"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "definition-generator",
+        "boundary": "model2blockly",
+        "propertyCount": 1,
+        "caseIds": [
+          "E06_music"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "editor-side-effects",
+        "boundary": "model2blockly",
+        "propertyCount": 1,
+        "caseIds": [
+          "E01_graph"
+        ]
+      },
+      {
+        "status": "unsupported",
+        "capability": "enum-code-mapping",
+        "boundary": "model2blockly",
+        "propertyCount": 1,
+        "caseIds": [
+          "E04_bird"
+        ]
+      }
+    ]
+  },
+  "interpretation": {
+    "evaluationUnit": "blockly-editor-subsystem",
+    "domainLayerExcluded": true,
+    "statisticalSignificanceClaimed": false,
+    "generalisationToAllBlocklyEditorsClaimed": false
+  }
+}

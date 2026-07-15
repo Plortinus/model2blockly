@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://model2blockly.local/schema/route-comparison.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "caseId",
+    "referenceTreatment",
+    "candidateTreatment",
+    "equivalent",
+    "comparedSections"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "caseId": { "type": "string", "pattern": "^E(?:0[1-9]|10)_[a-z0-9_]+$" },
+    "referenceTreatment": { "const": "m2b" },
+    "candidateTreatment": { "const": "ecore" },
+    "equivalent": { "const": true },
+    "comparedSections": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "controls",
+          "blocks",
+          "toolbox",
+          "initialWorkspace",
+          "generators",
+          "errors",
+          "loadability"
+        ]
+      }
+    }
+  }
+}

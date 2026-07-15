@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="Turtle" nsURI="http://www.example.org/turtle" nsPrefix="turtle" toolboxType="category" codeLanguage="javascript" codeFileExtension="js">
+  <categories name="Turtle" label="Turtle" colour="160"/>
+  <categories name="Colour" label="Colour" colour="20"/>
+  <blockTypes typeName="TurtleCommand" label="TurtleCommand" abstract="true" connectionType="TYPED" connectionTypeName="TurtleCommand" inputsInline="true"/>
+  <blockTypes typeName="Number" label="Number" abstract="true" connectionType="OUTPUT" outputType="Number" inputsInline="true"/>
+  <blockTypes typeName="Colour" label="Colour" abstract="true" connectionType="OUTPUT" outputType="Colour" inputsInline="true"/>
+  <blockTypes typeName="Text" label="Text" abstract="true" connectionType="OUTPUT" outputType="Text" inputsInline="true"/>
+  <blockTypes typeName="turtle_move" label="move" colour="160" categoryName="Turtle" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="%1%2" inputsInline="false" tooltip="Moves the turtle forward or backward by the specified amount." codeTemplate="{{DIR}}({{value:VALUE}});">
+    <orderedInputNames>DIR</orderedInputNames>
+    <orderedInputNames>VALUE</orderedInputNames>
+    <fields name="DIR" fieldType="DROPDOWN" defaultValue="moveForward" uiWidget="select" uiLabel="Direction" uiOrder="1" uiVariant="default">
+      <options value="moveForward" label="move forward by"/>
+      <options value="moveBackward" label="move backward by"/>
+    </fields>
+    <valueInputs name="VALUE" checkType="Number" uiWidget="expression-slot" uiLabel="Distance" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="turtle_move_internal" label="move with fixed distance" colour="160" categoryName="Turtle" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="%1%2" inputsInline="false" tooltip="Moves the turtle forward or backward by the specified amount." codeTemplate="{{DIR}}({{VALUE}});">
+    <orderedInputNames>DIR</orderedInputNames>
+    <orderedInputNames>VALUE</orderedInputNames>
+    <fields name="DIR" fieldType="DROPDOWN" defaultValue="moveForward" uiWidget="select" uiLabel="Direction" uiOrder="1" uiVariant="default">
+      <options value="moveForward" label="move forward by"/>
+      <options value="moveBackward" label="move backward by"/>
+    </fields>
+    <fields name="VALUE" fieldType="DROPDOWN" defaultValue="distance20" uiWidget="select" uiLabel="Distance" uiOrder="2" uiVariant="default">
+      <options value="distance20" label="20"/>
+      <options value="distance50" label="50"/>
+      <options value="distance100" label="100"/>
+      <options value="distance150" label="150"/>
+    </fields>
+  </blockTypes>
+  <blockTypes typeName="turtle_turn" label="turn" colour="160" categoryName="Turtle" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="turn %1 by%2" inputsInline="false" tooltip="Turns the turtle left or right by the specified number of degrees." codeTemplate="{{DIR}}({{value:VALUE}});">
+    <orderedInputNames>DIR</orderedInputNames>
+    <orderedInputNames>VALUE</orderedInputNames>
+    <fields name="DIR" fieldType="DROPDOWN" defaultValue="turnRight" uiWidget="select" uiLabel="Direction" uiOrder="1" uiVariant="default">
+      <options value="turnRight" label="right ↻"/>
+      <options value="turnLeft" label="left ↺"/>
+    </fields>
+    <valueInputs name="VALUE" checkType="Number" uiWidget="expression-slot" uiLabel="Angle" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="turtle_turn_internal" label="turn with fixed angle" colour="160" categoryName="Turtle" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="turn %1 by%2" inputsInline="false" tooltip="Turns the turtle left or right by the specified number of degrees." codeTemplate="{{DIR}}({{VALUE}});">
+    <orderedInputNames>DIR</orderedInputNames>
+    <orderedInputNames>VALUE</orderedInputNames>
+    <fields name="DIR" fieldType="DROPDOWN" defaultValue="turnRight" uiWidget="select" uiLabel="Direction" uiOrder="1" uiVariant="default">
+      <options value="turnRight" label="right ↻"/>
+      <options value="turnLeft" label="left ↺"/>
+    </fields>
+    <fields name="VALUE" fieldType="DROPDOWN" defaultValue="angle1" uiWidget="select" uiLabel="Angle" uiOrder="2" uiVariant="default">
+      <options value="angle1" label="1°"/>
+      <options value="angle45" label="45°"/>
+      <options value="angle72" label="72°"/>
+      <options value="angle90" label="90°"/>
+      <options value="angle120" label="120°"/>
+      <options value="angle144" label="144°"/>
+    </fields>
+  </blockTypes>
+  <blockTypes typeName="turtle_width" label="set width" colour="160" categoryName="Turtle" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="set width to%1" inputsInline="false" tooltip="Changes the width of the pen." codeTemplate="penWidth({{value:WIDTH}});">
+    <orderedInputNames>WIDTH</orderedInputNames>
+    <valueInputs name="WIDTH" checkType="Number" uiWidget="expression-slot" uiLabel="Width" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="turtle_pen" label="pen" colour="160" categoryName="Turtle" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="%1" inputsInline="false" tooltip="Lifts or lowers the pen, to stop or start drawing." codeTemplate="{{PEN}}();">
+    <orderedInputNames>PEN</orderedInputNames>
+    <fields name="PEN" fieldType="DROPDOWN" defaultValue="penUp" uiWidget="select" uiLabel="Pen state" uiOrder="1" uiVariant="default">
+      <options value="penUp" label="pen up"/>
+      <options value="penDown" label="pen down"/>
+    </fields>
+  </blockTypes>
+  <blockTypes typeName="turtle_colour" label="set colour" colour="20" categoryName="Colour" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="set colour to%1" inputsInline="false" tooltip="Changes the colour of the pen." codeTemplate="penColour({{value:COLOUR}});">
+    <orderedInputNames>COLOUR</orderedInputNames>
+    <valueInputs name="COLOUR" checkType="Colour" uiWidget="expression-slot" uiLabel="Colour" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="turtle_colour_internal" label="set fixed colour" colour="20" categoryName="Colour" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="set colour to%1" inputsInline="false" tooltip="Changes the colour of the pen." codeTemplate="penColour('{{COLOUR}}');">
+    <orderedInputNames>COLOUR</orderedInputNames>
+    <fields name="COLOUR" fieldType="COLOUR" defaultValue="#ff0000" uiWidget="color" uiLabel="Colour" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="turtle_visibility" label="turtle visibility" colour="160" categoryName="Turtle" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="%1" inputsInline="false" tooltip="Makes the turtle (circle and arrow) visible or invisible." codeTemplate="{{VISIBILITY}}();">
+    <orderedInputNames>VISIBILITY</orderedInputNames>
+    <fields name="VISIBILITY" fieldType="DROPDOWN" defaultValue="hideTurtle" uiWidget="select" uiLabel="Visibility" uiOrder="1" uiVariant="default">
+      <options value="hideTurtle" label="hide turtle"/>
+      <options value="showTurtle" label="show turtle"/>
+    </fields>
+  </blockTypes>
+  <blockTypes typeName="turtle_print" label="print" colour="160" categoryName="Turtle" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="print%1" inputsInline="false" tooltip="Draws text in the turtle's direction at its location." helpUrl="https://en.wikipedia.org/wiki/Printing" codeTemplate="print({{value:TEXT}});">
+    <orderedInputNames>TEXT</orderedInputNames>
+    <valueInputs name="TEXT" checkType="Text" uiWidget="expression-slot" uiLabel="Text" uiOrder="1" uiVariant="default"/>
+  </blockTypes>
+  <blockTypes typeName="turtle_font" label="font" colour="160" categoryName="Turtle" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="font%1font size%2%3" inputsInline="false" tooltip="Sets the font used by the print block." helpUrl="https://en.wikipedia.org/wiki/Font" codeTemplate="font('{{FONT}}', {{FONTSIZE}}, '{{FONTSTYLE}}');">
+    <orderedInputNames>FONT</orderedInputNames>
+    <orderedInputNames>FONTSIZE</orderedInputNames>
+    <orderedInputNames>FONTSTYLE</orderedInputNames>
+    <fields name="FONT" fieldType="DROPDOWN" defaultValue="Arial" uiWidget="select" uiLabel="Font" uiOrder="1" uiVariant="default">
+      <options value="Arial" label="Arial"/>
+      <options value="CourierNew" label="Courier New"/>
+      <options value="Georgia" label="Georgia"/>
+      <options value="Impact" label="Impact"/>
+      <options value="TimesNewRoman" label="Times New Roman"/>
+      <options value="TrebuchetMS" label="Trebuchet MS"/>
+      <options value="Verdana" label="Verdana"/>
+    </fields>
+    <fields name="FONTSIZE" fieldType="FLOAT" defaultValue="18" min="1" max="1000" uiWidget="number" uiLabel="Font size" uiOrder="2" uiVariant="default"/>
+    <fields name="FONTSTYLE" fieldType="DROPDOWN" defaultValue="normal" uiWidget="select" uiLabel="Font style" uiOrder="3" uiVariant="default">
+      <options value="normal" label="normal"/>
+      <options value="italic" label="italic"/>
+      <options value="bold" label="bold"/>
+    </fields>
+  </blockTypes>
+  <blockTypes typeName="turtle_repeat_internal" label="repeat" colour="120" categoryName="Turtle" superTypeName="TurtleCommand" connectionType="TYPED" connectionTypeName="TurtleCommand" message0="repeat%1do%2" inputsInline="false" tooltip="Do some statements several times." helpUrl="https://en.wikipedia.org/wiki/For_loop" codeTemplate="for (let count = 0; count &lt; {{TIMES}}; count++) {&#xA;{{statements:DO}}&#xA;}">
+    <orderedInputNames>TIMES</orderedInputNames>
+    <orderedInputNames>DO</orderedInputNames>
+    <fields name="TIMES" fieldType="DROPDOWN" defaultValue="times3" uiWidget="select" uiLabel="Times" uiOrder="1" uiVariant="default">
+      <options value="times3" label="3"/>
+      <options value="times4" label="4"/>
+      <options value="times5" label="5"/>
+      <options value="times360" label="360"/>
+    </fields>
+    <statementInputs name="DO" checkType="TurtleCommand" upperBound="50" uiWidget="slot" uiLabel="Do" uiOrder="2" uiVariant="default"/>
+  </blockTypes>
+  <validations type="CARDINALITY" name="turtle_repeat_internal_DO" ownerType="turtle_repeat_internal" containmentName="DO" upperBound="50">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="turtle_repeat_internal"/>
+      <fields name="INPUT" value="DO"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="50"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="DO"/>
+      <children kind="NUMBER_LITERAL" literal="50"/>
+    </visualExpression>
+  </validations>
+  <workspaceOptions key="renderer" value="geras"/>
+  <workspaceOptions key="trashcan" value="false" valueType="BOOLEAN"/>
+</blocklyspec:EditorSpec>

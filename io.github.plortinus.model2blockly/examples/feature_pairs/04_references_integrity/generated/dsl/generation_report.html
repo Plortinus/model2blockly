@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model2Blockly Generation Report</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --text: #1f252d;
+  --muted: #5f6875;
+  --border: #d9dee5;
+  --header: #eef2f6;
+  --accent: #245a9c;
+  --ok: #176b42;
+  --warn: #8a5a00;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px 56px;
+}
+h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.2; }
+h2 {
+  margin: 30px 0 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  font-size: 19px;
+}
+.lead { max-width: 840px; color: var(--muted); margin: 4px 0; }
+.callout {
+  margin: 18px 0 22px;
+  padding: 14px 16px;
+  border: 1px solid #b9c7d8;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: #f2f6fb;
+}
+.callout h2 {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  font-size: 17px;
+}
+.callout ol { margin: 8px 0 0 22px; padding: 0; }
+.callout li { margin: 4px 0; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 20px 0 8px;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value {
+  margin-top: 4px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.table-wrap {
+  overflow-x: auto;
+  margin: 12px 0 22px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+table { width: 100%; border-collapse: collapse; min-width: 680px; }
+th, td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  vertical-align: top;
+  text-align: left;
+}
+th:last-child, td:last-child { border-right: 0; }
+tr:last-child td { border-bottom: 0; }
+th { background: var(--header); font-weight: 650; }
+.badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #eef1f4;
+  color: #223142;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ok { color: var(--ok); }
+.warn { color: var(--warn); }
+a { color: var(--accent); font-weight: 650; text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #eef1f4;
+  color: #173b63;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+.validation-preview-list {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 22px;
+}
+.validation-preview {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.validation-preview summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  background: var(--header);
+  font-weight: 650;
+}
+.validation-tree { padding: 10px 12px 14px; }
+.validation-node {
+  max-width: 760px;
+  margin: 6px 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+.validation-node-meta {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.validation-children {
+  margin-left: 18px;
+  padding-left: 12px;
+  border-left: 2px solid var(--border);
+}
+.validation-edge {
+  margin: 8px 0 2px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+</style>
+</head>
+<body>
+<main>
+<h1>Model2Blockly Generation Report</h1>
+<p class="lead">Concise generation report for the textual .m2b input path.</p>
+<p class="lead">Use this page to quickly check what was generated and which modelling decisions affect the editor.</p>
+<section class="stats">
+<div class="stat"><div class="label">Input</div><div class="value">/Users/wxy/model2blockly/io.github.plortinus.model2blockly/examples/feature_pairs/04_references_integrity/source.m2b</div></div>
+<div class="stat"><div class="label">Domain</div><div class="value">ReferencesIntegrity</div></div>
+<div class="stat"><div class="label">Classes</div><div class="value">4</div></div>
+<div class="stat"><div class="label">Blocks</div><div class="value">3</div></div>
+<div class="stat"><div class="label">Categories</div><div class="value">1</div></div>
+<div class="stat"><div class="label">Validations</div><div class="value">10</div></div>
+</section>
+<h2>Generation Pipeline</h2>
+<div class="table-wrap"><table><thead><tr><th>Step</th><th>Artifact</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>1. Source model</td><td>.m2b</td><td>The selected model is adapted into the shared generator-facing model.</td></tr>
+<tr><td>2. Intermediate EMF model</td><td>EditorSpec</td><td>Both the DSL and Ecore routes normalize into the same model shape.</td></tr>
+<tr><td>3. Intermediate XMI</td><td><a href="intermediate/ReferencesIntegrity_blocklyspec.xmi">intermediate/ReferencesIntegrity_blocklyspec.xmi</a></td><td>The generator writes this XMI, reloads it, and validates the reloaded model.</td></tr>
+<tr><td>4. Blockly editor</td><td>html/*</td><td>HTML, JavaScript, validation runtime and report files are emitted from the reloaded EditorSpec model.</td></tr>
+<tr><td>5. Domain instance model</td><td>*_model.xmi</td><td>The generated editor can export user-created blocks as EMF-style XMI in the source domain namespace.</td></tr>
+</tbody></table></div>
+<h2>Generation Quality Summary</h2>
+<div class="table-wrap"><table><thead><tr><th>Check</th><th>Status</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Editor generated</td><td>✅ Yes</td><td>A standalone Blockly editor is available from this report.</td></tr>
+<tr><td>Sample model generated</td><td>✅ Yes</td><td><code>sample_model.json</code> and the <code>Load Sample</code> button are available.</td></tr>
+<tr><td>Sample import support</td><td>✅ Available</td><td>The generated editor embeds the sample model and can load it without file selection.</td></tr>
+<tr><td>Domain instance XMI export</td><td>✅ Available</td><td>The generated editor can export created models as EMF-style XMI using the domain namespace metadata.</td></tr>
+<tr><td>Generated validations</td><td>✅ 10</td><td>Validation rules are generated into the editor runtime.</td></tr>
+<tr><td>Advanced custom semantics</td><td>⚠️ Manual extension</td><td>Custom semantic behavior beyond declared references, containments, fields and validations is not inferred automatically.</td></tr>
+<tr><td>Smoke test</td><td>▶ Optional</td><td>Run <code>node scripts/smoke-test-generated.mjs</code> from the repository root to load samples automatically in a browser.</td></tr>
+</tbody></table></div>
+<h2>Generated Output</h2>
+<div class="table-wrap"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><a href="html/ReferencesIntegrity_blocks.js">html/ReferencesIntegrity_blocks.js</a></td><td>✅ Blockly block definitions</td></tr>
+<tr><td><a href="html/ReferencesIntegrity_toolbox.js">html/ReferencesIntegrity_toolbox.js</a></td><td>✅ Classic HTML target artifact</td></tr>
+<tr><td><a href="html/ReferencesIntegrity_generators.js">html/ReferencesIntegrity_generators.js</a></td><td>✅ Classic HTML target artifact</td></tr>
+<tr><td><a href="html/ReferencesIntegrity_validations.js">html/ReferencesIntegrity_validations.js</a></td><td>✅ Validation logic</td></tr>
+<tr><td><a href="html/ReferencesIntegrity_editor.html">html/ReferencesIntegrity_editor.html</a></td><td>✅ Modular HTML editor</td></tr>
+<tr><td><a href="html/ReferencesIntegrity_standalone.html">html/ReferencesIntegrity_standalone.html</a></td><td>✅ Open this file to use the generated editor</td></tr>
+<tr><td><a href="html/validation_workspace.html">html/validation_workspace.html</a></td><td>✅ Editable Blockly validation workspace</td></tr>
+<tr><td><a href="html/validation_blocks.json">html/validation_blocks.json</a></td><td>✅ Visual validation block model</td></tr>
+<tr><td><a href="html/validation_runtime.js">html/validation_runtime.js</a></td><td>✅ Validation block expression runtime</td></tr>
+<tr><td><a href="html/sample_model.json">html/sample_model.json</a></td><td>✅ Example model for the Load Sample button and JSON import</td></tr>
+<tr><td><a href="intermediate/ReferencesIntegrity_blocklyspec.xmi">intermediate/ReferencesIntegrity_blocklyspec.xmi</a></td><td>✅ Formal EditorSpec EMF/XMI intermediate model reloaded before HTML generation</td></tr>
+<tr><td><a href="README.md">README.md</a></td><td>✅ Short instructions inside the output folder</td></tr>
+<tr><td><a href="generation_report.html">generation_report.html</a></td><td>✅ Concise human-readable report</td></tr>
+</tbody></table></div>
+<section class="callout">
+<h2>Recommended Next Steps for a DSL Developer</h2>
+<ol>
+<li>Open the generated <code>*_standalone.html</code> file and build a representative model.</li>
+<li>Check that containment, references, value inputs, shadow blocks and validations behave as expected.</li>
+<li>Use <code>label</code>, <code>colour</code>, <code>widget</code>, <code>referenceLabelField</code>, <code>shadow</code> and <code>code</code> declarations to improve the editor.</li>
+<li>Export domain instance XMI, JSON or code to verify that the blocks represent a processable model.</li>
+</ol>
+</section>
+<h2>DSL to Blockly Mapping</h2>
+<div class="table-wrap"><table><thead><tr><th>DSL class</th><th>Generated block</th><th>Role</th><th>Features</th></tr></thead><tbody>
+<tr><td>Workflow</td><td>✅ Workflow</td><td>Root block</td><td>1 attributes, 1 containments, 0 references, 0 value inputs</td></tr>
+<tr><td>Element</td><td>✅ Element</td><td>Abstract type</td><td>0 attributes, 0 containments, 0 references, 0 value inputs</td></tr>
+<tr><td>Card</td><td>✅ Card</td><td>Typed statement block</td><td>2 attributes, 0 containments, 1 references, 0 value inputs</td></tr>
+<tr><td>Link</td><td>✅ Link</td><td>Typed statement block</td><td>2 attributes, 0 containments, 2 references, 0 value inputs</td></tr>
+</tbody></table></div>
+<h2>Validation Summary</h2>
+<div class="table-wrap"><table><thead><tr><th>Validation type</th><th>Count</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>CARDINALITY</td><td>✅ 1</td><td>Number of nested blocks in a statement input</td></tr>
+<tr><td>REQUIRED</td><td>✅ 4</td><td>Mandatory field or reference value</td></tr>
+<tr><td>FIELD_CARDINALITY</td><td>✅ 2</td><td>Bounds for multi-valued fields or references</td></tr>
+<tr><td>UNIQUE</td><td>✅ 3</td><td>Duplicate values in ID fields or multi-valued fields/references</td></tr>
+</tbody></table></div>
+<h2>Visual Validation Blocks</h2>
+<p class="lead">These rules are also serialized in <code>validation_blocks.json</code> with Blockly JSON block definitions and Blockly-like block trees. The model prefers high-level custom validation blocks and preserves lower-level Blockly expressions when useful.</p>
+<div class="table-wrap"><table><thead><tr><th>Rule</th><th>Target</th><th>Validation</th><th>Visual block root</th></tr></thead><tbody>
+<tr><td>Workflow_elements</td><td>Workflow</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>Card_cardId_required</td><td>Card</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Link_linkId_required</td><td>Link</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Link_source_required</td><td>Link</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Link_target_required</td><td>Link</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Card_outgoing_cardinality</td><td>Card</td><td>FIELD_CARDINALITY</td><td><code>validation_field_cardinality</code></td></tr>
+<tr><td>Link_target_cardinality</td><td>Link</td><td>FIELD_CARDINALITY</td><td><code>validation_field_cardinality</code></td></tr>
+<tr><td>Card_cardId_unique</td><td>Card</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+<tr><td>Card_outgoing_unique</td><td>Card</td><td>UNIQUE</td><td><code>validation_field_unique</code></td></tr>
+<tr><td>Link_linkId_unique</td><td>Link</td><td>UNIQUE</td><td><code>validation_type_field_unique</code></td></tr>
+</tbody></table></div>
+<div class="validation-preview-list">
+<details class="validation-preview" open>
+<summary>Workflow_elements -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Workflow_elements, target=Workflow, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=Workflow, INPUT=elements, MIN=1, MAX=6</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Card_cardId_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Card_cardId_required, target=Card, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Card, FIELD=cardId, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Link_linkId_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Link_linkId_required, target=Link, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Link, FIELD=linkId, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Link_source_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Link_source_required, target=Link, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Link, FIELD=source, FIELD_KIND=reference</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Link_target_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Link_target_required, target=Link, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Link, FIELD=target, FIELD_KIND=reference</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Card_outgoing_cardinality -> FIELD_CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Card_outgoing_cardinality, target=Card, type=FIELD_CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_field_cardinality</code><div class="validation-node-meta">TYPE=Card, FIELD=outgoing, FIELD_KIND=reference, MIN=0, MAX=3</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Link_target_cardinality -> FIELD_CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Link_target_cardinality, target=Link, type=FIELD_CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_field_cardinality</code><div class="validation-node-meta">TYPE=Link, FIELD=target, FIELD_KIND=reference, MIN=1, MAX=2</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Card_cardId_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Card_cardId_unique, target=Card, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=Card, FIELD=cardId</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Card_outgoing_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Card_outgoing_unique, target=Card, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_field_unique</code><div class="validation-node-meta">TYPE=Card, FIELD=outgoing, FIELD_KIND=reference</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Link_linkId_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Link_linkId_unique, target=Link, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_type_field_unique</code><div class="validation-node-meta">TYPE=Link, FIELD=linkId</div></div>
+</div>
+</div>
+</details>
+</div>
+<h2>What To Check</h2>
+<div class="table-wrap"><table><thead><tr><th>Topic</th><th>Status</th></tr></thead><tbody>
+<tr><td>Required fields</td><td>✅ Generated from the DSL <code>required</code> keyword</td></tr>
+<tr><td>Containment cardinality</td><td>✅ Generated from <code>contains [lower..upper]</code></td></tr>
+<tr><td>Must-follow constraints</td><td>✅ Generated from <code>constraint ... must follow ...</code></td></tr>
+<tr><td>Opposite references</td><td>✅ 2 opposite references declared and synchronized in the generated runtime</td></tr>
+<tr><td>Advanced semantics</td><td>❌ Custom semantic constraints are not generated automatically</td></tr>
+</tbody></table></div>
+</main>
+</body>
+</html>

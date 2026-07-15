@@ -1,0 +1,50 @@
+Blockly.Blocks['animal'] = {
+  /**
+   * Block to represent an animal.
+   * @this {Blockly.Block}
+   */
+  init: function() {
+    this.setColour(Puzzle.Blocks.ANIMAL_HUE);
+    this.appendDummyInput()
+        .appendField('', 'NAME');
+    this.appendValueInput('PIC')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(BlocklyGames.getMsg('Puzzle.picture', false));
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(BlocklyGames.getMsg('Puzzle.legs', false))
+        .appendField(new Blockly.FieldDropdown(Puzzle.Blocks.legs), 'LEGS');
+    this.appendStatementInput('TRAITS')
+        .appendField(BlocklyGames.getMsg('Puzzle.traits', false));
+    this.setInputsInline(false);
+  },
+  /**
+   * Save the animal number.
+   * @returns {!Element} XML storage element.
+   * @this {Blockly.Block}
+   */
+  mutationToDom: function() {
+    const container = document.createElement('mutation');
+    container.setAttribute('animal', this.animal);
+    return container;
+  },
+  /**
+   * Restore the animal number.
+   * @param {!Element} xmlElement XML storage element.
+   * @this {Blockly.Block}
+   */
+  domToMutation: function(xmlElement) {
+    this.populate(parseInt(xmlElement.getAttribute('animal')));
+  },
+  animal: 0,
+  /**
+   * Set the animal.
+   * @param {number} n Animal number.
+   * @this {Blockly.Block}
+   */
+  populate: function(n) {
+    const data = Puzzle.data.getData();
+    this.animal = n;
+    this.setFieldValue(data[n - 1].name, 'NAME');
+    this.helpUrl = data[n - 1].helpUrl;
+  },

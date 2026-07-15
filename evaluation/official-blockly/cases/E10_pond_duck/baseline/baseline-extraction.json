@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E10_pond_duck",
+  "configuration": "Editor Blockly completo de Pond Duck",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "domain-blocks",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/domain-blocks.js",
+      "startLine": 29,
+      "endLine": 166,
+      "sha256": "84339c173f63ce7c97e462eaf042e8dc78b5c9eea3d4bdec161b0d74c9c14e3f",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "domain-generators",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/domain-generators.js",
+      "startLine": 168,
+      "endLine": 222,
+      "sha256": "d17946fba47c5683d040d9aa8c23d3cabda70afe6b49aa06799b9b9685cb7484",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "adaptive-number-block",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/adaptive-number-block.js",
+      "startLine": 225,
+      "endLine": 318,
+      "sha256": "7b557e7efa1604c3c230e2f099c19c8a580e74d4e0bed9d346f70979a31f61be",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "advanced-unary-math-block",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/advanced-unary-math-block.js",
+      "startLine": 320,
+      "endLine": 356,
+      "sha256": "c6c10546be4a628875d8af01ab01c231a32e6903cbdaec12399cf0a07dff6086",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "advanced-unary-math-generator",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/advanced-unary-math-generator.js",
+      "startLine": 358,
+      "endLine": 373,
+      "sha256": "3295b95282d0670b43726e0191c8cf60ac0bf446606a917d29b1c4bd2cca75a3",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "adaptive-number-generator",
+      "path": "appengine/pond/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/adaptive-number-generator.js",
+      "startLine": 375,
+      "endLine": 375,
+      "sha256": "e4c246c6a699aec5185b768c09f36c14d00854b15db8d17edac2f0678d65629b",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "standard-block-runtime",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/standard-block-runtime.js",
+      "startLine": 35,
+      "endLine": 474,
+      "sha256": "c0f005b78b956985de2782e1921e61e65103ea62ce1b532ac7149c9d06b8faa2",
+      "kinds": [
+        "block-definition",
+        "editor-extension",
+        "generator"
+      ],
+      "metricGroups": [
+        "editor",
+        "generator"
+      ],
+      "countForMetrics": false,
+      "sharedSourceKey": null,
+      "notes": [
+        "Loaded unchanged; precise fragments below prevent the shared runtime from being counted twice."
+      ]
+    },
+    {
+      "id": "standard-logic-and-loop-blocks",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/standard-logic-and-loop-blocks.jsfrag",
+      "startLine": 35,
+      "endLine": 226,
+      "sha256": "af9acd0bad7d54cdd68e4afad52458af80133104c598f25a412e714fb948ae6c",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "standard-math-blocks",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/standard-math-blocks.jsfrag",
+      "startLine": 228,
+      "endLine": 291,
+      "sha256": "0a1d117286ce89bc03280bbb8df7f7593e1bcc4a70e4f68350c70d6d5c75c36b",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "math-change-generator",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/math-change-generator.jsfrag",
+      "startLine": 293,
+      "endLine": 307,
+      "sha256": "9a28bf47487e4c0c8af617fe9946670c64235457f711d7024e9e884ba750cf9d",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "random-number-and-variable-blocks",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/random-number-and-variable-blocks.jsfrag",
+      "startLine": 309,
+      "endLine": 338,
+      "sha256": "76542873f025d7fba8a8b7f179099cc81fea330f26db502ce22a8caf580f8305",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "procedure-blocks",
+      "path": "appengine/pond/src/js-blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/procedure-blocks.jsfrag",
+      "startLine": 340,
+      "endLine": 474,
+      "sha256": "cfcc3de6ca4f1c606a618c6f0e39bee7cd6ec8171cf9661257ee97503a29c4ca",
+      "kinds": [
+        "block-definition",
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "full-toolbox",
+      "path": "appengine/pond/duck/src/html.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/full-toolbox.js",
+      "startLine": 53,
+      "endLine": 140,
+      "sha256": "c2480f8cbeaede4729169da64aeebba036b4b829261c312897217d6e16b974e8",
+      "kinds": [
+        "toolbox"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "default-editable-duck-workspace",
+      "path": "appengine/pond/duck/default-ducks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/default-editable-duck-workspace.js",
+      "startLine": 13,
+      "endLine": 30,
+      "sha256": "5a55e26524f09b12170a7e5e9a0c6618a675bd753777b4077df39864f133b9d1",
+      "kinds": [
+        "initial-workspace"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "pond-category-message",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/pond-category-message.jsonfrag",
+      "startLine": 15,
+      "endLine": 15,
+      "sha256": "01171150bc766fb1104d394bd392c045924391d00592fead67e8973cc7fc6f4f",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "standard-category-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/standard-category-messages.jsonfrag",
+      "startLine": 27,
+      "endLine": 34,
+      "sha256": "22965c96ee7d15c44fbbcc4b894bdea92f0c1efb63b67609bc2b85e4b90c53e8",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "pond-block-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E10_pond_duck/baseline/upstream/pond-block-messages.jsonfrag",
+      "startLine": 243,
+      "endLine": 251,
+      "sha256": "c62ae749a9a161f351cf548e5415196c33a50f9e6dd9a1aa4b8a8995784781a2",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    }
+  ]
+}

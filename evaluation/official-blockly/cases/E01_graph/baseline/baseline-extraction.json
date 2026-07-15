@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E01_graph",
+  "configuration": "Editor único de Graph Demo",
+  "source": {
+    "repository": "https://github.com/google/blockly-samples.git",
+    "commit": "62ce120977078bf9179c5633681ee70446e5073b",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "toolbox",
+      "path": "examples/graph-demo/index.html",
+      "snapshotPath": "evaluation/official-blockly/cases/E01_graph/baseline/upstream/toolbox.js",
+      "startLine": 103,
+      "endLine": 342,
+      "sha256": "e551e82f6aacb4d72c20e07cd1e3c430a63c1615bda020c5f936c44268dec6f0",
+      "kinds": [
+        "toolbox"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "initial-workspace",
+      "path": "examples/graph-demo/index.html",
+      "snapshotPath": "evaluation/official-blockly/cases/E01_graph/baseline/upstream/initial-workspace.js",
+      "startLine": 344,
+      "endLine": 392,
+      "sha256": "439510b2b650b6688f41969bffc57199ea7543b4de93cdab91eb46a7981baf8a",
+      "kinds": [
+        "initial-workspace"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "graph-get-x-block",
+      "path": "examples/graph-demo/index.html",
+      "snapshotPath": "evaluation/official-blockly/cases/E01_graph/baseline/upstream/graph-get-x-block.js",
+      "startLine": 395,
+      "endLine": 404,
+      "sha256": "277918dedeba55d3fd621741f21a77dfd8e090078687a81736929e08dfd63362",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "graph-get-x-generator",
+      "path": "examples/graph-demo/index.html",
+      "snapshotPath": "evaluation/official-blockly/cases/E01_graph/baseline/upstream/graph-get-x-generator.js",
+      "startLine": 406,
+      "endLine": 411,
+      "sha256": "1c4bd9b42d1f00ae8e32afc8e9a2b03429326aaeef8f6baa570b5871cce17167",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "graph-set-y-block",
+      "path": "examples/graph-demo/index.html",
+      "snapshotPath": "evaluation/official-blockly/cases/E01_graph/baseline/upstream/graph-set-y-block.js",
+      "startLine": 413,
+      "endLine": 428,
+      "sha256": "b356dfaf578c60565f6bd5cc9c8fe948d60bf205f0ea95dc4ab37b26fb27281b",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "graph-set-y-generator",
+      "path": "examples/graph-demo/index.html",
+      "snapshotPath": "evaluation/official-blockly/cases/E01_graph/baseline/upstream/graph-set-y-generator.js",
+      "startLine": 430,
+      "endLine": 442,
+      "sha256": "1323ee74606e284e8b3ac08ca1a665183a917fb3c001f12ae84b7218ec912e32",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    }
+  ]
+}

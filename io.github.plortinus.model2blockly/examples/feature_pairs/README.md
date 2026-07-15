@@ -29,9 +29,34 @@ feature_pairs/
     source.m2b
 ```
 
-Generated HTML, JavaScript, and XMI are reproducible test artifacts and are not
-stored beside the sources. The verification command generates them in a
-temporary directory.
+The default verification command generates reproducible HTML, JavaScript, and
+XMI artifacts in a temporary directory. To retain both generated editors next
+to each source pair for inspection or screenshots, run:
+
+```bash
+npm run generate:feature-pairs
+```
+
+The persistent form uses this additional layout in every pair directory:
+
+```text
+generated/
+  ecore/
+    generation_report.html
+    html/
+    intermediate/
+  dsl/
+    generation_report.html
+    html/
+    intermediate/
+screenshots/
+  ecore.png
+  dsl.png
+```
+
+The `generated` directory is replaced on every persistent run. The
+`screenshots` directory is independent so regenerating the editors does not
+delete the visual evidence.
 
 Run every pair from the repository root with:
 
@@ -91,9 +116,12 @@ focused on structural equivalence.
 
 This pair concentrates field types and presentation metadata in a small style
 domain. It also introduces explicit and nested categories, so it does not test
-the automatic-category branch covered by Pair 01. Widget and variant values are
-written explicitly in both sources because the DSL metamodel uses the first
-enum literals (`text` and `default`) when those clauses are omitted.
+the automatic-category branch covered by Pair 01. Where UI metadata is tested,
+widget and variant values are written explicitly in both sources because the
+DSL metamodel uses the first enum literals (`text` and `default`) when those
+clauses are omitted. The dedicated colour, angle, image, and label types map
+directly to their specialised Blockly fields and do not repeat that choice as
+widget metadata.
 
 | Capability | Ecore notation | `.m2b` notation | Expected `EditorSpec` evidence | Existing Ecore gallery seed |
 |---|---|---|---|---|
@@ -107,7 +135,7 @@ enum literals (`text` and `default`) when those clauses are omitted.
 | Colour, angle, image, and label fields | field-type annotation | dedicated DSL simple type | specialised field type and image metadata | `10-image-angle-label` |
 | Defaults and numeric limits | default literal plus `min`/`max` annotations | `default`, `min`, `max` | default value and limits | `03-typed-fields`, `18-field-overrides` |
 | Multi-valued attribute | EAttribute multiplicity | attribute cardinality | text representation plus field-cardinality metadata | `09-multivalue-field` |
-| Attribute widget family | structural-feature `ui.widget` detail | `text`, `textarea`, `number`, `slider`, `switch`, `checkbox`, `select`, `radio`, `color`, `angle`, `image` | field widget metadata without compatibility warnings | `03-typed-fields`, `10-image-angle-label`, `19-ui-metadata` |
+| Attribute widget family | structural-feature `ui.widget` detail | `text`, `textarea`, `number`, `slider`, `switch`, `checkbox`, `select`, `radio` | field widget metadata without compatibility warnings | `03-typed-fields`, `19-ui-metadata` |
 | UI text | structural-feature `ui` annotation | `uiLabel`, `help`, `placeholder` | field UI text metadata | `19-ui-metadata` |
 | UI layout and visibility | structural-feature `ui` annotation | `group`, `order`, `readonly`, `hidden`, and the three `variant` values | grouping, order, visibility, and variant metadata | `19-ui-metadata` |
 

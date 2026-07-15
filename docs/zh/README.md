@@ -9,8 +9,8 @@ hero:
     alt: Model2Blockly 从 Ecore 或 m2b 转换到 EditorSpec 中间模型，再生成 Blockly HTML 编辑器
   actions:
     - theme: brand
-      text: 查看在线示例
-      link: https://plortinus.github.io/model2blockly/app_maker_ecore/Appmaker_standalone.html
+      text: 开始使用
+      link: /zh/user-guide
     - theme: alt
       text: 安装插件
       link: /zh/install
@@ -18,10 +18,18 @@ hero:
       text: 了解架构
       link: /zh/architecture
 features:
-  - title: 先看生成效果
-    details: 打开 AppMaker 在线示例，直接体验生成后的 Blockly 编辑器、工具箱、验证按钮和示例模型。
+  - title: 两种输入，同一个生成器
+    details: 可以使用带注解的 Ecore 元模型，也可以使用紧凑的 .m2b 文本规格；EcoreAdapter 和 DomainModelAdapter 都会生成相同结构的 EditorSpec。
+    link: /zh/user-guide
+    linkText: 选择输入路线
+  - title: 查看生成效果
+    details: 打开 AppMaker 在线示例，体验生成后的 Blockly 编辑器、工具箱、验证按钮和示例模型。
     link: /zh/running-example
     linkText: 了解示例
+  - title: 10个官方编辑器评估
+    details: 独立于 AppMaker 示例，对官方编辑器进行结构、生成器和规格规模比较，并公开当前不能完整表达的能力边界。
+    link: /zh/evaluation
+    linkText: 查看评估结果
   - title: 双输入 MDE 架构
     details: Ecore route 和 .m2b DSL route 都转换到 EMF EditorSpec 中间模型，再由 Xtend 生成 Blockly 编辑器。
     link: /zh/architecture
@@ -53,6 +61,7 @@ features:
 3. 阅读 [架构说明](/zh/architecture)，理解 Ecore route、DSL route 和 EditorSpec 中间模型。
 4. 阅读 [Model2Blockly 文本 DSL](/zh/textual-dsl)，理解 `.m2b` 在项目里的角色。
 5. 阅读 [Ecore 到 Blockly 映射规则](/zh/ecore-to-blockly-mapping)，理解默认生成和注解定制的差异。
+6. 阅读 [外部评估](/zh/evaluation)，查看十个官方编辑器的复现结果与当前能力边界。
 
 ## 你需要准备什么
 
@@ -68,6 +77,6 @@ features:
 一次生成会输出一个可直接发布或本地打开的静态编辑器。典型输出包括：
 
 - Blockly 区块定义和工具箱配置。
-- 浏览器中的 standalone Blockly 编辑器页面。
+- 浏览器中可独立运行的 Blockly 编辑器页面。
 - 运行时验证脚本和可视化验证工作区。
 - 示例模型、生成报告和可检查的 EditorSpec XMI 中间模型。

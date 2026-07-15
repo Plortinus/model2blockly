@@ -3,6 +3,12 @@
 本页说明安装 Model2Blockly 插件后，如何在 Eclipse 中使用它生成 Blockly
 编辑器。安装步骤见[安装指南](./INSTALL.md)。
 
+Eclipse p2 安装地址为：
+
+```text
+https://plortinus.github.io/model2blockly/update-site/
+```
+
 ## 选择输入文件
 
 插件支持三类输入：
@@ -20,7 +26,7 @@ AppMaker 案例同时提供：
 
 ## 生成编辑器
 
-1. 打开 Eclipse workspace。
+1. 打开 Eclipse 工作区。
 2. 打开包含 `.ecore` 或 `.m2b` 文件的项目。
 3. 在 Project Explorer 中选中目标源文件。
 4. 右键选择 `Generate Blockly Editor`。
@@ -39,6 +45,22 @@ app_maker.ecore -> app_maker_generated
 app_maker.m2b -> app_maker_generated
 ```
 
+两条路线也分别提供 Java 命令行入口：
+
+```text
+standalone/EcoreToBlocklyMain.java
+standalone/Model2BlocklyToBlocklyMain.java
+```
+
+仓库中保留了 AppMaker 两条路线的输入和输出：
+
+| 路线 | 输入 | 生成结果 |
+| --- | --- | --- |
+| Ecore | `model/app_maker.ecore` | `examples/generated/app_maker_ecore` |
+| `.m2b` | `examples/app_maker.m2b` | `examples/generated/app_maker_dsl` |
+
+表中的路径均相对于 `io.github.plortinus.model2blockly/`。
+
 ## 查看结果
 
 进入生成目录后，优先打开：
@@ -47,8 +69,8 @@ app_maker.m2b -> app_maker_generated
 2. `html/*_standalone.html`：打开浏览器中的 Blockly 编辑器。
 3. `html/validation_workspace.html`：查看生成的验证规则区块。
 
-在 standalone 编辑器中，可以点击 `Load Sample` 加载示例模型，然后编辑
-Blockly 区块并导出 JSON、XML、domain XMI 或代码。
+在独立编辑器中，可以点击 `Load Sample` 加载示例模型，然后编辑
+Blockly 区块并导出 JSON、XML、领域 XMI 或代码。
 
 ## 继续修改
 
@@ -73,3 +95,16 @@ Blockly 区块并导出 JSON、XML、domain XMI 或代码。
 
 如果右键菜单中没有 `Generate Blockly Editor`，请先确认插件安装完成并重启
 Eclipse，再查看[故障排查](./TROUBLESHOOTING.md)。
+
+## 验证仓库中的结果
+
+从仓库根目录运行：
+
+```bash
+npm run smoke
+npm run verify:domain-xmi
+npm run verify:plugin
+```
+
+这些命令分别检查浏览器中的 AppMaker 编辑器、导出的领域 XMI，以及 Eclipse
+插件元数据和已生成文件。

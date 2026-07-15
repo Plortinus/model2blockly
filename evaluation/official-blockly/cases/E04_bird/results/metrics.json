@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E04_bird",
+  "authoringScope": "Official in-scope definitions/toolbox/generators versus maintained .m2b; generated files and domain runtime excluded.",
+  "blockCount": 8,
+  "baseline": {
+    "total": {
+      "bytes": 8692,
+      "totalLines": 288,
+      "nonBlank": 273,
+      "nonBlankNonComment": 246
+    },
+    "editor": {
+      "bytes": 6145,
+      "totalLines": 224,
+      "nonBlank": 214,
+      "nonBlankNonComment": 196
+    },
+    "generator": {
+      "bytes": 2547,
+      "totalLines": 64,
+      "nonBlank": 59,
+      "nonBlankNonComment": 50
+    },
+    "fragmentCount": 7
+  },
+  "m2b": {
+    "bytes": 3329,
+    "totalLines": 103,
+    "nonBlank": 93,
+    "nonBlankNonComment": 93
+  },
+  "generatedArtifacts": {
+    "fileCount": 13,
+    "bytes": 325880,
+    "excludedFromAuthoringComparison": true
+  },
+  "comparison": {
+    "locReductionPercent": 62.2,
+    "byteReductionPercent": 61.7,
+    "baselineLocPerBlock": 30.75,
+    "m2bLocPerBlock": 11.63
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "schemaVersion": 1,
+  "caseId": "E06_music",
+  "configuration": "Blockly Music, nivel 10",
+  "source": {
+    "repository": "https://github.com/google/blockly-games.git",
+    "commit": "5d2ff6f39207f7ed31e3d11ba1de277c85efe4c2",
+    "license": "Apache-2.0"
+  },
+  "fragments": [
+    {
+      "id": "block-definitions",
+      "path": "appengine/music/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/baseline/upstream/block-definitions.js",
+      "startLine": 41,
+      "endLine": 228,
+      "sha256": "19e59cc0c8283bb0c5e46438a33c2ae48165036f19ae6e6789ec007cbed53ec8",
+      "kinds": [
+        "block-definition"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "generators",
+      "path": "appengine/music/src/blocks.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/baseline/upstream/generators.js",
+      "startLine": 230,
+      "endLine": 264,
+      "sha256": "edef18efc88a10a288e50806896b300b553d0cf656ef22c432eebdc0fbdada7a",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "start-counter",
+      "path": "appengine/music/src/startcount.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/baseline/upstream/start-counter.js",
+      "startLine": 19,
+      "endLine": 35,
+      "sha256": "607f674fb1c9bdba63fa89c69362d6d214029731f83a7add67c4d76baee13657",
+      "kinds": [
+        "generator"
+      ],
+      "metricGroups": [
+        "generator"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "field-pitch",
+      "path": "appengine/music/src/field_pitch.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/baseline/upstream/field-pitch.js",
+      "startLine": 28,
+      "endLine": 242,
+      "sha256": "5e2aa1f9cebe2427209058b3bd9245304137141b2938e077972f44769084e101",
+      "kinds": [
+        "custom-field"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "pitch-picker-style",
+      "path": "appengine/music/style.css",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/baseline/upstream/pitch-picker-style.css",
+      "startLine": 97,
+      "endLine": 102,
+      "sha256": "74c6fc3a1ba03af207946ed972a173601f4b7411478ad38f129df877f55aed99",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-10-toolbox",
+      "path": "appengine/music/src/html.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/baseline/upstream/level-10-toolbox.js",
+      "startLine": 139,
+      "endLine": 346,
+      "sha256": "0d8e99a095c31cc0c87ab94602258d3a3e8b800d363620572e66d12fc9a6cd68",
+      "kinds": [
+        "toolbox"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "level-10-initial-workspace",
+      "path": "appengine/music/src/main.js",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/baseline/upstream/level-10-initial-workspace.js",
+      "startLine": 158,
+      "endLine": 164,
+      "sha256": "1ae04c824edf738491f963ab7c9bbeff6b2c0e6eeaa094b6335ac965bf1f1d47",
+      "kinds": [
+        "initial-workspace"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "game-name-message",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/baseline/upstream/game-name-message.jsonfrag",
+      "startLine": 13,
+      "endLine": 13,
+      "sha256": "ada0ce97fec5c6ade625c58e8248a3eb9d6a1c86191ed306edbd391d432f67b3",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "category-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/baseline/upstream/category-messages.jsonfrag",
+      "startLine": 27,
+      "endLine": 34,
+      "sha256": "22965c96ee7d15c44fbbcc4b894bdea92f0c1efb63b67609bc2b85e4b90c53e8",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": []
+    },
+    {
+      "id": "music-editor-messages",
+      "path": "json/en.json",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/baseline/upstream/music-editor-messages.jsonfrag",
+      "startLine": 203,
+      "endLine": 221,
+      "sha256": "2f5cf28ba26c62cbee1cbf1bb6ac27c23fd747321c621cb9f1623aad35e4a7f6",
+      "kinds": [
+        "editor-extension"
+      ],
+      "metricGroups": [
+        "editor"
+      ],
+      "countForMetrics": true,
+      "sharedSourceKey": null,
+      "notes": [
+        "Only the English messages used by the selected Music blocks are included."
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "note-whole",
+      "path": "appengine/music/note1.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/note1.png",
+      "sha256": "96e2bc063b77c36df64347b3217b4c0b0c3a6aff51cbac41387f2b0f518de5dc",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "note-half",
+      "path": "appengine/music/note0.5.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/note0.5.png",
+      "sha256": "dc86d5d2b1ac9d7e2784b7c3f14aa08d7540560449b7adaac1038801db6a2986",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "note-quarter",
+      "path": "appengine/music/note0.25.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/note0.25.png",
+      "sha256": "f6f4c30da51775a66a8ad6a581aed75199f6197c39264d316114cbe3dede7744",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "note-eighth",
+      "path": "appengine/music/note0.125.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/note0.125.png",
+      "sha256": "6f8be7afc3ac609cc4aa1aabee37c6a0f8243ad743ec181ec95fee3828b180f7",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "note-sixteenth",
+      "path": "appengine/music/note0.0625.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/note0.0625.png",
+      "sha256": "55952c97df6c4e84e4ae5e0ab0de5736ff15d63013cb859d12ae7e386f644612",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "rest-whole",
+      "path": "appengine/music/rest1.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/rest1.png",
+      "sha256": "0186a6bdf0f587baf97051be99f94a050ae881b065e65f936fc711ded5806b2e",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "rest-half",
+      "path": "appengine/music/rest0.5.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/rest0.5.png",
+      "sha256": "919aa2fb8ecc7a3bf96016653606d24c17e210d65630ef803d9cfc480dfa58e2",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "rest-quarter",
+      "path": "appengine/music/rest0.25.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/rest0.25.png",
+      "sha256": "9a0641c341c15068356215835acfce161774442b6511e38f917677c5613cfbc2",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "rest-eighth",
+      "path": "appengine/music/rest0.125.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/rest0.125.png",
+      "sha256": "5573ad3a78fb5e6fe55f38b76ec8b654cf4b757027bca0430193f7230acae2bc",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "rest-sixteenth",
+      "path": "appengine/music/rest0.0625.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/rest0.0625.png",
+      "sha256": "c138b7ad52407537fd0f747ae2b90f669e28c1bf9734f7fa16d2b00d9fb489c9",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "play-icon",
+      "path": "appengine/music/play.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/music/play.png",
+      "sha256": "4993b20307ed55191a2e5fc6b398f4ac3a06a68b371f30881d9b6e4cff52323d",
+      "mediaType": "image/png",
+      "notes": []
+    },
+    {
+      "id": "pitch-picker-sprite",
+      "path": "appengine/music/notes.png",
+      "snapshotPath": "evaluation/official-blockly/cases/E06_music/assets/notes.png",
+      "sha256": "b109674e7c012d1ee77db5082e59a92e09667c0a5d556a300c21e12fc5c63b31",
+      "mediaType": "image/png",
+      "notes": []
+    }
+  ]
+}

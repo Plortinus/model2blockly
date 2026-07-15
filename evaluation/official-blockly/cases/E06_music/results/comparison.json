@@ -1,0 +1,2482 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E06_music",
+  "baselineTreatment": "baseline",
+  "actualTreatment": "m2b",
+  "editor": {
+    "summary": {
+      "totalObserved": 232,
+      "applicable": 232,
+      "matches": 186,
+      "partial": 7,
+      "mismatches": 0,
+      "unsupported": 39,
+      "errors": 0,
+      "excluded": 0,
+      "differences": 46,
+      "parityPercent": 80.17,
+      "classification": "partial"
+    },
+    "loadErrors": [],
+    "properties": [
+      {
+        "property": "blocks.noUnexpectedTypes",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.music_pitch.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_pitch.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.music_pitch.connections.previous",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_pitch.connections.next",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_pitch.connections.output",
+        "status": "match",
+        "expected": {
+          "check": [
+            "Number"
+          ]
+        },
+        "actual": {
+          "check": [
+            "Number"
+          ]
+        }
+      },
+      {
+        "property": "blocks.music_pitch.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.music_pitch.colour",
+        "status": "match",
+        "expected": "#5b67a5",
+        "actual": "#5b67a5"
+      },
+      {
+        "property": "blocks.music_pitch.tooltip",
+        "status": "match",
+        "expected": "One note (C4 is 7).",
+        "actual": "One note (C4 is 7)."
+      },
+      {
+        "property": "blocks.music_pitch.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_pitch.dynamicBehaviour",
+        "status": "partial",
+        "expected": [
+          "pitch-note-conversion",
+          "pitch-picker",
+          "pitch-range-validation"
+        ],
+        "actual": [],
+        "capability": "custom-pitch-field",
+        "boundary": "model2blockly",
+        "rationale": "El campo numérico alternativo conserva el intervalo 0-12, pero no ofrece el selector gráfico, la conversión C3-A4 ni la validación propia de FieldPitch."
+      },
+      {
+        "property": "blocks.music_pitch.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_pitch.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_pitch.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.music_pitch.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "partial",
+        "expected": [
+          "custom:FieldPitch:PITCH"
+        ],
+        "actual": [
+          "field_number:PITCH"
+        ],
+        "capability": "custom-pitch-field",
+        "boundary": "model2blockly",
+        "rationale": "El bloque conserva un campo PITCH en la misma fila, pero lo genera como field_number en lugar de la clase FieldPitch oficial."
+      },
+      {
+        "property": "blocks.music_pitch.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "partial",
+        "expected": true,
+        "actual": false,
+        "capability": "custom-pitch-field",
+        "boundary": "model2blockly",
+        "rationale": "No existe un campo del mismo tipo personalizado que pueda emparejarse con FieldPitch; el campo numérico alternativo queda reflejado en el orden de campos."
+      },
+      {
+        "property": "blocks.music_note.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_note.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:PITCH"
+        ],
+        "actual": [
+          "value:PITCH"
+        ]
+      },
+      {
+        "property": "blocks.music_note.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "MusicCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía MusicCommand necesaria para admitir notas, silencios e instrumentos deriva conexiones tipadas, mientras que Music usa conexiones de sentencia sin tipo."
+      },
+      {
+        "property": "blocks.music_note.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "MusicCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía MusicCommand necesaria para admitir notas, silencios e instrumentos deriva conexiones tipadas, mientras que Music usa conexiones de sentencia sin tipo."
+      },
+      {
+        "property": "blocks.music_note.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_note.inputsInline",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_note.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.music_note.tooltip",
+        "status": "match",
+        "expected": "Plays one musical note of the specified duration and pitch.",
+        "actual": "Plays one musical note of the specified duration and pitch."
+      },
+      {
+        "property": "blocks.music_note.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_note.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:",
+          "field_dropdown:DURATION",
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:DURATION",
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.0.value",
+        "status": "match",
+        "expected": "play",
+        "actual": "play"
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.0.text",
+        "status": "match",
+        "expected": "play",
+        "actual": "play"
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.1.name",
+        "status": "match",
+        "expected": "DURATION",
+        "actual": "DURATION"
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.1.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.1.value",
+        "status": "partial",
+        "expected": "1",
+        "actual": "whole",
+        "capability": "image-dropdown-options",
+        "boundary": "model2blockly",
+        "rationale": "Se conservan las cinco duraciones y sus etiquetas musicales como texto, pero el DSL no admite imágenes como etiquetas ni valores almacenados numéricos que no sean identificadores de enumeración."
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.1.text",
+        "status": "match",
+        "expected": "1/1",
+        "actual": "1/1"
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.1.options",
+        "status": "partial",
+        "expected": [
+          {
+            "label": {
+              "alt": "1/1",
+              "height": 19,
+              "src": "music/note1.png",
+              "width": 9
+            },
+            "value": "1"
+          },
+          {
+            "label": {
+              "alt": "1/2",
+              "height": 19,
+              "src": "music/note0.5.png",
+              "width": 9
+            },
+            "value": "0.5"
+          },
+          {
+            "label": {
+              "alt": "1/4",
+              "height": 19,
+              "src": "music/note0.25.png",
+              "width": 9
+            },
+            "value": "0.25"
+          },
+          {
+            "label": {
+              "alt": "1/8",
+              "height": 19,
+              "src": "music/note0.125.png",
+              "width": 9
+            },
+            "value": "0.125"
+          },
+          {
+            "label": {
+              "alt": "1/16",
+              "height": 19,
+              "src": "music/note0.0625.png",
+              "width": 9
+            },
+            "value": "0.0625"
+          }
+        ],
+        "actual": [
+          {
+            "label": "1/1",
+            "value": "whole"
+          },
+          {
+            "label": "1/2",
+            "value": "half"
+          },
+          {
+            "label": "1/4",
+            "value": "quarter"
+          },
+          {
+            "label": "1/8",
+            "value": "eighth"
+          },
+          {
+            "label": "1/16",
+            "value": "sixteenth"
+          }
+        ],
+        "capability": "image-dropdown-options",
+        "boundary": "model2blockly",
+        "rationale": "Se conservan las cinco duraciones y sus etiquetas musicales como texto, pero el DSL no admite imágenes como etiquetas ni valores almacenados numéricos que no sean identificadores de enumeración."
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.2.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.2.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.2.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.2.value",
+        "status": "match",
+        "expected": "note",
+        "actual": "note"
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.2.text",
+        "status": "match",
+        "expected": "note",
+        "actual": "note"
+      },
+      {
+        "property": "blocks.music_note.inputs.value:PITCH.fields.2.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest_whole.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_rest_whole.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.music_rest_whole.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "MusicCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía MusicCommand necesaria para admitir notas, silencios e instrumentos deriva conexiones tipadas, mientras que Music usa conexiones de sentencia sin tipo."
+      },
+      {
+        "property": "blocks.music_rest_whole.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "MusicCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía MusicCommand necesaria para admitir notas, silencios e instrumentos deriva conexiones tipadas, mientras que Music usa conexiones de sentencia sin tipo."
+      },
+      {
+        "property": "blocks.music_rest_whole.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest_whole.inputsInline",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_rest_whole.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.music_rest_whole.tooltip",
+        "status": "match",
+        "expected": "Waits for one whole note.",
+        "actual": "Waits for one whole note."
+      },
+      {
+        "property": "blocks.music_rest_whole.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest_whole.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:",
+          "field_image:"
+        ],
+        "actual": [
+          "field_label:",
+          "field_image:"
+        ]
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "rest",
+        "actual": "rest"
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "rest",
+        "actual": "rest"
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.1.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.1.kind",
+        "status": "match",
+        "expected": "field_image",
+        "actual": "field_image"
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.1.value",
+        "status": "match",
+        "expected": "music/rest1.png",
+        "actual": "music/rest1.png"
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.1.text",
+        "status": "match",
+        "expected": "1/1",
+        "actual": "1/1"
+      },
+      {
+        "property": "blocks.music_rest_whole.inputs.dummy:<anonymous>.fields.1.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_rest.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.music_rest.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "MusicCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía MusicCommand necesaria para admitir notas, silencios e instrumentos deriva conexiones tipadas, mientras que Music usa conexiones de sentencia sin tipo."
+      },
+      {
+        "property": "blocks.music_rest.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "MusicCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía MusicCommand necesaria para admitir notas, silencios e instrumentos deriva conexiones tipadas, mientras que Music usa conexiones de sentencia sin tipo."
+      },
+      {
+        "property": "blocks.music_rest.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest.inputsInline",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_rest.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.music_rest.tooltip",
+        "status": "match",
+        "expected": "Waits for the specified duration.",
+        "actual": "Waits for the specified duration."
+      },
+      {
+        "property": "blocks.music_rest.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:",
+          "field_dropdown:DURATION"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:DURATION"
+        ]
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "rest",
+        "actual": "rest"
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "rest",
+        "actual": "rest"
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.1.name",
+        "status": "match",
+        "expected": "DURATION",
+        "actual": "DURATION"
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.1.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.1.value",
+        "status": "partial",
+        "expected": "1",
+        "actual": "whole",
+        "capability": "image-dropdown-options",
+        "boundary": "model2blockly",
+        "rationale": "Se conservan las cinco duraciones y sus etiquetas musicales como texto, pero el DSL no admite imágenes como etiquetas ni valores almacenados numéricos que no sean identificadores de enumeración."
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.1.text",
+        "status": "match",
+        "expected": "1/1",
+        "actual": "1/1"
+      },
+      {
+        "property": "blocks.music_rest.inputs.dummy:<anonymous>.fields.1.options",
+        "status": "partial",
+        "expected": [
+          {
+            "label": {
+              "alt": "1/1",
+              "height": 20,
+              "src": "music/rest1.png",
+              "width": 10
+            },
+            "value": "1"
+          },
+          {
+            "label": {
+              "alt": "1/2",
+              "height": 20,
+              "src": "music/rest0.5.png",
+              "width": 10
+            },
+            "value": "0.5"
+          },
+          {
+            "label": {
+              "alt": "1/4",
+              "height": 20,
+              "src": "music/rest0.25.png",
+              "width": 10
+            },
+            "value": "0.25"
+          },
+          {
+            "label": {
+              "alt": "1/8",
+              "height": 20,
+              "src": "music/rest0.125.png",
+              "width": 10
+            },
+            "value": "0.125"
+          },
+          {
+            "label": {
+              "alt": "1/16",
+              "height": 20,
+              "src": "music/rest0.0625.png",
+              "width": 10
+            },
+            "value": "0.0625"
+          }
+        ],
+        "actual": [
+          {
+            "label": "1/1",
+            "value": "whole"
+          },
+          {
+            "label": "1/2",
+            "value": "half"
+          },
+          {
+            "label": "1/4",
+            "value": "quarter"
+          },
+          {
+            "label": "1/8",
+            "value": "eighth"
+          },
+          {
+            "label": "1/16",
+            "value": "sixteenth"
+          }
+        ],
+        "capability": "image-dropdown-options",
+        "boundary": "model2blockly",
+        "rationale": "Se conservan las cinco duraciones y sus etiquetas musicales como texto, pero el DSL no admite imágenes como etiquetas ni valores almacenados numéricos que no sean identificadores de enumeración."
+      },
+      {
+        "property": "blocks.music_instrument.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_instrument.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.music_instrument.connections.previous",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "MusicCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía MusicCommand necesaria para admitir notas, silencios e instrumentos deriva conexiones tipadas, mientras que Music usa conexiones de sentencia sin tipo."
+      },
+      {
+        "property": "blocks.music_instrument.connections.next",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "MusicCommand"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La jerarquía MusicCommand necesaria para admitir notas, silencios e instrumentos deriva conexiones tipadas, mientras que Music usa conexiones de sentencia sin tipo."
+      },
+      {
+        "property": "blocks.music_instrument.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_instrument.inputsInline",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_instrument.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.music_instrument.tooltip",
+        "status": "match",
+        "expected": "Switches to the specified instrument when playing subsequent musical notes.",
+        "actual": "Switches to the specified instrument when playing subsequent musical notes."
+      },
+      {
+        "property": "blocks.music_instrument.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_instrument.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:",
+          "field_dropdown:INSTRUMENT"
+        ],
+        "actual": [
+          "field_label:",
+          "field_dropdown:INSTRUMENT"
+        ]
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "set instrument to",
+        "actual": "set instrument to"
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "set instrument to",
+        "actual": "set instrument to"
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.1.name",
+        "status": "match",
+        "expected": "INSTRUMENT",
+        "actual": "INSTRUMENT"
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.1.kind",
+        "status": "match",
+        "expected": "field_dropdown",
+        "actual": "field_dropdown"
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.1.value",
+        "status": "match",
+        "expected": "piano",
+        "actual": "piano"
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.1.text",
+        "status": "match",
+        "expected": "piano",
+        "actual": "piano"
+      },
+      {
+        "property": "blocks.music_instrument.inputs.dummy:<anonymous>.fields.1.options",
+        "status": "match",
+        "expected": [
+          {
+            "label": "piano",
+            "value": "piano"
+          },
+          {
+            "label": "trumpet",
+            "value": "trumpet"
+          },
+          {
+            "label": "banjo",
+            "value": "banjo"
+          },
+          {
+            "label": "violin",
+            "value": "violin"
+          },
+          {
+            "label": "guitar",
+            "value": "guitar"
+          },
+          {
+            "label": "flute",
+            "value": "flute"
+          },
+          {
+            "label": "drum",
+            "value": "drum"
+          },
+          {
+            "label": "choir",
+            "value": "choir"
+          }
+        ],
+        "actual": [
+          {
+            "label": "piano",
+            "value": "piano"
+          },
+          {
+            "label": "trumpet",
+            "value": "trumpet"
+          },
+          {
+            "label": "banjo",
+            "value": "banjo"
+          },
+          {
+            "label": "violin",
+            "value": "violin"
+          },
+          {
+            "label": "guitar",
+            "value": "guitar"
+          },
+          {
+            "label": "flute",
+            "value": "flute"
+          },
+          {
+            "label": "drum",
+            "value": "drum"
+          },
+          {
+            "label": "choir",
+            "value": "choir"
+          }
+        ]
+      },
+      {
+        "property": "blocks.music_start.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_start.inputOrder",
+        "status": "unsupported",
+        "expected": [
+          "dummy:",
+          "statement:STACK"
+        ],
+        "actual": [
+          "statement:STACK"
+        ],
+        "capability": "multiple-message-rows",
+        "boundary": "model2blockly",
+        "rationale": "Music usa message0 para la cabecera y message1 para STACK; el DSL solo declara message0 y no conserva la fila dummy separada."
+      },
+      {
+        "property": "blocks.music_start.connections.previous",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_start.connections.next",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_start.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_start.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.music_start.colour",
+        "status": "match",
+        "expected": "#a55b5b",
+        "actual": "#a55b5b"
+      },
+      {
+        "property": "blocks.music_start.tooltip",
+        "status": "match",
+        "expected": "Executes the blocks inside when the 'Run Program' button is clicked.",
+        "actual": "Executes the blocks inside when the 'Run Program' button is clicked."
+      },
+      {
+        "property": "blocks.music_start.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.music_start.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.music_start.inputs.dummy:<anonymous>.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "multiple-message-rows",
+        "boundary": "model2blockly",
+        "rationale": "La fila de cabecera independiente creada por message0 no se puede declarar como input_dummy explícito."
+      },
+      {
+        "property": "blocks.music_start.inputs.statement:STACK.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.music_start.inputs.statement:STACK.check",
+        "status": "unsupported",
+        "expected": null,
+        "actual": [
+          "MusicCommand"
+        ],
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "La contención se restringe a MusicCommand, mientras que la entrada oficial acepta cualquier bloque de sentencia."
+      },
+      {
+        "property": "blocks.music_start.inputs.statement:STACK.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.music_start.inputs.statement:STACK.fieldOrder",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "field_label:",
+          "field_image:",
+          "field_label:"
+        ],
+        "capability": "multiple-message-rows",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar una segunda fila de mensaje, la etiqueta y la imagen de ejecución se adjuntan a la entrada STACK generada."
+      },
+      {
+        "property": "toolbox.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.kind",
+        "status": "match",
+        "expected": "categoryToolbox",
+        "actual": "categoryToolbox"
+      },
+      {
+        "property": "toolbox.categoryOrder",
+        "status": "unsupported",
+        "expected": [
+          "Music",
+          "Logic",
+          "Loops",
+          "Math",
+          "Lists",
+          "Variables",
+          "Functions"
+        ],
+        "actual": [
+          "Music",
+          "Logic",
+          "Loops",
+          "Math",
+          "Variables",
+          "Functions"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla estándar generada no incluye Lists y no reproduce exactamente la secuencia oficial."
+      },
+      {
+        "property": "toolbox.nonCategoryItems",
+        "status": "unsupported",
+        "expected": [
+          {
+            "kind": "sep"
+          }
+        ],
+        "actual": [
+          {
+            "gap": "32",
+            "kind": "sep"
+          }
+        ],
+        "capability": "toolbox-separator-configuration",
+        "boundary": "model2blockly",
+        "rationale": "El separador automático usa gap 32 y una posición fija, frente al separador sin parámetro situado antes de Variables."
+      },
+      {
+        "property": "toolbox.categories.Music.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Music.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "160",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Music omite colour en las categorías y delega el estilo; Model2Blockly materializa siempre un color."
+      },
+      {
+        "property": "toolbox.categories.Music.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Music.blocks.music_pitch.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Music.blocks.music_pitch.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "fields": {
+            "PITCH": "7"
+          }
+        },
+        "actual": {
+          "enabled": true
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "No pueden declararse por entrada los valores PITCH=7, DURATION=0.25 y el campo de la sombra music_pitch."
+      },
+      {
+        "property": "toolbox.categories.Music.blocks.music_note.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Music.blocks.music_note.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "fields": {
+            "DURATION": "0.25"
+          },
+          "inputs": {
+            "PITCH": {
+              "shadow": {
+                "fields": {
+                  "PITCH": "7"
+                },
+                "type": "music_pitch"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "PITCH": {
+              "shadow": {
+                "type": "music_pitch"
+              }
+            }
+          }
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "No pueden declararse por entrada los valores PITCH=7, DURATION=0.25 y el campo de la sombra music_pitch."
+      },
+      {
+        "property": "toolbox.categories.Music.blocks.music_rest.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Music.blocks.music_rest.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Music.blocks.music_instrument.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Music.blocks.music_instrument.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Music.blocks.music_start.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Music.blocks.music_start.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Music.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "music_rest_whole"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La paleta generada añade music_rest_whole y dos bloques lógicos que el nivel 10 oficial no ofrece."
+      },
+      {
+        "property": "toolbox.categories.Logic.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "210",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Music omite colour en las categorías y delega el estilo; Model2Blockly materializa siempre un color."
+      },
+      {
+        "property": "toolbox.categories.Logic.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.controls_if.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.controls_if.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_compare.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_compare.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_operation.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_operation.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_negate.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_negate.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_boolean.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_boolean.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_ternary.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_ternary.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "controls_if",
+          "logic_null"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La paleta generada añade music_rest_whole y dos bloques lógicos que el nivel 10 oficial no ofrece."
+      },
+      {
+        "property": "toolbox.categories.Loops.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "120",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Music omite colour en las categorías y delega el estilo; Model2Blockly materializa siempre un color."
+      },
+      {
+        "property": "toolbox.categories.Loops.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_repeat_ext.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_repeat_ext.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "TIMES": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "TIMES": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_whileUntil.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_whileUntil.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_for.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_for.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "BY": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "BY": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_forEach.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_forEach.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_flow_statements.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_flow_statements.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.categories.Math.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "230",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Music omite colour en las categorías y delega el estilo; Model2Blockly materializa siempre un color."
+      },
+      {
+        "property": "toolbox.categories.Math.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true,
+          "fields": {
+            "NUM": 0
+          }
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla generada fija NUM=0, mientras que Music declara math_number sin configuración."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_arithmetic.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_arithmetic.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "A": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "B": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "A": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "B": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_single.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_single.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 9
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 9
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number_property.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La composición estándar fija no contiene math_number_property."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_round.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_round.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 3.1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 3.1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_modulo.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_modulo.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "DIVIDEND": {
+              "shadow": {
+                "fields": {
+                  "NUM": 64
+                },
+                "type": "math_number"
+              }
+            },
+            "DIVISOR": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "DIVIDEND": {
+              "shadow": {
+                "fields": {
+                  "NUM": 64
+                },
+                "type": "math_number"
+              }
+            },
+            "DIVISOR": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constrain.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constrain.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "HIGH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            },
+            "LOW": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "VALUE": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "HIGH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            },
+            "LOW": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "VALUE": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_int.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_int.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_float.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_random_float.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.categories.Lists.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla estándar actual no genera la categoría Lists."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_create_with.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_create_with.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_repeat.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_length.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_isEmpty.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_indexOf.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_getIndex.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_setIndex.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_getSublist.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_sort.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_reverse.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco se reproducen sus doce entradas con mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Variables.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Variables.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "330",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Music omite colour en las categorías y delega el estilo; Model2Blockly materializa siempre un color."
+      },
+      {
+        "property": "toolbox.categories.Variables.custom",
+        "status": "match",
+        "expected": "VARIABLE",
+        "actual": "VARIABLE"
+      },
+      {
+        "property": "toolbox.categories.Variables.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.categories.Functions.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Functions.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "290",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Music omite colour en las categorías y delega el estilo; Model2Blockly materializa siempre un color."
+      },
+      {
+        "property": "toolbox.categories.Functions.custom",
+        "status": "match",
+        "expected": "PROCEDURE",
+        "actual": "PROCEDURE"
+      },
+      {
+        "property": "toolbox.categories.Functions.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.unexpectedCategories",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "initialWorkspace.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "initial-workspace",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no puede declarar el music_start inicial con posición y propiedad deletable del nivel 10."
+      }
+    ]
+  },
+  "generators": {
+    "scope": "Presence and domain-code template; execution engine excluded.",
+    "summary": {
+      "totalObserved": 24,
+      "applicable": 21,
+      "matches": 19,
+      "partial": 0,
+      "mismatches": 0,
+      "unsupported": 2,
+      "errors": 0,
+      "excluded": 3,
+      "differences": 5,
+      "parityPercent": 90.48
+    },
+    "properties": [
+      {
+        "property": "generators.music_pitch.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.music_pitch.kind",
+        "status": "match",
+        "expected": "value",
+        "actual": "value"
+      },
+      {
+        "property": "generators.music_pitch.template",
+        "status": "match",
+        "expected": "{{PITCH}}",
+        "actual": "{{PITCH}}"
+      },
+      {
+        "property": "generators.music_pitch.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.music_note.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.music_note.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.music_note.template",
+        "status": "excluded",
+        "expected": "play({{DURATION}}, {{value:PITCH}}, 'block_id_{{id}}');",
+        "actual": "play({{DURATION}}, {{value:PITCH}});",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "Las tres diferencias de plantilla son exclusivamente los identificadores block_id usados para sincronizar notas y silencios con la reproducción visual."
+      },
+      {
+        "property": "generators.music_note.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "missing-pitch-default-seven"
+        ],
+        "actual": [],
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla no expresa el valor alternativo 7 que Music utiliza cuando falta la entrada PITCH."
+      },
+      {
+        "property": "generators.music_rest_whole.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.music_rest_whole.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.music_rest_whole.template",
+        "status": "excluded",
+        "expected": "rest(1, 'block_id_{{id}}');",
+        "actual": "rest(1);",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "Las tres diferencias de plantilla son exclusivamente los identificadores block_id usados para sincronizar notas y silencios con la reproducción visual."
+      },
+      {
+        "property": "generators.music_rest_whole.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.music_rest.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.music_rest.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.music_rest.template",
+        "status": "excluded",
+        "expected": "rest({{DURATION}}, 'block_id_{{id}}');",
+        "actual": "rest({{DURATION}});",
+        "capability": "execution-tracing",
+        "boundary": "domain-runtime",
+        "rationale": "Las tres diferencias de plantilla son exclusivamente los identificadores block_id usados para sincronizar notas y silencios con la reproducción visual."
+      },
+      {
+        "property": "generators.music_rest.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.music_instrument.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.music_instrument.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.music_instrument.template",
+        "status": "match",
+        "expected": "setInstrument('{{INSTRUMENT}}');",
+        "actual": "setInstrument('{{INSTRUMENT}}');"
+      },
+      {
+        "property": "generators.music_instrument.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.music_start.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.music_start.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.music_start.template",
+        "status": "match",
+        "expected": "function start{{counter}}() {\n{{statements:STACK}}\n}",
+        "actual": "function start{{counter}}() {\n{{statements:STACK}}\n}"
+      },
+      {
+        "property": "generators.music_start.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "definition-injection-thread-counter"
+        ],
+        "actual": [],
+        "capability": "definition-generator",
+        "boundary": "model2blockly",
+        "rationale": "El generador declarativo no incrementa un contador de hilos ni inserta cada función startN en definitions_ sin emitir una sentencia local."
+      }
+    ]
+  }
+}

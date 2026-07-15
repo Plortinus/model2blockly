@@ -1,0 +1,80 @@
+domain Maze
+codeLanguage "javascript"
+codeFileExtension "js"
+
+workspace {
+  renderer: "geras"
+  toolboxType: "flyout"
+  trashcan: false
+}
+
+abstract class Command {
+}
+
+class maze_moveForward extends Command colour 290
+  label "move forward"
+  message0 "move forward"
+  tooltip "Moves the player forward one space."
+  inputsInline false
+  code "moveForward();" {
+}
+
+class maze_turn extends Command colour 290
+  label "turn"
+  message0 "%1"
+  tooltip "Turns the player left or right by 90 degrees."
+  inputsInline false
+  code "{{DIR}}();" {
+  attribute DIR : enum {
+    turnLeft = "turn left ↺",
+    turnRight = "turn right ↻"
+  } [0..1] default "turnLeft"
+    widget select uiLabel "Direction" order 1 variant default
+}
+
+class maze_forever extends Command colour 120
+  label "repeat until"
+  message0 "repeat until %1 do %2"
+  tooltip "Repeat the enclosed actions until finish point is reached."
+  inputsInline false
+  code "while (notDone()) {\n{{statements:DO}}\n}" {
+  attribute MARKER : image [0..1] default ""
+    src "maze/marker.png" width 12 height 16 alt ""
+    widget image uiLabel "Finish" order 1 variant default
+  contains Command DO [0..10]
+    widget slot uiLabel "Do" order 2 variant default
+}
+
+class maze_if extends Command colour 210
+  label "if path"
+  message0 "%1 do %2"
+  tooltip "If there is a path in the specified direction, then do some actions."
+  inputsInline false
+  code "if ({{DIR}}()) {\n{{statements:DO}}\n}" {
+  attribute DIR : enum {
+    isPathForward = "if path ahead",
+    isPathLeft = "if path to the left ↺",
+    isPathRight = "if path to the right ↻"
+  } [0..1] default "isPathForward"
+    widget select uiLabel "Direction" order 1 variant default
+  contains Command DO [0..10]
+    widget slot uiLabel "Do" order 2 variant default
+}
+
+class maze_ifElse extends Command colour 210
+  label "if path, else"
+  message0 "%1 do %2 else %3"
+  tooltip "If there is a path in the specified direction, then do the first block of actions. Otherwise, do the second block of actions."
+  inputsInline false
+  code "if ({{DIR}}()) {\n{{statements:DO}}\n} else {\n{{statements:ELSE}}\n}" {
+  attribute DIR : enum {
+    isPathForward = "if path ahead",
+    isPathLeft = "if path to the left ↺",
+    isPathRight = "if path to the right ↻"
+  } [0..1] default "isPathForward"
+    widget select uiLabel "Direction" order 1 variant default
+  contains Command DO [0..10]
+    widget slot uiLabel "Do" order 2 variant default
+  contains Command ELSE [0..10]
+    widget slot uiLabel "Else" order 3 variant default
+}

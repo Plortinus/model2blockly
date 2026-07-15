@@ -1,0 +1,2640 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E05_movie",
+  "baselineTreatment": "baseline",
+  "actualTreatment": "m2b",
+  "editor": {
+    "summary": {
+      "totalObserved": 283,
+      "applicable": 283,
+      "matches": 236,
+      "partial": 0,
+      "mismatches": 0,
+      "unsupported": 47,
+      "errors": 0,
+      "excluded": 0,
+      "differences": 47,
+      "parityPercent": 83.39,
+      "classification": "partial"
+    },
+    "loadErrors": [],
+    "properties": [
+      {
+        "property": "blocks.noUnexpectedTypes",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.movie_circle.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_circle.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:X",
+          "value:Y",
+          "value:RADIUS"
+        ],
+        "actual": [
+          "value:X",
+          "value:Y",
+          "value:RADIUS"
+        ]
+      },
+      {
+        "property": "blocks.movie_circle.connections.previous",
+        "status": "match",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": null
+        }
+      },
+      {
+        "property": "blocks.movie_circle.connections.next",
+        "status": "match",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": null
+        }
+      },
+      {
+        "property": "blocks.movie_circle.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_circle.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.movie_circle.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.movie_circle.tooltip",
+        "status": "match",
+        "expected": "Draws a circle at the specified location and with the specified radius.",
+        "actual": "Draws a circle at the specified location and with the specified radius."
+      },
+      {
+        "property": "blocks.movie_circle.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_circle.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:X.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:X.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:X.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:X.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:X.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:X.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:X.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:X.fields.0.value",
+        "status": "match",
+        "expected": "circle x",
+        "actual": "circle x"
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:X.fields.0.text",
+        "status": "match",
+        "expected": "circle x",
+        "actual": "circle x"
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:X.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:Y.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:Y.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:Y.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:Y.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:Y.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:Y.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:Y.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:Y.fields.0.value",
+        "status": "match",
+        "expected": "y",
+        "actual": "y"
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:Y.fields.0.text",
+        "status": "match",
+        "expected": "y",
+        "actual": "y"
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:Y.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:RADIUS.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:RADIUS.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:RADIUS.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:RADIUS.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:RADIUS.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:RADIUS.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:RADIUS.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:RADIUS.fields.0.value",
+        "status": "match",
+        "expected": "radius",
+        "actual": "radius"
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:RADIUS.fields.0.text",
+        "status": "match",
+        "expected": "radius",
+        "actual": "radius"
+      },
+      {
+        "property": "blocks.movie_circle.inputs.value:RADIUS.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_rect.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_rect.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:X",
+          "value:Y",
+          "value:WIDTH",
+          "value:HEIGHT"
+        ],
+        "actual": [
+          "value:X",
+          "value:Y",
+          "value:WIDTH",
+          "value:HEIGHT"
+        ]
+      },
+      {
+        "property": "blocks.movie_rect.connections.previous",
+        "status": "match",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": null
+        }
+      },
+      {
+        "property": "blocks.movie_rect.connections.next",
+        "status": "match",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": null
+        }
+      },
+      {
+        "property": "blocks.movie_rect.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_rect.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.movie_rect.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.movie_rect.tooltip",
+        "status": "match",
+        "expected": "Draws a rectangle at the specified location and with the specified width and height.",
+        "actual": "Draws a rectangle at the specified location and with the specified width and height."
+      },
+      {
+        "property": "blocks.movie_rect.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_rect.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:X.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:X.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:X.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:X.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:X.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:X.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:X.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:X.fields.0.value",
+        "status": "match",
+        "expected": "rectangle x",
+        "actual": "rectangle x"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:X.fields.0.text",
+        "status": "match",
+        "expected": "rectangle x",
+        "actual": "rectangle x"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:X.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:Y.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:Y.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:Y.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:Y.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:Y.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:Y.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:Y.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:Y.fields.0.value",
+        "status": "match",
+        "expected": "y",
+        "actual": "y"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:Y.fields.0.text",
+        "status": "match",
+        "expected": "y",
+        "actual": "y"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:Y.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:WIDTH.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:WIDTH.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:WIDTH.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:WIDTH.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:WIDTH.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:WIDTH.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:WIDTH.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:WIDTH.fields.0.value",
+        "status": "match",
+        "expected": "width",
+        "actual": "width"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:WIDTH.fields.0.text",
+        "status": "match",
+        "expected": "width",
+        "actual": "width"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:WIDTH.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:HEIGHT.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:HEIGHT.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:HEIGHT.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:HEIGHT.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:HEIGHT.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:HEIGHT.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:HEIGHT.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:HEIGHT.fields.0.value",
+        "status": "match",
+        "expected": "height",
+        "actual": "height"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:HEIGHT.fields.0.text",
+        "status": "match",
+        "expected": "height",
+        "actual": "height"
+      },
+      {
+        "property": "blocks.movie_rect.inputs.value:HEIGHT.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:X1",
+          "value:Y1",
+          "value:X2",
+          "value:Y2",
+          "value:WIDTH"
+        ],
+        "actual": [
+          "value:X1",
+          "value:Y1",
+          "value:X2",
+          "value:Y2",
+          "value:WIDTH"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.connections.previous",
+        "status": "match",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": null
+        }
+      },
+      {
+        "property": "blocks.movie_line.connections.next",
+        "status": "match",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": null
+        }
+      },
+      {
+        "property": "blocks.movie_line.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.movie_line.colour",
+        "status": "match",
+        "expected": "#5ba58c",
+        "actual": "#5ba58c"
+      },
+      {
+        "property": "blocks.movie_line.tooltip",
+        "status": "match",
+        "expected": "Draws a line from one point to another with the specified width.",
+        "actual": "Draws a line from one point to another with the specified width."
+      },
+      {
+        "property": "blocks.movie_line.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X1.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X1.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X1.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X1.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X1.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X1.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X1.fields.0.value",
+        "status": "match",
+        "expected": "line start x",
+        "actual": "line start x"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X1.fields.0.text",
+        "status": "match",
+        "expected": "line start x",
+        "actual": "line start x"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X1.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y1.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y1.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y1.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y1.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y1.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y1.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y1.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y1.fields.0.value",
+        "status": "match",
+        "expected": "start y",
+        "actual": "start y"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y1.fields.0.text",
+        "status": "match",
+        "expected": "start y",
+        "actual": "start y"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y1.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X2.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X2.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X2.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X2.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X2.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X2.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X2.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X2.fields.0.value",
+        "status": "match",
+        "expected": "end x",
+        "actual": "end x"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X2.fields.0.text",
+        "status": "match",
+        "expected": "end x",
+        "actual": "end x"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:X2.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y2.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y2.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y2.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y2.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y2.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y2.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y2.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y2.fields.0.value",
+        "status": "match",
+        "expected": "end y",
+        "actual": "end y"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y2.fields.0.text",
+        "status": "match",
+        "expected": "end y",
+        "actual": "end y"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:Y2.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:WIDTH.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:WIDTH.check",
+        "status": "match",
+        "expected": [
+          "Number"
+        ],
+        "actual": [
+          "Number"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:WIDTH.alignment",
+        "status": "unsupported",
+        "expected": 1,
+        "actual": -1,
+        "capability": "input-alignment",
+        "boundary": "model2blockly",
+        "rationale": "Movie alinea a la derecha sus doce entradas numéricas; el DSL actual no expone la alineación de una entrada Blockly y genera el valor predeterminado."
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:WIDTH.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:WIDTH.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:WIDTH.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:WIDTH.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:WIDTH.fields.0.value",
+        "status": "match",
+        "expected": "width",
+        "actual": "width"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:WIDTH.fields.0.text",
+        "status": "match",
+        "expected": "width",
+        "actual": "width"
+      },
+      {
+        "property": "blocks.movie_line.inputs.value:WIDTH.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_time.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_time.inputOrder",
+        "status": "match",
+        "expected": [
+          "dummy:"
+        ],
+        "actual": [
+          "dummy:"
+        ]
+      },
+      {
+        "property": "blocks.movie_time.connections.previous",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_time.connections.next",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_time.connections.output",
+        "status": "unsupported",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": [
+            "Number"
+          ]
+        },
+        "capability": "connection-policy",
+        "boundary": "model2blockly",
+        "rationale": "Movie declara una salida sin comprobación de tipo, mientras que la semántica numérica del modelo produce una conexión restringida a Number."
+      },
+      {
+        "property": "blocks.movie_time.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.movie_time.colour",
+        "status": "match",
+        "expected": "#a55b80",
+        "actual": "#a55b80"
+      },
+      {
+        "property": "blocks.movie_time.tooltip",
+        "status": "match",
+        "expected": "Returns the current time in the animation (0-100).",
+        "actual": "Returns the current time in the animation (0-100)."
+      },
+      {
+        "property": "blocks.movie_time.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_time.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.movie_time.inputs.dummy:<anonymous>.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_time.inputs.dummy:<anonymous>.check",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_time.inputs.dummy:<anonymous>.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.movie_time.inputs.dummy:<anonymous>.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_time.inputs.dummy:<anonymous>.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_time.inputs.dummy:<anonymous>.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_time.inputs.dummy:<anonymous>.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_time.inputs.dummy:<anonymous>.fields.0.value",
+        "status": "match",
+        "expected": "time (0→100)",
+        "actual": "time (0→100)"
+      },
+      {
+        "property": "blocks.movie_time.inputs.dummy:<anonymous>.fields.0.text",
+        "status": "match",
+        "expected": "time (0→100)",
+        "actual": "time (0→100)"
+      },
+      {
+        "property": "blocks.movie_time.inputs.dummy:<anonymous>.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_colour.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_colour.inputOrder",
+        "status": "match",
+        "expected": [
+          "value:COLOUR"
+        ],
+        "actual": [
+          "value:COLOUR"
+        ]
+      },
+      {
+        "property": "blocks.movie_colour.connections.previous",
+        "status": "match",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": null
+        }
+      },
+      {
+        "property": "blocks.movie_colour.connections.next",
+        "status": "match",
+        "expected": {
+          "check": null
+        },
+        "actual": {
+          "check": null
+        }
+      },
+      {
+        "property": "blocks.movie_colour.connections.output",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_colour.inputsInline",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "property": "blocks.movie_colour.colour",
+        "status": "match",
+        "expected": "#a5745b",
+        "actual": "#a5745b"
+      },
+      {
+        "property": "blocks.movie_colour.tooltip",
+        "status": "match",
+        "expected": "Changes the colour of the pen.",
+        "actual": "Changes the colour of the pen."
+      },
+      {
+        "property": "blocks.movie_colour.helpUrl",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_colour.dynamicBehaviour",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "blocks.movie_colour.inputs.value:COLOUR.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_colour.inputs.value:COLOUR.check",
+        "status": "match",
+        "expected": [
+          "Colour"
+        ],
+        "actual": [
+          "Colour"
+        ]
+      },
+      {
+        "property": "blocks.movie_colour.inputs.value:COLOUR.alignment",
+        "status": "match",
+        "expected": -1,
+        "actual": -1
+      },
+      {
+        "property": "blocks.movie_colour.inputs.value:COLOUR.fieldOrder",
+        "status": "match",
+        "expected": [
+          "field_label:"
+        ],
+        "actual": [
+          "field_label:"
+        ]
+      },
+      {
+        "property": "blocks.movie_colour.inputs.value:COLOUR.fields.0.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "blocks.movie_colour.inputs.value:COLOUR.fields.0.name",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "blocks.movie_colour.inputs.value:COLOUR.fields.0.kind",
+        "status": "match",
+        "expected": "field_label",
+        "actual": "field_label"
+      },
+      {
+        "property": "blocks.movie_colour.inputs.value:COLOUR.fields.0.value",
+        "status": "match",
+        "expected": "set colour to",
+        "actual": "set colour to"
+      },
+      {
+        "property": "blocks.movie_colour.inputs.value:COLOUR.fields.0.text",
+        "status": "match",
+        "expected": "set colour to",
+        "actual": "set colour to"
+      },
+      {
+        "property": "blocks.movie_colour.inputs.value:COLOUR.fields.0.options",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.kind",
+        "status": "match",
+        "expected": "categoryToolbox",
+        "actual": "categoryToolbox"
+      },
+      {
+        "property": "toolbox.categoryOrder",
+        "status": "unsupported",
+        "expected": [
+          "Movie",
+          "Colour",
+          "Logic",
+          "Loops",
+          "Math",
+          "Lists",
+          "Variables",
+          "Functions"
+        ],
+        "actual": [
+          "Movie",
+          "Colour",
+          "Logic",
+          "Loops",
+          "Math",
+          "Variables",
+          "Functions"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla de categorías estándar generada no incluye Lists y no permite reproducir exactamente la secuencia oficial del nivel 10."
+      },
+      {
+        "property": "toolbox.nonCategoryItems",
+        "status": "unsupported",
+        "expected": [
+          {
+            "kind": "sep"
+          }
+        ],
+        "actual": [
+          {
+            "gap": "32",
+            "kind": "sep"
+          }
+        ],
+        "capability": "toolbox-separator-configuration",
+        "boundary": "model2blockly",
+        "rationale": "Model2Blockly inserta automáticamente un separador con gap 32 entre el dominio y las categorías incorporadas; Movie declara un separador sin ese parámetro antes de Variables."
+      },
+      {
+        "property": "toolbox.categories.Movie.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Movie.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "160",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Las categorías oficiales delegan su apariencia al editor y omiten colour, mientras que el generador siempre materializa un color en las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Movie.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Movie.blocks.movie_circle.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Movie.blocks.movie_circle.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "RADIUS": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            },
+            "X": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            },
+            "Y": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no permite preconfigurar estas entradas con sombras math_number estándar y valores distintos para cada parámetro geométrico."
+      },
+      {
+        "property": "toolbox.categories.Movie.blocks.movie_rect.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Movie.blocks.movie_rect.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "HEIGHT": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            },
+            "WIDTH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            },
+            "X": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            },
+            "Y": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no permite preconfigurar estas entradas con sombras math_number estándar y valores distintos para cada parámetro geométrico."
+      },
+      {
+        "property": "toolbox.categories.Movie.blocks.movie_line.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Movie.blocks.movie_line.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "WIDTH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "X1": {
+              "shadow": {
+                "fields": {
+                  "NUM": 40
+                },
+                "type": "math_number"
+              }
+            },
+            "X2": {
+              "shadow": {
+                "fields": {
+                  "NUM": 60
+                },
+                "type": "math_number"
+              }
+            },
+            "Y1": {
+              "shadow": {
+                "fields": {
+                  "NUM": 40
+                },
+                "type": "math_number"
+              }
+            },
+            "Y2": {
+              "shadow": {
+                "fields": {
+                  "NUM": 60
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "El DSL no permite preconfigurar estas entradas con sombras math_number estándar y valores distintos para cada parámetro geométrico."
+      },
+      {
+        "property": "toolbox.categories.Movie.blocks.movie_time.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Movie.blocks.movie_time.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Movie.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.categories.Colour.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Colour.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "20",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Las categorías oficiales delegan su apariencia al editor y omiten colour, mientras que el generador siempre materializa un color en las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Colour.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.movie_colour.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.movie_colour.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.colour_picker.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La categoría de dominio Colour no puede incorporar selectivamente colour_picker, colour_rgb y colour_blend desde la biblioteca estándar."
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.colour_rgb.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La categoría de dominio Colour no puede incorporar selectivamente colour_picker, colour_rgb y colour_blend desde la biblioteca estándar."
+      },
+      {
+        "property": "toolbox.categories.Colour.blocks.colour_blend.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La categoría de dominio Colour no puede incorporar selectivamente colour_picker, colour_rgb y colour_blend desde la biblioteca estándar."
+      },
+      {
+        "property": "toolbox.categories.Colour.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.categories.Logic.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "210",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Las categorías oficiales delegan su apariencia al editor y omiten colour, mientras que el generador siempre materializa un color en las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Logic.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.controls_if.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.controls_if.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_compare.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_compare.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_operation.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_operation.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_negate.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_negate.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_boolean.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_boolean.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_ternary.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Logic.blocks.logic_ternary.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Logic.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "controls_if",
+          "logic_null"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla estándar generada añade bloques de Logic, Loops y Math que la configuración oficial de Movie no incluye."
+      },
+      {
+        "property": "toolbox.categories.Loops.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "120",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Las categorías oficiales delegan su apariencia al editor y omiten colour, mientras que el generador siempre materializa un color en las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Loops.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_whileUntil.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_whileUntil.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_for.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_for.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "BY": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "BY": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "FROM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "TO": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_flow_statements.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Loops.blocks.controls_flow_statements.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true
+        }
+      },
+      {
+        "property": "toolbox.categories.Loops.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "controls_repeat_ext",
+          "controls_forEach"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla estándar generada añade bloques de Logic, Loops y Math que la configuración oficial de Movie no incluye."
+      },
+      {
+        "property": "toolbox.categories.Math.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "230",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Las categorías oficiales delegan su apariencia al editor y omiten colour, mientras que el generador siempre materializa un color en las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Math.custom",
+        "status": "match",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number.configuration",
+        "status": "unsupported",
+        "expected": {
+          "enabled": true
+        },
+        "actual": {
+          "enabled": true,
+          "fields": {
+            "NUM": 0
+          }
+        },
+        "capability": "toolbox-entry-presets",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla generada fija explícitamente NUM=0 en math_number, mientras que Movie usa una entrada sin configuración de campo."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_arithmetic.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_arithmetic.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "A": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "B": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "A": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "B": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_single.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_single.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 9
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 9
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_trig.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La composición fija de Math no permite añadir math_trig, math_constant y math_number_property seleccionados por Movie."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constant.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La composición fija de Math no permite añadir math_trig, math_constant y math_number_property seleccionados por Movie."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_number_property.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La composición fija de Math no permite añadir math_trig, math_constant y math_number_property seleccionados por Movie."
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_round.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_round.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 3.1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "fields": {
+                  "NUM": 3.1
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_modulo.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_modulo.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "DIVIDEND": {
+              "shadow": {
+                "fields": {
+                  "NUM": 64
+                },
+                "type": "math_number"
+              }
+            },
+            "DIVISOR": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "DIVIDEND": {
+              "shadow": {
+                "fields": {
+                  "NUM": 64
+                },
+                "type": "math_number"
+              }
+            },
+            "DIVISOR": {
+              "shadow": {
+                "fields": {
+                  "NUM": 10
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constrain.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Math.blocks.math_constrain.configuration",
+        "status": "match",
+        "expected": {
+          "enabled": true,
+          "inputs": {
+            "HIGH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            },
+            "LOW": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "VALUE": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        },
+        "actual": {
+          "enabled": true,
+          "inputs": {
+            "HIGH": {
+              "shadow": {
+                "fields": {
+                  "NUM": 100
+                },
+                "type": "math_number"
+              }
+            },
+            "LOW": {
+              "shadow": {
+                "fields": {
+                  "NUM": 1
+                },
+                "type": "math_number"
+              }
+            },
+            "VALUE": {
+              "shadow": {
+                "fields": {
+                  "NUM": 50
+                },
+                "type": "math_number"
+              }
+            }
+          }
+        }
+      },
+      {
+        "property": "toolbox.categories.Math.unexpectedBlocks",
+        "status": "unsupported",
+        "expected": [],
+        "actual": [
+          "math_random_int",
+          "math_random_float"
+        ],
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla estándar generada añade bloques de Logic, Loops y Math que la configuración oficial de Movie no incluye."
+      },
+      {
+        "property": "toolbox.categories.Lists.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "La plantilla de paleta estándar de Model2Blockly no genera la categoría Lists."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_create_with.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_create_with.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_repeat.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_length.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_isEmpty.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_indexOf.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_getIndex.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_setIndex.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_getSublist.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_sort.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Lists.blocks.lists_reverse.present",
+        "status": "unsupported",
+        "expected": true,
+        "actual": false,
+        "capability": "toolbox-category-composition",
+        "boundary": "model2blockly",
+        "rationale": "Al faltar Lists, tampoco pueden reproducirse sus doce entradas oficiales, incluidas mutaciones, sombras y variables preconfiguradas."
+      },
+      {
+        "property": "toolbox.categories.Variables.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Variables.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "330",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Las categorías oficiales delegan su apariencia al editor y omiten colour, mientras que el generador siempre materializa un color en las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Variables.custom",
+        "status": "match",
+        "expected": "VARIABLE",
+        "actual": "VARIABLE"
+      },
+      {
+        "property": "toolbox.categories.Variables.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.categories.Functions.present",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "toolbox.categories.Functions.colour",
+        "status": "unsupported",
+        "expected": null,
+        "actual": "290",
+        "capability": "category-colour-omission",
+        "boundary": "model2blockly",
+        "rationale": "Las categorías oficiales delegan su apariencia al editor y omiten colour, mientras que el generador siempre materializa un color en las categorías de dominio y estándar."
+      },
+      {
+        "property": "toolbox.categories.Functions.custom",
+        "status": "match",
+        "expected": "PROCEDURE",
+        "actual": "PROCEDURE"
+      },
+      {
+        "property": "toolbox.categories.Functions.unexpectedBlocks",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "toolbox.unexpectedCategories",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "initialWorkspace.present",
+        "status": "match",
+        "expected": false,
+        "actual": false
+      }
+    ]
+  },
+  "generators": {
+    "scope": "Presence and domain-code template; execution engine excluded.",
+    "summary": {
+      "totalObserved": 20,
+      "applicable": 20,
+      "matches": 16,
+      "partial": 0,
+      "mismatches": 0,
+      "unsupported": 4,
+      "errors": 0,
+      "excluded": 0,
+      "differences": 4,
+      "parityPercent": 80
+    },
+    "properties": [
+      {
+        "property": "generators.movie_circle.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.movie_circle.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.movie_circle.template",
+        "status": "match",
+        "expected": "circle({{value:X}}, {{value:Y}}, {{value:RADIUS}});",
+        "actual": "circle({{value:X}}, {{value:Y}}, {{value:RADIUS}});"
+      },
+      {
+        "property": "generators.movie_circle.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "missing-values-default-zero"
+        ],
+        "actual": [],
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "rationale": "Las plantillas conservan las llamadas principales, pero no expresan los ceros alternativos para entradas geométricas vacías ni el negro alternativo para un color ausente."
+      },
+      {
+        "property": "generators.movie_rect.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.movie_rect.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.movie_rect.template",
+        "status": "match",
+        "expected": "rect({{value:X}}, {{value:Y}}, {{value:WIDTH}}, {{value:HEIGHT}});",
+        "actual": "rect({{value:X}}, {{value:Y}}, {{value:WIDTH}}, {{value:HEIGHT}});"
+      },
+      {
+        "property": "generators.movie_rect.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "missing-values-default-zero"
+        ],
+        "actual": [],
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "rationale": "Las plantillas conservan las llamadas principales, pero no expresan los ceros alternativos para entradas geométricas vacías ni el negro alternativo para un color ausente."
+      },
+      {
+        "property": "generators.movie_line.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.movie_line.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.movie_line.template",
+        "status": "match",
+        "expected": "line({{value:X1}}, {{value:Y1}}, {{value:X2}}, {{value:Y2}}, {{value:WIDTH}});",
+        "actual": "line({{value:X1}}, {{value:Y1}}, {{value:X2}}, {{value:Y2}}, {{value:WIDTH}});"
+      },
+      {
+        "property": "generators.movie_line.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "missing-values-default-zero"
+        ],
+        "actual": [],
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "rationale": "Las plantillas conservan las llamadas principales, pero no expresan los ceros alternativos para entradas geométricas vacías ni el negro alternativo para un color ausente."
+      },
+      {
+        "property": "generators.movie_time.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.movie_time.kind",
+        "status": "match",
+        "expected": "value",
+        "actual": "value"
+      },
+      {
+        "property": "generators.movie_time.template",
+        "status": "match",
+        "expected": "time()",
+        "actual": "time()"
+      },
+      {
+        "property": "generators.movie_time.sideEffects",
+        "status": "match",
+        "expected": [],
+        "actual": []
+      },
+      {
+        "property": "generators.movie_colour.registered",
+        "status": "match",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "property": "generators.movie_colour.kind",
+        "status": "match",
+        "expected": "statement",
+        "actual": "statement"
+      },
+      {
+        "property": "generators.movie_colour.template",
+        "status": "match",
+        "expected": "penColour({{value:COLOUR}});",
+        "actual": "penColour({{value:COLOUR}});"
+      },
+      {
+        "property": "generators.movie_colour.sideEffects",
+        "status": "unsupported",
+        "expected": [
+          "missing-colour-default-black"
+        ],
+        "actual": [],
+        "capability": "generator-empty-input-defaults",
+        "boundary": "model2blockly",
+        "rationale": "Las plantillas conservan las llamadas principales, pero no expresan los ceros alternativos para entradas geométricas vacías ni el negro alternativo para un color ausente."
+      }
+    ]
+  }
+}

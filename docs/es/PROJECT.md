@@ -19,6 +19,7 @@ valida y finalmente genera los archivos del editor Blockly.
 
 - [Guía rápida](GETTING_STARTED.md)
 - [Caso AppMaker](RUNNING_EXAMPLE.md)
+- [Evaluación con diez editores oficiales](EVALUATION.md)
 - [Mapeo de Ecore a Blockly](ECORE_TO_BLOCKLY_MAPPING.md)
 - [Solución de problemas](TROUBLESHOOTING.md)
 

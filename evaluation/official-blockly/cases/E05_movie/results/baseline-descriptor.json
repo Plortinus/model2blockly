@@ -1,0 +1,1127 @@
+{
+  "schemaVersion": 2,
+  "caseId": "E05_movie",
+  "treatment": "baseline",
+  "controls": {
+    "blocklyVersion": "13.1.1",
+    "browserViewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "locale": "en",
+    "renderer": "geras",
+    "theme": "classic",
+    "workspaceViewport": {
+      "height": 640,
+      "width": 1024
+    }
+  },
+  "blocks": [
+    {
+      "type": "movie_circle",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "X",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "X"
+        },
+        {
+          "kind": "input",
+          "name": "Y",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "Y"
+        },
+        {
+          "kind": "input",
+          "name": "RADIUS",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "RADIUS"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "X",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "circle x",
+              "text": "circle x",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "Y",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "y",
+              "text": "y",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "RADIUS",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "radius",
+              "text": "radius",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#5ba58c",
+      "tooltip": "Draws a circle at the specified location and with the specified radius.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "movie_rect",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "X",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "X"
+        },
+        {
+          "kind": "input",
+          "name": "Y",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "Y"
+        },
+        {
+          "kind": "input",
+          "name": "WIDTH",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "WIDTH"
+        },
+        {
+          "kind": "input",
+          "name": "HEIGHT",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "HEIGHT"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "X",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "rectangle x",
+              "text": "rectangle x",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "Y",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "y",
+              "text": "y",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "WIDTH",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "width",
+              "text": "width",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "HEIGHT",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "height",
+              "text": "height",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#5ba58c",
+      "tooltip": "Draws a rectangle at the specified location and with the specified width and height.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "movie_line",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "X1",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "X1"
+        },
+        {
+          "kind": "input",
+          "name": "Y1",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "Y1"
+        },
+        {
+          "kind": "input",
+          "name": "X2",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "X2"
+        },
+        {
+          "kind": "input",
+          "name": "Y2",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "Y2"
+        },
+        {
+          "kind": "input",
+          "name": "WIDTH",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "WIDTH"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "X1",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "line start x",
+              "text": "line start x",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "Y1",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "start y",
+              "text": "start y",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "X2",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "end x",
+              "text": "end x",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "Y2",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "end y",
+              "text": "end y",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        },
+        {
+          "name": "WIDTH",
+          "kind": "value",
+          "check": [
+            "Number"
+          ],
+          "alignment": 1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "width",
+              "text": "width",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#5ba58c",
+      "tooltip": "Draws a line from one point to another with the specified width.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "movie_time",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "",
+          "inputKind": "dummy"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": ""
+        }
+      ],
+      "inputs": [
+        {
+          "name": "",
+          "kind": "dummy",
+          "check": null,
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "time (0→100)",
+              "text": "time (0→100)",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": null,
+        "next": null,
+        "output": {
+          "check": null
+        }
+      },
+      "inputsInline": false,
+      "colour": "#a55b80",
+      "tooltip": "Returns the current time in the animation (0-100).",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    },
+    {
+      "type": "movie_colour",
+      "elements": [
+        {
+          "kind": "input",
+          "name": "COLOUR",
+          "inputKind": "value"
+        },
+        {
+          "kind": "field",
+          "name": null,
+          "fieldKind": "field_label",
+          "inputName": "COLOUR"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "COLOUR",
+          "kind": "value",
+          "check": [
+            "Colour"
+          ],
+          "alignment": -1,
+          "fields": [
+            {
+              "name": null,
+              "kind": "field_label",
+              "value": "set colour to",
+              "text": "set colour to",
+              "options": null,
+              "constraints": null
+            }
+          ]
+        }
+      ],
+      "connections": {
+        "previous": {
+          "check": null
+        },
+        "next": {
+          "check": null
+        },
+        "output": null
+      },
+      "inputsInline": false,
+      "colour": "#a5745b",
+      "tooltip": "Changes the colour of the pen.",
+      "helpUrl": null,
+      "dynamicBehaviour": []
+    }
+  ],
+  "toolbox": {
+    "contents": [
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "inputs": {
+              "RADIUS": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              },
+              "X": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 50
+                  },
+                  "type": "math_number"
+                }
+              },
+              "Y": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 50
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "movie_circle"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "HEIGHT": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              },
+              "WIDTH": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              },
+              "X": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 50
+                  },
+                  "type": "math_number"
+                }
+              },
+              "Y": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 50
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "movie_rect"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "WIDTH": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "X1": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 40
+                  },
+                  "type": "math_number"
+                }
+              },
+              "X2": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 60
+                  },
+                  "type": "math_number"
+                }
+              },
+              "Y1": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 40
+                  },
+                  "type": "math_number"
+                }
+              },
+              "Y2": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 60
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "movie_line"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "movie_time"
+          }
+        ],
+        "kind": "category",
+        "name": "Movie"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "movie_colour"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "colour_picker"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "colour_rgb"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "colour_blend"
+          }
+        ],
+        "kind": "category",
+        "name": "Colour"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_compare"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_operation"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_negate"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_boolean"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "logic_ternary"
+          }
+        ],
+        "kind": "category",
+        "name": "Logic"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_whileUntil"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "BY": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "FROM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "TO": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "controls_for"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "controls_flow_statements"
+          }
+        ],
+        "kind": "category",
+        "name": "Loops"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "math_number"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "A": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "B": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_arithmetic"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 9
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_single"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 45
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_trig"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "math_constant"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUMBER_TO_CHECK": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 0
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_number_property"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 3.1
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_round"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "DIVIDEND": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 64
+                  },
+                  "type": "math_number"
+                }
+              },
+              "DIVISOR": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 10
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_modulo"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "HIGH": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 100
+                  },
+                  "type": "math_number"
+                }
+              },
+              "LOW": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 1
+                  },
+                  "type": "math_number"
+                }
+              },
+              "VALUE": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 50
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "math_constrain"
+          }
+        ],
+        "kind": "category",
+        "name": "Math"
+      },
+      {
+        "contents": [
+          {
+            "enabled": true,
+            "extraState": {
+              "itemCount": 0
+            },
+            "kind": "block",
+            "type": "lists_create_with"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "lists_create_with"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "NUM": {
+                "shadow": {
+                  "fields": {
+                    "NUM": 5
+                  },
+                  "type": "math_number"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "lists_repeat"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "lists_length"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "lists_isEmpty"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "VALUE": {
+                "block": {
+                  "fields": {
+                    "VAR": {
+                      "id": "d~h8hDt*YOOh#%I)yliw",
+                      "name": "list",
+                      "type": ""
+                    }
+                  },
+                  "type": "variables_get"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "lists_indexOf"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "VALUE": {
+                "block": {
+                  "fields": {
+                    "VAR": {
+                      "id": "q#vr]1{Su]yg-@dgNil@",
+                      "name": "list",
+                      "type": ""
+                    }
+                  },
+                  "type": "variables_get"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "lists_getIndex"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "LIST": {
+                "block": {
+                  "fields": {
+                    "VAR": {
+                      "id": "X-eK~J6Izg`@(-(3~^ew",
+                      "name": "list",
+                      "type": ""
+                    }
+                  },
+                  "type": "variables_get"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "lists_setIndex"
+          },
+          {
+            "enabled": true,
+            "inputs": {
+              "LIST": {
+                "block": {
+                  "fields": {
+                    "VAR": {
+                      "id": "YlqX)4j%;!OY[3!BB^8p",
+                      "name": "list",
+                      "type": ""
+                    }
+                  },
+                  "type": "variables_get"
+                }
+              }
+            },
+            "kind": "block",
+            "type": "lists_getSublist"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "lists_sort"
+          },
+          {
+            "enabled": true,
+            "kind": "block",
+            "type": "lists_reverse"
+          }
+        ],
+        "kind": "category",
+        "name": "Lists"
+      },
+      {
+        "kind": "sep"
+      },
+      {
+        "custom": "VARIABLE",
+        "kind": "category",
+        "name": "Variables"
+      },
+      {
+        "custom": "PROCEDURE",
+        "kind": "category",
+        "name": "Functions"
+      }
+    ],
+    "kind": "categoryToolbox"
+  },
+  "initialWorkspace": null,
+  "generators": [
+    {
+      "type": "movie_circle",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-values-default-zero"
+        ],
+        "template": "circle({{value:X}}, {{value:Y}}, {{value:RADIUS}});"
+      }
+    },
+    {
+      "type": "movie_rect",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-values-default-zero"
+        ],
+        "template": "rect({{value:X}}, {{value:Y}}, {{value:WIDTH}}, {{value:HEIGHT}});"
+      }
+    },
+    {
+      "type": "movie_line",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-values-default-zero"
+        ],
+        "template": "line({{value:X1}}, {{value:Y1}}, {{value:X2}}, {{value:Y2}}, {{value:WIDTH}});"
+      }
+    },
+    {
+      "type": "movie_time",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "value",
+        "template": "time()"
+      }
+    },
+    {
+      "type": "movie_colour",
+      "language": "javascript",
+      "registered": true,
+      "metadata": {
+        "kind": "statement",
+        "sideEffects": [
+          "missing-colour-default-black"
+        ],
+        "template": "penColour({{value:COLOUR}});"
+      }
+    }
+  ],
+  "errors": []
+}
