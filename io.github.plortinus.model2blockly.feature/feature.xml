@@ -2,7 +2,7 @@
 <feature
       id="io.github.plortinus.model2blockly.feature"
       label="%featureName"
-      version="1.0.9.qualifier"
+      version="1.0.10.qualifier"
       provider-name="%providerName">
 
    <description>

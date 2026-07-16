@@ -12,13 +12,14 @@ const coreUpdateSiteJar = path.join(
   'io.github.plortinus.model2blockly.updatesite',
   'repository',
   'plugins',
-  'io.github.plortinus.model2blockly_1.0.9.qualifier.jar',
+  'io.github.plortinus.model2blockly_1.0.10.qualifier.jar',
 );
 const eclipsePlugins = process.env.ECLIPSE_PLUGINS || '/Applications/Eclipse.app/Contents/Eclipse/plugins';
 const javaHome = process.env.JAVA_HOME || findBundledJavaHome(eclipsePlugins);
 const java = path.join(javaHome, 'bin/java');
 const javac = path.join(javaHome, 'bin/javac');
-const classpath = `bin:${coreUpdateSiteJar}:${eclipsePlugins}/*`;
+const tmpBin = '/tmp/model2blockly-validation-patch-bin';
+const classpath = `${tmpBin}:${coreUpdateSiteJar}:${eclipsePlugins}/*`;
 const tmpRoot = '/tmp/model2blockly-validation-patch';
 const failures = [];
 
@@ -58,8 +59,11 @@ function findBundledJavaHome(pluginsDir) {
 }
 
 function compilePatchClasses() {
+  rmSync(tmpBin, { recursive: true, force: true });
+  mkdirSync(tmpBin, { recursive: true });
   const sources = [
     ...listJavaFiles(path.join(projectDir, 'src')),
+    ...listJavaFiles(path.join(projectDir, 'emf-gen')),
     ...listJavaFiles(path.join(projectDir, 'src-gen')),
     ...listJavaFiles(path.join(projectDir, 'xtend-gen')),
   ].map((file) => path.relative(projectDir, file));
@@ -67,10 +71,11 @@ function compilePatchClasses() {
     '-cp',
     classpath,
     '-d',
-    'bin',
+    tmpBin,
     ...sources,
   ]);
   copyRuntimeResources(path.join(projectDir, 'src'));
+  copyRuntimeResources(path.join(projectDir, 'emf-gen'));
   copyRuntimeResources(path.join(projectDir, 'src-gen'));
   copyRuntimeResources(path.join(projectDir, 'xtend-gen'));
 }
@@ -93,7 +98,7 @@ function copyRuntimeResources(sourceDir, rootDir = sourceDir) {
     if (entry.isDirectory()) {
       copyRuntimeResources(full, rootDir);
     } else if (entry.isFile() && !entry.name.endsWith('.java')) {
-      const destination = path.join(projectDir, 'bin', path.relative(rootDir, full));
+      const destination = path.join(tmpBin, path.relative(rootDir, full));
       mkdirSync(path.dirname(destination), { recursive: true });
       copyFileSync(full, destination);
     }

@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const pluginVersion = '1.0.9.qualifier';
+const pluginVersion = '1.0.10.qualifier';
 const failures = [];
 
 checkRequiredFiles();
@@ -304,8 +304,10 @@ function checkFeatureAndUpdateSite() {
     'Core update-site jar Ecore standalone README template documents the EMF intermediate XMI');
   const packagedBlocklyGenerator = execFileSync('unzip', ['-p', abs(pluginJars[0]),
     'xtend-gen/io/github/plortinus/model2blockly/generator/BlocklyCodeGenerator.java'], { encoding: 'utf8' });
-  assertIncludes(packagedBlocklyGenerator, 'data-generated-ui="2026-product"',
-    'Core update-site jar contains the current generated editor product UI template');
+  assertIncludesAny(packagedBlocklyGenerator, [
+    'data-generated-ui="2026-product"',
+    'data-generated-ui=\\"2026-product\\"',
+  ], 'Core update-site jar contains the current generated editor product UI template');
   assertIncludes(packagedBlocklyGenerator, 'workspace-shell',
     'Core update-site jar generated editor template uses the workspace shell layout');
   assertIncludes(packagedBlocklyGenerator, 'function modelToDomainXMI(model)',

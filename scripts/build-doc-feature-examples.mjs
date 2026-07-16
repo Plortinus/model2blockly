@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const projectDir = path.join(repoRoot, 'io.github.plortinus.model2blockly');
 const examplesRoot = path.join(repoRoot, 'docs/assets/ecore-feature-gallery');
-const pluginVersion = '1.0.9.qualifier';
+const pluginVersion = '1.0.10.qualifier';
 const coreUpdateSiteJar = path.join(
   repoRoot,
   'io.github.plortinus.model2blockly.updatesite',
