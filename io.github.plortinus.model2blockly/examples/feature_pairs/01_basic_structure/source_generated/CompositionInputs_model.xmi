@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compositioninputs="http://www.example.org/compositioninputs">
+  <compositioninputs:Document xmi:id="sample_Document_1" title="Release notes">
+    <sections xsi:type="compositioninputs:Paragraph" xmi:id="sample_Paragraph_1" heading="Summary" emphasis="true">
+      <content xsi:type="compositioninputs:TextLiteral" xmi:id="sample_TextLiteral_1" textValue="Ready1212"/>
+    </sections>
+  </compositioninputs:Document>
+</xmi:XMI>

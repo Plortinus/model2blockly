@@ -1,0 +1,199 @@
+\chapter{对现有 Blockly 编辑器的评估}
+\label{chap:evaluacion}
+\label{chap:casos-evaluacion}
+
+上一章介绍了 Model2Blockly 的执行与实现方式。本章转而从另一个视角考察该方案：它能够在多大程度上
+用规格描述已有的 Blockly 编辑器，并重新生成这些编辑器。主要证据来自 Blockly 官方仓库中发布的
+十种配置。这样，本次评估便将所提出的方案与一组编辑器进行对照，而这些编辑器的结构并非
+为了适配 Model2Blockly 的能力而创建。
+
+分析单元是\emph{Blockly 编辑子系统}：块定义、字段、输入、连接、工具箱，以及编辑器自身的
+行为。所选应用还包含地图、画布、音频、动画、解释器和模拟器。这些层会使用由块构建的程序，
+但它们不属于 Model2Blockly 所生成的编辑器，因此不在评估范围之内。作出这一区分十分必要，
+因为不应要求编辑器生成器同时复现集成这些编辑器的特定应用。
+
+本章首先介绍评估问题和语料集，随后定义处理方案、控制变量、规范描述符与评估指标。后续各节
+将给出功能方面的结果、规格编写工作量、观察到的局限、Ecore 与 \texttt{.m2b} 输入路线之间的
+等价性、效度威胁以及补充技术证据。
+
+\section{评估目标与问题}
+\label{sec:objetivo-evaluacion}
+
+评估的目标是确定 Model2Blockly 能否有效创建现有 Blockly 编辑器的编辑子系统，并判断与其
+官方源代码相比需要多少规格编写工作量。这里的\emph{有效}并不仅仅意味着 HTML 页面能够打开：
+还需要检查编辑器的可观测属性，记录差异，并将匹配项与尚不支持的能力区分开来。
+
+本次评估回答以下四个研究问题；其中 RQ 是英文\emph{research question}（研究问题）的缩写：
+
+\begin{description}
+  \item[RQ1 --- 功能复现。] Model2Blockly 能够复现十个编辑器可观测属性中的多大比例？
+
+  \item[RQ2 --- 规格编写工作量。] 与通过 Blockly 的 JSON 或 JavaScript API 实现的官方版本
+  相比，开发者必须维护的源代码规模有何变化？
+
+  \item[RQ3 --- 局限。] 官方编辑器的哪些特性无法使用当前的元模型、DSL 和生成器来表达，
+  或者只能得到部分表达？
+
+  \item[RQ4 --- 输入路线。] 对于一个简单样例、一个中等样例和一个复杂样例，Ecore 与
+  \texttt{.m2b} 输入路线是否会生成相同的规范描述符？
+\end{description}
+
+RQ1（功能复现）与 RQ3（局限）评估可观测覆盖范围；RQ2（规格编写工作量）比较可维护、可复现
+的产物；RQ4（输入路线）检验两种输入的内部一致性。本研究不测量开发时间，因为这些模型是在
+研究本身的开发过程中构建的，这样得到的时间数据并不构成受控的人因实验。本研究也不评估
+最终用户的学习效果或可用性。
+
+\section{现有编辑器语料集}
+\label{sec:corpus-evaluacion}
+
+本语料集汇集了 Blockly Games 官方目录中列出的八个应用程序---Puzzle、Maze、Bird、Turtle、
+Movie、Music、Pond Tutor 和 Pond---以及官方 \texttt{blockly-samples} 仓库中的两个演示：
+Graph Demo 与 JS-Interpreter Wait
+\cite{blocklyGamesCatalogue,blocklyGamesRepository,blocklySamplesRepository}。
+这一选择是有意为之：它涵盖的范围从只有一个块的编辑器，一直到包含工具箱、自定义字段、
+变形器（\emph{mutators}）、初始配置和数十种块类型的编辑器。本语料集并不声称是从所有使用
+Blockly 构建的编辑器中随机抽取的样本。
+
+有些应用会根据关卡调整工具箱。在这些情况下，本研究固定采用能够展示最完整且最稳定的能力
+集合、同时又不改变编辑器模式的配置。Pond Tutor 使用第 9 关，因为奇数关会显示 Blockly，
+而该关是这种模式下的最后一关。Puzzle 不使用常规工具箱，因此通过其初始工作区进行评估。
+表 \ref{tab:corpus-blockly} 汇总了十个具体的分析单元。
+
+\begin{table}[htbp]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{3.5pt}
+  \begin{tabular}{@{}
+      L{0.13\textwidth}
+      L{0.19\textwidth}
+      L{0.36\textwidth}
+      L{0.12\textwidth}
+      >{\raggedleft\arraybackslash}p{0.08\textwidth}@{}}
+    \toprule
+    案例 & 编辑器 & 固定配置 & 复杂度 & 块数量 \\
+    \midrule
+    E01 & Graph Demo & 完整演示。 & 简单 & 2 \\
+    E02 & JS-Interpreter Wait & 使用 \texttt{wait\_seconds} 的异步演示。
+      & 简单 & 1 \\
+    E03 & Maze & 第 10 关，最大且稳定的工具箱。 & 中等 & 5 \\
+    E04 & Bird & 第 10 关，最大工具箱。 & 中等 & 8 \\
+    E05 & Movie & 第 10 关，自由编辑模式。 & 中等 & 5 \\
+    E06 & Music & 第 10 关，完整工具箱。 & 复杂 & 6 \\
+    E07 & Turtle & 第 10 关，自由编辑模式。 & 复杂 & 12 \\
+    E08 & Puzzle & 初始工作区，无常规工具箱。
+      & 复杂 & 3 \\
+    E09 & Pond Tutor & 第 9 关，教程中最后一个 Blockly 配置。
+      & 复杂 & 11 \\
+    E10 & Pond & 完整的 Pond Duck 编辑器。 & 复杂 & 24 \\
+    \bottomrule
+  \end{tabular}
+  \caption{评估所使用的官方配置语料集}
+  \label{tab:corpus-blockly}
+\end{table}
+
+为保证可复现性，每次运行都不会获取最新版本的源代码。Blockly Games 固定在标识为
+\texttt{5d2ff6f39207} 的修订版本，\texttt{blockly-samples} 则固定在
+\texttt{62ce12097707}；完整哈希值保存在实验清单中。每个提取出的代码片段都会记录仓库、路径、
+行号范围和 SHA-256 哈希值。这样一来，即使项目的主分支持续演化，也可以验证比较时使用的
+参照版本是否完全相同。
+
+\section{分析单元与范围}
+\label{sec:alcance-evaluacion-externa}
+
+评估针对每个应用区分以下三个层次：
+
+\begin{enumerate}
+  \item \textbf{Blockly 编辑器}：块类型、文本、字段、输入、连接、颜色、帮助信息、工具箱、
+  初始配置，以及会改变编辑过程的动态行为；
+  \item \textbf{代码生成}：与块关联的生成器是否存在及其声明式结构；这部分单独报告；
+  \item \textbf{领域应用}：解释、模拟、地图、画布、音频、动画、评分，以及编辑器之外的导航。
+\end{enumerate}
+
+第一层构成 RQ1（功能复现）的主要评估指标。第二层单独处理，以免因为块的形状正确便认定其
+代码也能完整执行。第三层则排除在外。例如，对于 Maze，本研究比较第 10 关的五个块和工具箱，
+但不比较地图或 Pegman 的动画；对于 Turtle，比较的是绘图块，而不是解释这些块指令的画布；
+对于 Music，则不复现音频引擎。
+
+还必须将 Blockly 的渲染器（\emph{renderer}）与领域可视化区分开来。Geras 或 Zelos 是内部
+渲染器，用来决定 Blockly 如何绘制块的几何形状。Maze 的地图或 Turtle 的画布则属于宿主应用
+的层次。在实验中，Geras 被固定为控制变量，而领域可视化则排除在评估之外。
+
+编辑器范围内包括标识符、可见顺序、字段的类与值、类型检查、连接、布局、颜色、工具提示、
+帮助链接、类别、工具箱条目、阴影块、预配置值、变形器、验证器以及动态形状变化。当某项纳入
+范围的能力无法由 Model2Blockly 表达时，不会将其从分母中移除；它会被记录为差异，并计入
+RQ3（方案的局限）。
+
+\section{实验设计}
+\label{sec:diseno-experimental-blockly}
+
+\subsection{处理方案与控制变量}
+
+每个案例都构建以下两种处理方案：
+
+\begin{itemize}
+  \item \textbf{BASELINE（基线）}：官方编辑子系统定义中未经修改的源代码片段；
+  \item \textbf{M2B}：为该案例维护的 \texttt{.m2b} 模型，以及通过 Model2Blockly 实际工具链
+  生成的编辑器。
+\end{itemize}
+
+两种处理方案都加载到同一个测试容器中；该容器使用 Blockly 13.1.1、Geras 渲染器、Classic
+主题、英语区域设置、1280~$\times$~800 像素的窗口，以及 1024~$\times$~640 像素的工作区。
+依赖项安装在本地，不会从 CDN 获取版本不固定的依赖。当旧版源代码需要进行调整才能兼容
+Blockly 13.1.1 时，适配代码会保存在单独文件中并加以记录，而且不计入官方代码量。
+
+Graph、Maze 和 Turtle 还包含一种 \textbf{ECORE} 处理方案，三者分别代表简单、中等和复杂案例。
+其作用是回答 RQ4（输入路线）：ECORE 与 M2B 描述同一个编辑器，并对两者的结果
+进行比较；ECORE 不会取代官方基线（BASELINE）。
+
+图 \ref{fig:flujo-evaluacion-externa} 对该流程进行了概括。主要比较是在官方规范描述符与由
+\texttt{.m2b} 生成的规范描述符之间进行的。Ecore 检查是针对三个案例的额外配对比较，不会
+改变十个编辑器的评估指标。
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.98\textwidth}{!}{%
+  \begin{tikzpicture}[
+      node distance=0.55cm and 0.85cm,
+      source/.style={draw=black!55, rounded corners=2pt, fill=green!8,
+        minimum width=3.1cm, minimum height=0.75cm, align=center, font=\small},
+      process/.style={draw=black!55, rounded corners=2pt, fill=blue!7,
+        minimum width=3.2cm, minimum height=0.75cm, align=center, font=\small},
+      result/.style={draw=black!55, rounded corners=2pt, fill=orange!10,
+        minimum width=3.25cm, minimum height=0.75cm, align=center, font=\small},
+      arrow/.style={-{Latex[length=2.4mm]}, thick, draw=black!70}
+    ]
+    \node[source] (official) {官方源代码\\基线（BASELINE）};
+    \node[source, below=of official] (m2b) {案例模型\\\texttt{.m2b}};
+    \node[source, below=of m2b] (ecore) {等价模型\\Ecore (E01, E03, E07)};
+
+    \node[process, right=of official] (officialHarness)
+      {受控 Blockly\\容器};
+    \node[process, right=of m2b] (m2bGeneration)
+      {Model2Blockly 生成\\+ 受控容器};
+    \node[process, right=of ecore] (ecoreGeneration)
+      {Model2Blockly 生成\\+ 受控容器};
+
+    \node[result, right=of officialHarness] (officialDescriptor)
+      {官方规范\\描述符};
+    \node[result, right=of m2bGeneration] (m2bDescriptor)
+      {M2B 规范\\描述符};
+    \node[result, right=of ecoreGeneration] (ecoreDescriptor)
+      {Ecore 规范\\描述符};
+
+    \node[result, right=1.05cm of m2bDescriptor] (comparison)
+      {结果\\比较};
+
+    \draw[arrow] (official) -- (officialHarness);
+    \draw[arrow] (m2b) -- (m2bGeneration);
+    \draw[arrow] (ecore) -- (ecoreGeneration);
+    \draw[arrow] (officialHarness) -- (officialDescriptor);
+    \draw[arrow] (m2bGeneration) -- (m2bDescriptor);
+    \draw[arrow] (ecoreGeneration) -- (ecoreDescriptor);
+    \draw[arrow] (officialDescriptor.east) -- ++(0.42,0) |- (comparison.north);
+    \draw[arrow] (m2bDescriptor) -- (comparison);
+    \draw[arrow] (ecoreDescriptor.east) -- ++(0.42,0) |- (comparison.south);
+  \end{tikzpicture}%
+  }
+  \caption{外部评估中的处理方案与比较}
+  \label{fig:flujo-evaluacion-externa}
+\end{figure}

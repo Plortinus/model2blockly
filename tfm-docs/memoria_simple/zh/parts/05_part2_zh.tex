@@ -1,0 +1,901 @@
+\subsection{包含关系与引用的转换}
+
+对 \texttt{EReference} 的处理取决于其功能。\texttt{input\_value} 注解生成
+水平连接；带有 \texttt{containment=true} 的引用生成结构输入；其余引用则
+生成动态选择器。代码清单 \ref{lst:conversion-containment-ecore} 仅保留
+\texttt{Board.items} 所使用的分支，省略了不会改变这一结构创建过程的
+其他分支。
+
+在该代码片段中，\texttt{eRef} 是输入的 \texttt{EReference}，
+\texttt{refAnn} 是其可选的 Blockly \texttt{EAnnotation}。\texttt{bt} 是所属
+类的 \texttt{BlockTypeSpec}，\texttt{sis} 是输出的
+\texttt{Statement}\allowbreak\texttt{InputSpec}。\texttt{check} 保存连接
+所接受的类型；\texttt{hasContainments} 记录该块包含子元素。数据流为
+\texttt{eRef} $\rightarrow$ \texttt{sis} $\rightarrow$ \texttt{bt}。
+
+\begin{lstlisting}[style=tfmjavaecore, captionpos=t, caption={Ecore 包含关系转换的带注释代码片段}, label={lst:conversion-containment-ecore}]
+// eRef 是当前引用；选择其包含关系分支。
+if (eRef.isContainment()) {
+    // hasContainments 记录 bt 包含子元素。
+    hasContainments = true;
+    // 创建 sis，即由 eRef 生成的结构输入。
+    StatementInputSpec sis = new StatementInputSpec();
+    // 将 eRef 的名称复制到 sis。
+    sis.setName(eRef.getName());
+    // refAnn 是可选注解；从中获取 check 类型。
+    String check = refAnn != null
+        // 读取 Blockly 注解中的 check 值。
+        ? refAnn.getDetails().get("check") : null;
+    // 在 sis 中配置显式类型，或使用 eRef 的 EClass。
+    sis.setCheckType(check != null && !check.isBlank()
+        // 保留注解中指定的类型。
+        ? check
+        // 根据被包含的 EClass 推断类型。
+        : eRef.getEReferenceType().getName());
+    // 将 eRef 允许的最小数量复制到 sis。
+    sis.setLowerBound(eRef.getLowerBound());
+    // 将 eRef 的最大值复制到 sis，并规范化开放上界。
+    sis.setUpperBound(eRef.getUpperBound() == -1
+        // 在通用模型中用零表示开放上界。
+        ? 0 : eRef.getUpperBound());
+    // 将 sis 加入块描述符 bt。
+    bt.getStatementInputs().add(sis);
+// 结束包含关系的转换。
+}
+\end{lstlisting}
+
+因此，对于 \texttt{Board.items}，适配器会创建一个名为
+\texttt{items} 的 \texttt{StatementInputSpec}，其接受类型为
+\texttt{WorkItem}，下界为一，上界为四。由于存在继承关系，
+\texttt{Task} 和 \texttt{Note} 块都能满足该类型。基数还用于生成
+验证规则，因此当看板包含少于一个或多于四个元素时，编辑器会发出
+警告。
+
+\subsection{Ecore 映射总结}
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{|L{0.30\textwidth}|L{0.30\textwidth}|L{0.26\textwidth}|}
+    \hline
+    输入 Ecore 元素 & 目标 \texttt{EditorSpec} 元素 & 在 Blockly 中的用途 \\
+    \hline
+    \texttt{EPackage} & 包含名称、\texttt{nsURI} 和全局选项的
+    \texttt{EditorSpec} & 编辑器标识与 XMI 导出。 \\
+    具体 \texttt{EClass} & \texttt{BlockTypeSpec} & 工具箱中可用的块类型。 \\
+    抽象 \texttt{EClass} & 抽象 \texttt{BlockTypeSpec} & 用于连接但不可实例化的
+    类型。 \\
+    \texttt{EAttribute} & \texttt{FieldSpec} & 文本、数字、布尔、颜色、角度或
+    下拉字段。 \\
+    \texttt{EReference containment=true} & \texttt{StatementInputSpec} & 用于
+    子块的垂直输入。 \\
+    \texttt{EReference containment=false} & \texttt{ReferenceFieldSpec} & 指向
+    现有元素的动态下拉框。 \\
+    \texttt{lowerBound}/\texttt{upperBound} & \texttt{ValidationSpec} 与输入
+    限制 & 必填性与基数警告。 \\
+    \texttt{EAnnotation} & 块、界面、验证或代码元数据 &
+    颜色、类别、标签、工具提示、控件和模板。 \\
+    \hline
+  \end{tabular}
+  \caption{从 Ecore 到 \texttt{EditorSpec} 的主要转换}
+  \label{tab:transformacion-ecore-editor-spec}
+\end{table}
+
+\subsection{连接与继承的推断}
+
+连接推断同样在适配器中完成。包含其他元素且本身不被其他元素包含的
+类可以转换为没有垂直连接的根块。继承自超类的类可以生成类型化连接。
+标记为输出块的类会生成值连接器。这种推断很重要，因为用户无需为每个
+类手工编写 Blockly 连接规则。在第一个示例中，\texttt{Board} 被识别为
+根块，而 \texttt{Task} 和 \texttt{Note} 会获得与 \texttt{WorkItem}
+兼容的连接。
+
+\subsection{注解以及组合与引用示例}
+
+适配器允许通过 Ecore 注解丰富生成结果。来源为 \texttt{blockly} 的
+注解会影响可视语法，包括标签、颜色、类别、工具提示、行内布局、输出
+块、数值范围、值输入或阴影块。来源为 \texttt{ui} 的注解会被纳入
+中间模型，用于定制 HTML 输出。来源为 \texttt{code} 的注解可定义
+语言、文件扩展名和生成模板。因此，无注解的元模型可以生成基础编辑器，
+而带注解的元模型则能提供更贴合领域的使用体验。
+
+如果以 XML 形式展示 Ecore 文件，这些规则会淹没在序列化细节中。
+因此，图 \ref{fig:ecore-composition-acotado} 和
+\ref{fig:ecore-references-acotado} 展示了各自 \texttt{source.ecore}
+文件的图形化表示。图中可以识别适配器遍历的类、属性、继承关系和其他
+关系。各图之后会说明注解的元数据，而不会把它们显示为 XML 元素。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.96\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/03_composition_inputs/compositionInputs class diagram.jpg}
+  \caption{输入对 \texttt{03\_composition\_inputs} 的 Ecore 类图}
+  \label{fig:ecore-composition-acotado}
+\end{figure}
+
+\texttt{Document.sections} 是一个基数为 \texttt{[1..4]} 的包含引用；
+适配器将其转换为接受 \texttt{Section} 子类型的语句输入。
+\texttt{Paragraph} 是其中一个子类型。它所包含的引用
+\texttt{content} 带有 \texttt{type=input\_value}、
+\texttt{check=TextExpression} 和 \texttt{shadow=TextLiteral} 注解。
+这三个值分别决定输入的水平形态、接受的连接类型以及初始阴影块。
+\texttt{ui} 注解还添加了可见标签 \textit{Sections} 和
+\textit{Content}，并指定了显示顺序。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.94\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/04_references_integrity/referencesIntegrity class diagram.jpg}
+  \caption{输入对 \texttt{04\_references\_integrity} 的 Ecore 类图}
+  \label{fig:ecore-references-acotado}
+\end{figure}
+
+在第二幅图中，\texttt{cardId} 和 \texttt{linkId} 是被标记为标识符的
+Ecore 属性。\texttt{outgoing}、\texttt{source} 和 \texttt{target}
+引用都不是包含关系，因此适配器生成列出现有块的引用字段。
+\texttt{outgoing}/\texttt{source} 这一对保留了 \texttt{eOpposite}，
+并在浏览器中保持同步。\texttt{target} 保留基数 \texttt{[1..2]} 以及
+\texttt{unique=false} 和 \texttt{ordered=false} 标志。最后，
+\texttt{ui} 注解指定 \texttt{reference-select} 控件和标签字段：链接
+使用 \texttt{linkId}，卡片使用 \texttt{title}。
+
+\section{来自文本路线 \texttt{.m2b} 的适配器}
+\label{sec:implementacion-domainmodel-adapter}
+
+文本路线的适配器同样由 Java 手工实现。
+\texttt{DomainModelAdapter.fromDomainModel} 接收 Xtext 生成的 EMF 根对象，
+并依次执行 \texttt{convertCategories}、\texttt{convertClasses}、
+\texttt{convertValidations} 和 \texttt{convertConstraints}。随后，它生成
+由基数、必填性和唯一性推断出的验证规则，最后通过
+\texttt{convertWorkspace}\allowbreak\texttt{Options} 复制工作区选项。
+所得 Java 对象随后返回到代码清单 \ref{lst:entrada-adaptadores-java} 中的
+\texttt{toEditorSpec} 方法，并在那里转换为与 Ecore 路线相同的通用 EMF
+模型。
+
+该映射比 Ecore 更直接，因为语法已经区分了 Model2Blockly 所需的特定
+概念。属性转换为字段，包含关系转换为结构输入，引用转换为动态下拉框，
+值输入转换为水平连接。顺序约束转换为验证规则，标记为必填的字段则生成
+必填性检查。
+
+每个类的转换通过遍历 Xtext 生成的 \texttt{Feature} 列表来实现。
+代码清单 \ref{lst:despacho-domainmodel-adapter} 展示了核心分派逻辑。
+每个具体类型都会交给专用方法处理，输入名称则加入
+\texttt{orderedInputNames}；这样，在构造块时可以保留 \texttt{.m2b}
+文件中的书写顺序。
+
+\begin{lstlisting}[style=tfmjava, captionpos=t, caption={\texttt{DomainModelAdapter} 中 DSL 元素分派的带注释代码}, label={lst:despacho-domainmodel-adapter}]
+// 按顺序遍历 DSL 类的特征。
+for (Feature feature : cls.getFeatures()) {
+    // 识别可编辑属性。
+    if (feature instanceof Attribute) {
+        // 将属性转换为通用模型中的字段。
+        FieldSpec field = convertAttribute((Attribute) feature);
+        // 将字段加入块类型。
+        bt.getFields().add(field);
+        // 保留其在 .m2b 文件中声明的位置。
+        bt.getOrderedInputNames().add(field.getName());
+    // 识别包含关系的层次结构。
+    } else if (feature instanceof Containment) {
+        // 声明生成的结构输入。
+        StatementInputSpec input =
+            // 复制类型、基数和界面元数据。
+            convertContainment((Containment) feature);
+        // 将语句输入加入块。
+        bt.getStatementInputs().add(input);
+        // 保留它相对于其他输入的位置。
+        bt.getOrderedInputNames().add(input.getName());
+    // 识别对现有对象的引用。
+    } else if (feature instanceof Reference) {
+        // 声明生成的引用下拉框。
+        ReferenceFieldSpec reference =
+            // 复制目标、必填性和显示信息。
+            convertReference((Reference) feature);
+        // 将引用加入块类型。
+        bt.getReferenceFields().add(reference);
+        // 同样保留其可视位置。
+        bt.getOrderedInputNames().add(reference.getName());
+    // 识别水平值连接。
+    } else if (feature instanceof ValueInput) {
+        // 转换接受的类型和可能的阴影块。
+        ValueInputSpec input = convertValueInput((ValueInput) feature);
+        // 将值输入加入块。
+        bt.getValueInputs().add(input);
+        // 在统一顺序中记录其名称。
+        bt.getOrderedInputNames().add(input.getName());
+    // 结束应用于当前特征的分支。
+    }
+// 结束对该类的遍历。
+}
+\end{lstlisting}
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{|L{0.30\textwidth}|L{0.30\textwidth}|L{0.26\textwidth}|}
+    \hline
+    DSL 元素 & 目标 \texttt{EditorSpec} 元素 & 在 Blockly 中的用途 \\
+    \hline
+    \texttt{domain} & \texttt{EditorSpec} & 编辑器名称与生成选项。 \\
+    \texttt{category} & \texttt{CategorySpec} & 工具箱类别与默认颜色。 \\
+    \texttt{class} & \texttt{BlockTypeSpec} & 块类型。 \\
+    \texttt{attribute} & \texttt{FieldSpec} & 块的可视字段。 \\
+    \texttt{contains [m..n]} & \texttt{StatementInputSpec} 与
+    \texttt{ValidationSpec} & 子元素输入与基数检查。 \\
+    \texttt{reference} & \texttt{ReferenceFieldSpec} & 动态下拉框。 \\
+    \texttt{value} & \texttt{ValueInputSpec} & 值块的水平输入。 \\
+    \texttt{must follow} & \texttt{ValidationSpec} & 局部顺序规则。 \\
+    \hline
+  \end{tabular}
+  \caption{将文本 DSL \texttt{.m2b} 规范化为 \texttt{EditorSpec}}
+  \label{tab:transformacion-dsl-editor-spec}
+\end{table}
+
+实现还利用继承信息来确定连接形态。标记为输出块的类会转换为值块；
+具有超类的类会生成类型化连接；具有包含关系且没有超类的类可以作为
+根块；普通类则生成为可堆叠块。通过这种方式，文本语法中声明的语义会
+转换为 Blockly 可视规则，领域作者无需了解该库的底层 API。
+
+系统使用 Xtext 生成的 Java 类型（\texttt{ClassDef}、
+\texttt{Attribute}、\texttt{Containment}、\texttt{Reference} 和
+\texttt{ValueInput}）读取主要结构。只有部分界面、代码和工作区选项
+通过反射获取：\texttt{eClass()} 使用 \texttt{getEStructuralFeature}
+定位特征，\texttt{eGet} 则获取其值。这一决定使语法中新加入的元数据
+可以在重新生成全部访问器之前被读取，同时仍能在确定块结构的遍历过程
+中保留静态检查。
+
+\section{HTML/JavaScript 生成器}
+\label{sec:implementacion-generador-html}
+
+HTML/JavaScript 输出生成器将中间模型转换为在浏览器中打开编辑器所需
+的产物：块、工具箱、导出、验证、编辑页面、独立页面、验证工作区、
+示例模型和生成报告。该输出使用 Blockly 定义块、注入工作区、管理
+工具箱、序列化并生成代码 \cite{blocklyDocs}。
+
+代码生成主要使用 Xtend 实现。主类
+\texttt{Blockly\allowbreak{}Code\allowbreak{}Generator.xtend} 接收一个
+\texttt{EditorSpec}，并生成从文件名到文本内容的有序映射。代码清单
+\ref{lst:entrada-generador-xtend} 展示了入口方法：每个
+\texttt{generate*} 函数返回一个字符串，该映射则保存该字符串与其目标
+文件之间的关系。
+
+\begin{lstlisting}[style=tfmxtend, captionpos=t, caption={带逐行注释的 \texttt{BlocklyCodeGenerator.xtend} 入口方法}, label={lst:entrada-generador-xtend}]
+// 声明接收通用中间模型的操作。
+def Map<String, String> generate(EditorSpec spec) {
+    // 创建保留产物顺序的映射。
+    val files = new LinkedHashMap<String, String>()
+    // 获取基础名称；若未定义，则使用 domain。
+    val base = spec.domainName ?: "domain"
+    // 生成块的 JSON 定义。
+    files.put(base + "_blocks.js", generateBlocksJs(spec))
+    // 生成工具箱及其类别。
+    files.put(base + "_toolbox.js", generateToolboxJs(spec))
+    // 生成各个块的导出函数。
+    files.put(base + "_generators.js", generateGeneratorsJs(spec))
+    // 生成工作区验证规则。
+    files.put(base + "_validations.js", generateValidationsJs(spec))
+    // 生成模块化编辑器页面。
+    files.put(base + "_editor.html", generateEditorHtml(spec))
+    // 生成独立演示页面。
+    files.put(base + "_standalone.html", generateStandaloneHtml(spec))
+    // 注册用于可视化编辑规则的页面。
+    files.put("validation_workspace.html",
+        // 将其内容委托给专用生成器。
+        ValidationWorkspaceHtmlGenerator.generate(spec))
+    // 注册规则的序列化表示。
+    files.put("validation_blocks.json",
+        // 将验证规则转换为块树。
+        ValidationBlockModelGenerator.generate(spec))
+    // 注册这些树的 JavaScript 求值器。
+    files.put("validation_runtime.js",
+        // 生成与浏览器兼容的经典 JavaScript。
+        ValidationRuntimeGenerator.generateClassicJs(spec))
+    // 生成用于测试编辑器的初始模型。
+    files.put("sample_model.json", SampleModelGenerator.generate(spec))
+    // 返回路径和内容，此时尚未写入磁盘。
+    return files
+// 结束生成器的主操作。
+}
+\end{lstlisting}
+
+选择 Xtend 作为生成机制，是因为它与 Xtext 集成良好，并可在 Eclipse
+项目中编写易读的文本模板。本项目没有使用 Acceleo 或外部模板引擎。
+示例模型、验证运行环境和规则可视化视图等辅助部分由单独的 Java 类
+实现，以保持各自职责边界清晰。
+
+该映射不会直接写入磁盘。\texttt{GenerateBlocklyEditorHandler} 在其
+路径前添加 \texttt{html/}，并加入三个在 Xtend 之外生成的结果：中间
+XMI、\texttt{README.md} 和生成报告。最后，\texttt{writeFiles} 创建
+工作区中的 \texttt{IFile} 并刷新项目。这种分离使同一生成器可由
+独立入口复用，而无需依赖 Eclipse API。
+
+报告由 \texttt{GenerationReport}\allowbreak\texttt{HtmlRenderer}
+构建。该类接收源文件、\texttt{EditorSpec} 和产物清单，并生成
+\texttt{generation\_}\allowbreak\texttt{report.html}。
+\texttt{README.md} 则在处理器或相应独立入口中组装，因为它包含针对
+执行方式定制的说明。这两个结果都会在写入之前加入映射，但不属于
+\texttt{BlocklyCodeGenerator} 的直接输出。
+
+块生成从 \texttt{generateBlocks}\allowbreak\texttt{Array} 开始；该方法
+筛选具体类型并调用
+\texttt{blockTypeTo}\allowbreak\texttt{BlockJson}。后者创建字段、引用和输入的映射，并遍历
+\texttt{orderedInput}\allowbreak\texttt{Names}，以保留适配器确定的顺序。每个元素分别交由
+\texttt{fieldToArg}、\texttt{referenceToArg}、
+\texttt{valueInputToArg} 或
+\texttt{statementInput}\allowbreak\texttt{ToArg} 处理。最后，对
+\texttt{Connection}\allowbreak\texttt{Type} 执行的
+\texttt{switch} 会生成自由类型或类型化的
+\texttt{previous}\allowbreak\texttt{Statement}、
+\texttt{nextStatement} 或 \texttt{output}。抽象类保留在模型中，以便
+解析继承和连接，但不会作为可实例化块加入输出。
+
+工具箱生成过程会产出用户可用的块集合。若没有类别，生成器可以输出
+简单工具箱；若存在类别，则生成带类别的工具箱，并在已定义子类别时将
+其一并纳入。还会加入 Blockly 的内置类别，如逻辑、循环、数学、变量
+和函数，使各领域可在必要时将领域块与通用构造结合使用。
+
+\subsection{示例 02：字段、控件与布局}
+
+输入对 \path{02_fields_ui} 单独展示属性转换。其
+\texttt{ContentForm} 类汇集字符串、整数、小数、布尔值、枚举和一个
+多值属性；\texttt{VisualFields} 则汇集颜色、角度、图像和标签等可视
+字段。在后一个类中，\texttt{colourValue}、\texttt{angleValue}、
+\texttt{imageValue} 和 \texttt{labelValue} 的词根与 DSL 类型及块上的
+可见文本保持一致。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.96\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/02_fields_ui/fieldsUi class diagram.jpg}
+  \caption{输入对 \texttt{02\_fields\_ui} 的 Ecore 类图}
+  \label{fig:fields-ui-ecore}
+\end{figure}
+
+图 \ref{fig:fields-ui-ecore} 展示了两个相互独立的具体类。
+\texttt{ContentForm} 集中呈现通用属性类型，并显示其初始值；
+\texttt{Mode} 和 \texttt{Alignment} 提供两个枚举的字面量。
+\texttt{tags} 属性还展示了大于一的多重性。\texttt{VisualFields}
+汇集四种专用表示。该图证明了源模型的类型化结构；\texttt{source.ecore}
+中未在图中以方框呈现的注解则进一步决定 Blockly 的控件、标签、
+顺序和显示方式。
+
+两种输入源会生成相同的规范化 \texttt{EditorSpec} 实例，以及十个完全
+相同的 HTML/JavaScript/JSON 产物。因此，图
+\ref{fig:fields-ui-editor} 只展示两次运行中的一次。仓库中还分别在
+\path{screenshots/ecore.png} 和 \path{screenshots/dsl.png} 下保留了
+两张截图，以便单独审计每条路线。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/02_fields_ui/screenshots/ecore.png}
+  \caption{从 \texttt{source.ecore} 生成并已加载示例模型的
+  \texttt{02\_fields\_ui} 编辑器}
+  \label{fig:fields-ui-editor}
+\end{figure}
+
+借助该图，无需查看生成的 JSON 即可追踪转换过程。在
+\texttt{ContentForm} 中，\texttt{title} 和 \texttt{description} 显示为
+文本字段；\texttt{quantity} 和 \texttt{opacity} 显示为数字字段；
+\texttt{enabled} 和 \texttt{confirmed} 显示为复选框；
+\texttt{mode} 和 \texttt{alignment} 则显示为下拉框。
+\texttt{tags} 使用 \texttt{field\_multivalue} 字段：块上显示紧凑的
+字符串，而编辑对话框会拆分其中的值。\emph{Model} 视图确认，可见值
+使用领域中的名称获取，而不是使用 Blockly 虚构的标识符。
+
+表 \ref{tab:mapeo-campos-fields-ui} 明确列出了所应用的规范化规则。
+中间列中的名称对应 \texttt{FieldSpec.}\allowbreak\texttt{FieldType}；最后一列中的名称则
+是在块的 JSON 定义中写入 \texttt{argsN} 的类型。
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{|L{0.27\textwidth}|L{0.25\textwidth}|L{0.34\textwidth}|}
+    \hline
+    示例输入 & 中间类型 & 生成的 Blockly 字段 \\
+    \hline
+    字符串或 \texttt{widget textarea} & \texttt{TEXT} &
+    \texttt{field\_input}。 \\
+    \hline
+    整数或小数，包括 \texttt{number} 和 \texttt{slider} &
+    \texttt{INTEGER}/\texttt{FLOAT} & \texttt{field\_number}，包含值、
+    精度以及最小和最大限制。 \\
+    \hline
+    布尔值，包括 \texttt{switch} 和 \texttt{checkbox} &
+    \texttt{BOOLEAN} & \texttt{field\_checkbox}。 \\
+    \hline
+    枚举，包括 \texttt{select} 和 \texttt{radio} &
+    \texttt{DROPDOWN} & \texttt{field\_dropdown}，包含标签--值对。 \\
+    \hline
+    多重性大于一的属性 & 带有 \texttt{many=true} 的字段 &
+    由 Model2Blockly 注册的 \texttt{field\_multivalue}。 \\
+    \hline
+    颜色与角度 & \texttt{COLOUR}/\texttt{ANGLE} &
+    \texttt{field\_colour}/\texttt{field\_angle}。 \\
+    \hline
+    图像与显示标签 & \texttt{IMAGE}/\texttt{LABEL} &
+    \texttt{field\_image}/\texttt{field\_label}。 \\
+    \hline
+  \end{tabular}
+  \caption{示例 \texttt{02\_fields\_ui} 中字段的规范化}
+  \label{tab:mapeo-campos-fields-ui}
+\end{table}
+
+该表并不表示 Blockly 会为 DSL 中的每个词逐字复现一个 HTML 控件。
+例如，\texttt{textarea} 被规范化为原生文本字段族，\texttt{slider}
+被规范化为数字字段族，\texttt{radio} 则被规范化为下拉框。
+\texttt{group}、\texttt{order}、\texttt{readonly}、\texttt{hidden} 和
+\texttt{variant} 元数据会保留在 \texttt{EditorSpec} 中；通用 Blockly
+渲染器会使用顺序和标签，但不会自行应用所有这些显示修饰符。这一界定
+区分了转换所保留的信息与当前通用编辑器实际可视化的信息。
+
+图的下半部分中，\texttt{VisualFields} 显示颜色
+\texttt{\#1f6feb}、角度 \texttt{45}、标志和标签 \texttt{Label}。
+四个字段的名称、中间类型和生成控件之间保持直接对应：
+\texttt{colourValue} 转换为 \texttt{field\_colour}，
+\texttt{angleValue} 转换为 \texttt{field\_angle}，
+\texttt{imageValue} 转换为 \texttt{field\_image}，
+\texttt{labelValue} 转换为 \texttt{field\_label}。并非所有 Blockly
+发行版的最小核心都包含颜色和角度字段。因此，生成的块文件首先查询
+\texttt{Blockly.fieldRegistry}：如果应用已加载官方扩展，便直接复用；
+否则注册兼容实现。颜色字段实现会验证十六进制格式并打开浏览器的颜色
+选择器；角度字段实现扩展 \texttt{FieldNumber}，并将值限制在 0 到
+360 度之间。图像是不可编辑的显示元素，因此其 URL 不会被解释为用户
+输入的值。
+
+\texttt{ContentForm} 的垂直布局也不是手写在 HTML 中的。当块请求
+\texttt{inputsInline=false} 且没有声明自定义 \texttt{message0} 时，
+\texttt{blockTypeTo}\allowbreak\texttt{BlockJson} 会推导出这一布局。在代码清单
+\ref{lst:filas-campos-blockly} 中，\texttt{bt} 是当前正在生成的
+\texttt{BlockTypeSpec}，\texttt{rowMessages} 为每个字段保存一个标签，
+\texttt{rowArgs} 则保存相应控件的 JSON 片段。\texttt{messageIndex}
+从一开始，因为 \texttt{message0} 保留给块的标题。
+
+\begin{lstlisting}[float=htbp, style=tfmxtend, captionpos=t, caption={当 \texttt{inputsInline=false} 时逐字段生成行的带注释代码}, label={lst:filas-campos-blockly}]
+// 判断 bt 是否应将每个输入显示在独立行中。
+val useStackedRows = bt.message0 === null
+    && Boolean.FALSE.equals(bt.inputsInline) && !rowArgs.empty
+// 仅在满足该条件时生成垂直分支。
+val messageJson = if (useStackedRows) {
+    // rows 汇集 JSON 的 messageN 和 argsN 属性。
+    val rows = new ArrayList<String>()
+    // 为 bt 的主标签保留 message0。
+    rows.add('''"message0": «toJsonString(bt.label ?: bt.typeName)»,
+        "args0": [],''')
+    // rowIndex 标识即将转换的输入。
+    var rowIndex = 0
+    // 并行遍历已准备好的标签和参数。
+    while (rowIndex < rowArgs.size) {
+        // Blockly 将第一行字段编号为 message1。
+        val messageIndex = rowIndex + 1
+        // 添加可见标签以及该行唯一的控件。
+        rows.add('''"message«messageIndex»":
+            «toJsonString(rowMessages.get(rowIndex))»,
+            "args«messageIndex»": [«rowArgs.get(rowIndex)»],''')
+        // 前进到 bt 的下一个输入。
+        rowIndex++
+    }
+    // 合并这些属性，以插入块定义。
+    rows.join("\n")
+}
+\end{lstlisting}
+
+如果存在显式的 \texttt{message0}，如 \texttt{VisualFields} 中的情况，
+生成器会尊重它，并保留作者声明的组合方式。在此例中，消息按照与属性
+相同的顺序列出 \texttt{colour}、\texttt{angle}、\texttt{image} 和
+\texttt{label}，而不会引入另一套显示名称。因此，同一实现既能生成
+多行且易读的表单，也能在领域明确控制其消息时生成紧凑的可视块。
+\FloatBarrier
+
+\subsection{示例 03：组合、输入与阴影块}
+
+图 \ref{fig:ecore-composition-acotado} 已在前文展示
+\path{03_composition_inputs} 的结构部分。图
+\ref{fig:composition-inputs-editor} 现在展示执行完整链路并加载其示例
+模型后的结果。与上一示例相同，Ecore 和 DSL 路线生成完全相同的产物；
+此处采用第一条路线的截图，两张截图都保存在该示例的
+\path{screenshots/} 目录下。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/03_composition_inputs/screenshots/ecore.png}
+  \caption{从 \texttt{source.ecore} 生成的
+  \texttt{03\_composition\_inputs} 编辑器，其中包含关系与值输入均已连接}
+  \label{fig:composition-inputs-editor}
+\end{figure}
+
+蓝色的 \texttt{Document} 块是根块。其 \textit{Sections} 输入包含绿色
+的 \texttt{Paragraph} 块；这并不是通过标识符建立的引用，而是一种
+所有权关系，序列化后成为 \texttt{sections} 列表。在
+\texttt{Paragraph} 内部，\textit{Content} 输入通过值连接器接收紫色
+的 \texttt{TextLiteral} 块。\emph{Model} 视图确认了两种嵌套形式：
+\texttt{sections} 显示为集合，\texttt{content} 则显示为单个对象。
+因此，该图可以直观区分 \texttt{StatementInputSpec} 和
+\texttt{ValueInputSpec}，并检查二者对可导出模型的影响。
+
+表 \ref{tab:mapeo-composition-inputs} 将示例中的具体元素与适配器和
+生成器作出的决策对应起来。
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{|L{0.25\textwidth}|L{0.31\textwidth}|L{0.30\textwidth}|}
+    \hline
+    输入 & 中间模型 & Blockly 结果 \\
+    \hline
+    \texttt{Document.sections [1..4]} &
+    \texttt{StatementInputSpec}、\texttt{check=Section}、上下界分别为一和四 &
+    \texttt{input\_statement} 与基数规则。 \\
+    \hline
+    标注为 \texttt{input\_value} 的 \texttt{Paragraph.content} &
+    \texttt{ValueInputSpec}、\texttt{check=TextExpression}，阴影类型为
+    \texttt{TextLiteral} &
+    类型化 \texttt{input\_value} 与初始阴影块。 \\
+    \hline
+    抽象且为输出类型的 \texttt{TextExpression} &
+    用于检查连接的抽象类型 &
+    不会作为可实例化块出现在工具箱中。 \\
+    \hline
+    作为 \texttt{TextExpression} 输出的 \texttt{TextLiteral} &
+    具有 \texttt{OUTPUT\_TYPED} 的 \texttt{BlockTypeSpec} &
+    与 \textit{Content} 兼容的值块。 \\
+    \hline
+    \texttt{heading}、\texttt{content}、\texttt{emphasis} 的顺序 &
+    包含这三个名称的 \texttt{orderedInputNames} &
+    按此顺序排列的 \textit{Heading}、\textit{Content} 和
+    \textit{Emphasis} 行。 \\
+    \hline
+  \end{tabular}
+  \caption{\texttt{03\_composition\_inputs} 中可观察到的转换}
+  \label{tab:mapeo-composition-inputs}
+\end{table}
+
+顺序保留问题值得进一步说明。适配器分别存储字段、值输入和语句输入，
+因为每一类具有不同属性。如果没有 \texttt{orderedInputNames}，生成器
+可能会先把 \texttt{heading} 和 \texttt{emphasis} 归为一组，再将
+\texttt{content} 移到最后。\texttt{blockTypeToBlockJson} 中描述的
+通用遍历会查询该列表，并生成 \texttt{Paragraph} 中所见的顺序：文本
+字段、值输入和布尔复选框。
+
+还需要区分截图中已连接的块与阴影块这一概念。图中的
+\texttt{TextLiteral} 明确属于 \texttt{sample\_model.json}，因此它是
+已加载模型中的普通节点。阴影配置在从工具箱新建 \texttt{Paragraph}
+时生效：此时 Blockly 会插入一个初始 \texttt{TextLiteral}，用户可以
+编辑它，或将其替换为任何与 \texttt{TextExpression} 兼容的输出。这一
+行为编码在工具箱条目中，而非块的静态定义中。
+
+代码清单 \ref{lst:toolbox-shadow-input} 展示了生成该条目的 Xtend 片段。
+\texttt{bt} 是当前 \texttt{BlockTypeSpec}；\texttt{shadowInputs} 只保留
+其中声明了阴影块的值输入；\texttt{it} 表示 \texttt{map} 操作正在
+处理的 \texttt{ValueInputSpec}；\texttt{inputsJson} 汇集将插入工具箱
+的代码片段。
+
+\begin{lstlisting}[float=htbp, style=tfmxtend, captionpos=t, caption={在 Blockly 工具箱中生成阴影块的带注释代码}, label={lst:toolbox-shadow-input}]
+// 在 bt 中选择声明了阴影块类型的输入。
+val shadowInputs = bt.valueInputs
+    // it 是 Xtend 过滤器正在检查的 ValueInputSpec。
+    .filter[it.shadowBlockType !== null].toList
+// 当 bt 不需要阴影块时，保留普通条目。
+if (shadowInputs.isEmpty) {
+    // 生成没有附加配置的工具箱块。
+    return '''{"kind": "block", "type": "«bt.typeName»"}'''
+// 结束无阴影块的分支。
+}
+// 将每个 ValueInputSpec 转换为 Blockly 的 inputs 属性。
+val inputsJson = shadowInputs.map['''
+    // 使用输入名称作为所生成对象的键。
+    "«it.name»": {
+        // 声明 Blockly 应实例化为阴影块的类型。
+        "shadow": { "type": "«it.shadowBlockType»" }
+    // 结束当前输入的配置。
+    }'''].join(",")
+// 生成 bt 的工具箱条目及其所有阴影块。
+'''{"kind": "block", "type": "«bt.typeName»", "inputs": {«inputsJson»
+    }}'''
+\end{lstlisting}
+
+对于 \texttt{Paragraph}，结果会将 \texttt{content} 输入关联到类型为
+\texttt{TextLiteral} 的 \texttt{shadow}。该输入对的自动化测试还会
+验证 Ecore 和 DSL 路线保留相同的 \texttt{check}、相同的阴影类型和
+相同的混合顺序，然后再比较最终产物。
+\FloatBarrier
+
+\subsection{示例 04：标识、引用与一致性}
+
+图 \ref{fig:ecore-references-acotado} 已展示
+\path{04_references_integrity} 的精简结构。图
+\ref{fig:references-integrity-editor} 现在以 Ecore 生成的编辑器及其
+多引用选择器补全了整个过程。\texttt{.m2b} 路线会生成相同的可观察
+产物；因此，主截图取自第一条路线，而两张等价截图均保存在示例的
+\path{screenshots/} 目录中。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/04_references_integrity/screenshots/ecore.png}
+  \vspace{2mm}
+
+  \includegraphics[width=0.88\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/04_references_integrity/screenshots/reference-selection.png}
+  \caption{\texttt{04\_references\_integrity} 编辑器：已加载的模型（上）
+  与目标卡片的动态选择（下）}
+  \label{fig:references-integrity-editor}
+\end{figure}
+
+紫色的 \texttt{Workflow} 块是根块，并包含一个 \texttt{Card} 块和
+一个 \texttt{Link} 块。不过，\texttt{Card.outgoing}、
+\texttt{Link.source} 和 \texttt{Link.target} 不会创建新块，而是指向
+该包含关系中已经存在的元素。这一区别体现在绿色控件上。
+\textit{Outgoing links} 显示 \texttt{link-1}，而
+\textit{Source card} 和 \textit{Target cards} 显示
+\texttt{Review}。这些是用户容易理解的标签；在内部，引用仍保留
+Blockly 标识符 \texttt{sample\_Link\_1} 和
+\texttt{sample\_Card\_1}，检查器中也可看到这些标识符。
+
+图的下半部分打开了 \textit{Target cards} 控件。框中不是自由文本，
+而是工作区内与 \texttt{Card} 兼容的实例。被选中的复选框对应标题为
+\texttt{Review} 的卡片。创建、重命名或删除卡片时，生成器会重建这些
+选项，从而避免引用到不兼容的类型或不存在的块。
+
+表 \ref{tab:mapeo-references-integrity} 列出该示例集中展示的各项能力。
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{|L{0.25\textwidth}|L{0.31\textwidth}|L{0.30\textwidth}|}
+    \hline
+    输入 & 中间模型 & 可观察结果 \\
+    \hline
+    具有包含关系的 \texttt{Workflow.elements [1..6]} &
+    类型化为 \texttt{Element} 的 \texttt{StatementInputSpec} &
+    \texttt{Card} 和 \texttt{Link} 构成工作流的内部结构。 \\
+    \hline
+    标记为标识符的 \texttt{cardId} 和 \texttt{linkId} &
+    \texttt{idFieldName} 以及必填性和唯一性规则 &
+    检查器中稳定的 \texttt{\_modelId} 值，以及标识符为空或重复时的
+    警告。 \\
+    \hline
+    具有相反引用 \texttt{source} 的 \texttt{Card.outgoing [0..3]} &
+    指向 \texttt{Link}、上界为三且
+    \texttt{oppositeName=source} 的多值引用 &
+    使用 \texttt{linkId} 标注的多选器，以及相反端的同步。 \\
+    \hline
+    具有相反引用 \texttt{outgoing} 的 \texttt{Link.source [1..1]} &
+    指向 \texttt{Card} 的必填单值引用 &
+    使用 \texttt{title} 标注的动态下拉框；选择卡片后会更新其
+    \texttt{outgoing} 列表。 \\
+    \hline
+    非唯一且无序的 \texttt{Link.target [1..2]} &
+    上下界为一和二、\texttt{unique=false} 且
+    \texttt{ordered=false} 的多值引用 &
+    多选对话框与基数验证，不会额外生成唯一性或顺序规则。 \\
+    \hline
+  \end{tabular}
+  \caption{\texttt{04\_references\_integrity} 中可观察到的转换}
+  \label{tab:mapeo-references-integrity}
+\end{table}
+
+这里的元数据与可视交互之间存在差异。尽管 \texttt{target} 保留了
+\texttt{unique=false}，对话框仍然对每张卡片只显示一个复选框，不允许
+重复选择同一个块。因此，截图证明了多选和基数；
+\texttt{unique=false} 和 \texttt{ordered=false} 的精确保留则通过
+中间 \texttt{EditorSpec} 以及两条路线的自动比较得到证明。
+
+Ecore 转换在遍历每个 \texttt{EClass} 的特征时完成。在代码清单
+\ref{lst:ecore-reference-conversion} 中，\texttt{eRef} 是当前读取的
+非包含 \texttt{EReference}；\texttt{rfs} 是中间模型中新建的
+\texttt{ReferenceFieldSpec}；\texttt{bt} 则是所属类的
+\texttt{BlockTypeSpec}。之所以明确这些名称，是因为若没有这种对应
+关系，就难以看出哪个对象属于原始 Ecore，哪个对象正在为生成器构建。
+
+\begin{lstlisting}[float=htbp, style=tfmjava, captionpos=t, caption={Ecore 非包含引用转换的带注释代码}, label={lst:ecore-reference-conversion}]
+// 在 rfs 中创建 eRef 引用的通用表示。
+ReferenceFieldSpec rfs = new ReferenceFieldSpec();
+// 保留 outgoing、source 或 target 作为控件名称。
+rfs.setName(eRef.getName());
+// 将选项限制为 Ecore 中声明的目标类型。
+rfs.setTargetTypeName(eRef.getEReferenceType().getName());
+// 复制原始引用的最小基数。
+rfs.setLowerBound(eRef.getLowerBound());
+// 规范化 -1 并复制最大基数。
+rfs.setUpperBound(normalizeUpperBound(eRef.getUpperBound()));
+// 保留 Ecore 是否要求值互不相同。
+rfs.setUnique(eRef.isUnique());
+// 保留值的顺序是否具有意义。
+rfs.setOrdered(eRef.isOrdered());
+// 检查 eRef 是否属于一对相反引用。
+if (eRef.getEOpposite() != null) {
+    // 保存将在浏览器中保持同步的相反端名称。
+    rfs.setOppositeName(eRef.getEOpposite().getName());
+// 结束相反端检查。
+}
+// 将下界一转换为显式必填性。
+if (eRef.getLowerBound() >= 1) {
+    // 启用必填引用验证。
+    rfs.setRequired(true);
+// 结束必填性推断。
+}
+// 复制控件、可见标签、顺序以及用作标签的字段。
+applyUiAnnotation(eRef.getEAnnotation(UI_ANNOTATION_SOURCE), rfs);
+// 如果注解未指定标签，则应用推断标签。
+if (rfs.getReferenceLabelField() == null) {
+    // 优先使用目标类型的标识符或描述性属性。
+    rfs.setReferenceLabelField(
+        defaultReferenceLabelField(eRef.getEReferenceType()));
+// 结束引用标签的选择。
+}
+// 将 rfs 加入所属块类型 bt。
+bt.getReferenceFields().add(rfs);
+// 保留 eRef 在其他控件之间的原始位置。
+bt.getOrderedInputNames().add(rfs.getName());
+\end{lstlisting}
+
+文本路线在 \texttt{DomainModelAdapter.convertReference} 中执行相同映射：
+它从 \texttt{reference} 构造中获取类型、基数以及
+\texttt{required}、\texttt{nonUnique}、\texttt{unordered} 和
+\texttt{opposite} 选项。随后，生成器为单值引用选择下拉框，为多值
+引用选择 \texttt{field\_reference\_multiselect}。运行时，
+\texttt{updateReferenceDropdowns} 会重建候选项，
+\texttt{synchronizeOppositeReferences} 则保持
+\texttt{outgoing/source} 引用对同步。触发这两个操作的通用监听器将在
+后文代码清单 \ref{lst:listener-runtime-blockly} 中详述。
+
+该输入对的自动化测试会比较三个 \texttt{ReferenceFieldSpec}、各自的
+标签、上下界、唯一性与顺序标志，以及相反端名称。随后，测试打开两个
+编辑器，加载同一模型，并验证根对象为 \texttt{Workflow}、不存在警告，
+且 XMI 导出保留标识和引用。
+\FloatBarrier
+
+\subsection{示例 05：声明规则、推断规则与诊断}
+
+输入对 \path{05_validations} 集中展示前几个示例仅从结构层面使用的
+验证能力。该领域包含一个页面以及 \texttt{Alert} 和
+\texttt{Navigate} 动作。在此结构上，作者声明的规则与适配器根据基数、
+必填性和模型标识符推导出的规则相结合。两条路线生成十二个等价的
+\texttt{ValidationSpec} 以及相同的可视化验证环境。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/05_validations/validations class diagram.jpg}
+  \caption{输入对 \texttt{05\_validations} 的 Ecore 类图}
+  \label{fig:validations-ecore}
+\end{figure}
+
+在图 \ref{fig:validations-ecore} 中，\texttt{Page} 是根对象，并包含一
+到四个抽象类型 \texttt{Action} 的实例。\texttt{Alert} 和
+\texttt{Navigate} 是其两个具体实现，因此二者都可以放入
+\texttt{actions} 输入。粗体属性表示必填值，\texttt{pageId} 还充当
+模型标识符。\texttt{Navigate.target [1..1]} 引用指向现有的
+\texttt{Page}，而不是表示新的包含关系。必填性、基数和唯一性规则由
+这一结构推断得出；其他语义表达式则来自同一 Ecore 文件中的注解。
+
+图 \ref{fig:validations-runtime-visual} 将一条规则与其两种可观察表示
+联系起来。为了产生上半部分的状态，先加载有效的示例模型，然后仅在
+浏览器中将 \texttt{route} 的值从 \texttt{/home} 改为
+\texttt{home}。\texttt{sample\_model.json} 文件仍保持有效，使自动化
+测试能够区分编辑过程中引入的错误与加载错误。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/05_validations/screenshots/validation-issues.png}
+  \vspace{2mm}
+
+  \includegraphics[width=0.96\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/05_validations/screenshots/validation-blocks.png}
+  \caption{无效路由的诊断（上）与所选可视化规则
+  \texttt{Page\_routeStartsSlash}（下）}
+  \label{fig:validations-runtime-visual}
+\end{figure}
+
+借助上方截图，无需只依赖警告文本便可定位错误。紫色块中显示
+\texttt{route home}，因此可以直接看到违反条件的具体值。图标与气泡
+将 \textit{Route must start with /.} 关联到 \texttt{Page} 块，而
+\textit{Issues (1)} 选项卡会再次显示受影响的类型和同一消息。这三项
+证据---值、块与面板---使读者无需推断问题发生的位置。
+
+下半部分是对可视化环境的有意裁剪：去除了不提供信息的滚动条，保留
+选中规则及其侧边卡片。外层块标识 \texttt{Page\_routeStartsSlash}、
+目标类型 \texttt{Page}、验证类型 \texttt{EXPRESSION} 和消息。其条件
+包含 \texttt{value('route').startsWith('/')}。\textit{expanded} 连接
+为空，因为这一具体调用无法分解为受支持子集中的可视访问器；不过，
+文本表达式仍会得到保留，并在验证环境中执行。作为对照，上方可见的
+\texttt{Page\_titlePresent} 规则可以展开为
+\textit{field title exists}。
+
+表 \ref{tab:reglas-validations} 统计了十二条规则，并说明为何并非所有
+规则都在源文件中写成独立声明。
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{|L{0.30\textwidth}|L{0.26\textwidth}|L{0.30\textwidth}|}
+    \hline
+    规则来源 & 中间模型 & 生成的证据 \\
+    \hline
+    \texttt{pageId}、\texttt{title}、\texttt{route}、
+    \texttt{Alert.message} 和 \texttt{Navigate.target} 的下界 &
+    五条推断的 \texttt{REQUIRED} 规则 &
+    \texttt{has(...)} 访问器，以及值缺失时的警告。 \\
+    \hline
+    包含关系 \texttt{Page.actions [1..4]} &
+    一条推断的 \texttt{CARDINALITY} 规则 &
+    将 \texttt{inputCount("actions")} 与一到四的范围进行比较。 \\
+    \hline
+    标记为标识符的 \texttt{Page.pageId} &
+    一条推断的 \texttt{UNIQUE} 规则 &
+    比较所有 \texttt{Page} 块的 \texttt{pageId}。 \\
+    \hline
+    约束 \texttt{Navigate\_after\_Alert} &
+    一条声明的 \texttt{MUST\_FOLLOW} 规则 &
+    在 \texttt{Navigate} 上对 \texttt{Alert} 应用
+    \texttt{previousBlockIs} 访问器。 \\
+    \hline
+    \texttt{titlePresent}、\texttt{routeStartsSlash}、
+    \texttt{actionsWithinLimit} 和 \texttt{HasActions} &
+    四条声明的 \texttt{EXPRESSION} 规则 &
+    将 \texttt{condition}、\texttt{expression}、JavaScript 和 OCL
+    子集规范化为浏览器表达式。 \\
+    \hline
+  \end{tabular}
+  \caption{\texttt{05\_validations} 中十二条规则的来源}
+  \label{tab:reglas-validations}
+\end{table}
+
+文本路线首先转换四种声明式变体。如果变体为 OCL，则先翻译受支持的
+子集；其他变体直接提供其通用表达式。随后，代码清单
+\ref{lst:add-validation-expression} 中的辅助方法创建中间规则。
+\texttt{cls} 是规则求值所针对的领域类；\texttt{spec} 是正在构建的
+中间编辑器；\texttt{name}、\texttt{expression} 和 \texttt{message}
+来自声明；\texttt{vs} 是新规则；\texttt{visualExpression} 则是它可选
+的、更基础块形式的展开。
+
+\begin{lstlisting}[float=htbp, style=tfmjava, captionpos=t, caption={在 Java 中转换文本验证规则的带注释代码}, label={lst:add-validation-expression}]
+// 接收类 cls、编辑器 spec 以及规则的三个文本值。
+private static void addValidationExpression(
+    // cls 是目标，spec 是待扩展的中间模型。
+    ClassDef cls, BlocklyEditorSpec spec,
+    // name 标识规则；expression 和 message 定义其行为。
+    String name, String expression, String message) {
+    // 丢弃没有可执行条件的声明。
+    if (expression == null || expression.isBlank()) return;
+    // 创建 vs，作为规则的通用表示。
+    ValidationSpec vs = new ValidationSpec();
+    // 所有声明式变体均汇合为 EXPRESSION 类型。
+    vs.setType(ValidationSpec.ValidationType.EXPRESSION);
+    // 组合类名和规则名，避免规则之间发生名称冲突。
+    vs.setName(cls.getName() + "_" +
+        (name == null || name.isBlank() ? "validation" : name));
+    // 记录对 vs 求值的块类。
+    vs.setOwnerType(cls.getName());
+    // 移除首尾空白，并将文本保存在 trimmed 中。
+    String trimmed = expression.trim();
+    // 保存将在浏览器中执行的表达式。
+    vs.setExpression(trimmed);
+    // 尝试将 trimmed 转换为可视访问器树。
+    ValidationExpressionSpec visualExpression = ValidationExpressionParser
+        // 根据 cls 的元素类型调整 size(...)。
+        .parse(trimmed, fieldName -> sizeAccessorExpression(cls, fieldName))
+        // null 表示只保留文本表达式。
+        .orElse(null);
+    // 如果解析器可以构建可视展开，则保存该展开。
+    vs.setVisualExpression(visualExpression);
+    // 始终创建图中显示的外层块。
+    vs.setVisualBlock(ValidationBlockSpec.expressionRule(
+        cls.getName(), trimmed, visualExpression));
+    // 使用声明的消息；若没有，则构建默认的描述性消息。
+    vs.setMessage(firstNonBlank(message,
+        "Constraint \"" +
+        (name == null || name.isBlank() ? "validation" : name) +
+        "\" is violated on " + cls.getName() + "."));
+    // 将完成的规则加入编辑器的通用列表。
+    spec.getValidations().add(vs);
+// 结束该声明的转换。
+}
+\end{lstlisting}
+
+Ecore 路线在遍历验证注解的 \texttt{expression.*}、
+\texttt{condition.*}、\texttt{js.*} 和 \texttt{ocl.*} 详情时执行等价
+操作。随后，两条路线都会复用 \texttt{generateValidationsJs}。对于
+输入 \texttt{home}，生成的代码读取 \texttt{route} 字段，将表达式
+求值为假，并把消息交给 \texttt{queueWarn}；
+\texttt{applyValidationWarnings} 会将其放到块上和问题选项卡中。代码
+清单 \ref{lst:listener-runtime-blockly} 中的监听器会在每次更改后重复
+计算。
+
+该输入对的验证过程会比较十二条规则、各自的可视树和执行表达式。
+随后，它使用有效模型打开两个编辑器，确认不存在警告，并检查
+\texttt{validation\_blocks.json}、可视化环境和
+\texttt{validation\_runtime.js} 是否保持同步。
+\FloatBarrier

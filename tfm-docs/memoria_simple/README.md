@@ -21,6 +21,15 @@ La versión oficial para entrega es la versión española en LaTeX/PDF. Los fich
 | 6. Casos de uso y evaluación | `es/06_casos_uso_evaluacion.md` | `zh/06_casos_uso_evaluacion_zh.md` | `chapters/06_casos_uso_evaluacion.tex` |
 | 7. Conclusiones y trabajo futuro | `es/07_conclusiones_trabajo_futuro.md` | `zh/07_conclusiones_trabajo_futuro_zh.md` | `chapters/07_conclusiones_trabajo_futuro.tex` |
 
+第五、六章另有逐段完整翻译的中文阅读版：
+
+- `zh/05_implementacion_full_zh.pdf`：保留原图、表格和代码清单的独立 PDF；
+- `zh/05_implementacion_full_zh.tex`：完整译文入口，正文分段位于 `zh/parts/`；
+- `zh/05_implementacion_zh.md`：原有的快速提要版。
+- `zh/06_casos_uso_evaluacion_full_zh.pdf`：保留原图、表格、流程图和数据的独立 PDF；
+- `zh/06_casos_uso_evaluacion_full_zh.tex`：完整译文入口，正文分段位于 `zh/parts/`；
+- `zh/06_casos_uso_evaluacion_zh.md`：原有的快速提要版。
+
 ## Lectura recomendada
 
 Para revisar el contenido rápidamente:

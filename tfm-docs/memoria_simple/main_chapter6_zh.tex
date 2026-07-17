@@ -1,0 +1,95 @@
+\documentclass[UTF8,12pt,a4paper,oneside,fontset=none]{ctexrep}
+
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setCJKmainfont{Songti SC}
+\setCJKsansfont{Songti SC}
+\setCJKmonofont{Songti SC}
+
+\usepackage[a4paper,margin=2.8cm,includeheadfoot,headheight=24pt,headsep=16pt,footskip=28pt]{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{csquotes}
+\usepackage{float}
+\usepackage[section]{placeins}
+\usepackage[backend=biber,style=ieee,citestyle=numeric-comp]{biblatex}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usetikzlibrary{arrows.meta,calc,fit,positioning}
+
+\addbibresource{references.bib}
+\onehalfspacing
+\emergencystretch=2em
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{12pt plus 1fil}
+\makeatother
+
+\ctexset{
+  chapter={name={第,章}},
+  section={format=\Large\bfseries},
+  subsection={format=\large\bfseries}
+}
+
+\fancypagestyle{zhreading}{
+  \fancyhf{}
+  \fancyhead[L]{Model2Blockly 硕士论文 · 第六章中文阅读版}
+  \fancyfoot[C]{第 \thepage\ 页 / 共 \pageref*{LastPage} 页}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+\pagestyle{zhreading}
+
+\hypersetup{
+  pdftitle={基于现有 Blockly 编辑器的评估——第六章中文阅读版},
+  pdfauthor={Xiaoyong Wang},
+  pdfsubject={TFM 第六章中文翻译}
+}
+
+\begin{document}
+
+% ctex/report may restore the class's plain style at document start; define it
+% here so figure-only pages use the same header and footer as the text.
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyhead[L]{Model2Blockly 硕士论文 · 第六章中文阅读版}
+  \fancyfoot[C]{第 \thepage\ 页 / 共 \pageref*{LastPage} 页}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries 基于现有 Blockly 编辑器的评估\par}
+  \vspace{0.8cm}
+  {\LARGE 第六章中文阅读版\par}
+  \vspace{1.5cm}
+  {\large 根据西班牙语论文正文完整翻译；原图、数据与技术标识保持不变\par}
+  \vfill
+  {\large Xiaoyong Wang\par}
+  \vspace{0.5cm}
+  {\large 2026 年 7 月\par}
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\setcounter{chapter}{5}
+\input{zh/06_casos_uso_evaluacion_full_zh}
+
+\printbibliography[title={参考文献}]
+
+\end{document}
