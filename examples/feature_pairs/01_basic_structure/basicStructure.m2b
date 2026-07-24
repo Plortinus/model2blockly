@@ -1,0 +1,74 @@
+domain SimpleApp
+
+category Application colour 210
+category Pages colour 160
+category Components colour 290
+
+class App category Application colour 210 label "Application"
+  tooltip "Configure the application and add its pages." inputsInline false {
+  attribute name : string [1..1] default "Welcome App"
+    widget text uiLabel "Name" placeholder "Enter an application name"
+    group "General" order 1 variant prominent
+  attribute theme : enum { light, dark } [0..1] default "light"
+    widget select uiLabel "Theme" group "General" order 2 variant default
+  attribute published : boolean [0..1] default "false"
+    widget switch uiLabel "Published" group "General" order 3 variant default
+  attribute tags : string [0..3] default "demo,welcome"
+    widget text uiLabel "Tags" help "Search tags used to describe the application."
+    group "General" order 4 variant compact
+  attribute previewWidths : int [1..4] default "360,768,1440" min "320" max "1920"
+    widget number uiLabel "Preview widths" help "Device widths offered by the responsive preview."
+    group "Preview" order 5 variant compact
+  attribute targetPlatforms : enum { web, android, ios } [1..3] default "web,android"
+    widget select uiLabel "Target platforms" help "Platforms for which the application will be built."
+    group "Publishing" order 6 variant compact
+  contains Page pages [1..5]
+}
+
+class Page category Pages colour 160 label "Page"
+  tooltip "Configure one page and the components shown on it." inputsInline false {
+  attribute title : string [1..1] default "Home"
+    widget text uiLabel "Title" placeholder "Enter a page title"
+    group "Content" order 1 variant prominent
+  attribute description : string [0..1] default "Main page"
+    widget textarea uiLabel "Description" group "Content" order 2 variant default
+  attribute backgroundColor : colour [0..1] default "#ffffff"
+  attribute scrollable : boolean [0..1] default "true"
+    widget checkbox uiLabel "Scrollable" group "Layout" order 4 variant default
+  attribute alignment : enum { left, center, right } [0..1] default "center"
+    widget radio uiLabel "Alignment" group "Layout" order 5 variant default
+  contains Component components [0..10]
+}
+
+abstract class Component inputsInline false {
+}
+
+class Label extends Component category Components colour 290 label "Label"
+  tooltip "Display text on a page." inputsInline false {
+  attribute ^text : string [1..1] default "Welcome"
+    widget text uiLabel "Text" group "Content" order 1 variant prominent
+  attribute fontSize : int [0..1] default "24" min "8" max "72"
+    widget number uiLabel "Font size" group "Appearance" order 2 variant default
+  attribute textColor : colour [0..1] default "#202124"
+}
+
+class Button extends Component category Components colour 20 label "Button"
+  tooltip "Display a button that can later receive an action." inputsInline false {
+  attribute ^text : string [1..1] default "Continue"
+    widget text uiLabel "Text" group "Content" order 1 variant prominent
+  attribute ^width : int [0..1] default "160" min "60" max "320"
+    widget slider uiLabel "Width" group "Layout" order 2 variant compact
+  attribute enabled : boolean [0..1] default "true"
+    widget switch uiLabel "Enabled" group "State" order 3 variant default
+  attribute backgroundColor : colour [0..1] default "#1a73e8"
+}
+
+class Image extends Component category Components colour 65 label "Image"
+  tooltip "Display an image from a URL." inputsInline false {
+  attribute url : string [1..1] default "https://example.org/welcome.png"
+    widget text uiLabel "Image URL" placeholder "https://..."
+    group "Content" order 1 variant default
+  attribute rotation : angle [0..1] default "0"
+  attribute opacity : float [0..1] default "1" min "0" max "1"
+    widget slider uiLabel "Opacity" group "Appearance" order 3 variant compact
+}

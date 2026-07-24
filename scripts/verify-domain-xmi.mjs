@@ -23,7 +23,7 @@ const options = {
 const defaultCases = [
   {
     name: 'app_maker_ecore',
-    generated: 'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore',
+    generated: 'examples/generated/app_maker_ecore',
     ecore: 'io.github.plortinus.model2blockly/model/app_maker.ecore',
   },
 ];

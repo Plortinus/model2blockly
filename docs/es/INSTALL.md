@@ -89,7 +89,7 @@ Usa primero el caso Ecore incluido:
 La carpeta esperada para AppMaker es:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore
+examples/generated/app_maker_ecore
 ```
 
 ## Páginas relacionadas

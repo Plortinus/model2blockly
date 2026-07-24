@@ -51,7 +51,7 @@ function checkRequiredFiles() {
     'io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel',
     'io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore',
     'io.github.plortinus.model2blockly/model/app_maker.ecore',
-    'io.github.plortinus.model2blockly/examples/app_maker.m2b',
+    'examples/app_maker.m2b',
     'RELEASE_CHECKLIST.md',
     'scripts/rebuild-update-site.mjs',
     'site/update-site/index.html',
@@ -69,8 +69,8 @@ function checkXmlFiles() {
     'io.github.plortinus.model2blockly/model/metamodel/BlocklyEditorSpec.genmodel',
     'io.github.plortinus.model2blockly/model/blockly_editor_spec.ecore',
     'io.github.plortinus.model2blockly/model/app_maker.ecore',
-    'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi',
-    'io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/intermediate/Appmaker_blocklyspec.xmi',
+    'examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi',
+    'examples/generated/app_maker_dsl/intermediate/Appmaker_blocklyspec.xmi',
   ];
   const script = [
     'import sys, xml.etree.ElementTree as ET',
@@ -120,7 +120,7 @@ function checkBuildProperties() {
   const coreBuild = read('io.github.plortinus.model2blockly/build.properties');
   assertIncludes(coreBuild, 'emf-gen/', 'Core build compiles fixed EMF generated APIs');
   assertIncludes(coreBuild, 'model/', 'Core build includes model resources');
-  assertIncludes(coreBuild, 'examples/', 'Core build includes examples resources');
+  assertNotIncludes(coreBuild, 'examples/', 'Root examples are kept outside the production core bundle');
   assertNotIncludes(coreBuild, 'test/', 'Core build does not package test sources');
 
   for (const file of [
@@ -375,8 +375,8 @@ function checkFeatureAndUpdateSite() {
 
 function checkGeneratedExamples() {
   for (const dir of [
-    'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore',
-    'io.github.plortinus.model2blockly/examples/generated/app_maker_dsl',
+    'examples/generated/app_maker_ecore',
+    'examples/generated/app_maker_dsl',
   ]) {
     assertExists(`${dir}/README.md`);
     assertExists(`${dir}/generation_report.html`);
@@ -459,8 +459,8 @@ function checkGeneratedExamples() {
 
 function checkNoLegacyFrontendArtifacts() {
   for (const dir of [
-    'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore',
-    'io.github.plortinus.model2blockly/examples/generated/app_maker_dsl',
+    'examples/generated/app_maker_ecore',
+    'examples/generated/app_maker_dsl',
   ]) {
     const legacyFrontendDir = 're' + 'act';
     if (existsSync(abs(`${dir}/${legacyFrontendDir}`))) {

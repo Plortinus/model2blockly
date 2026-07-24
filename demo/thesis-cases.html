@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model2Blockly — 7 ejemplos de la memoria</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172033;
+      --muted: #5e6b7a;
+      --line: #dce3ec;
+      --surface: #ffffff;
+      --soft: #f4f7fb;
+      --blue: #1959b8;
+      --blue-dark: #10478f;
+      --green: #157347;
+      --orange: #9a5b00;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--soft);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    header {
+      color: white;
+      background: linear-gradient(125deg, #123b73 0%, #1d64c8 62%, #3387d8 100%);
+      padding: 42px clamp(20px, 5vw, 72px) 74px;
+    }
+    header h1 { margin: 0 0 8px; font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.05; }
+    header p { max-width: 900px; margin: 0; font-size: 1.05rem; opacity: .94; }
+    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto 56px; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: -44px 0 28px;
+    }
+    .metric, .case, .demo-order, .precision-note {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(23, 32, 51, .08);
+    }
+    .metric { padding: 18px; }
+    .metric strong { display: block; color: var(--blue-dark); font-size: 1.65rem; line-height: 1.1; }
+    .metric span { display: block; color: var(--muted); margin-top: 5px; font-size: .9rem; }
+    .precision-note { padding: 18px 22px; margin-bottom: 22px; border-left: 5px solid #e1a12c; }
+    .precision-note strong { color: #744400; }
+    .precision-note p { margin: 4px 0 0; color: var(--muted); }
+    .case { padding: clamp(20px, 3vw, 32px); margin-bottom: 22px; }
+    .case-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+    .case h2 { margin: 0 0 5px; font-size: 1.65rem; }
+    .case p { margin: 0; color: var(--muted); max-width: 860px; }
+    .tag {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: .8rem;
+      font-weight: 750;
+      color: var(--green);
+      background: #eaf8f1;
+      border: 1px solid #bfe8d1;
+    }
+    .tag.ecore-only { color: #7a4300; background: #fff4df; border-color: #f1cf91; }
+    .case-metrics { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; }
+    .case-metrics span {
+      background: #f6f8fb;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: .85rem;
+      font-weight: 650;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 18px; }
+    .actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 13px;
+      color: var(--blue-dark);
+      background: white;
+      border: 1px solid #a9bfdb;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 720;
+    }
+    .actions a.primary { color: white; background: var(--blue); border-color: var(--blue); }
+    .actions a:hover { background: #edf4ff; }
+    .actions a.primary:hover { background: var(--blue-dark); }
+    .evidence {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .evidence.single { grid-template-columns: minmax(0, 1fr); max-width: 570px; }
+    figure { margin: 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: #fafcff; }
+    figure img { width: 100%; aspect-ratio: 16 / 10; object-fit: contain; display: block; border-radius: 6px; background: white; }
+    figcaption { padding: 8px 2px 0; text-align: center; color: var(--muted); font-size: .85rem; }
+    .demo-order { padding: 24px 28px; }
+    .demo-order h2 { margin: 0 0 10px; }
+    .demo-order ol { margin: 0; padding-left: 22px; }
+    .demo-order li + li { margin-top: 7px; }
+    .scope-note { margin: 18px 0 0; color: var(--orange); font-weight: 650; }
+    code { padding: 2px 6px; background: #edf1f7; border-radius: 5px; }
+    @media (max-width: 780px) {
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .evidence { grid-template-columns: 1fr; }
+      .case-head { display: block; }
+      .tag { display: inline-block; margin-top: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Model2Blockly: 7 ejemplos</h1>
+    <p>Los ejemplos utilizados en la memoria para demostrar la cobertura funcional y la equivalencia entre las rutas Ecore y <code>.m2b</code>.</p>
+  </header>
+
+  <main>
+    <section class="metrics" aria-label="Resumen de la suite">
+      <div class="metric"><strong>7</strong><span>Ejemplos de la memoria</span></div>
+      <div class="metric"><strong>6</strong><span>Pares Ecore–.m2b</span></div>
+      <div class="metric"><strong>12</strong><span>Editores equivalentes por pares</span></div>
+      <div class="metric"><strong>13/13</strong><span>Editores verificados en navegador</span></div>
+    </section>
+
+    <aside class="precision-note">
+      <strong>Alcance de OCL</strong>
+      <p>El sistema traduce un subconjunto práctico de OCL —por ejemplo, <code>size()</code>, <code>notEmpty()</code>, comparaciones y operadores booleanos— a validaciones ejecutables en el editor. No incorpora un motor OCL completo.</p>
+    </aside>
+
+    <section class="case" id="basic-structure">
+      <div class="case-head">
+        <div>
+          <h2>1. Estructura básica</h2>
+          <p>Modelo de dominio, clases concretas y abstractas, herencia, composición y categorías inferidas automáticamente.</p>
+        </div>
+        <span class="tag">Par equivalente</span>
+      </div>
+      <div class="case-metrics"><span>EClass / class</span><span>Herencia</span><span>Containment</span><span>Categorías automáticas</span></div>
+      <div class="actions">
+        <a class="primary" href="/examples/feature_pairs/01_basic_structure/generated/ecore/html/BasicStructure_standalone.html">Abrir editor Ecore</a>
+        <a href="/examples/feature_pairs/01_basic_structure/generated/dsl/html/BasicStructure_standalone.html">Abrir editor .m2b</a>
+        <a href="/examples/feature_pairs/01_basic_structure/basicStructure.ecore">Fuente Ecore</a>
+        <a href="/examples/feature_pairs/01_basic_structure/basicStructure.m2b">Fuente .m2b</a>
+      </div>
+      <div class="evidence">
+        <figure><img src="/examples/feature_pairs/01_basic_structure/screenshots/ecore.png" alt="Estructura básica generada desde Ecore"><figcaption>Ruta Ecore</figcaption></figure>
+        <figure><img src="/examples/feature_pairs/01_basic_structure/screenshots/dsl.png" alt="Estructura básica generada desde M2B"><figcaption>Ruta .m2b</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="case" id="fields-ui">
+      <div class="case-head">
+        <div>
+          <h2>2. Campos e interfaz</h2>
+          <p>Tipos de atributos, valores iniciales, límites, widgets Blockly, presentación de clases y categorías anidadas.</p>
+        </div>
+        <span class="tag">Par equivalente</span>
+      </div>
+      <div class="case-metrics"><span>Tipos y enumeraciones</span><span>Valores por defecto</span><span>Límites</span><span>Widgets y presentación</span></div>
+      <div class="actions">
+        <a class="primary" href="/examples/feature_pairs/02_fields_ui/generated/ecore/html/FieldsUi_standalone.html">Abrir editor Ecore</a>
+        <a href="/examples/feature_pairs/02_fields_ui/generated/dsl/html/FieldsUi_standalone.html">Abrir editor .m2b</a>
+        <a href="/examples/feature_pairs/02_fields_ui/fieldsUi.ecore">Fuente Ecore</a>
+        <a href="/examples/feature_pairs/02_fields_ui/fieldsUi.m2b">Fuente .m2b</a>
+      </div>
+      <div class="evidence">
+        <figure><img src="/examples/feature_pairs/02_fields_ui/screenshots/ecore.png" alt="Campos e interfaz generados desde Ecore"><figcaption>Ruta Ecore</figcaption></figure>
+        <figure><img src="/examples/feature_pairs/02_fields_ui/screenshots/dsl.png" alt="Campos e interfaz generados desde M2B"><figcaption>Ruta .m2b</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="case" id="composition-inputs">
+      <div class="case-head">
+        <div>
+          <h2>3. Composición y entradas</h2>
+          <p>Referencias de composición transformadas en entradas de sentencias o de valor, cardinalidades, bloques sombra y orden mixto.</p>
+        </div>
+        <span class="tag">Par equivalente</span>
+      </div>
+      <div class="case-metrics"><span>Statement inputs</span><span>Value inputs</span><span>Cardinalidad</span><span>Shadow blocks</span></div>
+      <div class="actions">
+        <a class="primary" href="/examples/feature_pairs/03_composition_inputs/generated/ecore/html/CompositionInputs_standalone.html">Abrir editor Ecore</a>
+        <a href="/examples/feature_pairs/03_composition_inputs/generated/dsl/html/CompositionInputs_standalone.html">Abrir editor .m2b</a>
+        <a href="/examples/feature_pairs/03_composition_inputs/compositionInputs.ecore">Fuente Ecore</a>
+        <a href="/examples/feature_pairs/03_composition_inputs/compositionInputs.m2b">Fuente .m2b</a>
+      </div>
+      <div class="evidence">
+        <figure><img src="/examples/feature_pairs/03_composition_inputs/screenshots/ecore.png" alt="Composición y entradas generadas desde Ecore"><figcaption>Ruta Ecore</figcaption></figure>
+        <figure><img src="/examples/feature_pairs/03_composition_inputs/screenshots/dsl.png" alt="Composición y entradas generadas desde M2B"><figcaption>Ruta .m2b</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="case" id="references-integrity">
+      <div class="case-head">
+        <div>
+          <h2>4. Referencias e integridad</h2>
+          <p>Identificadores, referencias dinámicas, etiquetas visibles, multiplicidad, referencias opuestas, unicidad y orden.</p>
+        </div>
+        <span class="tag">Par equivalente</span>
+      </div>
+      <div class="case-metrics"><span>ID</span><span>Selección dinámica</span><span>eOpposite</span><span>Unique / ordered</span></div>
+      <div class="actions">
+        <a class="primary" href="/examples/feature_pairs/04_references_integrity/generated/ecore/html/ReferencesIntegrity_standalone.html">Abrir editor Ecore</a>
+        <a href="/examples/feature_pairs/04_references_integrity/generated/dsl/html/ReferencesIntegrity_standalone.html">Abrir editor .m2b</a>
+        <a href="/examples/feature_pairs/04_references_integrity/referencesIntegrity.ecore">Fuente Ecore</a>
+        <a href="/examples/feature_pairs/04_references_integrity/referencesIntegrity.m2b">Fuente .m2b</a>
+      </div>
+      <div class="evidence">
+        <figure><img src="/examples/feature_pairs/04_references_integrity/screenshots/ecore.png" alt="Referencias e integridad generadas desde Ecore"><figcaption>Ruta Ecore</figcaption></figure>
+        <figure><img src="/examples/feature_pairs/04_references_integrity/screenshots/reference-selection.png" alt="Selección dinámica de referencias"><figcaption>Selección dinámica de referencias</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="case" id="validations">
+      <div class="case-head">
+        <div>
+          <h2>5. Validaciones</h2>
+          <p>Reglas obligatorias, cardinalidad, unicidad, orden y expresiones semánticas. Incluye OCL básico: <code>self.actions-&gt;size() &gt;= 1</code>.</p>
+        </div>
+        <span class="tag">Par equivalente + OCL</span>
+      </div>
+      <div class="case-metrics"><span>Required</span><span>Cardinalidad</span><span>Expresiones</span><span>OCL traducido</span><span>Edición visual</span></div>
+      <div class="actions">
+        <a class="primary" href="/examples/feature_pairs/05_validations/generated/ecore/html/Validations_standalone.html">Abrir editor Ecore</a>
+        <a href="/examples/feature_pairs/05_validations/generated/dsl/html/Validations_standalone.html">Abrir editor .m2b</a>
+        <a href="/examples/feature_pairs/05_validations/validations.ecore">Fuente Ecore</a>
+        <a href="/examples/feature_pairs/05_validations/validations.m2b">Fuente .m2b</a>
+      </div>
+      <div class="evidence">
+        <figure><img src="/examples/feature_pairs/05_validations/screenshots/validation-issues.png" alt="Panel de incidencias de validación"><figcaption>Validaciones ejecutadas en el editor</figcaption></figure>
+        <figure><img src="/examples/feature_pairs/05_validations/screenshots/validation-blocks.png" alt="Edición visual de reglas de validación"><figcaption>Edición visual de las reglas</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="case" id="codegen-workspace">
+      <div class="case-head">
+        <div>
+          <h2>6. Generación de código y workspace</h2>
+          <p>Plantillas de código, bloques con salida, expansión de sentencias, metadatos de ejecución y opciones del espacio de trabajo.</p>
+        </div>
+        <span class="tag">Par equivalente</span>
+      </div>
+      <div class="case-metrics"><span>Code templates</span><span>Output blocks</span><span>Runtime metadata</span><span>Workspace options</span></div>
+      <div class="actions">
+        <a class="primary" href="/examples/feature_pairs/06_codegen_workspace/generated/ecore/html/CodegenWorkspace_standalone.html">Abrir editor Ecore</a>
+        <a href="/examples/feature_pairs/06_codegen_workspace/generated/dsl/html/CodegenWorkspace_standalone.html">Abrir editor .m2b</a>
+        <a href="/examples/feature_pairs/06_codegen_workspace/generated/ecore/generation_report.html">Informe de generación</a>
+        <a href="/examples/feature_pairs/06_codegen_workspace/codegenWorkspace.ecore">Fuente Ecore</a>
+        <a href="/examples/feature_pairs/06_codegen_workspace/codegenWorkspace.m2b">Fuente .m2b</a>
+      </div>
+      <div class="evidence">
+        <figure><img src="/examples/feature_pairs/06_codegen_workspace/screenshots/ecore.png" alt="Generación de código y workspace desde Ecore"><figcaption>Editor generado</figcaption></figure>
+        <figure><img src="/examples/feature_pairs/06_codegen_workspace/screenshots/generation-report.png" alt="Informe de generación"><figcaption>Informe de generación</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="case" id="ecore-specific">
+      <div class="case-head">
+        <div>
+          <h2>7. Capacidades exclusivas de Ecore</h2>
+          <p>Subpaquetes, interfaces, propiedades derivadas o transitorias ignoradas, tipos numéricos adicionales, URI/prefijo de namespace y anotaciones Ecore/OCL estándar.</p>
+        </div>
+        <span class="tag ecore-only">Solo Ecore — no es un séptimo par</span>
+      </div>
+      <div class="case-metrics"><span>Subpackages</span><span>Interfaces</span><span>Derived / transient</span><span>nsURI / nsPrefix</span><span>OCL Pivot</span></div>
+      <div class="actions">
+        <a class="primary" href="/examples/ecore_specific/07_ecore_specific/generated/ecore/html/EcoreSpecific_standalone.html">Abrir editor Ecore</a>
+        <a href="/examples/ecore_specific/07_ecore_specific/generated/ecore/generation_report.html">Informe de generación</a>
+        <a href="/examples/ecore_specific/07_ecore_specific/ecoreSpecific.ecore">Fuente Ecore</a>
+      </div>
+      <div class="evidence single">
+        <figure><img src="/examples/ecore_specific/07_ecore_specific/screenshots/ecore.png" alt="Editor de capacidades exclusivas de Ecore"><figcaption>Caso Ecore con <code>self.title-&gt;notEmpty()</code></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="demo-order">
+      <h2>Orden recomendado para la defensa</h2>
+      <ol>
+        <li><strong>Ejemplos 1–4:</strong> enseñar la progresión desde la estructura del metamodelo hasta referencias dinámicas e integridad (30–40 s por ejemplo).</li>
+        <li><strong>Ejemplo 5:</strong> provocar una incidencia y explicar la traducción del subconjunto OCL (60–90 s).</li>
+        <li><strong>Ejemplo 6:</strong> mostrar el código generado y las opciones del workspace (45–60 s).</li>
+        <li><strong>Ejemplo 7:</strong> cerrar aclarando qué capacidades pertenecen específicamente a la ruta Ecore (45–60 s).</li>
+      </ol>
+      <p class="scope-note">Resultado verificado: 6/6 pares producen artefactos canónicos equivalentes y el caso Ecore supera sus 7 grupos de capacidades; los 13 editores cargan correctamente.</p>
+    </section>
+  </main>
+</body>
+</html>

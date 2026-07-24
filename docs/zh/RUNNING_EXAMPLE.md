@@ -108,7 +108,7 @@ class Page category Pages colour 260 label "Page" {
 ```
 
 完整源文件：
-[app_maker.m2b](../../io.github.plortinus.model2blockly/examples/app_maker.m2b)
+[app_maker.m2b](../../examples/app_maker.m2b)
 
 DSL 语法和它相对 Ecore 注解的优势见
 [Model2Blockly 文本 DSL](./TEXTUAL_DSL.md)。
@@ -119,13 +119,13 @@ DSL 语法和它相对 Ecore 注解的优势见
 Ecore route 当前已提交的中间模型是：
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi
+examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi
 ```
 
 DSL route 当前已提交的中间模型是：
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/intermediate/Appmaker_blocklyspec.xmi
+examples/generated/app_maker_dsl/intermediate/Appmaker_blocklyspec.xmi
 ```
 
 这个 XMI 是生成链路的一部分，不只是调试输出。它证明项目采用的是模型转换：
@@ -169,7 +169,7 @@ Generate AppMaker from Ecore.launch
 
 ```text
 model/app_maker.ecore
-examples/generated/app_maker_ecore
+../examples/generated/app_maker_ecore
 ```
 
 DSL route：
@@ -181,8 +181,8 @@ Generate AppMaker from Model2Blockly.launch
 输入和输出：
 
 ```text
-examples/app_maker.m2b
-examples/generated/app_maker_dsl
+../examples/app_maker.m2b
+../examples/generated/app_maker_dsl
 ```
 
 ## 检查生成结果

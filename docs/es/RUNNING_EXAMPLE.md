@@ -9,15 +9,15 @@ las dos formas de autoría.
 | Elemento | Ruta |
 | --- | --- |
 | Metamodelo fuente | `io.github.plortinus.model2blockly/model/app_maker.ecore` |
-| Fuente DSL textual | `io.github.plortinus.model2blockly/examples/app_maker.m2b` |
-| Salida Ecore | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore` |
-| Editor Ecore | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html` |
-| Modelo intermedio Ecore | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi` |
-| Informe Ecore | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/generation_report.html` |
-| Salida `.m2b` | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl` |
-| Editor `.m2b` | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/html/Appmaker_standalone.html` |
-| Modelo intermedio `.m2b` | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/intermediate/Appmaker_blocklyspec.xmi` |
-| Informe `.m2b` | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/generation_report.html` |
+| Fuente DSL textual | `examples/app_maker.m2b` |
+| Salida Ecore | `examples/generated/app_maker_ecore` |
+| Editor Ecore | `examples/generated/app_maker_ecore/html/Appmaker_standalone.html` |
+| Modelo intermedio Ecore | `examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi` |
+| Informe Ecore | `examples/generated/app_maker_ecore/generation_report.html` |
+| Salida `.m2b` | `examples/generated/app_maker_dsl` |
+| Editor `.m2b` | `examples/generated/app_maker_dsl/html/Appmaker_standalone.html` |
+| Modelo intermedio `.m2b` | `examples/generated/app_maker_dsl/intermediate/Appmaker_blocklyspec.xmi` |
+| Informe `.m2b` | `examples/generated/app_maker_dsl/generation_report.html` |
 
 Demo pública:
 
@@ -38,7 +38,7 @@ Usa `EcoreToBlocklyMain` con:
 
 ```text
 model/app_maker.ecore
-examples/generated/app_maker_ecore
+../examples/generated/app_maker_ecore
 ```
 
 Para la ruta textual ejecuta:
@@ -50,8 +50,8 @@ Generate AppMaker from Model2Blockly.launch
 con:
 
 ```text
-examples/app_maker.m2b
-examples/generated/app_maker_dsl
+../examples/app_maker.m2b
+../examples/generated/app_maker_dsl
 ```
 
 ## Qué inspeccionar

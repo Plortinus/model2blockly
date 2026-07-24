@@ -184,6 +184,59 @@ class BlocklyCodeGeneratorTest {
 		assertTrue(blocks.contains("[\"Baja\", \"low\"]"));
 	}
 
+	@Test
+	@DisplayName("Typed multi-value fields retain item type, constraints and typed JSON")
+	void testTypedMultiValueField() {
+		BlocklyEditorSpec spec = minimalSpec("T");
+		BlockTypeSpec bt = makeBlock("B", "B", 200, BlockTypeSpec.ConnectionType.NONE);
+		FieldSpec scores = makeField("scores", FieldSpec.FieldType.INTEGER, "480,768");
+		scores.setLowerBound(1);
+		scores.setUpperBound(4);
+		scores.setMin("320");
+		scores.setMax("1920");
+		scores.setUiLabel("Preview widths");
+		bt.getFields().add(scores);
+		spec.getBlockTypes().add(bt);
+
+		Map<String, String> files = generator.generate(spec);
+		String blocks = files.get("T_blocks.js");
+		String generators = files.get("T_generators.js");
+		String validations = files.get("T_validations.js");
+		String sample = files.get("sample_model.json");
+
+		assertTrue(blocks.contains("\"type\": \"field_multivalue\""));
+		assertTrue(blocks.contains("\"label\": \"Preview widths\""));
+		assertTrue(blocks.contains("\"itemType\": \"INTEGER\""));
+		assertTrue(blocks.contains("\"min\": \"320\""));
+		assertTrue(blocks.contains("\"max\": \"1920\""));
+		assertTrue(blocks.contains("getValidationErrors()"));
+		assertTrue(blocks.contains("field.label_ || field.name || 'values'"));
+		assertTrue(generators.contains("parseBlocklyTypedListField(block.getFieldValue('scores'), \"INTEGER\")"));
+		assertTrue(validations.contains("computeTypedMultiValueWarnings"));
+		assertTrue(sample.contains("\"scores\": ["));
+		assertTrue(sample.contains("480"));
+		assertFalse(sample.contains("\"480\""), "Numeric multi-value samples must be JSON numbers");
+	}
+
+	@Test
+	@DisplayName("Multi-valued enum fields expose their permitted options")
+	void testEnumMultiValueField() {
+		BlocklyEditorSpec spec = minimalSpec("T");
+		BlockTypeSpec bt = makeBlock("B", "B", 200, BlockTypeSpec.ConnectionType.NONE);
+		FieldSpec modes = makeField("modes", FieldSpec.FieldType.DROPDOWN, "light,dark");
+		modes.setUpperBound(2);
+		modes.getOptions().add(new DropdownOption("light", "Light"));
+		modes.getOptions().add(new DropdownOption("dark", "Dark"));
+		bt.getFields().add(modes);
+		spec.getBlockTypes().add(bt);
+
+		String blocks = generator.generate(spec).get("T_blocks.js");
+		assertTrue(blocks.contains("\"itemType\": \"DROPDOWN\""));
+		assertTrue(blocks.contains("[\"Light\", \"light\"]"));
+		assertTrue(blocks.contains("[\"Dark\", \"dark\"]"));
+		assertTrue(blocks.contains("is not one of the permitted enumeration values"));
+	}
+
 	// ═══════════════════════════════════════════════════════════════
 	// 3. NEW FIELD TYPES: colour, angle, image, label
 	// ═══════════════════════════════════════════════════════════════

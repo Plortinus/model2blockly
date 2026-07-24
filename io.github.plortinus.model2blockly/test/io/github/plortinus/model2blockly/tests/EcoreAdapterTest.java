@@ -2,6 +2,7 @@ package io.github.plortinus.model2blockly.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -13,6 +14,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.util.Diagnostician;
 import org.junit.jupiter.api.*;
 import io.github.plortinus.model2blockly.adapter.EcoreAdapter;
 import io.github.plortinus.model2blockly.blocklyspec.*;
@@ -237,6 +239,41 @@ class EcoreAdapterTest {
 		assertEquals(2, fs.getOptions().size());
 		assertEquals("high", fs.getOptions().get(0).getValue());
 		assertEquals("HIGH", fs.getOptions().get(0).getLabel());
+	}
+
+	@Test
+	@DisplayName("Multi-valued attributes preserve their element types")
+	void testManyAttributesPreserveElementTypes() {
+		EPackage pkg = makePackage("test");
+		EEnum eEnum = f.createEEnum();
+		eEnum.setName("Priority");
+		EEnumLiteral high = f.createEEnumLiteral();
+		high.setName("high");
+		high.setLiteral("High");
+		eEnum.getELiterals().add(high);
+		pkg.getEClassifiers().add(eEnum);
+
+		EClass cls = makeClass(pkg, "Task");
+		EAttribute scores = makeAttribute(cls, "scores", p.getEInt());
+		scores.setUpperBound(4);
+		scores.getEAnnotations().add(blocklyAnnotation("initialValues", "360,768,1440"));
+		EAttribute flags = makeAttribute(cls, "flags", p.getEBoolean());
+		flags.setUpperBound(2);
+		EAttribute priorities = makeAttribute(cls, "priorities", eEnum);
+		priorities.setUpperBound(3);
+
+		BlocklyEditorSpec spec = EcoreAdapter.fromEPackage(pkg);
+		BlockTypeSpec block = spec.getBlockTypes().get(0);
+		assertEquals(FieldSpec.FieldType.INTEGER, block.getFields().get(0).getFieldType());
+		assertEquals("360,768,1440", block.getFields().get(0).getDefaultValue());
+		assertEquals(FieldSpec.FieldType.BOOLEAN, block.getFields().get(1).getFieldType());
+		assertEquals(FieldSpec.FieldType.DROPDOWN, block.getFields().get(2).getFieldType());
+		assertEquals("High", block.getFields().get(2).getOptions().get(0).getValue());
+		assertEquals("high", block.getFields().get(2).getOptions().get(0).getLabel());
+		assertNull(scores.getDefaultValueLiteral(),
+				"An Ecore collection must not be encoded in defaultValueLiteral");
+		assertEquals(Diagnostic.OK, Diagnostician.INSTANCE.validate(pkg).getSeverity(),
+				"The Ecore metamodel pattern for a multi-valued attribute must be valid");
 	}
 
 	// ═══════════════════════════════════════════════════════════════

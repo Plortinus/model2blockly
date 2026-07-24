@@ -91,7 +91,7 @@ Use a small Ecore source first:
 The expected generated folder for the checked-in AppMaker case is:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore
+examples/generated/app_maker_ecore
 ```
 
 ## Related Pages

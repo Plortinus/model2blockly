@@ -49,19 +49,18 @@ AppMaker proporciona ejemplos versionados de ambas rutas:
 
 | Ruta | Fuente | Salida generada |
 | --- | --- | --- |
-| Ecore | `model/app_maker.ecore` | `examples/generated/app_maker_ecore` |
+| Ecore | `io.github.plortinus.model2blockly/model/app_maker.ecore` | `examples/generated/app_maker_ecore` |
 | `.m2b` | `examples/app_maker.m2b` | `examples/generated/app_maker_dsl` |
 
-Todas las rutas de esta tabla son relativas a
-`io.github.plortinus.model2blockly/`.
+Todas las rutas de esta tabla son relativas a la raíz del repositorio.
 
 ## Carpeta generada
 
 Las salidas AppMaker versionadas están en:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore
-io.github.plortinus.model2blockly/examples/generated/app_maker_dsl
+examples/generated/app_maker_ecore
+examples/generated/app_maker_dsl
 ```
 
 | Ruta | Propósito |
@@ -85,8 +84,8 @@ io.github.plortinus.model2blockly/examples/generated/app_maker_dsl
 Abre cualquiera de los dos editores versionados:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
-io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/html/Appmaker_standalone.html
+examples/generated/app_maker_ecore/html/Appmaker_standalone.html
+examples/generated/app_maker_dsl/html/Appmaker_standalone.html
 ```
 
 Después:

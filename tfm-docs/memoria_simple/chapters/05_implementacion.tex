@@ -6,91 +6,106 @@ de una ejecución completa. A diferencia del capítulo anterior, centrado en el
 diseño y la arquitectura, aquí se identifican las tecnologías, clases y
 operaciones que materializan cada etapa de la cadena generativa.
 
-La exposición comienza mostrando cómo ejecutar la herramienta sobre el primer
-ejemplo acotado y cómo localizar el editor obtenido. Después se presentan el
-flujo interno, la organización del código y seis ejemplos complementarios
-escritos por pares como \texttt{source.ecore} y \texttt{source.m2b}. Fuera de
-esos pares se añade un caso específico para capacidades exclusivas de Ecore.
-Este corpus aísla las reglas explicadas en el resto del capítulo. Sobre esa base se
-detallan la carga y validación de las
+La exposición comienza con la instalación del complemento en Eclipse y con
+\texttt{01\_basic\_structure}, un caso cerrado que muestra qué describe la
+entrada, cómo se transforma y qué editor produce. Después se presentan el flujo
+interno, la organización del código y otros cinco ejemplos acotados. Los seis
+ejemplos con doble representación forman versiones sucesivas de un mismo
+dominio de gestión de proyectos:
+cada directorio conserva un ejemplo ejecutable completo, pero añade una familia
+de capacidades respecto al anterior. Sus nombres base describen la etapa
+mostrada, como \texttt{basicStructure.ecore} y
+\texttt{basicStructure.m2b}. Fuera de esos seis ejemplos se añade un caso específico para
+capacidades exclusivas de Ecore. Este corpus aísla las reglas explicadas en el
+resto del capítulo. Sobre esa base se detallan la carga y validación de las
 entradas, el contrato \texttt{EditorSpec}, los
 adaptadores Java, el generador HTML/JavaScript y el comportamiento en el
 navegador. El capítulo termina con la integración y distribución en Eclipse,
 las entradas independientes y las pruebas de implementación.
 
-\section{Ejecución de Model2Blockly}
+\section{Instalación y uso del complemento}
 \label{sec:ejecucion-model2blockly}
 
-Antes de detallar las clases internas, esta sección presenta el procedimiento
-observable desde el punto de vista del usuario. La forma principal de ejecutar
-Model2Blockly es mediante su complemento de Eclipse. El entorno debe iniciarse con
-Java 21 y el complemento puede instalarse desde el repositorio p2 publicado por el
-proyecto o ejecutarse desde el código fuente mediante una instancia de ejecución de
-Eclipse. En ambos casos, la acción de generación se aplica a un fichero de
-entrada situado en el espacio de trabajo.
+Antes de detallar las clases internas, esta sección presenta cómo instalar y
+utilizar el complemento.
 
-El par \path{examples/feature_pairs/01_basic_structure} se utiliza para
-reproducir la ejecución porque contiene únicamente los elementos necesarios
-para observar la cadena completa: un paquete, una clase abstracta, clases
-concretas, una relación de herencia, una contención y categorías de la paleta.
-La Figura \ref{fig:basic-structure-ecore} muestra la vista estructural de su
-metamodelo Ecore. Se utiliza un diagrama de clases en lugar de la serialización
-XML para que las clases, tipos y relaciones puedan reconocerse sin exponer los
-detalles de persistencia de Ecore.
+\subsection{Instalación del complemento}
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.96\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/01_basic_structure/basicStructure class diagram.jpg}
-  \caption{Diagrama Ecore del par \texttt{01\_basic\_structure}}
-  \label{fig:basic-structure-ecore}
-\end{figure}
+\begin{samepage}
+Model2Blockly requiere una distribución de Eclipse compatible con Java 21 y
+ejecutada con un JDK 21. El complemento se instala desde este repositorio p2:
 
-\texttt{Board} es la clase raíz del ejemplo. Su atributo \texttt{name}, de tipo
-\texttt{EString}, incluye el valor predeterminado \texttt{Sprint board}. El
-rombo negro de la relación \texttt{items} indica contención y la cardinalidad
-\texttt{[1..4]} exige que cada tablero contenga entre uno y cuatro elementos.
-En el editor generado, esta referencia se convierte en una entrada de
-sentencias que acepta los bloques compatibles.
+\begin{center}
+  \url{https://plortinus.github.io/model2blockly/update-site/}
+\end{center}
+\end{samepage}
 
-\texttt{WorkItem} es abstracta y, por tanto, no se genera como un bloque
-instanciable. Sus subclases \texttt{Task} y \texttt{Note} sí producen bloques y
-pueden insertarse en \texttt{items}. Los atributos de \texttt{Task} ejercitan
-tres conversiones: \texttt{title} se representa mediante un campo de texto,
-\texttt{priority} mediante una lista desplegable construida a partir del
-enumerado \texttt{Priority}, y \texttt{done} mediante un campo booleano. El
-atributo \texttt{body} de \texttt{Note} genera otro campo textual.
-
-Finalmente, \texttt{Tag} comprueba que una clase concreta independiente también
-se transforma en un tipo de bloque. El diagrama omite deliberadamente las
-anotaciones \texttt{blockly} que fijan opciones de presentación, como
-\texttt{inputsInline=false}; esas anotaciones permanecen en
-\texttt{source.ecore}, pero no son necesarias para comprender la estructura del
-dominio representada en la figura. A partir de esta entrada, la ruta Ecore se
-ejecuta mediante los siguientes pasos:
+La instalación se realiza con los siguientes pasos:
 
 \begin{enumerate}
-  \item abrir o importar el proyecto principal en Eclipse;
-  \item seleccionar el fichero \path{source.ecore} dentro de ese directorio;
-  \item ejecutar \texttt{Model2Blockly -> Generate Blockly Editor} desde el menú
-  contextual;
-  \item revisar el informe \path{source_generated/generation_report.html}
-  que Eclipse abre al finalizar la generación;
-  \item abrir \texttt{BasicStructure\_standalone.html}, situado en
-  \path{source_generated/html/}, para utilizar el editor generado en un
-  navegador.
+  \item abrir \texttt{Help -> Install New Software...} en Eclipse;
+  \item pulsar \texttt{Add...}, asignar un nombre como \texttt{Model2Blockly}
+  y registrar la URL anterior;
+  \item mantener activa la opción \texttt{Contact all update sites} para
+  resolver las dependencias, seleccionar la feature de Model2Blockly y
+  continuar con el asistente;
+  \item aceptar las condiciones de la instalación y reiniciar Eclipse cuando
+  se solicite.
 \end{enumerate}
 
-La ruta textual se ejecuta de la misma forma seleccionando \path{source.m2b} en
+La instalación queda disponible cuando el menú contextual de un fichero
+\texttt{.ecore}, \texttt{.m2b} o \texttt{.model2blockly} muestra el comando
+\texttt{Generate Blockly Editor}.
+
+\subsection{Uso del complemento}
+
+Una vez instalado el complemento, la acción de generación se aplica a un
+fichero de entrada situado en el espacio de trabajo. El ejemplo empleado para
+la primera ejecución se distribuye en el repositorio público de
+Model2Blockly.\footnote{Carpeta del ejemplo en GitHub:
+\url{https://github.com/Plortinus/model2blockly/tree/main/examples/feature_pairs/01_basic_structure}.}
+Después de descargar o clonar el repositorio, la carpeta \path{examples/}
+se importa en Eclipse como el proyecto independiente
+\texttt{model2blockly.examples}. El primer ejemplo queda entonces visible en
+\path{feature_pairs/01_basic_structure}, sin necesidad de buscarlo dentro de
+uno de los bundles del complemento.
+
+Al pulsar con el botón derecho sobre un fichero \texttt{.ecore} o
+\texttt{.m2b}, Eclipse muestra la acción \texttt{Generate Blockly Editor} en el
+menú contextual. La Figura~\ref{fig:plugin-context-menu} muestra esta opción;
+al seleccionarla comienza la generación del editor.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.90\textwidth]{assets/blockly/generate_blockly_editor_context_menu.png}
+  \caption{Acción \texttt{Generate Blockly Editor} en el menú contextual de un
+  fichero \texttt{.ecore} o \texttt{.m2b}}
+  \label{fig:plugin-context-menu}
+\end{figure}
+
+Para utilizar la ruta Ecore con este ejemplo se siguen estos pasos:
+
+\begin{enumerate}
+  \item importar en Eclipse la carpeta raíz \path{examples/} mediante
+  \texttt{File -> Import -> Existing Projects into Workspace}; Eclipse la
+  muestra como el proyecto \texttt{model2blockly.examples};
+  \item seleccionar el fichero \path{basicStructure.ecore} dentro de ese directorio;
+  \item pulsar con el botón derecho sobre el fichero y seleccionar
+  \texttt{Generate Blockly Editor};
+  \item revisar el informe \path{basicStructure_generated/generation_report.html}
+  que Eclipse abre al finalizar la generación;
+  \item abrir en un navegador el editor generado mediante
+  \path{basicStructure_generated/html/BasicStructure_standalone.html}.
+\end{enumerate}
+
+La ruta textual se ejecuta de la misma forma seleccionando
+\path{basicStructure.m2b} en
 el mismo directorio. En los dos casos, si no se detectan errores, la
 herramienta crea junto a la entrada un directorio con el sufijo
 \texttt{\_generated}. El directorio contiene el informe de generación, una
 serialización XMI de \texttt{EditorSpec}, las definiciones de bloques, la paleta,
 los scripts de generación y validación, un modelo de ejemplo y las páginas HTML
-del editor. Como ambos ficheros se llaman \texttt{source}, las ejecuciones
-interactivas se realizan por separado. Para conservar simultáneamente las dos
-salidas, el repositorio ofrece además \texttt{npm run
-generate:feature-pairs}; este comando las deposita en
-\path{generated/ecore} y \path{generated/dsl}, respectivamente.
+del editor.
 
 Conviene distinguir las dos ejecuciones implicadas. La primera se realiza en
 Eclipse y transforma la descripción del dominio en artefactos web. La segunda se
@@ -98,22 +113,332 @@ realiza en el navegador al abrir la página autónoma
 \texttt{*\_standalone.html}; en ella,
 el usuario construye modelos del dominio mediante bloques, ejecuta las
 validaciones generadas y exporta el resultado como JSON, XMI o código textual.
-La Figura \ref{fig:basic-structure-editor} muestra esta segunda ejecución para
-\texttt{01\_basic\_structure}, con el modelo de ejemplo cargado en el espacio
-de trabajo. El editor obtenido desde \texttt{source.m2b} presenta el mismo
-aspecto porque ambas rutas producen el mismo descriptor intermedio y los mismos
-artefactos web.
+
+\subsection{Directorios del repositorio utilizados en este capítulo}
+\label{subsec:directorios-repositorio-implementacion}
+
+Antes de entrar en la implementación conviene situar los proyectos que aparecen
+en Eclipse y la carpeta de ejemplos. La Tabla
+\ref{tab:directorios-repositorio-implementacion} incluye únicamente los
+directorios que intervienen en la instalación, la ejecución de los ejemplos o
+la cadena de generación descrita en este capítulo; no pretende inventariar los
+demás recursos auxiliares del repositorio.
+
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}
+      >{\raggedright\arraybackslash}p{0.39\textwidth}
+      >{\raggedright\arraybackslash}p{0.52\textwidth}@{}}
+    \toprule
+    Directorio o proyecto & Función en Model2Blockly \\
+    \midrule
+    \path{examples/} & Proyecto Eclipse independiente que reúne los ejemplos
+    ejecutables. \path{feature_pairs/} contiene la secuencia incremental y
+    \path{ecore_specific/} el caso exclusivo de Ecore. \\
+
+    \path{io.github.plortinus.model2blockly} & Bundle principal: gramática
+    Xtext, metamodelos EMF, adaptadores, validación, generadores y entradas
+    independientes. \\
+
+    \path{io.github.plortinus.model2blockly.ide} & Servicios de lenguaje de
+    Xtext que no dependen de la interfaz de Eclipse. \\
+
+    \path{io.github.plortinus.model2blockly.ui} & Integración con Eclipse:
+    editor, menú contextual y handler de \texttt{Generate Blockly Editor}. \\
+
+    \path{io.github.plortinus.model2blockly.feature} & Agrupa los bundles que
+    se instalan como una única feature. \\
+
+    \path{io.github.plortinus.model2blockly.updatesite} & Construye y publica
+    el repositorio p2 usado durante la instalación. \\
+
+    \path{scripts/} & Contiene las comprobaciones reproducibles de los
+    ejemplos, la generación y el empaquetado. \\
+    \bottomrule
+  \end{tabular}
+  \caption{Directorios del repositorio necesarios para seguir la implementación}
+  \label{tab:directorios-repositorio-implementacion}
+\end{table}
+
+\subsection{Ejemplo 01: del metamodelo al editor Blockly}
+
+El directorio \path{01_basic_structure} contiene dos representaciones
+alternativas del mismo dominio de planificación de proyectos. No son dos
+fragmentos que deban leerse juntos: cada fichero constituye por sí solo una
+entrada completa para el complemento. \path{basicStructure.ecore} es un fichero
+de metamodelo Ecore; \path{basicStructure.m2b} es un modelo textual escrito con
+el DSL de Model2Blockly. El objetivo del ejemplo es comprobar que ambas
+representaciones llegan al mismo editor.
+
+\subsubsection{El fichero \texttt{basicStructure.ecore}: un metamodelo Ecore}
+
+El \texttt{EPackage} raíz de \path{basicStructure.ecore} se denomina
+\texttt{basicStructure}; \texttt{nsURI} identifica de forma estable ese paquete
+y \texttt{nsPrefix} proporciona el prefijo usado en su serialización XML.
+
+La Figura \ref{fig:basic-structure-ecore} representa ese contenido mediante una
+clase gráfica, más compacta que la serialización XMI del fichero.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/01_basic_structure/screenshots/ecore.png}
-  \caption{Editor Blockly generado para \texttt{01\_basic\_structure} desde
-  \texttt{source.ecore}, con el modelo de ejemplo cargado}
+  \includegraphics[width=0.96\textwidth]{../../examples/feature_pairs/01_basic_structure/basicStructure class diagram.jpg}
+  \caption{Metamodelo Ecore definido en \texttt{basicStructure.ecore}}
+  \label{fig:basic-structure-ecore}
+\end{figure}
+
+Los elementos de la figura tienen el significado siguiente:
+
+\begin{itemize}
+  \item \texttt{Project} es la clase raíz. Su atributo \texttt{name} es un
+  \texttt{EString} y tiene como valor predeterminado
+  \texttt{Website redesign}.
+  \item \texttt{WorkItem} es una clase abstracta. Define el tipo común de los
+  elementos que pueden formar el trabajo de un proyecto, pero no puede
+  instanciarse directamente.
+  \item \texttt{Task} hereda de \texttt{WorkItem}. Su atributo
+  \texttt{title : EString} describe el título de una tarea y toma inicialmente
+  el valor \texttt{Design landing page}.
+  \item \texttt{Milestone} también hereda de \texttt{WorkItem}. Su atributo
+  \texttt{name : EString} identifica el hito y tiene como valor inicial
+  \texttt{First public release}.
+  \item \texttt{TeamMember} es una clase concreta independiente. Su atributo
+  \texttt{name : EString} usa \texttt{Alex} como valor predeterminado. La
+  relación entre miembros y tareas se añadirá en un ejemplo posterior.
+  \item El rombo negro de \texttt{Project.workItems} indica una referencia de
+  contención: los objetos contenidos forman parte del ciclo de vida del
+  proyecto. Su tipo es \texttt{WorkItem} y su multiplicidad \texttt{[1..6]}
+  exige entre uno y seis elementos. Gracias a la herencia, esos elementos
+  pueden ser instancias de \texttt{Task} o \texttt{Milestone}.
+\end{itemize}
+
+El fichero contiene además una anotación \texttt{blockly} con
+\texttt{inputsInline=false} en cada clase. No modifica el dominio; es una pista
+de presentación que solicita disponer los campos del bloque en filas. Se omite
+en la clase gráfica para separar la estructura del dominio de su apariencia en
+Blockly.
+
+\subsubsection{El fichero \texttt{basicStructure.m2b}: un modelo textual del DSL}
+
+La extensión \texttt{.m2b} pertenece al lenguaje textual definido por este
+proyecto con Xtext. El DSL es la gramática
+\path{Model2Blockly.xtext}; \path{basicStructure.m2b} es un modelo escrito de
+acuerdo con esa gramática. Xtext analiza su sintaxis concreta y construye en
+memoria un modelo semántico EMF cuya raíz es \texttt{DomainModel}
+\cite{xtextProject,xtextGrammarLanguage}. El Listado
+\ref{lst:basic-structure-m2b-completo} reproduce el fichero completo sin las
+líneas en blanco.
+
+\begin{lstlisting}[float=htbp, style=tfmm2b, caption={Contenido completo de \texttt{basicStructure.m2b}}, label={lst:basic-structure-m2b-completo}]
+domain BasicStructure
+class Project inputsInline false {
+  attribute name : string [0..1] default "Website redesign"
+  contains WorkItem workItems [1..6]
+}
+abstract class WorkItem inputsInline false {
+}
+class Task extends WorkItem inputsInline false {
+  attribute title : string [0..1] default "Design landing page"
+}
+class Milestone extends WorkItem inputsInline false {
+  attribute name : string [0..1] default "First public release"
+}
+class TeamMember inputsInline false {
+  attribute name : string [0..1] default "Alex"
+}
+\end{lstlisting}
+
+La lectura línea por línea es la siguiente:
+
+\begin{description}
+  \item[Línea 1.] \texttt{domain BasicStructure} crea el
+  \texttt{DomainModel} raíz y fija el nombre usado en los artefactos generados.
+  \item[Línea 2.] Declara la clase concreta \texttt{Project};
+  \texttt{inputsInline false} solicita que sus entradas aparezcan en filas.
+  \item[Línea 3.] Declara el atributo opcional \texttt{name}, de tipo textual,
+  con multiplicidad \texttt{[0..1]} y valor predeterminado
+  \texttt{Website redesign}.
+  \item[Línea 4.] Declara que \texttt{Project} contiene, mediante la propiedad
+  \texttt{workItems}, entre uno y seis objetos del tipo \texttt{WorkItem}.
+  \item[Línea 5.] Cierra la definición de \texttt{Project}.
+  \item[Línea 6.] Declara \texttt{WorkItem} como clase abstracta y mantiene la
+  presentación vertical de sus posibles campos.
+  \item[Línea 7.] Cierra su cuerpo vacío: en esta versión solo aporta el tipo
+  común para la herencia y las conexiones.
+  \item[Línea 8.] Declara la clase concreta \texttt{Task} y establece con
+  \texttt{extends WorkItem} su relación de herencia.
+  \item[Línea 9.] Añade el atributo textual opcional \texttt{title} y su valor
+  predeterminado \texttt{Design landing page}.
+  \item[Línea 10.] Cierra la definición de \texttt{Task}.
+  \item[Línea 11.] Declara \texttt{Milestone} como otra subclase concreta de
+  \texttt{WorkItem}.
+  \item[Línea 12.] Añade su atributo textual opcional \texttt{name} y el valor
+  inicial \texttt{First public release}.
+  \item[Línea 13.] Cierra la definición de \texttt{Milestone}.
+  \item[Línea 14.] Declara la clase concreta independiente
+  \texttt{TeamMember}.
+  \item[Línea 15.] Añade el nombre textual opcional del miembro y usa
+  \texttt{Alex} como valor inicial.
+  \item[Línea 16.] Cierra la definición de \texttt{TeamMember} y el fichero.
+\end{description}
+
+La correspondencia entre ambas representaciones es directa: un
+\texttt{EClass} equivale a una declaración \texttt{class};
+\texttt{abstract="true"} equivale a la palabra \texttt{abstract}; un
+\texttt{EAttribute} de tipo \texttt{EString} equivale a
+\texttt{attribute ... : string}; \texttt{eSuperTypes} equivale a
+\texttt{extends}; y una \texttt{EReference} con
+\texttt{containment="true"} equivale a \texttt{contains}. La multiplicidad y
+los valores predeterminados se conservan en ambos casos. Así, los ficheros no
+son idénticos en su sintaxis, pero sí describen la misma estructura semántica.
+
+\subsubsection{Del modelo de entrada a las funciones del editor}
+
+Al ejecutar el complemento, \texttt{GenerateBlocklyEditorHandler} selecciona
+la rama según la extensión. La rama Ecore carga un \texttt{EPackage} y llama a
+\texttt{EcoreAdapter}; la rama textual deja que Xtext construya un
+\texttt{DomainModel} y llama a \texttt{DomainModelAdapter}. Los dos adaptadores
+producen el mismo \texttt{EditorSpec}; después se valida, se serializa y recarga
+como \path{BasicStructure_blocklyspec.xmi}, y finalmente
+\texttt{BlocklyCodeGenerator} crea JavaScript, JSON y HTML.
+
+La Figura \ref{fig:basic-structure-editor} muestra el resultado con el modelo de
+ejemplo cargado. A la izquierda está el espacio de trabajo Blockly; a la derecha,
+el inspector reconstruye el modelo de dominio a partir de los bloques.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/01_basic_structure/screenshots/editor_overview.png}
+  \caption{Editor generado con \texttt{Project}, \texttt{Task} y
+  \texttt{Milestone}, y el modelo equivalente mostrado en el inspector}
   \label{fig:basic-structure-editor}
 \end{figure}
 
-Las secciones siguientes abren esta cadena paso a paso y relacionan cada
-operación visible con su implementación.
+La primera correspondencia observable es \emph{clase concreta--bloque}. Los
+adaptadores crean un \texttt{BlockTypeSpec} por cada clase y conservan la marca
+de abstracción. El generador solo recorre \texttt{concreteBlockTypes}; por ello
+genera bloques para \texttt{Project}, \texttt{Task}, \texttt{Milestone} y
+\texttt{TeamMember}, pero no para \texttt{WorkItem}. Los atributos de tipo
+\texttt{EString} o \texttt{string} se normalizan como campos \texttt{TEXT}; el
+generador los emite como \texttt{field\_input} y copia su valor predeterminado.
+
+La segunda correspondencia es \emph{contención--entrada de sentencias}. La
+referencia \texttt{Project.}\allowbreak\texttt{workItems} y la instrucción equivalente
+\texttt{contains WorkItem workItems [1..6]} se convierten en un
+\texttt{StatementInput}\allowbreak\texttt{Spec} denominado \texttt{workItems}, cuyo
+\texttt{checkType} es \texttt{WorkItem}. El Listado
+\ref{lst:basic-structure-generated-block} muestra el fragmento resultante de
+\path{BasicStructure_blocks.js}.
+
+\begin{lstlisting}[float=htbp, style=tfmjavascript, caption={Definición Blockly generada para \texttt{Project}}, label={lst:basic-structure-generated-block}]
+{
+  "type": "Project",
+  "message0": "Project",
+  "message1": "name %1",
+  "args1": [{"type": "field_input", "name": "name",
+             "text": "Website redesign"}],
+  "message2": "workItems %1",
+  "args2": [{"type": "input_statement", "name": "workItems",
+             "check": "WorkItem"}],
+  "inputsInline": false
+}
+\end{lstlisting}
+
+Las subclases \texttt{Task} y \texttt{Milestone} reciben conexiones anterior y
+posterior tipadas como \texttt{WorkItem}; por eso encajan en la abertura
+\texttt{workItems}. La herencia también organiza la paleta. Como muestra la
+Figura \ref{fig:basic-structure-toolbox}, la categoría \texttt{WorkItem}
+contiene los dos bloques concretos, mientras que la clase abstracta no aparece
+como bloque arrastrable.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/01_basic_structure/screenshots/toolbox_inheritance.png}
+  \caption{La categoría \texttt{WorkItem} ofrece las subclases concretas
+  \texttt{Task} y \texttt{Milestone}}
+  \label{fig:basic-structure-toolbox}
+\end{figure}
+
+La tercera correspondencia es \emph{multiplicidad--validación}. Los límites
+\texttt{[1..6]} se copian al \texttt{StatementInputSpec}. Ambos adaptadores
+crean después una regla \texttt{CARDINALITY}. Si se deja vacío
+\texttt{Project.workItems}, el bloque muestra un aviso y la pestaña
+\emph{Issues} informa del error, como se observa en la Figura
+\ref{fig:basic-structure-cardinality}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/01_basic_structure/screenshots/cardinality_validation.png}
+  \caption{Validación generada al incumplir el límite inferior de
+  \texttt{Project.workItems}}
+  \label{fig:basic-structure-cardinality}
+\end{figure}
+
+El núcleo de estas decisiones se encuentra en los adaptadores y en el generador.
+El Listado \ref{lst:basic-structure-adapter-core} resume las dos ramas que
+normalizan atributos y contenciones; los nombres corresponden a los métodos
+reales \texttt{convertEClass}, \texttt{convertAttribute} y
+\texttt{convertContainment}.
+
+\begin{lstlisting}[float=htbp, style=tfmjavaecore, caption={Núcleo de la normalización hacia \texttt{EditorSpec}}, label={lst:basic-structure-adapter-core}]
+// EcoreAdapter: EAttribute -> FieldSpec
+FieldSpec field = convertEAttribute(eAttr);
+blockType.getFields().add(field);
+
+// EcoreAdapter: containment EReference -> StatementInputSpec
+StatementInputSpec input = new StatementInputSpec();
+input.setName(eRef.getName());
+input.setCheckType(eRef.getEReferenceType().getName());
+input.setLowerBound(eRef.getLowerBound());
+input.setUpperBound(eRef.getUpperBound());
+
+// DomainModelAdapter: the textual model reaches the same types
+FieldSpec field = convertAttribute((Attribute) feature);
+StatementInputSpec input = convertContainment((Containment) feature);
+\end{lstlisting}
+
+Una vez construido \texttt{EditorSpec}, el código del Listado
+\ref{lst:basic-structure-generator-core} filtra las clases abstractas y convierte
+los dos tipos intermedios en los componentes Blockly observados en las figuras.
+
+\begin{lstlisting}[float=htbp, style=tfmxtend, caption={Generación de bloques, campos y entradas de sentencias}, label={lst:basic-structure-generator-core}]
+val blocks = spec.concreteBlockTypes.map[blockTypeToBlockJson(it)]
+
+case TEXT:
+  '''{"type": "field_input", "name": "«field.name»",
+     "text": «toJsonString(field.defaultValue ?: "")»}'''
+
+def String statementInputToArg(StatementInputSpec input) {
+  val check = if (input.checkType !== null)
+    '''"«input.checkType»"''' else "null"
+  '''{"type": "input_statement", "name": "«input.name»",
+     "check": «check»}'''
+}
+\end{lstlisting}
+
+Los principales ficheros que intervienen en esta ejecución son:
+
+\begin{itemize}
+  \item \path{Model2Blockly.xtext}: define la sintaxis del DSL y el modelo que
+  Xtext construye al leer un fichero \texttt{.m2b};
+  \item \path{GenerateBlocklyEditorHandler.java}: carga el fichero seleccionado,
+  elige el adaptador, valida el resultado y escribe el directorio generado;
+  \item \path{EcoreAdapter.java}: transforma un \texttt{EPackage} en
+  \texttt{EditorSpec};
+  \item \path{DomainModelAdapter.java}: transforma el \texttt{DomainModel} del
+  DSL en el mismo \texttt{EditorSpec};
+  \item \path{BlocklySpecXmiSerializer.java}: materializa y recarga la frontera
+  XMI intermedia;
+  \item \path{BlocklyCodeGenerator.xtend}: genera las definiciones de bloques,
+  la paleta, las validaciones, el modelo de ejemplo y las páginas HTML.
+\end{itemize}
+
+Con este resultado termina \texttt{01\_basic\_structure}. Los ejemplos
+restantes conservarán este dominio como punto de partida y añadirán, de forma
+progresiva, nuevos campos, composiciones, referencias, validaciones y generación
+de código. Cada versión seguirá siendo autocontenida para poder ejecutarse y
+compararse por separado.
 
 \section{Flujo interno de una ejecución}
 \label{sec:flujo-interno-ejecucion}
@@ -235,13 +560,13 @@ sustituyen el manejador por la clase \texttt{*Main.java} correspondiente.
     Carga Ecore & \texttt{GenerateBlockly}\allowbreak
     \texttt{EditorHandler.}\allowbreak\texttt{generateFromEcore} y API de
     recursos EMF &
-    \texttt{source.ecore} & \texttt{EPackage} \\
+    fichero \texttt{.ecore} & \texttt{EPackage} \\
 
     Carga textual & \texttt{Model2Blockly.xtext},
     \texttt{Model2Blockly}\allowbreak\texttt{Validator.java} y
     \texttt{GenerateBlockly}\allowbreak\texttt{EditorHandler.}
     \allowbreak\texttt{generateFrom}\allowbreak\texttt{Model2Blockly} &
-    \texttt{source.m2b} & \texttt{DomainModel} validado \\
+    fichero \texttt{.m2b} & \texttt{DomainModel} validado \\
 
     Normalización & \texttt{EcoreAdapter.java} o
     \texttt{DomainModelAdapter.java}, con
@@ -277,11 +602,13 @@ sustituyen el manejador por la clase \texttt{*Main.java} correspondiente.
   \label{tab:trazabilidad-ejecucion}
 \end{table}
 
-\section{Organización del proyecto}
+\section{Organización interna del código}
 \label{sec:organizacion-proyecto}
 
-La implementación se distribuye en tres bundles OSGi ejecutables creados según la
-estructura habitual de Xtext \cite{xtextProject}. El proyecto
+La Tabla \ref{tab:directorios-repositorio-implementacion} ya sitúa los proyectos
+que el lector ve en la raíz del repositorio. Esta sección se concentra en los
+tres bundles OSGi que ejecutan la transformación, creados según la estructura
+habitual de Xtext \cite{xtextProject}. El proyecto
 \path{io.github.plortinus.model2blockly} contiene la gramática, el modelo EMF
 común, los adaptadores, la validación, los generadores y las entradas de línea de
 comandos. El proyecto terminado en \path{.ide} aporta la configuración de los
@@ -289,10 +616,8 @@ servicios de lenguaje independientes de la interfaz. Finalmente, el proyecto
 terminado en \path{.ui} registra el editor, los menús y los handlers que conectan
 la generación con el espacio de trabajo de Eclipse.
 
-Otros dos proyectos no añaden lógica a la transformación. El proyecto
-\path{.feature} agrupa los bundles instalables y \path{.updatesite} construye el
-repositorio p2 utilizado para distribuir el complemento. Dentro de los tres bundles
-ejecutables, la Tabla \ref{tab:paquetes-implementacion} relaciona cada componente
+Dentro de estos tres bundles ejecutables, la Tabla
+\ref{tab:paquetes-implementacion} relaciona cada componente
 con los ficheros que materializan su implementación y con la tecnología empleada.
 
 \begin{table}[H]
@@ -364,11 +689,14 @@ responsabilidades.
 \label{sec:ejemplos-acotados-implementacion}
 
 Para relacionar cada decisión de implementación con una entrada y una salida
-observables, se emplean seis pares mínimos y complementarios bajo
-\path{examples/feature_pairs/}. Cada directorio contiene dos fuentes que
-describen el mismo dominio: \path{source.ecore} para la ruta EMF y
-\path{source.m2b} para la ruta Xtext. La Tabla
-\ref{tab:pares-ejemplos-implementacion} indica la responsabilidad de cada par.
+observables, se emplean seis ejemplos mínimos y complementarios bajo
+\path{examples/feature_pairs/}. Cada uno ofrece una representación Ecore y otra
+textual, y juntos forman una secuencia incremental del
+mismo dominio, aunque cada directorio conserva una versión completa y ejecutable
+por separado. Los ficheros \texttt{.ecore} y \texttt{.m2b} comparten un nombre
+base descriptivo de la capacidad añadida, como
+\path{fieldsUi.ecore} y \path{fieldsUi.m2b}. La Tabla
+\ref{tab:pares-ejemplos-implementacion} indica la responsabilidad de cada ejemplo.
 
 \begin{table}[H]
   \centering
@@ -378,7 +706,7 @@ describen el mismo dominio: \path{source.ecore} para la ruta EMF y
       >{\raggedright\arraybackslash}p{0.20\textwidth}
       >{\raggedright\arraybackslash}p{0.68\textwidth}@{}}
     \toprule
-    Par & Capacidades aisladas \\
+    Par & Capacidad principal añadida \\
     \midrule
     \path{01_basic_structure} & Paquete y dominio, clases concretas y
     abstractas, herencia, contención, conexiones y categorías inferidas. \\
@@ -402,7 +730,7 @@ describen el mismo dominio: \path{source.ecore} para la ruta EMF y
   \label{tab:pares-ejemplos-implementacion}
 \end{table}
 
-La unión de los seis pares cubre las capacidades que pueden expresarse tanto en
+La unión de los seis ejemplos cubre las capacidades que pueden expresarse tanto en
 Ecore como en el DSL. La separación hace que cada ejemplo sea responsable de
 una familia principal y evita usar un único metamodelo difícil de representar.
 La matriz reproducible
@@ -414,7 +742,7 @@ El caso \path{examples/ecore_specific/07_ecore_specific} completa la cobertura
 con subpaquetes, características ignoradas, clases de interfaz, tipos numéricos
 adicionales, selección automática de etiquetas de referencia, URI y prefijo de
 espacio de nombres explícitos, y contenedores estándar de anotaciones Ecore/OCL.
-No se presenta como un séptimo par, porque el DSL no dispone de construcciones
+No se presenta como un séptimo ejemplo equivalente, porque el DSL no dispone de construcciones
 equivalentes y una comparación entre rutas produciría una equivalencia
 artificial.
 
@@ -424,19 +752,19 @@ resultante. En particular, \texttt{03\_composition\_inputs} se utiliza para
 explicar la composición, mientras que \texttt{04\_references\_integrity}
 explica por separado las referencias no contenidas.
 
-Los pares son también casos de regresión ejecutables. La verificación completa
+Los ejemplos son también casos de regresión ejecutables. La verificación completa
 se inicia desde la raíz del repositorio con:
 
 \begin{center}
   \texttt{npm run verify:feature-pairs}
 \end{center}
 
-El script carga las dos fuentes de cada uno de los seis pares. Después ejecuta
+El script carga las dos representaciones de cada uno de los seis ejemplos. Después ejecuta
 \texttt{EcoreAdapter} y
 \texttt{DomainModel}\allowbreak\texttt{Adapter}, serializa y recarga los dos
 modelos intermedios, y compara una representación canónica de
 \texttt{EditorSpec}. A continuación exige el mismo conjunto de artefactos
-principales y abre los doce editores resultantes ---seis pares por dos rutas---
+principales y abre los doce editores resultantes ---seis ejemplos por dos rutas---
 mediante pruebas de humo en navegador. Finalmente genera el caso exclusivo de
 Ecore, comprueba sus siete grupos de capacidades y abre su editor. En total se
 verifican trece editores. Esta comprobación permite usar los ejemplos como
@@ -590,7 +918,7 @@ valor; el segundo se limita a la identidad y a las referencias no contenidas.
 Los comentarios \texttt{//} explican cada sentencia incluida. Las Figuras
 \ref{fig:ecore-composition-acotado} y
 \ref{fig:ecore-references-acotado}, presentadas en la sección del adaptador
-Ecore, muestran las estructuras equivalentes sin reproducir el XML.
+Ecore, muestran las estructuras equivalentes.
 
 \begin{lstlisting}[style=tfmm2b, captionpos=t, caption={Fragmento clave de \texttt{03\_composition\_inputs} comentado línea a línea}, label={lst:composition-inputs-dsl}]
 // Nombra el dominio que se convertira en EditorSpec.
@@ -809,8 +1137,8 @@ public static EditorSpec toEditorSpec(DomainModel domain) {
 \end{lstlisting}
 
 En el primer método, \texttt{pkg} es el paquete Ecore cargado desde
-\texttt{source.ecore}. En el segundo, \texttt{domain} es el árbol del modelo
-textual que Xtext ha construido al analizar \texttt{source.m2b}. Ambos son
+un fichero \texttt{.ecore}. En el segundo, \texttt{domain} es el árbol del modelo
+textual que Xtext ha construido al analizar su fichero \texttt{.m2b}. Ambos son
 objetos de entrada; los dos métodos devuelven un \texttt{EditorSpec}, es decir,
 el mismo tipo de modelo intermedio EMF aunque el origen sea diferente.
 
@@ -819,7 +1147,7 @@ el mismo tipo de modelo intermedio EMF aunque el origen sea diferente.
 Los nombres empleados en los listados pertenecen a tres niveles distintos.
 \texttt{EPackage}, \texttt{EClass}, \texttt{EReference} y los demás tipos Ecore
 empleados aquí proceden de la API de EMF y representan elementos leídos del
-fichero \texttt{source.ecore}. En cambio,
+fichero \texttt{.ecore} seleccionado. En cambio,
 \texttt{BlocklyEditorSpec}, \texttt{BlockTypeSpec}, \texttt{FieldSpec} y
 \texttt{StatementInputSpec} son clases propias de Model2Blockly utilizadas para
 construir la vista Java del modelo intermedio. Finalmente, \texttt{EditorSpec}
@@ -844,7 +1172,7 @@ en los tres fragmentos.
     Identificador & Tipo y procedencia & Significado durante la conversión \\
     \hline
     \texttt{pkg} & \texttt{EPackage} (EMF) & Paquete raíz cargado desde
-    \texttt{source.ecore}; constituye la entrada del adaptador. \\
+    fichero \texttt{.ecore}; constituye la entrada del adaptador. \\
     \texttt{spec} & \texttt{BlocklyEditorSpec} (Model2Blockly) & Descriptor del
     editor que se encuentra en construcción. \\
     \texttt{classifier} & \texttt{EClassifier} (EMF) & Elemento del paquete que
@@ -918,8 +1246,9 @@ for (EClassifier classifier : allClassifiers(pkg)) {
 \FloatBarrier
 
 Aplicado a la Figura \ref{fig:basic-structure-ecore}, el bucle invoca
-\texttt{convertEClass} para \texttt{Board}, \texttt{WorkItem}, \texttt{Task},
-\texttt{Note} y \texttt{Tag}. Cada invocación crea un \texttt{BlockTypeSpec}.
+\texttt{convertEClass} para \texttt{Project}, \texttt{WorkItem}, \texttt{Task},
+\texttt{Milestone} y \texttt{TeamMember}. Cada invocación crea un
+\texttt{BlockTypeSpec}.
 La propiedad \texttt{isAbstract} de \texttt{WorkItem} se copia al descriptor,
 por lo que este tipo participa en la comprobación de conexiones, pero no se
 ofrece como bloque instanciable en la paleta.
@@ -940,9 +1269,10 @@ transformación.
 Cada atributo editable se procesa durante el recorrido de la clase. El método
 \texttt{convert}\allowbreak\texttt{EAttribute} crea un \texttt{FieldSpec} y
 selecciona su representación visual a partir del \texttt{EDataType}. El Listado
-\ref{lst:conversion-eattribute} muestra las ramas utilizadas por
-\texttt{01\_basic\_structure}; los casos numéricos, de color, ángulo e imagen se
-omiten porque siguen el mismo patrón y no intervienen en este ejemplo.
+\ref{lst:conversion-eattribute} incluye la rama de texto utilizada por
+\texttt{01\_basic\_structure} y anticipa las ramas de enumeración y booleano que
+se incorporan en el ejemplo siguiente. Los casos numéricos, de color, ángulo e
+imagen se omiten porque siguen el mismo patrón.
 
 En el código, \texttt{eAttr} es el atributo Ecore recibido por
 \texttt{convertEAttribute}; \texttt{fs} es el \texttt{FieldSpec} de salida,
@@ -986,14 +1316,13 @@ if (type instanceof EEnum) {
 }
 \end{lstlisting}
 
-En el ejemplo, esta decisión produce tres resultados observables en la Figura
-\ref{fig:basic-structure-editor}: \texttt{Task.title}, de tipo \texttt{EString},
-se convierte en un campo de texto; \texttt{Task.priority}, cuyo tipo es el
-enumerado \texttt{Priority}, genera un desplegable con \texttt{low},
-\texttt{medium} y \texttt{high}; y \texttt{Task.done}, de tipo
-\texttt{EBoolean}, se representa mediante un campo booleano. Después de esta
-selección, el mismo método copia el valor predeterminado y marca el campo como
-obligatorio cuando \texttt{lowerBound} es mayor o igual que uno.
+En el primer ejemplo, esta decisión convierte en campos de texto los atributos
+\texttt{Project.name}, \texttt{Task.title}, \texttt{Milestone.name} y
+\texttt{TeamMember.name}, todos de tipo \texttt{EString}. La Figura
+\ref{fig:basic-structure-editor} permite observar los tres primeros en el modelo
+cargado. Después de seleccionar el tipo de campo, el mismo método copia el valor
+predeterminado y marca el campo como obligatorio cuando \texttt{lowerBound} es
+mayor o igual que uno.
 
 \newpage
 \subsection{Conversión de contenciones y referencias}
@@ -1002,7 +1331,7 @@ El tratamiento de una \texttt{EReference} depende de su función. La anotación
 \texttt{input\_value} genera una conexión horizontal; una referencia con
 \texttt{containment=true}, una entrada estructural; y las restantes, selectores
 dinámicos. El Listado \ref{lst:conversion-containment-ecore} conserva solo la
-rama usada por \texttt{Board.items}; omite las alternativas que no modifican
+rama usada por \texttt{Project.workItems}; omite las alternativas que no modifican
 esta creación estructural.
 
 En el fragmento, \texttt{eRef} es la \texttt{EReference} de entrada y
@@ -1044,12 +1373,12 @@ if (eRef.isContainment()) {
 }
 \end{lstlisting}
 
-Para \texttt{Board.items}, el adaptador crea por tanto una
-\texttt{StatementInputSpec} denominada \texttt{items}, con tipo aceptado
-\texttt{WorkItem}, límite inferior uno y límite superior cuatro. La herencia
-permite que los bloques \texttt{Task} y \texttt{Note} satisfagan ese tipo. Las
-cardinalidades se usan además para generar reglas de validación, de modo que el
-editor avisa si el tablero contiene menos de uno o más de cuatro elementos.
+Para \texttt{Project.workItems}, el adaptador crea por tanto una
+\texttt{StatementInputSpec} denominada \texttt{workItems}, con tipo aceptado
+\texttt{WorkItem}, límite inferior uno y límite superior seis. La herencia
+permite que los bloques \texttt{Task} y \texttt{Milestone} satisfagan ese tipo.
+Las cardinalidades se usan además para generar reglas de validación, de modo que
+el editor avisa si el proyecto contiene menos de uno o más de seis elementos.
 
 \subsection{Resumen del mapeo Ecore}
 
@@ -1090,8 +1419,9 @@ raíz sin conexión vertical. Las clases que heredan de una superclase pueden
 generar conexiones tipadas. Las clases marcadas como bloques de salida generan
 conectores de valor. Esta inferencia es importante porque evita que el usuario
 tenga que escribir a mano reglas de conexión Blockly para cada clase. En el
-primer ejemplo, \texttt{Board} se reconoce como raíz, mientras que \texttt{Task}
-y \texttt{Note} reciben conexiones compatibles con \texttt{WorkItem}.
+primer ejemplo, \texttt{Project} se reconoce como raíz, mientras que
+\texttt{Task} y \texttt{Milestone} reciben conexiones compatibles con
+\texttt{WorkItem}.
 
 \subsection{Anotaciones y ejemplos de composición y referencias}
 
@@ -1105,19 +1435,17 @@ archivo y plantillas de generación. Así, un metamodelo sin anotaciones puede
 generar un editor básico, mientras que un metamodelo anotado puede producir una
 experiencia más adaptada al dominio.
 
-Representar los ficheros Ecore como XML ocultaría estas reglas entre detalles
-de serialización. Por ello, las Figuras
-\ref{fig:ecore-composition-acotado} y
-\ref{fig:ecore-references-acotado} reproducen las representaciones gráficas de
-los respectivos ficheros \texttt{source.ecore}. En ellas se reconocen las
+La Figura \ref{fig:ecore-composition-acotado} reproduce la representación
+gráfica de \path{compositionInputs.ecore}; la Figura
+\ref{fig:ecore-references-acotado}, la de
+\path{referencesIntegrity.ecore}. En ellas se reconocen las
 clases, los atributos, las herencias y las relaciones que recorre el adaptador.
-Los metadatos de las anotaciones se explican después de cada diagrama, en vez
-de mostrarlos como elementos XML.
+Los metadatos de las anotaciones se explican después de cada diagrama.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.96\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/03_composition_inputs/compositionInputs class diagram.jpg}
-  \caption{Diagrama Ecore del par \texttt{03\_composition\_inputs}}
+  \includegraphics[width=0.96\textwidth]{../../examples/feature_pairs/03_composition_inputs/compositionInputs class diagram.jpg}
+  \caption{Diagrama Ecore del ejemplo \texttt{03\_composition\_inputs}}
   \label{fig:ecore-composition-acotado}
 \end{figure}
 
@@ -1133,15 +1461,15 @@ inicial. Las anotaciones \texttt{ui} añaden las etiquetas visibles
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.94\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/04_references_integrity/referencesIntegrity class diagram.jpg}
-  \caption{Diagrama Ecore del par \texttt{04\_references\_integrity}}
+  \includegraphics[width=0.94\textwidth]{../../examples/feature_pairs/04_references_integrity/referencesIntegrity class diagram.jpg}
+  \caption{Diagrama Ecore del ejemplo \texttt{04\_references\_integrity}}
   \label{fig:ecore-references-acotado}
 \end{figure}
 
 En el segundo diagrama, \texttt{cardId} y \texttt{linkId} son atributos Ecore
 marcados como identificadores. Las referencias \texttt{outgoing},
 \texttt{source} y \texttt{target} no son contenciones, por lo que el adaptador
-genera campos de referencia que enumeran bloques existentes. El par
+genera campos de referencia que enumeran bloques existentes. El ejemplo
 \texttt{outgoing}/\texttt{source} conserva \texttt{eOpposite} y se sincroniza
 en el navegador. \texttt{target} conserva la cardinalidad \texttt{[1..2]} y
 los indicadores \texttt{unique=false} y \texttt{ordered=false}. Finalmente,
@@ -1367,7 +1695,7 @@ combinar bloques propios con construcciones generales cuando sea necesario.
 
 \subsection{Ejemplo 02: campos, widgets y disposición}
 
-El par \path{02_fields_ui} aísla la conversión de atributos. Su clase
+El ejemplo \path{02_fields_ui} aísla la conversión de atributos. Su clase
 \texttt{ContentForm} reúne cadenas, enteros, decimales, booleanos, enumerados y
 un atributo multivaluado; \texttt{VisualFields} reúne los campos visuales de
 color, ángulo, imagen y etiqueta. En esta segunda clase, los nombres
@@ -1377,8 +1705,8 @@ visible del bloque.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.96\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/02_fields_ui/fieldsUi class diagram.jpg}
-  \caption{Diagrama Ecore del par \texttt{02\_fields\_ui}}
+  \includegraphics[width=0.96\textwidth]{../../examples/feature_pairs/02_fields_ui/fieldsUi class diagram.jpg}
+  \caption{Diagrama Ecore del ejemplo \texttt{02\_fields\_ui}}
   \label{fig:fields-ui-ecore}
 \end{figure}
 
@@ -1388,7 +1716,7 @@ sus valores iniciales; \texttt{Mode} y \texttt{Alignment} aportan los literales
 de los dos enumerados. El atributo \texttt{tags} muestra además una
 multiplicidad mayor que uno. \texttt{VisualFields} agrupa las cuatro
 representaciones especializadas. El diagrama prueba la estructura tipada del
-origen; las anotaciones de \texttt{source.ecore}, que no aparecen como cajas en
+origen; las anotaciones de \texttt{fieldsUi.ecore}, que no aparecen como cajas en
 esta vista, determinan después los widgets, las etiquetas, el orden y la
 presentación Blockly.
 
@@ -1401,9 +1729,9 @@ auditar cada ruta por separado.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/02_fields_ui/screenshots/ecore.png}
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/02_fields_ui/screenshots/ecore.png}
   \caption{Editor de \texttt{02\_fields\_ui} generado desde
-  \texttt{source.ecore}, con el modelo de ejemplo cargado}
+  \texttt{fieldsUi.ecore}, con el modelo de ejemplo cargado}
   \label{fig:fields-ui-editor}
 \end{figure}
 
@@ -1541,9 +1869,9 @@ ejemplo.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/03_composition_inputs/screenshots/ecore.png}
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/03_composition_inputs/screenshots/ecore.png}
   \caption{Editor de \texttt{03\_composition\_inputs} generado desde
-  \texttt{source.ecore}, con contención y entrada de valor conectadas}
+  \texttt{compositionInputs.ecore}, con contención y entrada de valor conectadas}
   \label{fig:composition-inputs-editor}
 \end{figure}
 
@@ -1644,7 +1972,7 @@ val inputsJson = shadowInputs.map['''
 \end{lstlisting}
 
 Para \texttt{Paragraph}, el resultado asocia la entrada \texttt{content} con un
-\texttt{shadow} de tipo \texttt{TextLiteral}. La prueba automática del par
+\texttt{shadow} de tipo \texttt{TextLiteral}. La prueba automática del ejemplo
 comprueba además que las rutas Ecore y DSL conservan el mismo \texttt{check}, el
 mismo tipo sombra y el mismo orden mixto antes de comparar los artefactos
 finales.
@@ -1662,10 +1990,10 @@ conservan en el directorio \path{screenshots/} del ejemplo.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/04_references_integrity/screenshots/ecore.png}
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/04_references_integrity/screenshots/ecore.png}
   \vspace{2mm}
 
-  \includegraphics[width=0.88\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/04_references_integrity/screenshots/reference-selection.png}
+  \includegraphics[width=0.88\textwidth]{../../examples/feature_pairs/04_references_integrity/screenshots/reference-selection.png}
   \caption{Editor de \texttt{04\_references\_integrity}: modelo cargado
   (arriba) y selección dinámica de las tarjetas destino (abajo)}
   \label{fig:references-integrity-editor}
@@ -1799,7 +2127,7 @@ de ejecución, \texttt{updateReferenceDropdowns} reconstruye los candidatos y
 \texttt{outgoing/source}. El escuchador común que activa ambas operaciones se
 detalla posteriormente en el Listado \ref{lst:listener-runtime-blockly}.
 
-La prueba automática del par compara los tres
+La prueba automática del ejemplo compara los tres
 \texttt{ReferenceFieldSpec}, sus etiquetas, límites, indicadores de unicidad y
 orden, y los nombres de los extremos opuestos. A continuación abre los dos
 editores, carga el mismo modelo y comprueba que la raíz sea \texttt{Workflow},
@@ -1809,7 +2137,7 @@ referencias.
 
 \subsection{Ejemplo 05: reglas declaradas, reglas inferidas y diagnóstico}
 
-El par \path{05_validations} concentra las capacidades de validación que los
+El ejemplo \path{05_validations} concentra las capacidades de validación que los
 ejemplos anteriores utilizaban sólo de forma estructural. El dominio contiene
 una página con acciones \texttt{Alert} y \texttt{Navigate}. Sobre esa estructura
 se combinan reglas declaradas por el autor y reglas que los adaptadores deducen
@@ -1819,8 +2147,8 @@ validación visual.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.92\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/05_validations/validations class diagram.jpg}
-  \caption{Diagrama Ecore del par \texttt{05\_validations}}
+  \includegraphics[width=0.92\textwidth]{../../examples/feature_pairs/05_validations/validations class diagram.jpg}
+  \caption{Diagrama Ecore del ejemplo \texttt{05\_validations}}
   \label{fig:validations-ecore}
 \end{figure}
 
@@ -1844,10 +2172,10 @@ puedan distinguir un fallo introducido durante la edición de un fallo de carga.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/05_validations/screenshots/validation-issues.png}
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/05_validations/screenshots/validation-issues.png}
   \vspace{2mm}
 
-  \includegraphics[width=0.96\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/05_validations/screenshots/validation-blocks.png}
+  \includegraphics[width=0.96\textwidth]{../../examples/feature_pairs/05_validations/screenshots/validation-blocks.png}
   \caption{Diagnóstico de una ruta inválida (arriba) y regla visual
   \texttt{Page\_routeStartsSlash} seleccionada (abajo)}
   \label{fig:validations-runtime-visual}
@@ -1975,7 +2303,7 @@ el mensaje a \texttt{queueWarn}; \texttt{applyValidationWarnings} lo coloca en
 el bloque y en la pestaña de problemas. El escuchador del Listado
 \ref{lst:listener-runtime-blockly} repite el cálculo después de cada cambio.
 
-La verificación del par compara las doce reglas, sus árboles visuales y sus
+La verificación del ejemplo compara las doce reglas, sus árboles visuales y sus
 expresiones de ejecución. A continuación abre los dos editores con el modelo
 válido, confirma que no haya avisos y comprueba que el fichero
 \texttt{validation\_blocks.json}, el entorno visual y
@@ -1984,7 +2312,7 @@ válido, confirma que no haya avisos y comprueba que el fichero
 
 \subsection{Ejemplo 06: plantillas de código y configuración del espacio de trabajo}
 
-El par \path{06_codegen_workspace} completa la serie con capacidades que no
+El ejemplo \path{06_codegen_workspace} completa la serie con capacidades que no
 describen la estructura del modelo, sino el comportamiento del editor
 producido. El dominio contiene una raíz \texttt{Program}, dos comandos
 \texttt{Log} y \texttt{Wait}, y la expresión de salida
@@ -1996,8 +2324,8 @@ nuevo diez artefactos HTML, JavaScript y JSON idénticos.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/06_codegen_workspace/codegenWorkspace class diagram.jpg}
-  \caption{Diagrama Ecore del par \texttt{06\_codegen\_workspace}}
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/06_codegen_workspace/codegenWorkspace class diagram.jpg}
+  \caption{Diagrama Ecore del ejemplo \texttt{06\_codegen\_workspace}}
   \label{fig:codegen-workspace-ecore}
 \end{figure}
 
@@ -2022,7 +2350,7 @@ con el resultado de las plantillas.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/06_codegen_workspace/screenshots/ecore.png}
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/06_codegen_workspace/screenshots/ecore.png}
   \caption{Editor de \texttt{06\_codegen\_workspace} con el modelo de ejemplo
   y el código JavaScript generado}
   \label{fig:codegen-workspace-editor}
@@ -2144,12 +2472,12 @@ El caso se conserva en un directorio independiente:
   \path{examples/ecore_specific/07_ecore_specific}
 \end{center}
 Esta ubicación está fuera de \path{examples/feature_pairs}: no constituye un
-séptimo par ni se utiliza para afirmar equivalencia entre Ecore y
+séptimo ejemplo con doble representación ni se utiliza para afirmar equivalencia entre Ecore y
 \texttt{.m2b}. El prefijo \texttt{07\_}
-solo permite ordenarlo después de los seis pares durante la ejecución de las
+solo permite ordenarlo después de los seis ejemplos durante la ejecución de las
 pruebas. Su función es probar información que existe de forma nativa en Ecore y
 que no tiene una construcción textual equivalente. De este modo, los seis
-pares anteriores comparan capacidades comunes, mientras que este caso
+ejemplos anteriores comparan capacidades comunes, mientras que este caso
 independiente delimita explícitamente lo que solo verifica la ruta Ecore.
 
 El metamodelo contiene \texttt{Catalog} en el paquete raíz,
@@ -2163,7 +2491,7 @@ en controles editables.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/ecore_specific/07_ecore_specific/ecoreSpecific class diagram.jpg}
+  \includegraphics[width=\textwidth]{../../examples/ecore_specific/07_ecore_specific/ecoreSpecific class diagram.jpg}
   \caption{Diagrama Ecore del caso \texttt{07\_ecore\_specific}}
   \label{fig:ecore-specific-model}
 \end{figure}
@@ -2176,14 +2504,14 @@ como destino de \texttt{featured}. La notación distingue
 \texttt{derivedSummary} como propiedad derivada y conserva las propiedades
 técnicas restantes para comprobar que el adaptador las filtre. El atributo
 obligatorio \texttt{title} pertenece a la interfaz y será heredado por las
-entradas concretas. Esta representación evita incluir el fichero Ecore como
-XML; la evidencia de la transformación se presenta a continuación en la Figura
+entradas concretas. La evidencia de la transformación se presenta a
+continuación en la Figura
 \ref{fig:ecore-specific-editor} y en la Tabla
 \ref{tab:ecore-specific-capabilities}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/ecore_specific/07_ecore_specific/screenshots/ecore.png}
+  \includegraphics[width=\textwidth]{../../examples/ecore_specific/07_ecore_specific/screenshots/ecore.png}
   \caption{Editor generado para las capacidades específicas de Ecore}
   \label{fig:ecore-specific-editor}
 \end{figure}
@@ -2312,7 +2640,7 @@ verifican también la información que no resulta visible en una sola imagen.
 
 \subsection{Artefactos finales, envoltorios HTML y exportación}
 
-Una vez ilustradas las capacidades mediante los seis pares y el caso Ecore
+Una vez ilustradas las capacidades mediante los seis ejemplos y el caso Ecore
 específico, el flujo termina materializando el mismo conjunto de ficheros para
 cualquier dominio. Esta fase recibe exclusivamente el \texttt{EditorSpec}
 normalizado; por tanto, ya no necesita saber si la entrada original fue
@@ -2676,8 +3004,8 @@ implementación descrita en este capítulo puede instalarse mediante
 \texttt{Help -> Install New Software} sin importar los proyectos fuente.
 
 El repositorio publica también el código fuente, el repositorio p2, los seis
-pares de entrada, el caso exclusivo de Ecore y sus salidas generadas. Para cada
-par, los directorios
+ejemplos con doble representación, el caso exclusivo de Ecore y sus salidas generadas. Para cada
+ejemplo, los directorios
 \path{generated/ecore} y \path{generated/dsl} incluyen el informe, el XMI
 intermedio, el modelo de ejemplo, las reglas de validación y el editor. Así
 pueden inspeccionarse las dos rutas sin repetir la transformación. La Tabla
@@ -2698,7 +3026,7 @@ entrega.
     Sitio del proyecto &
     \url{https://plortinus.github.io/model2blockly/} \\
     Pares Ecore--\texttt{.m2b} &
-    \url{https://github.com/Plortinus/model2blockly/tree/main/io.github.plortinus.model2blockly/examples/feature_pairs} \\
+    \url{https://github.com/Plortinus/model2blockly/tree/main/examples/feature_pairs} \\
     Corpus de evaluación &
     \url{https://github.com/Plortinus/model2blockly/tree/main/evaluation/official-blockly} \\
     Documentación de entrega &
@@ -2893,7 +3221,7 @@ complementarios y localizan fallos distintos.
     muestra y comprobación del espacio Blockly, inspector, validaciones y
     exportación observable. \\
     \hline
-    \texttt{verify:feature-pairs} & Generación de los seis pares, comparación
+    \texttt{verify:feature-pairs} & Generación de los seis ejemplos, comparación
     canónica de \texttt{EditorSpec}, aserciones de capacidades y ejecución de
     \texttt{smoke} sobre doce editores y el caso Ecore exclusivo. \\
     \hline
@@ -2902,7 +3230,7 @@ complementarios y localizan fallos distintos.
   \label{tab:implementation-verification-commands}
 \end{table}
 
-En la última ejecución, los seis pares superaron la generación y la comparación;
+En la última ejecución, los seis ejemplos superaron la generación y la comparación;
 el ejemplo Ecore cumplió sus siete grupos de aserciones; y los trece editores
 superaron la prueba de navegador. De este modo se prueban por separado los
 contratos Java, la equivalencia de las rutas, las capacidades sin equivalente

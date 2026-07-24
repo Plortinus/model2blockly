@@ -48,7 +48,8 @@ import io.github.plortinus.model2blockly.intermediate.blocklyspec.EditorSpec;
  * <h3>Optional EAnnotation hints (source="blockly"):</h3>
  * <ul>
  *   <li>On EClass: message0, colour, category, tooltip, helpUrl, inputsInline, output</li>
- *   <li>On EAttribute: type (field_colour/field_angle/field_image/field_label), min, max, src, width, height, alt</li>
+ *   <li>On EAttribute: type (field_colour/field_angle/field_image/field_label),
+ *       initialValues (for multi-valued attributes), min, max, src, width, height, alt</li>
  *   <li>On EReference: type=input_value, check, shadow</li>
  * </ul>
  *
@@ -370,8 +371,8 @@ public class EcoreAdapter {
 			fs.setFieldType(FieldSpec.FieldType.DROPDOWN);
 			for (EEnumLiteral lit : eEnum.getELiterals()) {
 				fs.getOptions().add(new DropdownOption(
-					lit.getName(),
-					lit.getLiteral()
+					lit.getLiteral(),
+					lit.getName()
 				));
 			}
 		} else {
@@ -390,7 +391,7 @@ public class EcoreAdapter {
 			}
 		}
 
-		if (eAttr.getDefaultValueLiteral() != null) {
+		if (!eAttr.isMany() && eAttr.getDefaultValueLiteral() != null) {
 			fs.setDefaultValue(eAttr.getDefaultValueLiteral());
 		}
 
@@ -401,6 +402,10 @@ public class EcoreAdapter {
 
 		EAnnotation ann = eAttr.getEAnnotation(ANNOTATION_SOURCE);
 		if (ann != null) {
+			String initialValues = ann.getDetails().get("initialValues");
+			if (eAttr.isMany() && initialValues != null) {
+				fs.setDefaultValue(initialValues);
+			}
 			String fieldType = ann.getDetails().get("type");
 			if ("field_colour".equalsIgnoreCase(fieldType)) {
 				fs.setFieldType(FieldSpec.FieldType.COLOUR);
@@ -431,10 +436,6 @@ public class EcoreAdapter {
 			if (max != null) fs.setMax(max);
 		}
 		applyUiAnnotation(eAttr.getEAnnotation(UI_ANNOTATION_SOURCE), fs);
-
-		if (fs.isMany()) {
-			fs.setFieldType(FieldSpec.FieldType.TEXT);
-		}
 
 		return fs;
 	}

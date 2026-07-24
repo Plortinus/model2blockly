@@ -45,7 +45,7 @@ DSL route:   .m2b   -> DomainModelAdapter -> EditorSpec
 | EMF-generated DSL API | `io.github.plortinus.model2blockly/emf-gen/io/github/plortinus/model2blockly/model2Blockly` |
 | DSL 到 EditorSpec 转换 | `io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/DomainModelAdapter.java` |
 | standalone DSL 入口 | `io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/standalone/Model2BlocklyToBlocklyMain.java` |
-| AppMaker DSL 示例 | `io.github.plortinus.model2blockly/examples/app_maker.m2b` |
+| AppMaker DSL 示例 | `examples/app_maker.m2b` |
 
 ## 语法概览
 
@@ -126,7 +126,7 @@ AppMaker 案例保留两种输入：
 | 路线 | 输入 |
 | --- | --- |
 | Ecore route | `io.github.plortinus.model2blockly/model/app_maker.ecore` |
-| DSL route | `io.github.plortinus.model2blockly/examples/app_maker.m2b` |
+| DSL route | `examples/app_maker.m2b` |
 
 文档中的 [AppMaker 案例](./RUNNING_EXAMPLE.md) 使用这两个输入说明同一个案例如何进入
 统一的 EditorSpec 生成链路。

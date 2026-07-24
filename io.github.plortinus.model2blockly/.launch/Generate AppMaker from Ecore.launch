@@ -17,7 +17,7 @@
     <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21/"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="io.github.plortinus.model2blockly.standalone.EcoreToBlocklyMain"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="io.github.plortinus.model2blockly"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="model/app_maker.ecore&#10;examples/generated/app_maker_ecore"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="model/app_maker.ecore&#10;../examples/generated/app_maker_ecore"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="io.github.plortinus.model2blockly"/>
     <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:io.github.plortinus.model2blockly}"/>
 </launchConfiguration>

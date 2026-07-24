@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model2Blockly Generation Report</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --text: #1f252d;
+  --muted: #5f6875;
+  --border: #d9dee5;
+  --header: #eef2f6;
+  --accent: #245a9c;
+  --ok: #176b42;
+  --warn: #8a5a00;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px 56px;
+}
+h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.2; }
+h2 {
+  margin: 30px 0 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  font-size: 19px;
+}
+.lead { max-width: 840px; color: var(--muted); margin: 4px 0; }
+.callout {
+  margin: 18px 0 22px;
+  padding: 14px 16px;
+  border: 1px solid #b9c7d8;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: #f2f6fb;
+}
+.callout h2 {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  font-size: 17px;
+}
+.callout ol { margin: 8px 0 0 22px; padding: 0; }
+.callout li { margin: 4px 0; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 20px 0 8px;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value {
+  margin-top: 4px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.table-wrap {
+  overflow-x: auto;
+  margin: 12px 0 22px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+table { width: 100%; border-collapse: collapse; min-width: 680px; }
+th, td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  vertical-align: top;
+  text-align: left;
+}
+th:last-child, td:last-child { border-right: 0; }
+tr:last-child td { border-bottom: 0; }
+th { background: var(--header); font-weight: 650; }
+.badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #eef1f4;
+  color: #223142;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ok { color: var(--ok); }
+.warn { color: var(--warn); }
+a { color: var(--accent); font-weight: 650; text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #eef1f4;
+  color: #173b63;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+.validation-preview-list {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 22px;
+}
+.validation-preview {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.validation-preview summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  background: var(--header);
+  font-weight: 650;
+}
+.validation-tree { padding: 10px 12px 14px; }
+.validation-node {
+  max-width: 760px;
+  margin: 6px 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+.validation-node-meta {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.validation-children {
+  margin-left: 18px;
+  padding-left: 12px;
+  border-left: 2px solid var(--border);
+}
+.validation-edge {
+  margin: 8px 0 2px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+</style>
+</head>
+<body>
+<main>
+<h1>Model2Blockly Generation Report</h1>
+<p class="lead">Concise generation report for the textual .m2b input path.</p>
+<p class="lead">Use this page to quickly check what was generated and which modelling decisions affect the editor.</p>
+<section class="stats">
+<div class="stat"><div class="label">Input</div><div class="value">examples/feature_pairs/01_basic_structure/basicStructure.m2b</div></div>
+<div class="stat"><div class="label">Domain</div><div class="value">SimpleApp</div></div>
+<div class="stat"><div class="label">Classes</div><div class="value">6</div></div>
+<div class="stat"><div class="label">Blocks</div><div class="value">5</div></div>
+<div class="stat"><div class="label">Categories</div><div class="value">3</div></div>
+<div class="stat"><div class="label">Validations</div><div class="value">15</div></div>
+</section>
+<h2>Generation Pipeline</h2>
+<div class="table-wrap"><table><thead><tr><th>Step</th><th>Artifact</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>1. Source model</td><td>.m2b</td><td>The selected model is adapted into the shared generator-facing model.</td></tr>
+<tr><td>2. Intermediate EMF model</td><td>EditorSpec</td><td>Both the DSL and Ecore routes normalize into the same model shape.</td></tr>
+<tr><td>3. Intermediate XMI</td><td><a href="intermediate/SimpleApp_blocklyspec.xmi">intermediate/SimpleApp_blocklyspec.xmi</a></td><td>The generator writes this XMI, reloads it, and validates the reloaded model.</td></tr>
+<tr><td>4. Blockly editor</td><td>html/*</td><td>HTML, JavaScript, validation runtime and report files are emitted from the reloaded EditorSpec model.</td></tr>
+<tr><td>5. Domain instance model</td><td>*_model.xmi</td><td>The generated editor can export user-created blocks as EMF-style XMI in the source domain namespace.</td></tr>
+</tbody></table></div>
+<h2>Generation Quality Summary</h2>
+<div class="table-wrap"><table><thead><tr><th>Check</th><th>Status</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Editor generated</td><td>✅ Yes</td><td>A standalone Blockly editor is available from this report.</td></tr>
+<tr><td>Sample model generated</td><td>✅ Yes</td><td><code>sample_model.json</code> and the <code>Load Sample</code> button are available.</td></tr>
+<tr><td>Sample import support</td><td>✅ Available</td><td>The generated editor embeds the sample model and can load it without file selection.</td></tr>
+<tr><td>Domain instance XMI export</td><td>✅ Available</td><td>The generated editor can export created models as EMF-style XMI using the domain namespace metadata.</td></tr>
+<tr><td>Generated validations</td><td>✅ 15</td><td>Validation rules are generated into the editor runtime.</td></tr>
+<tr><td>Advanced custom semantics</td><td>⚠️ Manual extension</td><td>Custom semantic behavior beyond declared references, containments, fields and validations is not inferred automatically.</td></tr>
+<tr><td>Smoke test</td><td>▶ Optional</td><td>Run <code>node scripts/smoke-test-generated.mjs</code> from the repository root to load samples automatically in a browser.</td></tr>
+</tbody></table></div>
+<h2>Generated Output</h2>
+<div class="table-wrap"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><a href="html/SimpleApp_blocks.js">html/SimpleApp_blocks.js</a></td><td>✅ Blockly block definitions</td></tr>
+<tr><td><a href="html/SimpleApp_toolbox.js">html/SimpleApp_toolbox.js</a></td><td>✅ Classic HTML target artifact</td></tr>
+<tr><td><a href="html/SimpleApp_generators.js">html/SimpleApp_generators.js</a></td><td>✅ Classic HTML target artifact</td></tr>
+<tr><td><a href="html/SimpleApp_validations.js">html/SimpleApp_validations.js</a></td><td>✅ Validation logic</td></tr>
+<tr><td><a href="html/SimpleApp_editor.html">html/SimpleApp_editor.html</a></td><td>✅ Modular HTML editor</td></tr>
+<tr><td><a href="html/SimpleApp_standalone.html">html/SimpleApp_standalone.html</a></td><td>✅ Open this file to use the generated editor</td></tr>
+<tr><td><a href="html/validation_workspace.html">html/validation_workspace.html</a></td><td>✅ Editable Blockly validation workspace</td></tr>
+<tr><td><a href="html/validation_blocks.json">html/validation_blocks.json</a></td><td>✅ Visual validation block model</td></tr>
+<tr><td><a href="html/validation_runtime.js">html/validation_runtime.js</a></td><td>✅ Validation block expression runtime</td></tr>
+<tr><td><a href="html/sample_model.json">html/sample_model.json</a></td><td>✅ Example model for the Load Sample button and JSON import</td></tr>
+<tr><td><a href="intermediate/SimpleApp_blocklyspec.xmi">intermediate/SimpleApp_blocklyspec.xmi</a></td><td>✅ Formal EditorSpec EMF/XMI intermediate model reloaded before HTML generation</td></tr>
+<tr><td><a href="README.md">README.md</a></td><td>✅ Short instructions inside the output folder</td></tr>
+<tr><td><a href="generation_report.html">generation_report.html</a></td><td>✅ Concise human-readable report</td></tr>
+</tbody></table></div>
+<section class="callout">
+<h2>Recommended Next Steps for a DSL Developer</h2>
+<ol>
+<li>Open the generated <code>*_standalone.html</code> file and build a representative model.</li>
+<li>Check that containment, references, value inputs, shadow blocks and validations behave as expected.</li>
+<li>Use <code>label</code>, <code>colour</code>, <code>widget</code>, <code>referenceLabelField</code>, <code>shadow</code> and <code>code</code> declarations to improve the editor.</li>
+<li>Export domain instance XMI, JSON or code to verify that the blocks represent a processable model.</li>
+</ol>
+</section>
+<h2>DSL to Blockly Mapping</h2>
+<div class="table-wrap"><table><thead><tr><th>DSL class</th><th>Generated block</th><th>Role</th><th>Features</th></tr></thead><tbody>
+<tr><td>App</td><td>✅ App</td><td>Root block</td><td>6 attributes, 1 containments, 0 references, 0 value inputs</td></tr>
+<tr><td>Page</td><td>✅ Page</td><td>Typed statement block</td><td>5 attributes, 1 containments, 0 references, 0 value inputs</td></tr>
+<tr><td>Component</td><td>✅ Component</td><td>Abstract type</td><td>0 attributes, 0 containments, 0 references, 0 value inputs</td></tr>
+<tr><td>Label</td><td>✅ Label</td><td>Typed statement block</td><td>3 attributes, 0 containments, 0 references, 0 value inputs</td></tr>
+<tr><td>Button</td><td>✅ Button</td><td>Typed statement block</td><td>4 attributes, 0 containments, 0 references, 0 value inputs</td></tr>
+<tr><td>Image</td><td>✅ Image</td><td>Typed statement block</td><td>3 attributes, 0 containments, 0 references, 0 value inputs</td></tr>
+</tbody></table></div>
+<h2>Validation Summary</h2>
+<div class="table-wrap"><table><thead><tr><th>Validation type</th><th>Count</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>CARDINALITY</td><td>✅ 2</td><td>Number of nested blocks in a statement input</td></tr>
+<tr><td>REQUIRED</td><td>✅ 7</td><td>Mandatory field or reference value</td></tr>
+<tr><td>FIELD_CARDINALITY</td><td>✅ 3</td><td>Bounds for multi-valued fields or references</td></tr>
+<tr><td>UNIQUE</td><td>✅ 3</td><td>Duplicate values in ID fields or multi-valued fields/references</td></tr>
+</tbody></table></div>
+<h2>Visual Validation Blocks</h2>
+<p class="lead">These rules are also serialized in <code>validation_blocks.json</code> with Blockly JSON block definitions and Blockly-like block trees. The model prefers high-level custom validation blocks and preserves lower-level Blockly expressions when useful.</p>
+<div class="table-wrap"><table><thead><tr><th>Rule</th><th>Target</th><th>Validation</th><th>Visual block root</th></tr></thead><tbody>
+<tr><td>App_pages</td><td>App</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>Page_components</td><td>Page</td><td>CARDINALITY</td><td><code>validation_statement_cardinality</code></td></tr>
+<tr><td>App_name_required</td><td>App</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>App_previewWidths_required</td><td>App</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>App_targetPlatforms_required</td><td>App</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Page_title_required</td><td>Page</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Label_text_required</td><td>Label</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Button_text_required</td><td>Button</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>Image_url_required</td><td>Image</td><td>REQUIRED</td><td><code>validation_required_field</code></td></tr>
+<tr><td>App_tags_cardinality</td><td>App</td><td>FIELD_CARDINALITY</td><td><code>validation_field_cardinality</code></td></tr>
+<tr><td>App_previewWidths_cardinality</td><td>App</td><td>FIELD_CARDINALITY</td><td><code>validation_field_cardinality</code></td></tr>
+<tr><td>App_targetPlatforms_cardinality</td><td>App</td><td>FIELD_CARDINALITY</td><td><code>validation_field_cardinality</code></td></tr>
+<tr><td>App_tags_unique</td><td>App</td><td>UNIQUE</td><td><code>validation_field_unique</code></td></tr>
+<tr><td>App_previewWidths_unique</td><td>App</td><td>UNIQUE</td><td><code>validation_field_unique</code></td></tr>
+<tr><td>App_targetPlatforms_unique</td><td>App</td><td>UNIQUE</td><td><code>validation_field_unique</code></td></tr>
+</tbody></table></div>
+<div class="validation-preview-list">
+<details class="validation-preview" open>
+<summary>App_pages -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_pages, target=App, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=App, INPUT=pages, MIN=1, MAX=5</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Page_components -> CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Page_components, target=Page, type=CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_statement_cardinality</code><div class="validation-node-meta">TYPE=Page, INPUT=components, MIN=0, MAX=10</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_name_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_name_required, target=App, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=App, FIELD=name, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_previewWidths_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_previewWidths_required, target=App, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=App, FIELD=previewWidths, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_targetPlatforms_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_targetPlatforms_required, target=App, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=App, FIELD=targetPlatforms, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Page_title_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Page_title_required, target=Page, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Page, FIELD=title, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Label_text_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Label_text_required, target=Label, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Label, FIELD=text, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Button_text_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Button_text_required, target=Button, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Button, FIELD=text, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>Image_url_required -> REQUIRED</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=Image_url_required, target=Image, type=REQUIRED</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_required_field</code><div class="validation-node-meta">TYPE=Image, FIELD=url, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_tags_cardinality -> FIELD_CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_tags_cardinality, target=App, type=FIELD_CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_field_cardinality</code><div class="validation-node-meta">TYPE=App, FIELD=tags, FIELD_KIND=attribute, MIN=0, MAX=3</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_previewWidths_cardinality -> FIELD_CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_previewWidths_cardinality, target=App, type=FIELD_CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_field_cardinality</code><div class="validation-node-meta">TYPE=App, FIELD=previewWidths, FIELD_KIND=attribute, MIN=1, MAX=4</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_targetPlatforms_cardinality -> FIELD_CARDINALITY</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_targetPlatforms_cardinality, target=App, type=FIELD_CARDINALITY</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_field_cardinality</code><div class="validation-node-meta">TYPE=App, FIELD=targetPlatforms, FIELD_KIND=attribute, MIN=1, MAX=3</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_tags_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_tags_unique, target=App, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_field_unique</code><div class="validation-node-meta">TYPE=App, FIELD=tags, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_previewWidths_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_previewWidths_unique, target=App, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_field_unique</code><div class="validation-node-meta">TYPE=App, FIELD=previewWidths, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+<details class="validation-preview">
+<summary>App_targetPlatforms_unique -> UNIQUE</summary>
+<div class="validation-tree">
+<div class="validation-node"><code>validation_rule</code><div class="validation-node-meta">name=App_targetPlatforms_unique, target=App, type=UNIQUE</div></div>
+<div class="validation-children">
+<div class="validation-edge">CONDITION</div>
+<div class="validation-node"><code>validation_field_unique</code><div class="validation-node-meta">TYPE=App, FIELD=targetPlatforms, FIELD_KIND=attribute</div></div>
+</div>
+</div>
+</details>
+</div>
+<h2>What To Check</h2>
+<div class="table-wrap"><table><thead><tr><th>Topic</th><th>Status</th></tr></thead><tbody>
+<tr><td>Required fields</td><td>✅ Generated from the DSL <code>required</code> keyword</td></tr>
+<tr><td>Containment cardinality</td><td>✅ Generated from <code>contains [lower..upper]</code></td></tr>
+<tr><td>Must-follow constraints</td><td>✅ Generated from <code>constraint ... must follow ...</code></td></tr>
+<tr><td>Opposite references</td><td>✅ No opposite references declared</td></tr>
+<tr><td>Advanced semantics</td><td>❌ Custom semantic constraints are not generated automatically</td></tr>
+</tbody></table></div>
+</main>
+</body>
+</html>

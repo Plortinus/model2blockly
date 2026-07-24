@@ -4,93 +4,615 @@
 本章按照一次完整执行的流程说明 Model2Blockly 的实现。与上一章侧重
 设计和架构不同，本章将指出生成链各阶段所对应的具体技术、类和操作。
 
-本章首先说明如何在第一个限定示例上运行该工具，以及如何找到生成的
-编辑器。随后介绍内部流程、代码组织，以及六组互补示例；每组示例均由
-\texttt{source.ecore} 和 \texttt{source.m2b} 配对构成。在这些输入对之外，
-还增加了一个专门展示 Ecore 独有能力的案例。这组案例将本章后文讨论的
-各项规则分开呈现。在此基础上，本章详细介绍输入的加载与验证、
-\texttt{EditorSpec} 契约、Java 适配器、HTML/JavaScript 生成器，以及
-浏览器中的运行行为。最后介绍 Eclipse 集成与分发、独立入口和实现测试。
-
-\section{运行 Model2Blockly}
+\section{插件安装与使用}
 \label{sec:ejecucion-model2blockly}
 
-在详细介绍内部类之前，本节先从用户角度说明可以直接观察到的操作过程。
-运行 Model2Blockly 的主要方式是使用其 Eclipse 插件。该环境必须使用
-Java 21 启动；插件既可以从项目发布的 p2 仓库安装，也可以从源代码启动
-一个 Eclipse 运行时实例来执行。无论采用哪种方式，生成操作都作用于
-工作区中的输入文件。
+\subsection{插件安装}
 
-这里使用 \path{examples/feature_pairs/01_basic_structure} 输入对来复现
-执行过程，因为它只包含观察完整生成链所需的元素：一个包、一个抽象类、
-若干具体类、一条继承关系、一条包含关系和若干工具箱分类。图
-\ref{fig:basic-structure-ecore} 展示了该示例 Ecore 元模型的结构视图。
-这里采用类图而不是 XML 序列化形式，使读者无需接触 Ecore 的持久化细节，
-即可识别其中的类、类型和关系。
+\begin{samepage}
+Model2Blockly 要求使用兼容 Java 21 的 Eclipse 发行版，并通过 JDK 21
+启动。插件的可安装版本发布在以下 p2 仓库中：
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.96\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/01_basic_structure/basicStructure class diagram.jpg}
-  \caption{输入对 \texttt{01\_basic\_structure} 的 Ecore 类图}
-  \label{fig:basic-structure-ecore}
-\end{figure}
+\begin{center}
+  \url{https://plortinus.github.io/model2blockly/update-site/}
+\end{center}
+\end{samepage}
 
-\texttt{Board} 是该示例的根类。其 \texttt{name} 属性类型为
-\texttt{EString}，默认值为 \texttt{Sprint board}。\texttt{items} 关系
-上的实心菱形表示包含关系，基数 \texttt{[1..4]} 则要求每个看板包含
-一至四个元素。在生成的编辑器中，该引用会转换为一个语句输入，其中可以
-接入兼容的块。
-
-\texttt{WorkItem} 是抽象类，因此不会生成为可实例化的块。其子类
-\texttt{Task} 和 \texttt{Note} 会生成块，并可插入 \texttt{items}。
-\texttt{Task} 的属性覆盖了三种转换：\texttt{title} 表示为文本字段，
-\texttt{priority} 表示为根据枚举 \texttt{Priority} 构造的下拉列表，
-而 \texttt{done} 表示为布尔字段。\texttt{Note} 的 \texttt{body}
-属性则生成另一个文本字段。
-
-最后，\texttt{Tag} 用于检验一个独立的具体类同样会转换为块类型。该图
-有意省略了用于指定展示选项的 \texttt{blockly} 注解，例如
-\texttt{inputsInline=false}；这些注解仍保留在 \texttt{source.ecore}
-中，但理解图中所表示的领域结构并不需要它们。基于这一输入，Ecore 路线
-按以下步骤执行：
+安装步骤如下：
 
 \begin{enumerate}
-  \item 在 Eclipse 中打开或导入主项目；
-  \item 在该目录中选择 \path{source.ecore} 文件；
-  \item 从上下文菜单执行 \texttt{Model2Blockly -> Generate Blockly Editor}；
-  \item 查看生成结束后 Eclipse 自动打开的报告
-  \path{source_generated/generation_report.html}；
-  \item 在浏览器中打开位于 \path{source_generated/html/} 的
-  \path{BasicStructure_standalone.html}，使用生成的编辑器。
+  \item 在 Eclipse 中打开 \texttt{Help -> Install New Software...}；
+  \item 点击 \texttt{Add...}，填写 \texttt{Model2Blockly} 等名称，并登记
+  上述地址；
+  \item 保持 \texttt{Contact all update sites} 选项开启以解析依赖，选择
+  Model2Blockly feature，并继续完成安装向导；
+  \item 接受安装条件，并在 Eclipse 提示时重新启动。
 \end{enumerate}
 
-文本路线的运行方式相同，只需选择同一目录中的 \path{source.m2b}。
-在这两种情况下，如果没有检测到错误，工具都会在输入文件旁创建一个以后缀
-\texttt{\_generated} 命名的目录。该目录包含生成报告、\texttt{EditorSpec}
-的 XMI 序列化、块定义、工具箱、生成与验证脚本、示例模型以及编辑器的
-HTML 页面。由于两个文件都名为 \texttt{source}，交互式运行时需要分别
-执行。为同时保留两种输出，仓库还提供了 \texttt{npm run
-generate:feature-pairs}；该命令会分别将它们写入 \path{generated/ecore}
-和 \path{generated/dsl}。
+\subsection{插件使用}
 
-需要区分这里涉及的两次执行。第一次在 Eclipse 中进行，把领域描述转换为
-Web 产物。第二次发生在浏览器中，即打开独立页面
-\texttt{*\_standalone.html} 之后；用户可在其中使用块构建领域模型、执行
-生成的验证，并将结果导出为 JSON、XMI 或文本代码。图
-\ref{fig:basic-structure-editor} 展示了 \texttt{01\_basic\_structure}
-的第二次执行，其中示例模型已经加载到工作区。由 \texttt{source.m2b}
-生成的编辑器具有相同外观，因为两条路线会产生同一个中间描述符和相同的
-Web 产物。
+操作步骤如下：
 
-\begin{figure}[htbp]
+\begin{enumerate}
+  \item 在 Eclipse 工作区中选择一个 \texttt{.ecore}、\texttt{.m2b}
+  或 \texttt{.model2blockly} 文件；
+  \item 右击该文件；
+  \item 选择 \texttt{Generate Blockly Editor}；
+  \item 打开生成目录中的 \path{generation_report.html}；
+  \item 在浏览器中打开生成目录 \path{html/} 下的
+  \path{*_standalone.html}。
+\end{enumerate}
+
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/01_basic_structure/screenshots/ecore.png}
-  \caption{由 \texttt{source.ecore} 生成的
-  \texttt{01\_basic\_structure} Blockly 编辑器（已加载示例模型）}
-  \label{fig:basic-structure-editor}
+  \includegraphics[width=0.90\textwidth]{assets/blockly/generate_blockly_editor_context_menu.png}
+  \caption{\texttt{.ecore} 或 \texttt{.m2b} 文件上下文菜单中的
+  \texttt{Generate Blockly Editor} 选项}
+  \label{fig:plugin-context-menu}
 \end{figure}
 
-以下各节将逐步展开这条生成链，并把每个可见操作与其实现对应起来。
+\subsection{本章使用的仓库目录与示例概览}
+\label{subsec:directorios-repositorio-implementacion}
+
+本章使用的示例、核心实现和 Eclipse 集成分别位于表
+\ref{tab:directorios-repositorio-implementacion} 所列目录中。
+
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}
+      >{\raggedright\arraybackslash}p{0.39\textwidth}
+      >{\raggedright\arraybackslash}p{0.52\textwidth}@{}}
+    \toprule
+    目录或工程 & 在 Model2Blockly 中的作用 \\
+    \midrule
+    \path{examples/} & 保存本章使用的递进示例及 Ecore 专用案例。 \\
+
+    \path{io.github.plortinus.model2blockly} & 核心 bundle，包含 Xtext
+    语法、EMF 元模型、适配器、验证、生成器和独立运行入口。 \\
+
+    \path{io.github.plortinus.model2blockly.ui} & Eclipse 集成，包括编辑器、
+    上下文菜单和 \texttt{Generate Blockly Editor} handler。 \\
+    \bottomrule
+  \end{tabular}
+  \caption{本章涉及的主要仓库目录}
+  \label{tab:directorios-repositorio-implementacion}
+\end{table}
+
+\path{examples/feature_pairs/} 中包含六个互补示例。每个目录分别提供
+一个 \texttt{.ecore} 元模型和一个表达相同领域结构的 \texttt{.m2b}
+文件；两种输入用于生成并比较同一个 Blockly 编辑器。第一个示例完整展示
+App Maker 从输入到输出的转换，其余示例分别隔离一种项目能力。各示例均可
+独立执行，并按照从结构与字段到代码生成的顺序排列。表
+\ref{tab:chapter-example-overview} 给出本章使用的全部案例。
+
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}
+      >{\raggedright\arraybackslash}p{0.32\textwidth}
+      >{\raggedright\arraybackslash}p{0.59\textwidth}@{}}
+    \toprule
+    示例目录 & 主要内容 \\
+    \midrule
+    \path{01_basic_structure} & 一个可实际理解的 App Maker，包括应用、页面、
+    标签、按钮和图像，并展示常用字段控件、继承、包含关系和基数。 \\
+    \path{02_fields_ui} & 将全部字段类型及界面元数据集中在两个测试类中，
+    用于补充验证第一个示例没有采用的边界配置。 \\
+    \path{03_composition_inputs} & 组合关系、语句输入、值输入和阴影块。 \\
+    \path{04_references_integrity} & 模型标识符、非包含引用、动态选择器、
+    相反引用和一致性检查。 \\
+    \path{05_validations} & 由结构推断的规则、显式声明的规则、诊断信息和
+    可视化验证。 \\
+    \path{06_codegen_workspace} & 代码模板、输出块、运行时元数据和 Blockly
+    工作区配置。 \\
+    \path{ecore_specific/07_ecore_specific} & 子包、接口、扩展数值类型和
+    Ecore 技术属性等仅适用于 Ecore 路线的能力。 \\
+    \bottomrule
+  \end{tabular}
+  \caption{本章示例及其逐步增加的能力}
+  \label{tab:chapter-example-overview}
+\end{table}
+
+\subsection{示例 01：从元模型描述到 Blockly 编辑器}
+
+App Maker（应用搭建器）允许用户通过可视化方式组织应用、页面和界面组件。
+本例借鉴 MIT App Inventor 将组件配置与积木编辑结合的思路
+\cite{mitAppInventorDesignerBlocks,mitAppInventorGlossary}，但不复现其领域模型
+或源代码。示例只描述界面结构；事件、页面跳转和动作由后续示例说明。
+
+\subsubsection{\texttt{basicStructure.ecore}：Ecore 元模型文件}
+
+图 \ref{fig:basic-structure-ecore} 给出 \path{basicStructure.ecore} 的完整类图。
+
+\begin{landscape}
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.96\linewidth]{../../examples/feature_pairs/01_basic_structure/simpleApp class diagram.jpg}
+  \caption{\texttt{basicStructure.ecore} 的完整 App Maker 元模型}
+  \label{fig:basic-structure-ecore}
+\end{figure}
+\end{landscape}
+
+图 \ref{fig:basic-structure-ecore} 中使用了四种主要的 Ecore 元素：
+\texttt{EClass} 定义一类模型对象，\texttt{EAttribute} 定义对象自身保存的字段，
+\texttt{EReference} 定义对象之间的关系，\texttt{EEnum} 定义一组可选值。
+字段和关系中的 \texttt{eType} 表示类型，单值属性的
+\texttt{defaultValueLiteral} 表示默认值，\texttt{lowerBound} 和
+\texttt{upperBound} 分别表示允许出现的最少和最多次数。未注明数量时，默认可以
+出现零次或一次；当 \texttt{upperBound} 大于 1 时，该字段可以保存多个值。
+按照图中的结构，各部分定义如下。
+
+\begin{enumerate}
+  \item \textbf{\texttt{App} 类}
+
+  \textbf{（1）类的定义}
+
+  定义了一个名为 \texttt{App} 的 \texttt{EClass}，表示一个应用。
+
+  \textbf{（2）单值属性}
+
+  \begin{itemize}
+    \item \texttt{name} 是 \texttt{EString} 类型的 \texttt{EAttribute}，表示应用
+    名称。其 \texttt{lowerBound=1}，因此必须填写；默认值为
+    \texttt{Welcome App}。
+    \item \texttt{theme} 是 \texttt{Theme} 枚举类型的 \texttt{EAttribute}，
+    表示应用主题；默认值为 \texttt{light}。
+    \item \texttt{published} 是 \texttt{EBoolean} 类型的 \texttt{EAttribute}，
+    表示应用是否已经发布；默认值为 \texttt{false}。
+  \end{itemize}
+
+  \textbf{（3）多值属性}
+
+  普通属性在一个 \texttt{App} 对象中只保存一个值，例如
+  \texttt{theme} 只能保存一个主题。多值属性保存的则是一个值列表，列表中的
+  每一项仍须符合该属性声明的 Ecore 类型。本例包含以下三个列表：
+
+  \begin{enumerate}
+    \item \texttt{tags : EString [0..3]} 保存应用标签。列表可以为空，也可以包含
+    一至三个字符串。例如 \texttt{[demo, welcome]} 表示两个独立的字符串
+    \texttt{demo} 和 \texttt{welcome}，而不是一个内容为
+    \texttt{demo,welcome} 的字符串。
+    \item \texttt{previewWidths : EInt [1..4]} 保存用于预览页面布局的屏幕宽度。
+    列表必须包含一至四个整数，每个整数的取值范围为 320 至 1920。例如
+    \texttt{[360, 768, 1440]} 包含三个整数，分别表示三种预览宽度。
+    \item \texttt{targetPlatforms : Platform [1..3]} 保存应用的目标平台。
+    列表必须包含一至三个值，每一项只能是 \texttt{Platform} 枚举中的
+    \texttt{web}、\texttt{android} 或 \texttt{ios}。例如
+    \texttt{[web, android]} 表示同一个应用需要同时生成 Web 和 Android 版本。
+  \end{enumerate}
+
+  三个列表均保留各项的先后顺序，并且不允许出现重复值。方括号中的内容是列表
+  示例；生成编辑器首次打开时显示的列表由
+  \texttt{blockly.initialValues} 注解提供，Ecore 的
+  \texttt{lowerBound} 和 \texttt{upperBound} 只声明列表允许包含的最少项数和
+  最多项数。
+
+  \textbf{（4）包含关系}
+
+  \texttt{pages} 是一个指向 \texttt{Page} 的
+  \texttt{EReference}。\texttt{containment=true} 表示页面由应用包含；
+  \texttt{lowerBound=1}、\texttt{upperBound=5} 表示一个应用必须包含一至五个页面。
+
+  \textbf{（5）生成的 Blockly 块}
+
+  这里的核心是 Ecore 概念与 Blockly 概念之间的对应关系：
+  \begin{enumerate}
+    \item Ecore 中的 \texttt{EClass App} 生成一种名为 \texttt{App} 的
+    \textbf{Blockly 自定义块类型}。这里的“自定义”表示该块由 Model2Blockly
+    根据领域模型生成，不是 Blockly 自带的逻辑或循环块。
+    \item 用户从工具箱把 \texttt{App} 块拖入工作区后，得到一个
+    \textbf{块实例}。这个块实例表示模型中的一个具体 \texttt{App} 对象。
+    \item \texttt{App} 的 \texttt{EAttribute} 生成块内部的字段。例如，
+    \texttt{name} 生成文本框，用户在文本框中输入的内容成为该
+    \texttt{App} 对象的 \texttt{name} 属性值。
+    \item \texttt{App} 的包含型 \texttt{EReference pages} 生成块上的结构输入，
+    \texttt{Page} 块通过该位置接入，从而表示应用包含页面。
+  \end{enumerate}
+
+  因此，\texttt{App} 本身生成的是一种自定义块类型，而
+  \texttt{field\_multivalue} 是该块内部用于编辑多值属性的自定义字段，二者不属于
+  同一层次。Blockly 编辑器的工具箱列出可以创建的块类型，工作区用于放置和连接
+  这些块的实例。
+
+  生成的 \texttt{App} 块位于工具箱的 \texttt{Application} 类别，块标题为
+  \texttt{Application}，并在工作区中显示为蓝色。该蓝色由注解中的
+  \texttt{blockly.colour=210} 指定；210 是 Blockly 使用的色相角，只控制块的
+  外观，不是 \texttt{App} 的属性。\texttt{App} 没有连接到其他父块，因此作为应用
+  模型最外层的根块。具体结果如图 \ref{fig:basic-app-fields} 所示。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.62\textwidth,trim=0 585 0 0,clip]{../../examples/feature_pairs/01_basic_structure/screenshots/features/app_fields.png}
+  \caption{\texttt{App} 生成的 \texttt{Application} 块及其字段}
+  \label{fig:basic-app-fields}
+\end{figure}
+
+  图中，\texttt{name}、\texttt{theme} 和 \texttt{published} 分别生成文本框、
+  下拉框和复选框
+  \cite{blocklyTextInputField,blocklyDropdownField,blocklyCheckboxField}。
+  三个多值属性均生成 Model2Blockly 自定义的
+  \texttt{field\_multivalue}：\texttt{tags} 的列表项使用文本框，
+  \texttt{previewWidths} 的列表项使用整数输入框，
+  \texttt{targetPlatforms} 的列表项使用平台下拉框。块上显示的是列表摘要；
+  例如 \emph{3 values} 表示 \texttt{previewWidths} 当前保存了三个整数。
+  点击该字段可以打开列表编辑窗口，增加、删除或调整列表项的顺序。保存时，
+  编辑器检查列表项数、元素类型、数值范围和重复值。\texttt{pages} 则生成只允许
+  接入 \texttt{Page} 块的结构输入。
+
+  \textbf{（6）生成的 Blockly 代码}
+
+  Model2Blockly 读取 \texttt{basicStructure.ecore} 后，将 Blockly 块定义写入
+  生成目录中的 \path{html/SimpleApp_blocks.js}。表
+  \ref{tab:basic-app-code-mapping} 先概括 Ecore 定义与 Blockly 结果之间的对应
+  关系，代码清单 \ref{lst:basic-generated-app} 再给出这些结果在生成文件中的
+  主要表示。
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{\texttt{App} 的 Ecore 定义与 Blockly 结果}
+  \label{tab:basic-app-code-mapping}
+  \renewcommand{\arraystretch}{1.18}
+  \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.39\textwidth}
+                      >{\raggedright\arraybackslash}p{0.53\textwidth}@{}}
+    \toprule
+    \textbf{Ecore 定义} & \textbf{生成的 Blockly 结果} \\
+    \midrule
+    \texttt{EClass App}
+      & 名为 \texttt{App} 的自定义块类型；
+        代码使用 \texttt{"type":"App"} 表示。 \\
+    \texttt{name : EString}
+      & 标有 \emph{Name} 的 \texttt{field\_input} 文本框。 \\
+    \addlinespace
+    \texttt{theme : Theme}
+      & \texttt{field\_dropdown} 下拉框，候选项为
+        \emph{light} 和 \emph{dark}。 \\
+    \addlinespace
+    \texttt{published : EBoolean}
+      & \texttt{field\_checkbox} 复选框。 \\
+    \addlinespace
+    \texttt{tags : EString [0..3]}
+      & \texttt{field\_multivalue} 多值字段，可编辑零至三个字符串。 \\
+    \addlinespace
+    \texttt{pages : Page [1..5]}
+      & \texttt{input\_statement} 结构输入，只允许接入
+        \texttt{Page} 块。 \\
+    \addlinespace
+    \texttt{blockly.colour=210}
+      & 自定义块显示为蓝色。 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{lstlisting}[style=tfmjavascript, captionpos=t, caption={\texttt{App} 块生成代码的代表性片段}, label={lst:basic-generated-app}]
+{
+  // App 自定义块的类型和标题
+  "type": "App",
+  "message0": "Application", "args0": [],
+
+  // App.name 生成“Name + 文本框”
+  "message1": "Name %1",
+  "args1": [{"type":"field_input", "name":"name",
+             "text":"Welcome App"}],
+
+  // App.tags 生成“Tags + 多值字符串字段”
+  "message4": "Tags %1",
+  "args4": [{"type":"field_multivalue", "name":"tags",
+             "text":"demo,welcome", "itemType":"TEXT",
+             "lowerBound":0, "upperBound":3}],
+
+  // App.pages 生成只接受 Page 块的连接位置
+  "message7": "pages %1",
+  "args7": [{"type":"input_statement", "name":"pages",
+             "check":"Page"}],
+
+  "colour": 210
+}
+\end{lstlisting}
+
+  代码清单 \ref{lst:basic-generated-app} 只保留四种不同层次的结果：自定义块、
+  单值字段、多值字段和块连接。\texttt{message1} 中的 \texttt{Name} 是块上显示的
+  文字，\texttt{\%1} 是紧随其后的控件位置；同号的 \texttt{args1} 指定该位置放置
+  \texttt{field\_input} 文本框。因此，这两行代码共同生成图
+  \ref{fig:basic-app-fields} 中的 \emph{Name [Welcome App]}。
+
+  未在清单中重复列出的 \texttt{theme} 和 \texttt{published} 分别按照表
+  \ref{tab:basic-app-code-mapping} 生成下拉框和复选框。\texttt{previewWidths}
+  与 \texttt{targetPlatforms} 和 \texttt{tags} 都使用
+  \texttt{field\_multivalue}，但列表项控件不同：前者使用整数输入框并限制在
+  320 至 1920，后者使用包含 \texttt{web}、\texttt{android} 和 \texttt{ios}
+  的下拉框。
+
+  \textbf{（7）转换实现}
+
+  本例的实现遵循以下数据流：
+
+  \begin{center}
+    \texttt{Ecore 文件}
+    $\longrightarrow$
+    \texttt{EditorSpec 中间模型}
+    $\longrightarrow$
+    \texttt{Blockly 编辑器文件}
+  \end{center}
+
+  Ecore 元素到中间模型的转换可参考
+  \path{adapter/EcoreAdapter.java}；中间模型到 Blockly 编辑器文件的生成可参考
+  \path{generator/BlocklyCodeGenerator.xtend}。本例实际生成的块定义可在示例目录
+  \path{01_basic_structure/generated/ecore/html/SimpleApp_blocks.js} 中查看。
+  这里不展开这些文件的内部方法，只说明它们分别承担模型适配和代码生成；具体
+  实现在后文的统一实现流程中介绍。
+
+  \item \textbf{\texttt{Page} 类}
+
+  \textbf{（1）类的定义}
+
+  定义了一个名为 \texttt{Page} 的 \texttt{EClass}，表示应用中的一个页面。
+  与 \texttt{App} 相同，\texttt{EClass Page} 生成一种 Blockly 自定义块类型；
+  工作区中的一个 \texttt{Page} 块实例表示模型中的一个具体页面。
+
+  \textbf{（2）属性}
+
+  \texttt{title}、\texttt{description}、\texttt{scrollable} 和
+  \texttt{alignment} 分别使用已经在 \texttt{App} 中说明的字符串、布尔和枚举
+  转换规则，生成文本框、复选框和下拉框。其中，\texttt{title} 的
+  \texttt{lowerBound=1}，因此必须填写。
+
+  \texttt{backgroundColor} 在 Ecore 中仍是一个 \texttt{EString}，默认值为
+  \texttt{\#ffffff}。它的 \texttt{blockly} 注解将字段类型指定为
+  \texttt{field\_colour}，因此生成的块显示颜色选择方块，而不是普通文本框。
+  用户选择颜色后，模型中保存的仍是 \texttt{\#ffffff} 这类字符串。这是 Page
+  相比 App 新增的字段控件。
+
+  \textbf{（3）组件包含关系}
+
+  \texttt{components} 是包含型 \texttt{EReference}，目标类型为抽象类
+  \texttt{Component}。它的上限 \texttt{upperBound=10} 表示一个页面可以包含
+  零至十个组件。该引用生成名为 \texttt{components} 的结构输入，用于接入
+  \texttt{Label}、\texttt{Button} 和 \texttt{Image} 块，而不是编辑普通属性值。
+  三种具体组件都继承 \texttt{Component}，因此能够接入该位置；\texttt{Page}
+  等其他类型的块不能接入。组件超过十个时，生成的数量验证报告错误。
+
+  \textbf{（4）生成的 Blockly 块}
+
+  生成的 \texttt{Page} 块包含页面属性和 \texttt{components} 结构输入。
+  \texttt{Page} 块自身具有 \texttt{Page} 类型的前后连接，因此可以接入
+  \texttt{App.pages}，并与其他 \texttt{Page} 块依次连接。由此，工作区中的块
+  嵌套直接表示“应用包含页面、页面包含组件”的模型结构，具体结果见图
+  \ref{fig:basic-editor-anatomy}。
+
+  \textbf{（5）生成代码中的新增部分}
+
+  代码清单 \ref{lst:basic-generated-page} 只列出 Page 相比 App 新增的颜色字段、
+  面向抽象类型的结构输入和块连接。文本框、复选框和下拉框的代码与 App 相同，
+  因此省略。
+
+\begin{lstlisting}[style=tfmjavascript, captionpos=t, caption={\texttt{Page} 块生成代码中的新增部分}, label={lst:basic-generated-page}]
+{
+  "type": "Page",
+
+  // EString + field_colour 注解生成颜色选择控件。
+  "message3": "backgroundColor %1",
+  "args3": [{"type":"field_colour",
+             "name":"backgroundColor",
+             "colour":"#ffffff"}],
+
+  // 包含引用生成只接受 Component 类型的结构输入。
+  "message6": "components %1",
+  "args6": [{"type":"input_statement",
+             "name":"components",
+             "check":"Component"}],
+
+  // Page 块自身只能接入 App.pages 等 Page 类型连接位置。
+  "previousStatement": "Page",
+  "nextStatement": "Page"
+}
+\end{lstlisting}
+
+  \texttt{check="Component"} 限定 \texttt{components} 中可接入的块类型；
+  \texttt{previousStatement} 和 \texttt{nextStatement} 则声明
+  \texttt{Page} 块自身的连接类型，使多个页面能够在 \texttt{App.pages} 中连续
+  排列。
+
+  \item \textbf{\texttt{Component} 及其子类}
+
+  \textbf{（1）类与继承}
+
+  \texttt{Component} 是抽象 \texttt{EClass}，表示所有界面组件的共同类型。
+  抽象类只用于组织类型，不生成可以拖入工作区的块。\texttt{Label}、
+  \texttt{Button} 和 \texttt{Image} 是三个具体 \texttt{EClass}，并通过
+  \texttt{eSuperTypes} 继承 \texttt{Component}。三者分别生成自定义块，并都能
+  接入 \texttt{Page.components}。
+
+  \textbf{（2）属性}
+
+  \begin{itemize}
+    \item \texttt{Label}：\texttt{text} 表示必填的标签文字，默认值为
+    \texttt{Welcome}；\texttt{fontSize} 表示字号，默认值为 24，允许范围为
+    8 至 72；\texttt{textColor} 表示文字颜色，默认值为 \texttt{\#202124}。
+    \item \texttt{Button}：\texttt{text} 表示必填的按钮文字，默认值为
+    \texttt{Continue}；\texttt{width} 表示宽度，默认值为 160，允许范围为
+    60 至 320；\texttt{enabled} 表示按钮是否可用，默认值为 \texttt{true}；
+    \texttt{backgroundColor} 表示背景颜色，默认值为 \texttt{\#1a73e8}。
+    \item \texttt{Image}：\texttt{url} 表示必填的图片地址，默认值为
+    \mbox{\texttt{https://example.org/welcome.png}}；\texttt{rotation} 表示旋转角度，
+    默认值为 0；\texttt{opacity} 表示透明度，默认值为 1，允许范围为 0 至 1。
+  \end{itemize}
+
+  字符串、布尔和颜色属性沿用 App 与 Page 已说明的转换规则。这里新增的是数值和
+  角度控件：\texttt{fontSize}、\texttt{width} 和 \texttt{opacity} 生成带取值
+  范围的 \texttt{field\_number}；\texttt{rotation} 生成
+  \texttt{field\_angle}，用户可以通过角度选择器设置旋转角度。
+
+  \textbf{（3）生成的 Blockly 块}
+
+  图 \ref{fig:basic-component-fields} 展示三个具体组件块。它们的块标题、颜色和
+  字段不同，但连接类型均为 \texttt{Component}，因此可以在
+  \texttt{Page.components} 中连续排列。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.52\textwidth]{../../examples/feature_pairs/01_basic_structure/screenshots/features/component_fields.png}
+  \caption{由三个具体 EClass 生成的 \texttt{Label}、\texttt{Button} 和 \texttt{Image} 块}
+  \label{fig:basic-component-fields}
+\end{figure}
+
+  \item \textbf{\texttt{Theme}、\texttt{Alignment} 和 \texttt{Platform} 枚举}
+
+  三者均由 \texttt{EEnum} 定义，每个 \texttt{EEnumLiteral} 表示一个合法值：
+  \texttt{Theme} 包含 \texttt{light} 和 \texttt{dark}；
+  \texttt{Alignment} 包含 \texttt{left}、\texttt{center} 和 \texttt{right}；
+  \texttt{Platform} 包含 \texttt{web}、\texttt{android} 和 \texttt{ios}。单值枚举
+  属性生成下拉框；多值枚举属性生成由多个下拉框组成的
+  \texttt{field\_multivalue}。
+
+  \item \textbf{\texttt{EAnnotation} 注解}
+
+  Ecore 已经提供类、属性、类型和包含关系等结构信息，Model2Blockly 可以据此完成
+  基本转换。\texttt{source="blockly"} 的 \texttt{EAnnotation} 用于补充无法从
+  Ecore 结构直接得到的 Blockly 配置，例如工具箱类别、块颜色、特殊字段类型、
+  数值范围和多值初始内容。它不定义新的应用数据，也不是完成基本转换的必要条件。
+  清单 \ref{lst:basic-annotations-summary} 使用 \texttt{@blockly(...)} 简写，列出
+  本例中三种有代表性的配置。
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=tfmcode, captionpos=t, caption={本例中 EAnnotation 的简化表示}, label={lst:basic-annotations-summary}]
+EClass App
+  @blockly(category="Application", colour=210)
+  // Application 工具箱类别中的蓝色块
+
+EAttribute backgroundColor : EString
+  @blockly(type="field_colour")
+  // 将字符串显示为颜色选择器
+
+EAttribute previewWidths : EInt [1..4]
+  @blockly(initialValues="360,768,1440", min=320, max=1920)
+  // 编辑器初始列表（非 Ecore 默认值）；每项范围为 320 至 1920
+\end{lstlisting}
+\end{minipage}
+\end{enumerate}
+
+以上各项分别说明了 Ecore 类、属性、引用和注解的转换结果。图
+\ref{fig:basic-editor-anatomy} 展示这些结果组合后生成的完整编辑器：左侧工具箱
+列出可创建的自定义块，中央工作区通过块及其连接表示应用模型，右侧
+\emph{Inspector} 显示模型结构、生成代码和验证问题。
+
+\begin{landscape}
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.96\linewidth]{../../examples/feature_pairs/01_basic_structure/screenshots/editor_overview.png}
+  \caption{由 \texttt{basicStructure.ecore} 生成的 Blockly 编辑器及其主要界面区域}
+  \label{fig:basic-editor-anatomy}
+\end{figure}
+\end{landscape}
+
+该结果概括了本例的转换过程：\texttt{EClass} 生成 Blockly 自定义块，
+\texttt{EAttribute} 生成块内字段，包含型 \texttt{EReference} 生成块连接位置，
+Ecore 的数量和取值限制生成相应的验证规则；\texttt{blockly} 注解则补充块的
+显示方式和字段配置。下一节改用文本 DSL 描述同一个元模型，生成结果保持一致。
+
+\subsubsection{文本 DSL：同一结构的 \texttt{.m2b} 表示}
+
+\textbf{（1）文件作用}
+
+前述 Ecore 文件已经完整定义了 App Maker。Model2Blockly 还允许使用
+\path{basicStructure.m2b} 表达同一个元模型。该文件仍然定义类、属性和关系，
+不是应用实例；区别在于它使用面向本系统的文本语法，不需要直接编写 Ecore XML。
+
+\textbf{（2）语法与 Ecore 的对应关系}
+
+\begin{table}[H]
+  \centering
+  \small
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabular}{@{}p{0.31\textwidth}p{0.59\textwidth}@{}}
+    \toprule
+    \textbf{\texttt{.m2b} 语法} & \textbf{对应含义} \\
+    \midrule
+    \texttt{domain} & 定义领域模型的名称，对应 Ecore 包。 \\
+    \texttt{category} & 定义生成编辑器中的工具箱类别及颜色。 \\
+    \texttt{class}、\texttt{abstract class} &
+      定义具体类或抽象类，对应 \texttt{EClass}。 \\
+    \texttt{attribute} & 定义属性、类型、数量和默认内容，对应
+      \texttt{EAttribute}。 \\
+    \texttt{extends} & 定义类的继承关系，对应 \texttt{eSuperTypes}。 \\
+    \texttt{contains} & 定义包含关系及数量范围，对应包含型
+      \texttt{EReference}。 \\
+    \texttt{widget}、\texttt{min}、\texttt{max} 和 \texttt{uiLabel} &
+      指定控件形式、数值范围和显示文字，对应 Ecore 路线中的生成注解。 \\
+    \bottomrule
+  \end{tabular}
+  \caption{\texttt{.m2b} 核心语法与 Ecore 概念的对应关系}
+  \label{tab:basic-m2b-ecore-mapping}
+\end{table}
+
+\textbf{（3）同一结构的文本定义}
+
+代码清单 \ref{lst:basic-structure-m2b-excerpt} 只保留能够代表类、单值属性、
+多值属性、继承和包含关系的语句。
+
+\begin{lstlisting}[style=tfmm2b, captionpos=t, caption={\texttt{basicStructure.m2b} 的关键语句}, label={lst:basic-structure-m2b-excerpt}]
+// 定义领域模型的名称，对应 Ecore 中 EPackage 的名称。
+domain SimpleApp
+
+// 定义 Blockly 工具箱中的三个类别及其块颜色。
+category Application colour 210
+category Pages colour 160
+category Components colour 290
+
+// 定义 App 类，并将生成的自定义块放入 Application 类别。
+// label 是块标题；colour 210 使该块显示为蓝色。
+class App category Application colour 210 label "Application" {
+  // string 表示字符串；[1..1] 表示必须有且只有一个值。
+  // default 指定生成编辑器采用的初始内容。
+  attribute name : string [1..1] default "Welcome App"
+
+  // int [1..4] 表示由一至四个整数组成的多值属性。
+  // 每个整数使用数值框编辑，并且必须位于 320 至 1920。
+  attribute previewWidths : int [1..4] default "360,768,1440"
+    min "320" max "1920" widget number uiLabel "Preview widths"
+
+  // enum 给出每一项允许选择的值；[1..3] 表示列表项数。
+  // 每一项显示为下拉框，初始列表为 web 和 android。
+  attribute targetPlatforms : enum { web, android, ios } [1..3]
+    default "web,android" widget select uiLabel "Target platforms"
+
+  // 定义 App 对 Page 的包含关系：一个 App 包含一至五个 Page。
+  // 该语句生成 App 块中用于接入 Page 块的 pages 连接位置。
+  contains Page pages [1..5]
+}
+
+// 定义 Page 类；一个 Page 块表示模型中的一个页面对象。
+class Page category Pages colour 160 label "Page" {
+  // 页面标题是必填的单值字符串。
+  attribute title : string [1..1] default "Home"
+
+  // 一个 Page 可以包含零至十个 Component。
+  contains Component components [0..10]
+}
+
+// 抽象类只定义公共类型，不生成可从工具箱拖出的块。
+abstract class Component {}
+
+// extends 表示 Label 继承 Component，因此可以接入 components。
+class Label extends Component {
+  // ^ 用于转义 DSL 保留字，生成的属性名仍然是 text。
+  attribute ^text : string [1..1] default "Welcome"
+
+  // 可选整数属性，默认值为 24，允许输入 8 至 72。
+  attribute fontSize : int [0..1] default "24" min "8" max "72"
+}
+\end{lstlisting}
+
+\textbf{（4）转换结果}
+
+Xtext 根据 \path{Model2Blockly.xtext} 解析 \texttt{.m2b} 文件
+\cite{xtextProject,xtextGrammarLanguage}，随后由
+\path{adapter/DomainModelAdapter.java} 转换为与 Ecore 路线相同的
+\texttt{EditorSpec}。因此，等价的 \texttt{.ecore} 和 \texttt{.m2b} 输入生成
+相同的 Blockly 块、连接和验证规则；两条路线的区别仅在元模型的书写方式。
 
 \section{一次执行的内部流程}
 \label{sec:flujo-interno-ejecucion}
@@ -98,7 +620,7 @@ Web 产物。
 在集成式执行中，用户选择的操作由 \texttt{GenerateBlocklyEditorHandler}
 处理。该类根据文件扩展名选择两条加载分支之一。图
 \ref{fig:flujo-interno-ejecucion} 使用已实现组件的名称表示这一过程。
-它不是系统的第二套架构，而是一次生成请求在插件内部实际经过的具体轨迹。
+该图描述一次生成请求在插件内部实际经过的具体轨迹。
 
 \begin{figure}[htbp]
   \centering
@@ -169,9 +691,7 @@ Java 适配器把这两个对象都转换为 \texttt{EditorSpec} 实例。此后
 Xtend 生成器。
 
 生成器返回一张从路径到文本内容的映射表。处理器创建输出目录、写入映射
-中的每一项，并刷新 Eclipse 工作区。最后这一步解释了为什么一次操作会生成
-多个彼此相关的文件，而不只是上一节展示的独立页面。后续各节将详细介绍图中
-每个方框所概括的操作。
+中的每一项，并刷新 Eclipse 工作区。因此，一次操作会生成多个相互关联的文件。
 
 \subsection{阶段、代码与产物之间的可追溯性}
 
@@ -205,13 +725,13 @@ Xtend 生成器。
     加载 Ecore & \texttt{GenerateBlockly}\allowbreak
     \texttt{EditorHandler.}\allowbreak\texttt{generateFromEcore} 和 EMF
     资源 API &
-    \texttt{source.ecore} & \texttt{EPackage} \\
+    \texttt{.ecore} 文件 & \texttt{EPackage} \\
 
     加载文本输入 & \texttt{Model2Blockly.xtext}、
     \texttt{Model2Blockly}\allowbreak\texttt{Validator.java} 和
     \texttt{GenerateBlockly}\allowbreak\texttt{EditorHandler.}
     \allowbreak\texttt{generateFrom}\allowbreak\texttt{Model2Blockly} &
-    \texttt{source.m2b} & 通过验证的 \texttt{DomainModel} \\
+    \texttt{.m2b} 文件 & 通过验证的 \texttt{DomainModel} \\
 
     规范化 & \texttt{EcoreAdapter.java} 或
     \texttt{DomainModelAdapter.java}，以及
@@ -246,18 +766,18 @@ Xtend 生成器。
   \label{tab:trazabilidad-ejecucion}
 \end{table}
 
-\section{项目组织}
+\section{内部代码组织}
 \label{sec:organizacion-proyecto}
 
-本实现按照 Xtext 的常见结构，分布在三个可执行 OSGi bundle 中
-\cite{xtextProject}。项目 \path{io.github.plortinus.model2blockly} 包含
+实际执行转换的代码分布在三个 OSGi bundle 中，它们采用 Xtext 的常见工程结构
+\cite{xtextProject}。工程
+\path{io.github.plortinus.model2blockly} 包含
 语法、通用 EMF 模型、适配器、验证、生成器和命令行入口。以 \path{.ide}
 结尾的项目提供独立于界面的语言服务配置。最后，以 \path{.ui} 结尾的项目
 注册编辑器、菜单和处理器，从而把生成过程连接到 Eclipse 工作区。
 
-另外两个项目不会为转换增加逻辑。\path{.feature} 项目聚合可安装的 bundle，
-\path{.updatesite} 则构建用于分发插件的 p2 仓库。在这三个可执行 bundle
-中，表 \ref{tab:paquetes-implementacion} 将每个组件与实现它的文件和所用
+在这三个可执行 bundle 中，表 \ref{tab:paquetes-implementacion} 将每个组件
+与实现它的文件和所用
 技术对应起来。
 
 \begin{table}[H]
@@ -316,78 +836,6 @@ Xtend 生成器。
 第 \ref{sec:implementacion-ecore-adapter} 节和第
 \ref{sec:implementacion-domainmodel-adapter} 节将详细说明每个类所采用的规则。
 
-这种组织方式落实了上一章的架构，而没有重复其内容：上一章论证组件及其
-依赖关系，本章则指出执行这些职责的具体类、语言和产物。
-
-\section{用于说明实现的限定示例}
-\label{sec:ejemplos-acotados-implementacion}
-
-为了把每项实现决策与可观察的输入和输出对应起来，本章使用了位于
-\path{examples/feature_pairs/} 下的六组最小化互补示例。每个目录都包含
-两个描述同一领域的源文件：用于 EMF 路线的 \path{source.ecore} 和用于
-Xtext 路线的 \path{source.m2b}。表
-\ref{tab:pares-ejemplos-implementacion} 列出了各输入对的职责。
-
-\begin{table}[H]
-  \centering
-  \small
-  \setlength{\tabcolsep}{4pt}
-  \begin{tabular}{@{}
-      >{\raggedright\arraybackslash}p{0.20\textwidth}
-      >{\raggedright\arraybackslash}p{0.68\textwidth}@{}}
-    \toprule
-    输入对 & 隔离展示的能力 \\
-    \midrule
-    \path{01_basic_structure} & 包与领域、具体类与抽象类、继承、包含关系、
-    推断出的连接和工具箱分类。 \\
-    \path{02_fields_ui} & 属性类型、初始值、取值范围、控件、字段展示和
-    嵌套分类。 \\
-    \path{03_composition_inputs} & 包含关系、语句输入的基数、值输入、
-    影子块，以及字段与输入混合顺序的保留。 \\
-    \path{04_references_integrity} & 模型标识符、动态引用、选择标签、
-    多重性、相反引用、唯一性和顺序。 \\
-    \path{05_validations} & 推断和声明的必填、基数、唯一性及顺序规则，
-    语义表达式，以及验证规则的可视化编辑。 \\
-    \path{06_codegen_workspace} & 代码模板、输出块、语句展开、运行时元数据，
-    以及 Blockly 工作区配置。 \\
-    \bottomrule
-  \end{tabular}
-  \caption{用于说明并验证实现的输入对}
-  \label{tab:pares-ejemplos-implementacion}
-\end{table}
-
-这六组示例合起来覆盖了 Ecore 和 DSL 都能够表达的能力。把它们分开，可以
-让每个示例主要负责一类能力，并避免使用一个难以阅读的庞大元模型。可复现的
-矩阵 \path{examples/feature_pairs/CAPABILITY_MATRIX.md} 列举每项能力，
-为其指定一个主要示例，并定义必须在 \texttt{EditorSpec}、生成产物或实际
-运行的编辑器中出现的证据。
-
-案例 \path{examples/ecore_specific/07_ecore_specific} 则补充覆盖了
-子包、被忽略的特征、接口类、更多数值类型、引用标签的自动选择、显式命名
-空间 URI 与前缀，以及 Ecore/OCL 标准注解容器。它不被视为第七个输入对，
-因为 DSL 没有对应构造；若比较两条路线，只会形成一种人为的等价关系。
-
-这种组织方式使每幅图和每段代码清单都能聚焦于一项具体决策，并让读者把
-源文件、转换和最终编辑器联系起来。特别是，\texttt{03\_composition\_inputs}
-用于说明组合，而 \texttt{04\_references\_integrity} 则单独说明非包含引用。
-
-这些输入对同时也是可执行的回归测试案例。可以从仓库根目录运行以下命令
-启动完整验证：
-
-\begin{center}
-  \texttt{npm run verify:feature-pairs}
-\end{center}
-
-该脚本加载六个输入对各自的两个源文件。随后分别执行
-\texttt{EcoreAdapter} 和
-\texttt{DomainModel}\allowbreak\texttt{Adapter}，序列化并重新加载两个
-中间模型，再比较 \texttt{EditorSpec} 的规范化表示。接着，它要求两条
-路线生成同一组主要产物，并通过浏览器冒烟测试打开生成的十二个编辑器
----六个输入对乘以两条路线---。最后，它还生成 Ecore 独有案例，检查其七组
-能力并打开对应编辑器。因此总共验证十三个编辑器。借助这一检查，这些示例
-既可用于解释实现，也可以证明当两种表示法表达相同能力时，它们会到达同一个
-通用契约。
-
 \section{输入的加载与验证}
 \label{sec:carga-validacion-entradas}
 
@@ -428,38 +876,26 @@ Xtext 路线的 \path{source.m2b}。表
 包含同样的调用
 序列，唯一的区别是文件路径的来源。
 
-\begin{lstlisting}[style=tfmjava, captionpos=t, caption={加载并验证 \texttt{.m2b} 输入的带注释流程}, label={lst:carga-modelo-m2b}]
-// 创建 DSL 的独立配置。
+\begin{lstlisting}[style=tfmjava, captionpos=t, caption={加载并验证 \texttt{.m2b} 输入的流程}, label={lst:carga-modelo-m2b}]
 Injector injector = new Model2BlocklyStandaloneSetup()
-    // 向 EMF 注册 Xtext 生成的元素。
     .createInjectorAndDoEMFRegistration();
-// 获取由 Guice 配置的资源集。
 ResourceSet resourceSet = injector.getInstance(ResourceSet.class);
 // 加载 URI，并执行解析和链接。
 Resource resource = resourceSet.getResource(fileUri, true);
-// 保留 Xtext 类型，以访问其服务。
 XtextResource xtext = (XtextResource) resource;
 
-// 检查模型是否符合具体语法。
+// 检查具体语法并传播解析、链接错误。
 xtext.validateConcreteSyntax();
-// 传播语法错误和链接错误。
 Model2BlocklyValidationDiagnostics.throwIfSyntaxErrors(
-    // 标识来源，并传入资源错误。
     sourceLabel, resource.getErrors());
-// 传播 DSL 语义规则产生的错误。
+// 执行全部 DSL 语义规则并传播错误。
 Model2BlocklyValidationDiagnostics.throwIfErrors(
-    // 将诊断与输入文件关联。
     sourceLabel,
-    // 获取为该语言注册的验证器。
     xtext.getResourceServiceProvider().getResourceValidator()
-        // 对资源执行全部 @Check 规则。
         .validate(resource, CheckMode.ALL,
-            // 表明此次验证不会被取消。
             CancelIndicator.NullImpl));
 
-// 声明文本模型的类型化根对象。
 DomainModel domain =
-    // 获取 Xtext 生成的第一个 EMF 对象。
     (DomainModel) resource.getAllContents().next();
 \end{lstlisting}
 
@@ -506,52 +942,33 @@ DSL 还包括界面选项。利用这些选项，可以指定控件、标签、�
 
 代码清单 \ref{lst:composition-inputs-dsl} 和
 \ref{lst:references-integrity-dsl} 分别展示了前文同时涉及的两项决策。
-前者说明如何声明组合和值输入，后者只涉及标识和非包含引用。每条包含在清单
-中的语句都由 \texttt{//} 注释说明。Ecore 适配器一节中的图
+前者声明组合和值输入，后者声明标识和非包含引用。Ecore 适配器一节中的图
 \ref{fig:ecore-composition-acotado} 和
-\ref{fig:ecore-references-acotado} 展示了相应结构，而没有复现 XML。
+\ref{fig:ecore-references-acotado} 展示了相应结构。
 
-\begin{lstlisting}[style=tfmm2b, captionpos=t, caption={逐行注释的 \texttt{03\_composition\_inputs} 关键片段}, label={lst:composition-inputs-dsl}]
-// 命名将被转换为 EditorSpec 的领域。
+\begin{lstlisting}[style=tfmm2b, captionpos=t, caption={\texttt{03\_composition\_inputs} 的组合和值输入}, label={lst:composition-inputs-dsl}]
 domain CompositionInputs
-// 为结构块创建分类。
 category Composition colour 200
-// 为输出块创建另一个分类。
 category Expressions colour 230
 
-// 将 Document 声明为组合结构的根块。
 class Document category Composition colour 200 inputsInline false {
-  // 创建语句输入 sections，可容纳一至四个 Section。
   contains Section sections [1..4]
-    // 将 sections 显示为标题为 Sections、顺序为第二的插槽。
     widget slot uiLabel "Sections" order 2 variant default
-// 结束 Document 块的声明。
 }
 
-// 声明通用类型 Section，但不创建可实例化的块。
 abstract class Section category Composition colour 120 inputsInline false {
-// 结束抽象父类型 Section 的声明。
 }
 
-// 将 Paragraph 声明为与 Section 兼容的具体块。
 class Paragraph extends Section category Composition colour 120 inputsInline false {
-  // 创建值输入 content，其类型为 TextExpression。
   value TextExpression content shadow TextLiteral
-    // 将 content 显示为标签为 Content 的表达式插槽。
     widget expression-slot uiLabel "Content" order 2 variant default
-// 结束 Paragraph 的声明。
 }
 
-// 声明用于定义可接受输出连接的抽象类型。
 abstract output class TextExpression category Expressions colour 230 inputsInline false {
-// 结束抽象类型 TextExpression 的声明。
 }
 
-// 创建具体影子块，并将其输出指定为 TextExpression。
 output as TextExpression class TextLiteral extends TextExpression
-  // 将该具体块放入 Expressions 分类。
   category Expressions colour 230 inputsInline false {
-// 结束 TextLiteral 的声明；此处省略其文本属性。
 }
 \end{lstlisting}
 
@@ -561,42 +978,25 @@ output as TextExpression class TextLiteral extends TextExpression
 是可接受的连接类型，\texttt{TextLiteral} 是默认显示的影子块，直到用户
 接入另一个兼容表达式。
 
-\begin{lstlisting}[style=tfmm2b, captionpos=t, caption={逐行注释的 \texttt{04\_references\_integrity} 关键片段}, label={lst:references-integrity-dsl}]
-// 命名专门用于标识和引用的领域。
+\begin{lstlisting}[style=tfmm2b, captionpos=t, caption={\texttt{04\_references\_integrity} 的标识和引用}, label={lst:references-integrity-dsl}]
 domain ReferencesIntegrity
-// 为示例中的块创建通用分类。
 category References colour 260
 
-// 将 Card 声明为流程中的具体元素。
 class Card extends Element category References colour 120 inputsInline false {
-  // 使用 cardId 作为每张卡片的稳定标识。
   attribute cardId : string [1..1] default "card-1" modelId
-  // 允许选择最多三个 Link，并将 source 声明为相反端。
   reference Link outgoing [0..3] opposite source unique ordered
-    // 为 outgoing 生成一个根据工作区更新的选择器。
     widget reference-select uiLabel "Outgoing links" order 3 variant default
-    // 使用 linkId 作为每个可选 Link 的显示文本。
     referenceLabelField linkId
-// 结束 Card 的声明。
 }
 
-// 将 Link 声明为流程中的第二个具体元素。
 class Link extends Element category References colour 120 inputsInline false {
-  // 使用 linkId 作为每条链接的稳定标识。
   attribute linkId : string [1..1] default "link-1" modelId
-  // 要求一个来源 Card，并与 Card.outgoing 保持同步。
   reference Card source [1..1] opposite outgoing required unique ordered
-    // 使用已有卡片选择器表示 source。
     widget reference-select uiLabel "Source card" order 2 variant default
-    // 在选择器选项中显示 Card 的 title 字段。
     referenceLabelField title
-  // 要求一至两张目标卡片，并允许重复。
   reference Card target [1..2] required nonUnique unordered
-    // 使用另一个引用选择器表示 target。
     widget reference-select uiLabel "Target cards" order 4 variant default
-    // 再次使用 title 作为便于用户理解的标签。
     referenceLabelField title
-// 结束 Link 的声明。
 }
 \end{lstlisting}
 
@@ -634,28 +1034,18 @@ class Link extends Element category References colour 120 inputsInline false {
 代码清单 \ref{lst:ciclo-editor-spec-xmi} 展示处理器如何在两条输入路线中
 应用这一循环。
 
-\begin{lstlisting}[float=htbp, style=tfmjava, captionpos=t, caption={中间模型的验证、序列化与重新加载（含注释）}, label={lst:ciclo-editor-spec-xmi}]
-// 验证适配器创建的通用模型。
+\begin{lstlisting}[float=htbp, style=tfmjava, captionpos=t, caption={中间模型的验证、序列化与重新加载}, label={lst:ciclo-editor-spec-xmi}]
 BlocklySpecDiagnostics.assertValid(intermediateModel, sourceLabel,
-    // 用于把每项错误关联到源模型。
     sourceMapper);
 
-// 声明用于保存中间 XMI 的字符串。
 String intermediateXmi =
-    // 将 EditorSpec 序列化为内存中的 XMI 资源。
     BlocklySpecXmiSerializer.toXmi(intermediateModel);
-// 声明将用于生成编辑器的模型。
 EditorSpec spec =
-    // 重新加载 XMI，并检查其根对象是否为 EditorSpec。
     BlocklySpecXmiSerializer.fromXmiToEditorSpec(intermediateXmi);
 
-// 重新加载后再次验证模型。
 BlocklySpecDiagnostics.assertValid(
-    // 将本次检查标识为中间 XMI 的检查。
     spec, sourceLabel + " intermediate XMI");
-// 声明生成文件的有序映射。
 Map<String, String> generated =
-    // 将通过验证的 EditorSpec 转换为 HTML 和 JavaScript。
     new BlocklyCodeGenerator().generate(spec);
 \end{lstlisting}
 \FloatBarrier
@@ -697,31 +1087,25 @@ Map<String, String> generated =
 \texttt{EditorSpec} 实例。
 
 \begin{lstlisting}[float=htbp, style=tfmjavaecore, caption={两个适配器的 Java 入口点}, label={lst:entrada-adaptadores-java}]
-// 声明 EcoreAdapter.java 的入口点。
 public static EditorSpec toEditorSpec(EPackage pkg) {
-    // 遍历 EPackage，并把 Java 视图转换为通用 EMF 模型。
     return BlocklySpecModelMapper.toEmfSpec(fromEPackage(pkg));
-// 结束 Ecore 适配路线。
 }
 
-// 声明 DomainModelAdapter.java 的入口点。
 public static EditorSpec toEditorSpec(DomainModel domain) {
-    // 遍历 DomainModel，并创建同一个通用 EMF 模型。
     return BlocklySpecModelMapper.toEmfSpec(fromDomainModel(domain));
-// 结束文本适配路线。
 }
 \end{lstlisting}
 
-在第一个方法中，\texttt{pkg} 是从 \texttt{source.ecore} 加载的 Ecore
-包。在第二个方法中，\texttt{domain} 是 Xtext 解析
-\texttt{source.m2b} 时构造的文本模型树。二者都是输入对象；两个方法均
+在第一个方法中，\texttt{pkg} 是从一个 \texttt{.ecore} 文件加载的 Ecore
+包。在第二个方法中，\texttt{domain} 是 Xtext 解析相应
+\texttt{.m2b} 文件时构造的文本模型树。二者都是输入对象；两个方法均
 返回 \texttt{EditorSpec}，也就是同一种 EMF 中间模型，尽管其来源不同。
 
 \subsection{类型与标识符的命名}
 
 代码清单中的名称来自三个不同层级。这里使用的 \texttt{EPackage}、
 \texttt{EClass}、\texttt{EReference} 等 Ecore 类型来自 EMF API，表示
-从 \texttt{source.ecore} 读取的元素。相对地，\texttt{BlocklyEditorSpec}、
+从选中的 \texttt{.ecore} 文件读取的元素。相对地，\texttt{BlocklyEditorSpec}、
 \texttt{BlockTypeSpec}、\texttt{FieldSpec} 和
 \texttt{StatementInputSpec} 是 Model2Blockly 自有的类，用于构造中间
 模型的 Java 视图。最后，\texttt{EditorSpec} 是根据通用中间元模型生成的
@@ -741,7 +1125,7 @@ EMF 类；\texttt{BlocklySpecModelMapper.toEmfSpec} 方法把 Java 视图
     \hline
     标识符 & 类型及来源 & 转换期间的含义 \\
     \hline
-    \texttt{pkg} & \texttt{EPackage}（EMF） & 从 \texttt{source.ecore}
+    \texttt{pkg} & \texttt{EPackage}（EMF） & 从 \texttt{.ecore} 文件
     加载的根包；它是适配器的输入。 \\
     \texttt{spec} & \texttt{BlocklyEditorSpec}（Model2Blockly） & 正在
     构造的编辑器描述符。 \\
@@ -788,32 +1172,23 @@ API 中的类、属性、引用、继承和基数概念 \cite{emfOverview}。
 \texttt{CategorySpec} 的映射；\texttt{containedTypeNames} 是所有作为
 包含关系目标出现的类名集合。后者用于随后判断一个类代表根元素还是子元素。
 
-\begin{lstlisting}[float=htbp, style=tfmjavaecore, captionpos=t, caption={遍历 Ecore 类的带注释代码片段}, label={lst:recorrido-eclass-ecore}]
-// 遍历包及其子包中的分类器。
+\begin{lstlisting}[float=htbp, style=tfmjavaecore, captionpos=t, caption={Ecore 类的遍历与转换}, label={lst:recorrido-eclass-ecore}]
 for (EClassifier classifier : allClassifiers(pkg)) {
-    // 只保留表示 Ecore 类的分类器。
     if (classifier instanceof EClass) {
-        // 使用 EMF API 提供的类型取得该类。
         EClass eClass = (EClass) classifier;
-        // 创建 bt，即由 eClass 得到的块描述符。
         BlockTypeSpec bt = convertEClass(
-            // 传入类、分类以及被包含类型。
             eClass, categoryMap, containedTypeNames);
-        // 将 bt 加入正在构造的编辑器 spec。
         spec.getBlockTypes().add(bt);
-    // 结束当前 EClass 的处理。
     }
-// 结束分类器遍历。
 }
 \end{lstlisting}
 \FloatBarrier
 
 把该循环应用于图 \ref{fig:basic-structure-ecore} 时，会分别为
-\texttt{Board}、\texttt{WorkItem}、\texttt{Task}、\texttt{Note} 和
-\texttt{Tag} 调用 \texttt{convertEClass}。每次调用都会创建一个
-\texttt{BlockTypeSpec}。\texttt{WorkItem} 的 \texttt{isAbstract}
-属性会复制到该描述符，因此这个类型参与连接检查，却不会在工具箱中作为可实例化
-的块提供。
+\texttt{App}、\texttt{Page}、\texttt{Component}、\texttt{Label}、
+\texttt{Button} 和 \texttt{Image} 调用 \texttt{convertEClass}。每次调用都会创建一个
+\texttt{BlockTypeSpec}；其中 \texttt{Component} 的抽象标志会被保留，
+因此它参与类型检查但不会作为可实例化块加入工具箱。
 
 从 MDE 的角度看，该适配器是一项基于 EMF API、以 Java 实现的模型转换。
 本项目没有使用 ATL 或 ETL 之类的专用转换语言。原因是实际工程需求：生成器
@@ -828,9 +1203,9 @@ for (EClassifier classifier : allClassifiers(pkg)) {
 在遍历类的过程中，每个可编辑属性都会被处理。
 \texttt{convert}\allowbreak\texttt{EAttribute} 方法创建一个
 \texttt{FieldSpec}，并根据 \texttt{EDataType} 选择其可视化表示。
-代码清单 \ref{lst:conversion-eattribute} 展示
-\texttt{01\_basic\_structure} 所用的分支；数值、颜色、角度和图像分支
-遵循同一模式，且不参与本示例，因此在此省略。
+代码清单 \ref{lst:conversion-eattribute} 给出
+\texttt{01\_basic\_structure} 使用的文本、枚举和布尔分支。数值、颜色和
+角度分支遵循同一模式，因此在此省略。
 
 在代码中，\texttt{eAttr} 是 \texttt{convertEAttribute} 接收的 Ecore
 属性；\texttt{fs} 是输出 \texttt{FieldSpec}，已在方法开头创建；
@@ -841,44 +1216,61 @@ for (EClassifier classifier : allClassifiers(pkg)) {
 重复其初始化过程。
 
 \newpage
-\begin{lstlisting}[style=tfmjavaecore, captionpos=t, caption={Ecore 属性转换的带注释代码片段}, label={lst:conversion-eattribute}]
-// eAttr 是输入属性；type 保存其 EDataType。
+\begin{lstlisting}[style=tfmjavaecore, captionpos=t, caption={Ecore 属性类型到字段类型的转换}, label={lst:conversion-eattribute}]
 EDataType type = eAttr.getEAttributeType();
-// 检查该属性是否使用领域枚举。
 if (type instanceof EEnum) {
-    // eEnum 是与 eAttr 关联的枚举类型。
     EEnum eEnum = (EEnum) type;
-    // fs 是输出字段；将其配置为下拉框。
     fs.setFieldType(FieldSpec.FieldType.DROPDOWN);
-    // lit 是本次迭代处理的字面量。
     for (EEnumLiteral lit : eEnum.getELiterals()) {
-        // 使用 lit 的名称和值向 fs 添加一个选项。
         fs.getOptions().add(new DropdownOption(
-            lit.getName(), lit.getLiteral()));
+            lit.getLiteral(), lit.getName()));
     }
-// 处理不是枚举的其他数据类型。
 } else {
-    // 根据 type 的名称选择 fs 的表示形式。
     switch (type.getName()) {
-        // 将字符串转换为文本字段。
         case "EString":
-            // 将 fs 配置为文本字段。
             fs.setFieldType(FieldSpec.FieldType.TEXT); break;
         // 本片段省略数值类型分支。
-        // 将逻辑值转换为布尔复选框。
         case "EBoolean":
-            // 将 fs 配置为布尔字段。
             fs.setFieldType(FieldSpec.FieldType.BOOLEAN); break;
     }
 }
 \end{lstlisting}
 
-在该示例中，这项决策产生了图 \ref{fig:basic-structure-editor} 中三个
-可以观察到的结果：类型为 \texttt{EString} 的 \texttt{Task.title}
-转换为文本字段；类型为枚举 \texttt{Priority} 的
-\texttt{Task.priority} 生成包含 \texttt{low}、\texttt{medium} 和
-\texttt{high} 的下拉框；类型为 \texttt{EBoolean} 的
-\texttt{Task.done} 则表示为布尔字段。完成类型选择后，同一方法还会复制
-默认值，并在 \texttt{lowerBound} 大于或等于一时把字段标记为必填。
+在第一个示例中，\texttt{App.name} 和各组件的 \texttt{text} 转换为文本
+字段；\texttt{theme} 与 \texttt{alignment} 转换为下拉字段；布尔、数值、
+颜色和角度属性也分别生成对应的 Blockly 字段。完成类型选择后，同一方法还会
+复制单值属性的 \texttt{defaultValueLiteral} 和数值范围，并在
+\texttt{lowerBound} 大于或等于一时把字段标记为必填。
+
+多值属性仍由同一个 \texttt{convertEAttribute} 方法处理。方法在选择字段类型之前
+先把 \texttt{lowerBound}、\texttt{upperBound}、\texttt{unique} 和
+\texttt{ordered} 写入 \texttt{FieldSpec}。它只为单值属性读取
+\texttt{defaultValueLiteral}；对于多值属性，则从 \texttt{blockly} 注解的
+\texttt{initialValues} 读取编辑器初始列表。该方法不会因为
+\texttt{upperBound>1} 就把字段类型改成文本。这样，
+\texttt{previewWidths} 的 \texttt{FieldSpec} 仍是 \texttt{INTEGER}，
+\texttt{targetPlatforms} 的 \texttt{FieldSpec} 仍是带三个选项的
+\texttt{DROPDOWN}。\path{BlocklyCodeGenerator.xtend} 中的
+\texttt{fieldToArg(FieldSpec field)} 随后检查 \texttt{field.many}；若为真，
+便统一输出 \texttt{field\_multivalue}，同时写出原字段的
+\texttt{itemType}、\texttt{options}、\texttt{min}、\texttt{max} 和数量配置。
+浏览器中的 \texttt{FieldMultiValue} 类正是根据这些配置建立图
+\ref{fig:basic-typed-multivalue} 所示的行控件并执行逐项验证。
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.46\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../examples/feature_pairs/01_basic_structure/screenshots/features/typed_multivalue_number.png}\\[-1mm]
+    \small (a) 整数列表
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.46\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../examples/feature_pairs/01_basic_structure/screenshots/features/typed_multivalue_enum.png}\\[-1mm]
+    \small (b) 枚举列表
+  \end{minipage}
+  \caption{\texttt{field\_multivalue} 根据元素类型生成的行控件}
+  \label{fig:basic-typed-multivalue}
+\end{figure}
 
 \newpage

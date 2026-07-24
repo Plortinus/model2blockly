@@ -286,9 +286,6 @@ public class DomainModelAdapter {
 				));
 			}
 		}
-		if (fs.isMany()) {
-			fs.setFieldType(FieldSpec.FieldType.TEXT);
-		}
 		return fs;
 	}
 

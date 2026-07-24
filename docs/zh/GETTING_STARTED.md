@@ -57,7 +57,7 @@ AppMaker 编辑器，最后查看验证工作区。
 仓库里已经带了 AppMaker 的生成结果：
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
+examples/generated/app_maker_ecore/html/Appmaker_standalone.html
 ```
 
 打开后：

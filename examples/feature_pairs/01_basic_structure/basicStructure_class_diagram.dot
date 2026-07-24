@@ -1,0 +1,99 @@
+digraph SimpleApp {
+  graph [bgcolor="white", rankdir="TB", nodesep="0.45", ranksep="0.7", pad="0.2", splines="polyline"];
+  node [shape="plain", fontname="Helvetica", fontsize="11"];
+  edge [color="#4b5563", fontname="Helvetica", fontsize="10", penwidth="1.3"];
+
+  App [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#334155">
+      <TR><TD BGCOLOR="#dbeafe"><B>App</B></TD></TR>
+      <TR><TD ALIGN="LEFT">name : EString = Welcome App</TD></TR>
+      <TR><TD ALIGN="LEFT">theme : Theme = light</TD></TR>
+      <TR><TD ALIGN="LEFT">published : EBoolean = false</TD></TR>
+      <TR><TD ALIGN="LEFT">tags : EString [0..3] = demo, welcome</TD></TR>
+      <TR><TD ALIGN="LEFT">previewWidths : EInt [1..4] = 360, 768, 1440</TD></TR>
+      <TR><TD ALIGN="LEFT">targetPlatforms : Platform [1..3] = web, android</TD></TR>
+    </TABLE>
+  >];
+
+  Page [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#334155">
+      <TR><TD BGCOLOR="#dcfce7"><B>Page</B></TD></TR>
+      <TR><TD ALIGN="LEFT">title : EString = Home</TD></TR>
+      <TR><TD ALIGN="LEFT">description : EString = Main page</TD></TR>
+      <TR><TD ALIGN="LEFT">backgroundColor : EString = #ffffff</TD></TR>
+      <TR><TD ALIGN="LEFT">scrollable : EBoolean = true</TD></TR>
+      <TR><TD ALIGN="LEFT">alignment : Alignment = center</TD></TR>
+    </TABLE>
+  >];
+
+  Component [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#334155">
+      <TR><TD BGCOLOR="#fef3c7"><B><I>Component</I></B></TD></TR>
+      <TR><TD ALIGN="LEFT"><I>abstract</I></TD></TR>
+    </TABLE>
+  >];
+
+  Label [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#334155">
+      <TR><TD BGCOLOR="#fae8ff"><B>Label</B></TD></TR>
+      <TR><TD ALIGN="LEFT">text : EString = Welcome</TD></TR>
+      <TR><TD ALIGN="LEFT">fontSize : EInt = 24</TD></TR>
+      <TR><TD ALIGN="LEFT">textColor : EString = #202124</TD></TR>
+    </TABLE>
+  >];
+
+  Button [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#334155">
+      <TR><TD BGCOLOR="#fee2e2"><B>Button</B></TD></TR>
+      <TR><TD ALIGN="LEFT">text : EString = Continue</TD></TR>
+      <TR><TD ALIGN="LEFT">width : EInt = 160</TD></TR>
+      <TR><TD ALIGN="LEFT">enabled : EBoolean = true</TD></TR>
+      <TR><TD ALIGN="LEFT">backgroundColor : EString = #1a73e8</TD></TR>
+    </TABLE>
+  >];
+
+  Image [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#334155">
+      <TR><TD BGCOLOR="#fef9c3"><B>Image</B></TD></TR>
+      <TR><TD ALIGN="LEFT">url : EString</TD></TR>
+      <TR><TD ALIGN="LEFT">rotation : EInt = 0</TD></TR>
+      <TR><TD ALIGN="LEFT">opacity : EFloat = 1</TD></TR>
+    </TABLE>
+  >];
+
+  Theme [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#334155">
+      <TR><TD BGCOLOR="#e2e8f0"><B>Theme</B> <I>&lt;&lt;EEnum&gt;&gt;</I></TD></TR>
+      <TR><TD ALIGN="LEFT">light</TD></TR>
+      <TR><TD ALIGN="LEFT">dark</TD></TR>
+    </TABLE>
+  >];
+
+  Alignment [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#334155">
+      <TR><TD BGCOLOR="#e2e8f0"><B>Alignment</B> <I>&lt;&lt;EEnum&gt;&gt;</I></TD></TR>
+      <TR><TD ALIGN="LEFT">left</TD></TR>
+      <TR><TD ALIGN="LEFT">center</TD></TR>
+      <TR><TD ALIGN="LEFT">right</TD></TR>
+    </TABLE>
+  >];
+
+  Platform [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#334155">
+      <TR><TD BGCOLOR="#e2e8f0"><B>Platform</B> <I>&lt;&lt;EEnum&gt;&gt;</I></TD></TR>
+      <TR><TD ALIGN="LEFT">web</TD></TR>
+      <TR><TD ALIGN="LEFT">android</TD></TR>
+      <TR><TD ALIGN="LEFT">ios</TD></TR>
+    </TABLE>
+  >];
+
+  App -> Page [dir="both", arrowtail="diamond", arrowhead="vee", label=" pages [1..5] "];
+  Page -> Component [dir="both", arrowtail="diamond", arrowhead="vee", label=" components [0..10] "];
+  { rank=same; Label; Button; Image; }
+  Label -> Component [arrowhead="empty"];
+  Button -> Component [arrowhead="empty"];
+  Image -> Component [arrowhead="empty"];
+  App -> Theme [style="dashed", arrowhead="vee", label=" theme "];
+  App -> Platform [style="dashed", arrowhead="vee", label=" targetPlatforms "];
+  Page -> Alignment [style="dashed", arrowhead="vee", label=" alignment "];
+}

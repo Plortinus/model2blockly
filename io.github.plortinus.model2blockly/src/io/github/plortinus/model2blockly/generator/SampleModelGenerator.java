@@ -334,17 +334,62 @@ public final class SampleModelGenerator {
 		private List<Object> sampleManyFieldValues(BlockTypeSpec owner, FieldSpec field, Object rawValue, int index) {
 			List<Object> values = new ArrayList<>();
 			for (String part : splitManyDefault(rawValue)) {
-				if (!part.isBlank()) values.add(part);
+				if (!part.isBlank()) values.add(coerceManyFieldValue(field, part));
 			}
 			int upper = field.getUpperBound() == 0 ? 2 : field.getUpperBound();
 			int desired = Math.max(field.getLowerBound(), Math.min(2, upper));
 			while (values.size() < desired) {
-				values.add(sampleText(owner, field, index + values.size()));
+				values.add(sampleManyFieldValue(owner, field, index + values.size()));
 			}
 			if (field.getUpperBound() != 0 && values.size() > field.getUpperBound()) {
 				return new ArrayList<>(values.subList(0, field.getUpperBound()));
 			}
 			return values;
+		}
+
+		private Object sampleManyFieldValue(BlockTypeSpec owner, FieldSpec field, int index) {
+			switch (field.getFieldType()) {
+				case INTEGER:
+					return boundedNumber(field, index);
+				case FLOAT:
+					return boundedNumber(field, index) + 0.5;
+				case BOOLEAN:
+					return index % 2 == 0;
+				case DROPDOWN:
+					return firstOption(field);
+				case ANGLE:
+					return Math.floorMod(index * 45, 361);
+				case COLOUR:
+					return "#4a90e2";
+				case TEXT:
+				default:
+					return sampleText(owner, field, index);
+			}
+		}
+
+		private Object coerceManyFieldValue(FieldSpec field, String rawValue) {
+			String value = rawValue == null ? "" : rawValue.trim();
+			try {
+				switch (field.getFieldType()) {
+					case INTEGER:
+					case ANGLE:
+						return Integer.valueOf(value);
+					case FLOAT:
+						return Double.valueOf(value);
+					case BOOLEAN:
+						if ("true".equalsIgnoreCase(value) || "1".equals(value) || "yes".equalsIgnoreCase(value)) {
+							return Boolean.TRUE;
+						}
+						if ("false".equalsIgnoreCase(value) || "0".equals(value) || "no".equalsIgnoreCase(value)) {
+							return Boolean.FALSE;
+						}
+						return value;
+					default:
+						return value;
+				}
+			} catch (NumberFormatException ignored) {
+				return value;
+			}
 		}
 
 		private List<String> splitManyDefault(Object rawValue) {

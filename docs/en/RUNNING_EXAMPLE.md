@@ -9,15 +9,15 @@ the two authoring styles can be inspected side by side.
 | Item | Path |
 | --- | --- |
 | Source metamodel | `io.github.plortinus.model2blockly/model/app_maker.ecore` |
-| Textual DSL source | `io.github.plortinus.model2blockly/examples/app_maker.m2b` |
-| Ecore generated output | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore` |
-| Ecore standalone editor | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html` |
-| Ecore intermediate model | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi` |
-| Ecore mapping report | `io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/generation_report.html` |
-| `.m2b` generated output | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl` |
-| `.m2b` standalone editor | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/html/Appmaker_standalone.html` |
-| `.m2b` intermediate model | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/intermediate/Appmaker_blocklyspec.xmi` |
-| `.m2b` mapping report | `io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/generation_report.html` |
+| Textual DSL source | `examples/app_maker.m2b` |
+| Ecore generated output | `examples/generated/app_maker_ecore` |
+| Ecore standalone editor | `examples/generated/app_maker_ecore/html/Appmaker_standalone.html` |
+| Ecore intermediate model | `examples/generated/app_maker_ecore/intermediate/Appmaker_blocklyspec.xmi` |
+| Ecore mapping report | `examples/generated/app_maker_ecore/generation_report.html` |
+| `.m2b` generated output | `examples/generated/app_maker_dsl` |
+| `.m2b` standalone editor | `examples/generated/app_maker_dsl/html/Appmaker_standalone.html` |
+| `.m2b` intermediate model | `examples/generated/app_maker_dsl/intermediate/Appmaker_blocklyspec.xmi` |
+| `.m2b` mapping report | `examples/generated/app_maker_dsl/generation_report.html` |
 
 The public demo paths are:
 
@@ -44,7 +44,7 @@ with:
 
 ```text
 model/app_maker.ecore
-examples/generated/app_maker_ecore
+../examples/generated/app_maker_ecore
 ```
 
 For the textual route, run:
@@ -56,8 +56,8 @@ Generate AppMaker from Model2Blockly.launch
 It reads:
 
 ```text
-examples/app_maker.m2b
-examples/generated/app_maker_dsl
+../examples/app_maker.m2b
+../examples/generated/app_maker_dsl
 ```
 
 The generation sequence is:

@@ -113,7 +113,7 @@ function verifyDryRun() {
     '--source',
     'model/app_maker.ecore',
     '--validation',
-    'examples/generated/app_maker_ecore/html/validation_blocks.json',
+    '../examples/generated/app_maker_ecore/html/validation_blocks.json',
     '--dry-run',
   ]);
   assertIncludes(ecore, 'Validation patch dry-run', 'Ecore dry-run prints mode');
@@ -133,7 +133,7 @@ function verifyApplyAndRegenerate() {
     '--source',
     'model/app_maker.ecore',
     '--validation',
-    'examples/generated/app_maker_ecore/html/validation_blocks.json',
+    '../examples/generated/app_maker_ecore/html/validation_blocks.json',
     '--apply',
     '--out',
     patchedEcore,
@@ -151,7 +151,7 @@ function verifyApplyAndRegenerate() {
     '--source',
     patchedEcore,
     '--validation',
-    'examples/generated/app_maker_ecore/html/validation_blocks.json',
+    '../examples/generated/app_maker_ecore/html/validation_blocks.json',
     '--dry-run',
   ]);
   assertIncludes(patchedEcoreDryRun, 'Changes: 0', 'Patched Ecore dry-run is idempotent');

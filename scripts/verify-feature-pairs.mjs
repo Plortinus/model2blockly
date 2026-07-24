@@ -16,8 +16,8 @@ import { fileURLToPath } from 'node:url';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const projectDir = path.join(repoRoot, 'io.github.plortinus.model2blockly');
-const pairsRoot = path.join(projectDir, 'examples', 'feature_pairs');
-const ecoreSpecificRoot = path.join(projectDir, 'examples', 'ecore_specific', '07_ecore_specific');
+const pairsRoot = path.join(repoRoot, 'examples', 'feature_pairs');
+const ecoreSpecificRoot = path.join(repoRoot, 'examples', 'ecore_specific', '07_ecore_specific');
 const persistOutputs = process.argv.includes('--persist');
 const unsupportedArgs = process.argv.slice(2).filter((arg) => arg !== '--persist');
 if (unsupportedArgs.includes('--help') || unsupportedArgs.includes('-h')) {
@@ -79,7 +79,7 @@ try {
     ? path.join(ecoreSpecificRoot, 'generated', 'ecore')
     : path.join(generatedRoot, '07_ecore_specific', 'ecore');
   if (persistOutputs) rmSync(ecoreSpecificOutput, { recursive: true, force: true });
-  const ecoreSpecificSource = path.join(ecoreSpecificRoot, 'source.ecore');
+  const ecoreSpecificSource = path.join(ecoreSpecificRoot, 'ecoreSpecific.ecore');
   if (!existsSync(ecoreSpecificSource)) {
     throw new Error(`Missing Ecore-only source: ${ecoreSpecificSource}`);
   }
@@ -116,24 +116,40 @@ try {
 }
 
 function discoverPairs() {
-  const names = readdirSync(pairsRoot)
+  const candidates = readdirSync(pairsRoot)
     .filter((name) => /^\d{2}_[a-z0-9_]+$/.test(name))
     .filter((name) => statSync(path.join(pairsRoot, name)).isDirectory())
-    .filter((name) => existsSync(path.join(pairsRoot, name, 'source.ecore'))
-      && existsSync(path.join(pairsRoot, name, 'source.m2b')))
     .sort();
-  if (names.length !== 6) {
-    throw new Error(`Expected 6 feature-pair directories, found ${names.length}: ${names.join(', ')}`);
-  }
-  return names.map((name) => {
+
+  const pairs = candidates.flatMap((name) => {
     const dir = path.join(pairsRoot, name);
-    const ecore = path.join(dir, 'source.ecore');
-    const dsl = path.join(dir, 'source.m2b');
-    if (!existsSync(ecore) || !existsSync(dsl)) {
-      throw new Error(`Pair ${name} must contain source.ecore and source.m2b.`);
+    const files = readdirSync(dir);
+    const ecoreFiles = files.filter((file) => file.endsWith('.ecore'));
+    const dslFiles = files.filter((file) => file.endsWith('.m2b'));
+
+    if (ecoreFiles.length === 0 && dslFiles.length === 0) return [];
+    if (ecoreFiles.length !== 1 || dslFiles.length !== 1) {
+      throw new Error(`Pair ${name} must contain exactly one .ecore and one .m2b file.`);
     }
-    return { name, dir, ecore, dsl };
+
+    const ecoreBase = path.basename(ecoreFiles[0], '.ecore');
+    const dslBase = path.basename(dslFiles[0], '.m2b');
+    if (ecoreBase !== dslBase) {
+      throw new Error(`Pair ${name} must use the same descriptive basename for .ecore and .m2b files.`);
+    }
+
+    return [{
+      name,
+      dir,
+      ecore: path.join(dir, ecoreFiles[0]),
+      dsl: path.join(dir, dslFiles[0]),
+    }];
   });
+
+  if (pairs.length !== 6) {
+    throw new Error(`Expected 6 feature-pair directories, found ${pairs.length}: ${pairs.map((pair) => pair.name).join(', ')}`);
+  }
+  return pairs;
 }
 
 function compileProject(outputDir) {

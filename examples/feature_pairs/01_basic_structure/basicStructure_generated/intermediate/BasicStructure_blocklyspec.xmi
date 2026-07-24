@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="BasicStructure" nsURI="http://www.example.org/basicstructure" nsPrefix="basicstructure" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Project" label="Project" colour="0"/>
+  <categories name="WorkItem" label="WorkItem" colour="120"/>
+  <categories name="TeamMember" label="TeamMember" colour="240"/>
+  <blockTypes typeName="Project" label="Project" categoryName="Project" connectionType="NONE" inputsInline="false">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>workItems</orderedInputNames>
+    <fields name="name" defaultValue="Website redesign"/>
+    <statementInputs name="workItems" checkType="WorkItem" lowerBound="1" upperBound="6"/>
+  </blockTypes>
+  <blockTypes typeName="WorkItem" label="WorkItem" abstract="true" connectionType="TYPED" connectionTypeName="WorkItem" inputsInline="false"/>
+  <blockTypes typeName="Task" label="Task" categoryName="WorkItem" superTypeName="WorkItem" connectionType="TYPED" connectionTypeName="WorkItem" inputsInline="false">
+    <orderedInputNames>title</orderedInputNames>
+    <fields name="title" defaultValue="Design landing page"/>
+  </blockTypes>
+  <blockTypes typeName="Milestone" label="Milestone" categoryName="WorkItem" superTypeName="WorkItem" connectionType="TYPED" connectionTypeName="WorkItem" inputsInline="false">
+    <orderedInputNames>name</orderedInputNames>
+    <fields name="name" defaultValue="First public release"/>
+  </blockTypes>
+  <blockTypes typeName="TeamMember" label="TeamMember" categoryName="TeamMember" inputsInline="false">
+    <orderedInputNames>name</orderedInputNames>
+    <fields name="name" defaultValue="Alex"/>
+  </blockTypes>
+  <validations type="CARDINALITY" name="Project_workItems" ownerType="Project" containmentName="workItems" lowerBound="1" upperBound="6">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Project"/>
+      <fields name="INPUT" value="workItems"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="6"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="workItems"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="workItems"/>
+        <children kind="NUMBER_LITERAL" literal="6"/>
+      </children>
+    </visualExpression>
+  </validations>
+</blocklyspec:EditorSpec>

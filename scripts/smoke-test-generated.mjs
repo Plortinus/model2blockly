@@ -18,8 +18,8 @@ const options = {
 };
 
 const defaultTargets = [
-  'io.github.plortinus.model2blockly/examples/generated/app_maker_ecore',
-  'io.github.plortinus.model2blockly/examples/generated/app_maker_dsl',
+  'examples/generated/app_maker_ecore',
+  'examples/generated/app_maker_dsl',
 ];
 
 const positional = [];
@@ -201,6 +201,80 @@ async function testTarget(browser, baseUrl, target, opts) {
     }
     if (!opts.allowIssues && state.issues && state.issues !== 'No validation issues') {
       throw new Error(`Validation issues reported: ${state.issues}`);
+    }
+    const typedMultiValue = await page.evaluate(() => {
+      const fields = [];
+      window.workspace.getAllBlocks(false).forEach((block) => {
+        (block.inputList || []).forEach((input) => {
+          (input.fieldRow || []).forEach((field) => {
+            if (field && field.itemTypeName_) fields.push({ block, field });
+          });
+        });
+      });
+      const numeric = fields.find(({ field }) => ['INTEGER', 'FLOAT', 'ANGLE'].includes(field.itemTypeName_));
+      if (!numeric) return { available: false };
+      const enumeration = fields.find(({ field }) => field.itemTypeName_ === 'DROPDOWN');
+      const numericOriginal = numeric.field.getValue();
+      const enumOriginal = enumeration ? enumeration.field.getValue() : null;
+
+      numeric.field.setValue('480,not-a-number');
+      const invalidErrors = numeric.field.getValidationErrors();
+      const invalidWarnings = typeof window.applyValidationWarnings === 'function'
+        ? window.applyValidationWarnings(window.workspace).map((warning) => warning.message)
+        : [];
+
+      numeric.field.setValue('480,768');
+      if (typeof window.updateOutput === 'function') window.updateOutput();
+      const model = JSON.parse(document.getElementById('jsonView').textContent || '[]');
+      const numericValues = model[0] ? model[0][numeric.field.name] : null;
+
+      window.openMultiValueDialog(numeric.field);
+      const numericInputTypes = [...document.querySelectorAll('#multiValueDialog .multivalue-control')]
+        .map((control) => control.getAttribute('type') || control.tagName.toLowerCase());
+      document.getElementById('multiValueDialog')?.remove();
+
+      let enumControls = [];
+      let enumOptions = [];
+      if (enumeration) {
+        window.openMultiValueDialog(enumeration.field);
+        enumControls = [...document.querySelectorAll('#multiValueDialog .multivalue-control')]
+          .map((control) => control.tagName.toLowerCase());
+        enumOptions = [...document.querySelectorAll('#multiValueDialog select option')]
+          .map((option) => option.value);
+        document.getElementById('multiValueDialog')?.remove();
+      }
+
+      numeric.field.setValue(numericOriginal);
+      if (enumeration) enumeration.field.setValue(enumOriginal);
+      if (typeof window.applyValidationWarnings === 'function') window.applyValidationWarnings(window.workspace);
+      if (typeof window.updateOutput === 'function') window.updateOutput();
+      return {
+        available: true,
+        numericType: numeric.field.itemTypeName_,
+        numericValues,
+        invalidErrors,
+        invalidWarnings,
+        numericInputTypes,
+        enumControls,
+        enumOptions,
+      };
+    });
+    if (typedMultiValue.available) {
+      const numericIsTyped = Array.isArray(typedMultiValue.numericValues)
+        && typedMultiValue.numericValues.length === 2
+        && typedMultiValue.numericValues.every((value) => typeof value === 'number');
+      const invalidWasReported = typedMultiValue.invalidErrors.length > 0
+        && typedMultiValue.invalidWarnings.some((message) => message.includes('must be an integer')
+          || message.includes('must be a number'));
+      const numericUsesNumberInputs = typedMultiValue.numericInputTypes.length > 0
+        && typedMultiValue.numericInputTypes.every((type) => type === 'number');
+      const enumUsesSelects = typedMultiValue.enumControls.length === 0
+        || (typedMultiValue.enumControls.every((tag) => tag === 'select')
+          && typedMultiValue.enumOptions.length > 0);
+      if (!numericIsTyped || !invalidWasReported || !numericUsesNumberInputs || !enumUsesSelects) {
+        throw new Error(`Typed multi-value field behavior is incomplete: ${JSON.stringify(typedMultiValue)}`);
+      }
+      result.typedMultiValue = typedMultiValue;
     }
     const domainXmi = await page.evaluate(() => {
       const jsonText = document.getElementById('jsonView')?.textContent || '';

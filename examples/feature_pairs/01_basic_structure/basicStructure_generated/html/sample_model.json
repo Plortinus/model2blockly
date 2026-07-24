@@ -1,0 +1,19 @@
+[
+  {
+    "_type": "Project",
+    "_blockId": "sample_Project_1",
+    "name": "Website redesign",
+    "workItems": [
+      {
+        "_type": "Task",
+        "_blockId": "sample_Task_1",
+        "title": "Design landing page"
+      },
+      {
+        "_type": "Milestone",
+        "_blockId": "sample_Milestone_1",
+        "name": "First public release"
+      }
+    ]
+  }
+]

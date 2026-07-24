@@ -66,6 +66,6 @@ El caso de integración AppMaker ofrece las dos formas de autoría. Sus salidas
 versionadas están en:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore
-io.github.plortinus.model2blockly/examples/generated/app_maker_dsl
+examples/generated/app_maker_ecore
+examples/generated/app_maker_dsl
 ```

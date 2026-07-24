@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>model2blockly.examples</name>
+	<comment>Executable examples for the Model2Blockly Eclipse plug-in</comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+</projectDescription>

@@ -64,7 +64,7 @@ annotated .ecore -> EPackage    -> EcoreAdapter -------\
 
 The AppMaker integration case provides both authoring styles. Its checked-in
 outputs live under `examples/generated/app_maker_ecore` and
-`examples/generated/app_maker_dsl` inside the core project.
+`examples/generated/app_maker_dsl` at the repository root.
 
 GitHub Pages serves this VitePress documentation together with the two AppMaker
 editors and the Eclipse p2 repository.

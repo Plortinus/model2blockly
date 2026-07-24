@@ -62,7 +62,7 @@ del modelo como bloques Blockly.
 El repositorio incluye editores AppMaker ya generados:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
+examples/generated/app_maker_ecore/html/Appmaker_standalone.html
 ```
 
 En el editor:

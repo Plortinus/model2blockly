@@ -43,7 +43,7 @@ DSL route:   .m2b   -> DomainModelAdapter -> EditorSpec
 | DSL metamodel | `io.github.plortinus.model2blockly/model/metamodel/Model2Blockly.ecore` |
 | DSL adapter | `io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/adapter/DomainModelAdapter.java` |
 | Standalone DSL entry point | `io.github.plortinus.model2blockly/src/io/github/plortinus/model2blockly/standalone/Model2BlocklyToBlocklyMain.java` |
-| AppMaker DSL example | `io.github.plortinus.model2blockly/examples/app_maker.m2b` |
+| AppMaker DSL example | `examples/app_maker.m2b` |
 
 ## Syntax Sketch
 

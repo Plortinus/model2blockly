@@ -50,19 +50,18 @@ AppMaker provides checked-in examples of both routes:
 
 | Route | Source | Generated output |
 | --- | --- | --- |
-| Ecore | `model/app_maker.ecore` | `examples/generated/app_maker_ecore` |
+| Ecore | `io.github.plortinus.model2blockly/model/app_maker.ecore` | `examples/generated/app_maker_ecore` |
 | `.m2b` | `examples/app_maker.m2b` | `examples/generated/app_maker_dsl` |
 
-All paths in this table are relative to
-`io.github.plortinus.model2blockly/`.
+All paths in this table are relative to the repository root.
 
 ## Generated Folder
 
 The checked-in AppMaker outputs are:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore
-io.github.plortinus.model2blockly/examples/generated/app_maker_dsl
+examples/generated/app_maker_ecore
+examples/generated/app_maker_dsl
 ```
 
 The generator writes:
@@ -88,8 +87,8 @@ The generator writes:
 Open either checked-in editor:
 
 ```text
-io.github.plortinus.model2blockly/examples/generated/app_maker_ecore/html/Appmaker_standalone.html
-io.github.plortinus.model2blockly/examples/generated/app_maker_dsl/html/Appmaker_standalone.html
+examples/generated/app_maker_ecore/html/Appmaker_standalone.html
+examples/generated/app_maker_dsl/html/Appmaker_standalone.html
 ```
 
 Then:

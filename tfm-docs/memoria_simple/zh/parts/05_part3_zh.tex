@@ -1,11 +1,11 @@
 \subsection{示例 06：代码模板与工作区配置}
 
-输入对 \path{06_codegen_workspace} 为这一系列示例收尾。它展示的不是模型结构，而是所生成编辑器的行为。该领域包含一个根元素 \texttt{Program}、两个命令 \texttt{Log} 和 \texttt{Wait}，以及输出表达式 \texttt{BooleanLiteral}。此外，它还声明了语言 \texttt{javascript}、扩展名 \texttt{js}、执行类型 \texttt{workflow} 和 Blockly 工作区的可视化选项。适配器生成四种块类型、三个类别和四个等价模板；对比结果再次确认，双方生成的十个 HTML、JavaScript 和 JSON 产物完全相同。
+示例 \path{06_codegen_workspace} 为这一系列示例收尾。它展示的不是模型结构，而是所生成编辑器的行为。该领域包含一个根元素 \texttt{Program}、两个命令 \texttt{Log} 和 \texttt{Wait}，以及输出表达式 \texttt{BooleanLiteral}。此外，它还声明了语言 \texttt{javascript}、扩展名 \texttt{js}、执行类型 \texttt{workflow} 和 Blockly 工作区的可视化选项。适配器生成四种块类型、三个类别和四个等价模板；对比结果再次确认，双方生成的十个 HTML、JavaScript 和 JSON 产物完全相同。
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/06_codegen_workspace/codegenWorkspace class diagram.jpg}
-  \caption{输入对 \texttt{06\_codegen\_workspace} 的 Ecore 类图}
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/06_codegen_workspace/codegenWorkspace class diagram.jpg}
+  \caption{示例 \texttt{06\_codegen\_workspace} 的 Ecore 类图}
   \label{fig:codegen-workspace-ecore}
 \end{figure}
 
@@ -15,7 +15,7 @@
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/feature_pairs/06_codegen_workspace/screenshots/ecore.png}
+  \includegraphics[width=\textwidth]{../../examples/feature_pairs/06_codegen_workspace/screenshots/ecore.png}
   \caption{加载示例模型并生成 JavaScript 代码后的
   \texttt{06\_codegen\_workspace} 编辑器}
   \label{fig:codegen-workspace-editor}
@@ -65,26 +65,17 @@
 
 代码清单 \ref{lst:render-domain-statements} 展示了展开语句输入的部分。\texttt{block} 是所属块，在本例中为 \texttt{Program}；\texttt{inputName} 的值为 \texttt{steps}；\texttt{child} 指向当前处理的命令；\texttt{lines} 累积生成的文本；\texttt{rendered} 则包含应用某条命令模板后得到的结果。\texttt{getNextBlock} 调用保留了截图中可见的 \texttt{Log}--\texttt{Wait} 顺序。
 
-\begin{lstlisting}[float=htbp, style=tfmjavascript, captionpos=t, caption={带注释的语句序列展开过程}, label={lst:render-domain-statements}]
-// 接收所属块 block，以及它的语句输入 inputName。
+\begin{lstlisting}[float=htbp, style=tfmjavascript, captionpos=t, caption={语句序列的模板展开过程}, label={lst:render-domain-statements}]
 function renderDomainStatement(block, inputName) {
-    // 获取连接到指定输入的第一个块。
     var child = block.getInputTargetBlock(inputName);
-    // 创建 lines，以按顺序保存各个片段。
     var lines = [];
-    // 只要仍有命令相连，就继续遍历该链。
+    // 按 Blockly 连接顺序展开整条命令链。
     while (child) {
-        // 对 child 应用与其块类型关联的模板。
         var rendered = renderDomainBlock(child);
-        // 只保留非空片段。
         if (rendered) lines.push(rendered);
-        // 移至同一 Blockly 序列中的下一条命令。
         child = child.getNextBlock();
-    // 结束对该语句输入的遍历。
     }
-    // 使用换行符连接各片段，以替换相应标记。
     return lines.join('\n');
-// 结束对 inputName 的展开。
 }
 \end{lstlisting}
 
@@ -95,31 +86,32 @@ function renderDomainStatement(block, inputName) {
 
 \subsection{Ecore 专用案例：元模型自身具备的能力}
 
-该案例保存在单独的目录中：
+Ecore 专用案例保存在目录：
 \begin{center}
   \path{examples/ecore_specific/07_ecore_specific}
 \end{center}
-此位置不在 \path{examples/feature_pairs} 内：它既不构成第七个输入对，也不用于宣称 Ecore 与 \texttt{.m2b} 等价。\texttt{07\_} 前缀只是为了在运行测试时把它排在前六个输入对之后。该案例用于检验 Ecore 原生具备、但没有等价文本构造的信息。这样，前六个输入对比较的是共同能力，而这个独立案例则明确界定仅由 Ecore 路线验证的能力。
+该案例检验 Ecore 原生具备而文本 DSL 尚无等价构造的信息，因此不纳入六个
+双表示示例之间的等价性比较。
 
 该元模型在根包中包含 \texttt{Catalog}，以 \texttt{NamedElement} 作为接口，并在子包 \texttt{details} 中包含 \texttt{Entry}。\texttt{Catalog} 包含抽象类型 \texttt{NamedElement} 的条目，并维护一个指向 \texttt{Entry} 的 \texttt{featured} 引用。具体类增加一个标识符和五个数值属性。此外，\texttt{Catalog} 还声明了四种技术属性——派生、瞬态、易失和不可修改——它们不应转换为可编辑控件。
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/ecore_specific/07_ecore_specific/ecoreSpecific class diagram.jpg}
+  \includegraphics[width=\textwidth]{../../examples/ecore_specific/07_ecore_specific/ecoreSpecific class diagram.jpg}
   \caption{\texttt{07\_ecore\_specific} 案例的 Ecore 类图}
   \label{fig:ecore-specific-model}
 \end{figure}
 
-图 \ref{fig:ecore-specific-model} 展示了根包中的部分。\texttt{Catalog} 包含一至四个接口 \texttt{NamedElement} 类型的元素；位于子包 \texttt{details} 中的具体类型 \texttt{Entry} 是兼容实现，同时也是 \texttt{featured} 的目标。图中把 \texttt{derivedSummary} 标示为派生属性，并保留其余技术属性，以检验适配器会将它们过滤掉。必填属性 \texttt{title} 属于该接口，将由具体条目继承。这种表示方式避免直接把 Ecore 文件作为 XML 收录；转换证据将在下文的图 \ref{fig:ecore-specific-editor} 和表 \ref{tab:ecore-specific-capabilities} 中给出。
+图 \ref{fig:ecore-specific-model} 展示了根包中的部分。\texttt{Catalog} 包含一至四个接口 \texttt{NamedElement} 类型的元素；位于子包 \texttt{details} 中的具体类型 \texttt{Entry} 是兼容实现，同时也是 \texttt{featured} 的目标。图中把 \texttt{derivedSummary} 标示为派生属性，并保留其余技术属性，以检验适配器会将它们过滤掉。必填属性 \texttt{title} 属于该接口，将由具体条目继承。
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{../../io.github.plortinus.model2blockly/examples/ecore_specific/07_ecore_specific/screenshots/ecore.png}
+  \includegraphics[width=\textwidth]{../../examples/ecore_specific/07_ecore_specific/screenshots/ecore.png}
   \caption{为 Ecore 专用能力生成的编辑器}
   \label{fig:ecore-specific-editor}
 \end{figure}
 
-这张截图可以从左至右追踪结果。蓝色的 \texttt{Catalog} 块只显示可编辑属性 \texttt{name}，被舍弃的四种技术属性均未出现。其 \texttt{entries} 输入能够接收绿色的 \texttt{Entry} 块，尽管该包含关系声明的是接口类型 \texttt{NamedElement}。在 \texttt{Entry} 中，\texttt{ELong}、\texttt{EShort} 和 \texttt{EBigInteger} 属性显示为整数，而 \texttt{EDouble} 和 \texttt{EBigDecimal} 显示为小数。最后，\texttt{featured} 下拉框使用 \texttt{entry-1}：适配器自动选择了被标记为标识符的 Ecore 属性 \texttt{entryId} 作为引用标签。检查器确认了生成模型中的相同值。
+蓝色的 \texttt{Catalog} 块只显示可编辑属性 \texttt{name}，被舍弃的四种技术属性均未出现。其 \texttt{entries} 输入能够接收绿色的 \texttt{Entry} 块，尽管该包含关系声明的是接口类型 \texttt{NamedElement}。在 \texttt{Entry} 中，\texttt{ELong}、\texttt{EShort} 和 \texttt{EBigInteger} 属性显示为整数，而 \texttt{EDouble} 和 \texttt{EBigDecimal} 显示为小数。最后，\texttt{featured} 下拉框使用 \texttt{entry-1}：适配器自动选择了被标记为标识符的 Ecore 属性 \texttt{entryId} 作为引用标签。检查器确认了生成模型中的相同值。
 
 \begin{table}[H]
   \centering
@@ -160,47 +152,30 @@ function renderDomainStatement(block, inputName) {
   \label{tab:ecore-specific-capabilities}
 \end{table}
 
-代码清单 \ref{lst:ecore-filter-subpackages} 详述了决定哪些元素进入转换流程的两项处理。\texttt{feature} 表示当前检查的结构属性或引用；\texttt{pkg} 是当前包；\texttt{result} 是累积分类器的共享列表；\texttt{sub} 表示每个直接子包。在递归调用期间复用同一个列表，可以确保离开根包时不会丢失 \texttt{details} 中的分类器。
+代码清单 \ref{lst:ecore-filter-subpackages} 展示可编辑特征过滤和子包递归遍历。
+递归调用复用同一个分类器列表，确保 \texttt{details} 子包中的类型进入转换流程。
 
 \begin{lstlisting}[style=tfmjavaecore, captionpos=t, caption={可编辑特征过滤与 Ecore 子包遍历}, label={lst:ecore-filter-subpackages}]
-// 判断 feature 是否应在 Blockly 中生成可编辑控件。
 private static boolean isEditableFeature(EStructuralFeature feature) {
-    // 排除由其他属性计算得到的值。
     return !feature.isDerived()
-        // 排除 Ecore 不会持久化序列化的值。
         && !feature.isTransient()
-        // 排除 Ecore 同样不会存储在实例中的值。
         && !feature.isVolatile()
-        // 只保留用户能够修改的特征。
         && feature.isChangeable();
-// 结束对当前特征的判断。
 }
 
-// 汇集 pkg 及其所有后代包中的分类器。
 private static List<EClassifier> allClassifiers(EPackage pkg) {
-    // 创建 result，作为接收各个分类器的共享列表。
     List<EClassifier> result = new ArrayList<>();
-    // 从接收到的包开始递归遍历。
     collectClassifiers(pkg, result);
-    // 将完整列表返回给转换流程。
     return result;
-// 结束遍历准备。
 }
 
-// 访问 pkg，并把其中的分类器加入 result。
 private static void collectClassifiers(EPackage pkg,
         List<EClassifier> result) {
-    // 如果没有可访问的包，则停止递归。
     if (pkg == null) return;
-    // 加入直接在 pkg 中声明的类和类型。
     result.addAll(pkg.getEClassifiers());
-    // 遍历当前包的每个直接子包。
     for (EPackage sub : pkg.getESubpackages()) {
-        // 对 sub 执行同一流程，不创建新的累加器。
         collectClassifiers(sub, result);
-    // 结束对直接子包的遍历。
     }
-// 结束对当前包的访问。
 }
 \end{lstlisting}
 
@@ -211,7 +186,8 @@ private static void collectClassifiers(EPackage pkg,
 
 \subsection{最终产物、HTML 封装页与导出}
 
-在通过六个输入对和 Ecore 专用案例说明各项能力之后，处理流程最终会为任意领域生成同一组文件。此阶段只接收经过规范化的 \texttt{EditorSpec}；因此，它不再需要知道原始输入是 \texttt{.ecore} 还是 \texttt{.m2b}。
+最终生成阶段只接收经过规范化的 \texttt{EditorSpec}，并为两种输入路线生成
+同一组文件；该阶段不再区分原始输入是 \texttt{.ecore} 还是 \texttt{.m2b}。
 
 系统针对同一内容生成两个 HTML 封装页。\texttt{*\_editor.}\allowbreak\texttt{html} 页面分别加载块、工具箱、生成器和验证文件，便于嵌入页面并逐个调试模块。\texttt{*\_standalone.html} 页面则把领域专用 JavaScript 嵌入单个文档，以便演示。两种页面都从 \texttt{script} 标签指定的 CDN 加载 Blockly 库及其 JavaScript 生成器；因此，独立页面不包含 Blockly 的本地副本，打开时必须能够访问该依赖。
 
@@ -248,7 +224,9 @@ private static void collectClassifiers(EPackage pkg,
 \section{运行时验证与引用}
 \label{sec:implementacion-validaciones-referencias}
 
-示例 04 和 05 已经展示了引用与诊断的可观察结果。本节不再重复这些案例，而是说明在编辑过程中维持这些结果的通用 JavaScript 机制。实现区分两类验证：一类是由 Eclipse/Xtext 在生成前完成的 DSL 静态验证；另一类是在浏览器中针对 Blockly 工作区执行的已构建模型验证。
+编辑过程中的引用同步和诊断由通用 JavaScript 运行时维持。实现区分两类验证：
+一类是由 Eclipse/Xtext 在生成前完成的 DSL 静态验证；另一类是在浏览器中针对
+Blockly 工作区执行的已构建模型验证。
 
 \subsection{规则的编译与呈现}
 
@@ -257,48 +235,29 @@ private static void collectClassifiers(EPackage pkg,
 规则也以树的形式保存在 \path{validation_blocks.json} 中。Java 类
 \texttt{ValidationRuntime}\allowbreak\texttt{Generator} 把每棵树转换为执行环境所用的表达式，并生成 \path{validation_runtime.js}。在浏览器中，\texttt{createValidation}\allowbreak\texttt{Accessors} 提供 \texttt{value}、\texttt{has}、\texttt{inputCount}、\texttt{fieldUnique} 和 \texttt{previousBlockIs} 等受限操作；\texttt{evaluateRuntime}\allowbreak\texttt{Expression} 使用这些访问器执行表达式。借助这种表示方式，\path{validation_workspace.html} 可以显示编辑器实际使用的同一组规则，无需维护另一套独立的可视化定义。
 
-代码清单 \ref{lst:apply-validation-warnings} 展示了如何把计算结果转换为可见信息。\texttt{workspace} 是当前 Blockly 工作区；\texttt{b} 表示正在清理的块；\texttt{w} 是一条包含块、标识符和消息的警告；\texttt{pending} 按标识符对这些警告进行分组；\texttt{k} 是当前遍历的标识符；\texttt{p} 是对应的分组。之所以需要分组，是因为同一个块可能违反多条规则，而 Blockly 每个块只提供一段警告文本。
+代码清单 \ref{lst:apply-validation-warnings} 将同一块违反的多条规则按块标识符
+合并，因为 Blockly 每个块只提供一段警告文本。
 
-\begin{lstlisting}[style=tfmjavascript, caption={带逐行注释的验证警告呈现过程}, label={lst:apply-validation-warnings}]
-// 接收需要重新验证的 Blockly 工作区 workspace。
+\begin{lstlisting}[style=tfmjavascript, caption={验证警告的合并与呈现}, label={lst:apply-validation-warnings}]
 function applyValidationWarnings(workspace) {
-    // 如果工作区尚不存在，则返回空列表。
     if (!workspace) return [];
-    // 在计算新状态之前遍历所有块。
     workspace.getAllBlocks(false).forEach(function(b) {
-        // 清除 b 上一次计算产生的所有警告。
         b.setWarningText(null);
-    // 结束对当前块的清理。
     });
-    // 执行规则，并把每个违规项保存到 warnings。
     var warnings = computeValidationWarnings(workspace);
-    // 创建 pending，以便对属于同一块的消息进行分组。
     var pending = {};
-    // 遍历规则生成的每条警告 w。
     warnings.forEach(function(w) {
-        // 舍弃无法关联到可见块的警告。
         if (!w.block) return;
-        // 在块标识符第一次出现时创建对应分组。
         if (!pending[w.block.id])
-            // 保存该块以及初始为空的消息列表。
             pending[w.block.id] = { b: w.block, msgs: [] };
-        // 把当前消息加入其所属块的分组。
         pending[w.block.id].msgs.push(w.message);
-    // 结束对当前警告的分组处理。
     });
-    // 遍历每个存在待处理消息的标识符 k。
     Object.keys(pending).forEach(function(k) {
-        // 获取 p，即已经分组的块及其消息。
         var p = pending[k];
-        // 在块的警告中一并显示所有消息。
         p.b.setWarningText(p.msgs.join('\n'));
-    // 结束对标识符 k 所对应块的更新。
     });
-    // 使用完整警告列表重建 Issues 选项卡。
     renderValidationIssues(warnings);
-    // 返回警告，以便导出流程决定是否继续。
     return warnings;
-// 结束对新验证结果的呈现。
 }
 \end{lstlisting}
 
@@ -315,30 +274,18 @@ function applyValidationWarnings(workspace) {
 
 除了 \texttt{initValidations} 安装的专用监听器，引用脚本还会注册代码清单 \ref{lst:listener-runtime-blockly} 所示的协调监听器。\texttt{workspace} 仍表示当前 Blockly 工作区，\texttt{event} 描述一次变更：其 \texttt{type} 属性表示事件类别，\texttt{blockId} 标识块，\texttt{name} 则在适用时标识字段。通过 \texttt{typeof} 检查，即使某个领域不生成验证逻辑或输出视图，也能复用同一个监听器。
 
-\begin{lstlisting}[style=tfmjavascript, caption={带逐行注释的生成编辑器响应式更新过程}, label={lst:listener-runtime-blockly}]
-// 注册一个接收工作区每次变更的函数。
+\begin{lstlisting}[style=tfmjavascript, caption={生成编辑器的响应式更新监听器}, label={lst:listener-runtime-blockly}]
 workspace.addChangeListener(function(event) {
-    // 筛选块移动事件。
     if (event.type === Blockly.Events.BLOCK_MOVE ||
-        // 同时包括块创建事件。
         event.type === Blockly.Events.BLOCK_CREATE ||
-        // 同时包括块删除事件。
         event.type === Blockly.Events.BLOCK_DELETE ||
-        // 同时包括字段和属性的变更事件。
         event.type === Blockly.Events.BLOCK_CHANGE) {
-        // 重建当前可用的引用选项。
         updateReferenceDropdowns(workspace);
-        // 保持相反引用的两端同步。
         synchronizeOppositeReferences(workspace, event);
-        // 检查验证环境是否已加载。
         if (typeof applyValidationWarnings === 'function')
-            // 重新计算并显示验证警告。
             applyValidationWarnings(workspace);
-        // 检查输出视图是否存在。
         if (typeof updateOutput === 'function') updateOutput();
-    // 结束对结构事件的响应。
     }
-// 结束并注册监听器函数。
 });
 \end{lstlisting}
 
@@ -369,43 +316,28 @@ Eclipse 集成声明在界面 bundle 的 \texttt{plugin.xml} 文件中。该文�
 \texttt{AbstractHandler}。其 \texttt{execute} 方法获取所选的 \texttt{IFile}，检查扩展名，并把工作委托给由 Eclipse 进度服务执行的
 \texttt{IRunnableWith}\allowbreak\texttt{Progress}。这种委托可以避免在加载 EMF 资源、生成中间 XMI 和创建 Web 产物期间阻塞界面。
 
-代码清单 \ref{lst:eclipse-generate-runnable} 展示了 runnable 的核心。\texttt{inputFile} 是所选文件；\texttt{monitor} 表示 Eclipse 显示的进度；\texttt{files} 将各个相对输出路径映射到其文本内容。条件表达式从两种加载方式中选择一种，但两个分支都会返回相同类型的映射，并汇合到 \texttt{writeFiles}。如果发生故障，\texttt{e} 包含原始异常，并被包装为
-\texttt{InvocationTarget}\allowbreak\texttt{Exception}，使进度服务能够把它返回给处理器。
+代码清单 \ref{lst:eclipse-generate-runnable} 展示 runnable 的核心。条件表达式
+选择 Ecore 或文本加载路线，两个分支均返回“相对路径--文本内容”映射并汇合到
+\texttt{writeFiles}；异常被包装为
+\texttt{InvocationTarget}\allowbreak\texttt{Exception} 后返回处理器。
 
-\begin{lstlisting}[style=tfmjava, caption={带逐行注释的 Eclipse 生成路线选择过程}, label={lst:eclipse-generate-runnable}]
-// 表明该方法实现 runnable 所要求的操作。
+\begin{lstlisting}[style=tfmjava, caption={Eclipse 生成路线的选择与执行}, label={lst:eclipse-generate-runnable}]
 @Override
-// 接收 monitor，即 Eclipse 用来显示进度的对象。
 public void run(IProgressMonitor monitor)
-        // 声明用于向 Eclipse 服务返回错误的包装异常。
         throws InvocationTargetException {
-    // 开始一个确保进度任务最终关闭的代码块。
     try {
-        // 把即将开始的操作文本通知 Eclipse。
         monitor.beginTask("Generating Blockly editor",
-            // 使用不确定进度，因为不同模型的规模不同。
             IProgressMonitor.UNKNOWN);
-        // 创建 files，即将写入项目的“路径--内容”映射。
         Map<String, String> files =
-            // 检查 inputFile 是否属于 Ecore 路线。
             "ecore".equals(inputFile.getFileExtension())
-                // 从 EPackage 开始加载、适配、验证并生成。
                 ? generateFromEcore(inputFile)
-                // 从 Xtext 解析出的模型执行同一链路。
                 : generateFromModel2Blockly(inputFile);
-        // 把 files 的所有元素写入输出文件夹。
         writeFiles(inputFile, files, monitor);
-    // 捕获加载、转换或写入过程中的任何故障。
     } catch (Exception e) {
-        // 在不丢失原因的前提下把故障交给进度服务。
         throw new InvocationTargetException(e);
-    // 无论生成成功还是失败，都执行此代码块。
     } finally {
-        // 在 Eclipse 界面中把任务标记为已完成。
         monitor.done();
-    // 结束对任务关闭操作的保证。
     }
-// 结束 runnable 操作。
 }
 \end{lstlisting}
 
@@ -426,7 +358,7 @@ public void run(IProgressMonitor monitor)
 
 可安装分发包分两个层级实现。\texttt{feature.xml} 文件把主 bundle、IDE bundle 和 UI bundle 归入 feature \path{io.github.plortinus.model2blockly.feature}。随后，\texttt{category.xml} 在 p2 仓库的 Model2Blockly 类别中发布该 feature。此仓库包含三个 bundle 的 JAR，以及元数据 \texttt{content.jar} 和 \texttt{artifacts.jar}；这样，无需导入源项目，即可通过 \texttt{Help -> Install New Software} 安装本章所述的同一实现。
 
-仓库还会发布源代码、p2 仓库、六个输入对、Ecore 专用案例及其生成输出。对于每个输入对，\path{generated/ecore} 和 \path{generated/dsl} 目录都包含报告、中间 XMI、示例模型、验证规则和编辑器。因此，无需再次执行转换即可检查两条路线。表 \ref{tab:artefactos-entrega} 汇总了交付所用的访问入口。
+仓库还会发布源代码、p2 仓库、六个双表示示例、Ecore 专用案例及其生成输出。对于每个示例，\path{generated/ecore} 和 \path{generated/dsl} 目录都包含报告、中间 XMI、示例模型、验证规则和编辑器。因此，无需再次执行转换即可检查两条路线。表 \ref{tab:artefactos-entrega} 汇总了交付所用的访问入口。
 
 \begin{table}[htbp]
   \centering
@@ -441,8 +373,8 @@ public void run(IProgressMonitor monitor)
     \url{https://plortinus.github.io/model2blockly/update-site/} \\
     项目网站 &
     \url{https://plortinus.github.io/model2blockly/} \\
-    Ecore--\texttt{.m2b} 输入对 &
-    \url{https://github.com/Plortinus/model2blockly/tree/main/io.github.plortinus.model2blockly/examples/feature_pairs} \\
+    Ecore 与 \texttt{.m2b} 双表示示例 &
+    \url{https://github.com/Plortinus/model2blockly/tree/main/examples/feature_pairs} \\
     评估语料库 &
     \url{https://github.com/Plortinus/model2blockly/tree/main/evaluation/official-blockly} \\
     交付文档 &
@@ -462,7 +394,7 @@ public void run(IProgressMonitor monitor)
 
 主 bundle 提供三个无需 workbench 即可执行的 Java 入口，代码清单 \ref{lst:entradas-standalone} 对其进行了汇总。
 
-\begin{lstlisting}[style=tfmcli, caption={独立入口的命令行接口（含注释）}, label={lst:entradas-standalone}]
+\begin{lstlisting}[style=tfmcli, caption={独立入口的命令行接口}, label={lst:entradas-standalone}]
 // 从 Ecore 文件加载的 EPackage 生成。
 EcoreToBlocklyMain <file.ecore> [output-dir]
 // 从 Xtext 解析出的 DomainModel 生成。
@@ -477,29 +409,19 @@ ValidationPatchMain --source <file> --validation <json> [options]
 
 \subsection{输出路径解析与磁盘写入}
 
-如果省略第二个参数，两个入口都会在源文件所在位置确定目录
-\texttt{<name>}\allowbreak\texttt{\_generated}。代码清单 \ref{lst:standalone-default-output} 展示了两个类共享的计算方式。\texttt{inputPath} 是接收到的路径；\texttt{input} 是其 \texttt{File} 表示；\texttt{name} 最初保留完整文件名；\texttt{dot} 保存最后一个点的位置；\texttt{parent} 是容器目录。如果路径没有父目录，则使用 \texttt{"."} 表示的工作目录。
+如果省略第二个参数，两个入口都会删除源文件扩展名，并在源文件所在位置创建
+\texttt{<name>}\allowbreak\texttt{\_generated} 目录；没有父目录时使用当前工作目录。
 
-\begin{lstlisting}[style=tfmjava, caption={带逐行注释的默认输出目录计算过程}, label={lst:standalone-default-output}]
-// 接收 inputPath，即用户指定的源路径。
+\begin{lstlisting}[style=tfmjava, caption={独立入口的默认输出目录计算}, label={lst:standalone-default-output}]
 private static String defaultOutputDir(String inputPath) {
-    // 把文本路径转换为文件 API 的 input 对象。
     File input = new File(inputPath);
-    // 获取 name，其初始值为包含扩展名的文件名。
     String name = input.getName();
-    // 定位 dot，即名称中最后一个点的位置。
     int dot = name.lastIndexOf('.');
-    // 检查基本名称之后是否存在扩展名。
     if (dot > 0)
-        // 删除扩展名，只保留基本名称。
         name = name.substring(0, dot);
-    // 获取 parent，即包含输入文件的目录。
     File parent = input.getParentFile();
-    // 在 parent 旁构建以 _generated 结尾的文件夹。
     return new File(parent != null ? parent : new File("."),
-        // 在前面算出的基本名称后添加后缀。
         name + "_generated").getPath();
-// 结束默认路径计算。
 }
 \end{lstlisting}
 
@@ -581,14 +503,14 @@ Blockly 产物写入 \texttt{html/} 下；中间 XMI、README 和报告则写入
     \hline
     \texttt{smoke} & 打开每个指定编辑器，加载示例模型，并检查 Blockly 工作区、检查器、验证及可观察的导出结果。 \\
     \hline
-    \texttt{verify:feature-pairs} & 生成六个输入对，对 \texttt{EditorSpec} 进行规范化比较，执行能力断言，并对十二个编辑器和 Ecore 专用案例运行 \texttt{smoke}。 \\
+    \texttt{verify:feature-pairs} & 生成六个双表示示例，对 \texttt{EditorSpec} 进行规范化比较，执行能力断言，并对十二个编辑器和 Ecore 专用案例运行 \texttt{smoke}。 \\
     \hline
   \end{tabular}
   \caption{实现的自动化验证}
   \label{tab:implementation-verification-commands}
 \end{table}
 
-在最近一次执行中，六个输入对均通过生成与对比；Ecore 示例通过七组断言；十三个编辑器均通过浏览器测试。由此，Java 约定、两条路线的等价性、没有文本等价构造的能力、Eclipse 打包以及生成 HTML 的实际行为都得到了分别验证。
+在最近一次执行中，六个双表示示例均通过生成与对比；Ecore 示例通过七组断言；十三个编辑器均通过浏览器测试。由此，Java 约定、两条路线的等价性、没有文本等价构造的能力、Eclipse 打包以及生成 HTML 的实际行为都得到了分别验证。
 
 \subsection{与评估的区分}
 

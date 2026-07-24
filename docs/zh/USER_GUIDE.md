@@ -22,7 +22,7 @@ https://plortinus.github.io/model2blockly/update-site/
 AppMaker 案例同时提供：
 
 - Ecore route：`io.github.plortinus.model2blockly/model/app_maker.ecore`
-- DSL route：`io.github.plortinus.model2blockly/examples/app_maker.m2b`
+- DSL route：`examples/app_maker.m2b`
 
 ## 生成编辑器
 
@@ -56,10 +56,10 @@ standalone/Model2BlocklyToBlocklyMain.java
 
 | 路线 | 输入 | 生成结果 |
 | --- | --- | --- |
-| Ecore | `model/app_maker.ecore` | `examples/generated/app_maker_ecore` |
+| Ecore | `io.github.plortinus.model2blockly/model/app_maker.ecore` | `examples/generated/app_maker_ecore` |
 | `.m2b` | `examples/app_maker.m2b` | `examples/generated/app_maker_dsl` |
 
-表中的路径均相对于 `io.github.plortinus.model2blockly/`。
+表中的路径均相对于仓库根目录。
 
 ## 查看结果
 
