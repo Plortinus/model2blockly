@@ -82,6 +82,10 @@
       if (raw === null || raw === undefined) return '';
       return String(raw).trim();
     }
+    function bool(name) {
+      const text = value(name).toLowerCase();
+      return text === 'true' || text === '1' || text === 'yes';
+    }
     function number(name) {
       const parsed = Number(value(name));
       return Number.isFinite(parsed) ? parsed : 0;
@@ -98,7 +102,18 @@
       }
       return count;
     }
+    function size(name) {
+      const fields = fieldCount(name);
+      if (fields > 0) return fields;
+      if (block && block.getField && block.getField(name)) {
+        return value(name) !== '' ? 1 : 0;
+      }
+      return inputCount(name);
+    }
     function has(name) {
+      if (block && block.getInput && block.getInput(name) && !(block.getField && block.getField(name))) {
+        return inputCount(name) > 0;
+      }
       return fieldCount(name) > 0 && value(name) !== '';
     }
     function includes(name, item) {
@@ -126,6 +141,7 @@
     }
     return {
       value,
+      bool,
       number,
       has,
       includes,
@@ -134,7 +150,7 @@
       fieldUnique,
       typeFieldUnique,
       previousBlockIs,
-      size: fieldCount
+      size
     };
   }
 
@@ -145,6 +161,7 @@
     try {
       const fn = new Function(
         'value',
+        'bool',
         'number',
         'has',
         'includes',
@@ -161,6 +178,7 @@
       return {
         ok: Boolean(fn(
           accessors.value,
+          accessors.bool,
           accessors.number,
           accessors.has,
           accessors.includes,
@@ -255,8 +273,17 @@
   }
 
   function fieldValuesFromRaw(raw) {
+    if (Array.isArray(raw)) return raw.map(String);
     if (raw === null || raw === undefined || raw === '') return [];
-    return String(raw)
+    const text = String(raw).trim();
+    if (!text) return [];
+    if (text.charAt(0) === '[') {
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) return parsed.map(String);
+      } catch (ignored) {}
+    }
+    return text
       .split(/[,\n]/)
       .map((part) => part.trim())
       .filter((part) => part.length > 0);

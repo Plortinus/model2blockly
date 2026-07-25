@@ -1,0 +1,99 @@
+domain ScriptedApp
+codeLanguage "javascript"
+codeFileExtension "js"
+
+workspace {
+  grid: {
+    spacing: 24
+    snap: true
+  }
+  zoom: {
+    controls: true
+  }
+  trashcan: true
+}
+
+category Application colour 210
+category Pages colour 160
+category Components colour 290
+category Expressions colour 230
+
+class App category Application colour 210 label "Application"
+  tooltip "Configure the application and add its pages." inputsInline false
+  code "app('{{name}}', () => { {{statements:pages}} });" {
+  attribute name : string [1..1] default "Welcome App"
+
+  attribute theme : enum { light, dark } [0..1] default "light"
+
+  attribute published : boolean [0..1] default "false"
+
+  attribute tags : string [0..3] default "demo,welcome"
+
+  attribute previewWidths : int [1..4] default "360,768,1440" min "320" max "1920"
+
+  attribute targetPlatforms : enum { web, android, ios } [1..3] default "web,android"
+
+  contains Page pages [1..5]
+}
+class Page category Pages colour 160 label "Page"
+  tooltip "Configure one page and the components shown on it." inputsInline false
+  code "page('{{title}}', () => { {{statements:components}} });" {
+  attribute title : string [1..1] default "Home"
+
+  attribute description : string [0..1] default "Main page"
+
+  attribute backgroundColor : colour [0..1] default "#ffffff"
+  attribute scrollable : boolean [0..1] default "true"
+
+  attribute alignment : enum { left, center, right } [0..1] default "center"
+
+  contains Component components [0..10]
+}
+abstract class Component inputsInline false {
+}
+class Label extends Component category Components colour 290 label "Label"
+  tooltip "Display text on a page." inputsInline false
+  code "label('{{text}}');" {
+  attribute ^text : string [1..1] default "Welcome"
+
+  attribute fontSize : int [0..1] default "24" min "8" max "72"
+
+  attribute textColor : colour [0..1] default "#202124"
+}
+class Button extends Component category Components colour 20 label "Button"
+  tooltip "Display a button that is enabled when its condition holds." inputsInline false
+  code "button('{{text}}', {{value:enabledWhen}});" {
+  attribute ^text : string [1..1] default "Continue"
+
+  attribute ^width : int [0..1] default "160" min "60" max "320"
+
+  attribute backgroundColor : colour [0..1] default "#1a73e8"
+
+  value Expression enabledWhen shadow BoolLiteral
+}
+class Image extends Component category Components colour 65 label "Image"
+  tooltip "Display an image from a URL." inputsInline false
+  code "image('{{url}}');" {
+  attribute url : string [1..1] default "https://example.org/welcome.png"
+
+  attribute rotation : angle [0..1] default "0"
+  attribute opacity : float [0..1] default "1" min "0" max "1"
+
+}
+abstract output class Expression inputsInline false {
+}
+output class BoolLiteral extends Expression category Expressions colour 230 label "Boolean"
+  tooltip "A fixed true or false value." inputsInline false
+  code "{{literal}}" {
+  attribute literal : boolean [0..1] default "true"
+}
+output class PlatformIs extends Expression category Expressions colour 230 label "Platform is"
+  tooltip "True when the application runs on the selected platform." inputsInline false
+  code "platform === '{{platform}}'" {
+  attribute platform : enum { web, android, ios } [0..1] default "web"
+}
+output class NotExpression extends Expression category Expressions colour 230 label "Not"
+  tooltip "Negate the nested condition." inputsInline false
+  code "!({{value:operand}})" {
+  value Expression operand shadow BoolLiteral
+}

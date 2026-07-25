@@ -146,8 +146,8 @@ function discoverPairs() {
     }];
   });
 
-  if (pairs.length !== 6) {
-    throw new Error(`Expected 6 feature-pair directories, found ${pairs.length}: ${pairs.map((pair) => pair.name).join(', ')}`);
+  if (pairs.length !== 5) {
+    throw new Error(`Expected 5 feature-pair directories, found ${pairs.length}: ${pairs.map((pair) => pair.name).join(', ')}`);
   }
   return pairs;
 }

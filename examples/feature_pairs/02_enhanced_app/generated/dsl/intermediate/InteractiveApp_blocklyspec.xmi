@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocklyspec:EditorSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:blocklyspec="http://www.example.org/model2blockly/intermediate/BlocklyEditorSpec" domainName="InteractiveApp" nsURI="http://www.example.org/interactiveapp" nsPrefix="interactiveapp" codeLanguage="text" codeFileExtension="txt">
+  <categories name="Application" label="Application" colour="210"/>
+  <categories name="Pages" label="Pages" colour="160"/>
+  <categories name="Components" label="Components" colour="290"/>
+  <categories name="Actions" label="Actions" colour="20"/>
+  <blockTypes typeName="App" label="Application" colour="210" categoryName="Application" connectionType="NONE" inputsInline="false" tooltip="Configure the application and add its pages.">
+    <orderedInputNames>name</orderedInputNames>
+    <orderedInputNames>theme</orderedInputNames>
+    <orderedInputNames>published</orderedInputNames>
+    <orderedInputNames>tags</orderedInputNames>
+    <orderedInputNames>previewWidths</orderedInputNames>
+    <orderedInputNames>targetPlatforms</orderedInputNames>
+    <orderedInputNames>pages</orderedInputNames>
+    <fields name="name" defaultValue="Welcome App" required="true" lowerBound="1"/>
+    <fields name="theme" fieldType="DROPDOWN" defaultValue="light">
+      <options value="light" label="light"/>
+      <options value="dark" label="dark"/>
+    </fields>
+    <fields name="published" fieldType="BOOLEAN" defaultValue="false"/>
+    <fields name="tags" defaultValue="demo,welcome" upperBound="3"/>
+    <fields name="previewWidths" fieldType="INTEGER" defaultValue="360,768,1440" min="320" max="1920" required="true" lowerBound="1" upperBound="4"/>
+    <fields name="targetPlatforms" fieldType="DROPDOWN" defaultValue="web,android" required="true" lowerBound="1" upperBound="3">
+      <options value="web" label="web"/>
+      <options value="android" label="android"/>
+      <options value="ios" label="ios"/>
+    </fields>
+    <statementInputs name="pages" checkType="Page" lowerBound="1" upperBound="5"/>
+  </blockTypes>
+  <blockTypes typeName="Page" label="Page" colour="160" categoryName="Pages" connectionType="TYPED" connectionTypeName="Page" inputsInline="false" tooltip="Configure one page and the components shown on it." idFieldName="id">
+    <orderedInputNames>id</orderedInputNames>
+    <orderedInputNames>title</orderedInputNames>
+    <orderedInputNames>description</orderedInputNames>
+    <orderedInputNames>backgroundColor</orderedInputNames>
+    <orderedInputNames>scrollable</orderedInputNames>
+    <orderedInputNames>alignment</orderedInputNames>
+    <orderedInputNames>components</orderedInputNames>
+    <fields name="id" defaultValue="home" required="true" lowerBound="1" id="true"/>
+    <fields name="title" defaultValue="Home" required="true" lowerBound="1"/>
+    <fields name="description" defaultValue="Main page"/>
+    <fields name="backgroundColor" fieldType="COLOUR" defaultValue="#ffffff"/>
+    <fields name="scrollable" fieldType="BOOLEAN" defaultValue="true"/>
+    <fields name="alignment" fieldType="DROPDOWN" defaultValue="center">
+      <options value="left" label="left"/>
+      <options value="center" label="center"/>
+      <options value="right" label="right"/>
+    </fields>
+    <statementInputs name="components" checkType="Component" upperBound="10"/>
+  </blockTypes>
+  <blockTypes typeName="Component" label="Component" abstract="true" connectionType="TYPED" connectionTypeName="Component" inputsInline="false"/>
+  <blockTypes typeName="Container" label="Container" colour="290" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="false" tooltip="Group components in a nested layout.">
+    <orderedInputNames>layout</orderedInputNames>
+    <orderedInputNames>children</orderedInputNames>
+    <fields name="layout" fieldType="DROPDOWN" defaultValue="column">
+      <options value="column" label="column"/>
+      <options value="row" label="row"/>
+      <options value="grid" label="grid"/>
+    </fields>
+    <statementInputs name="children" checkType="Component" lowerBound="1" upperBound="10"/>
+  </blockTypes>
+  <blockTypes typeName="Label" label="Label" colour="290" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="false" tooltip="Display text on a page.">
+    <orderedInputNames>text</orderedInputNames>
+    <orderedInputNames>fontSize</orderedInputNames>
+    <orderedInputNames>textColor</orderedInputNames>
+    <fields name="text" defaultValue="Welcome" required="true" lowerBound="1"/>
+    <fields name="fontSize" fieldType="INTEGER" defaultValue="24" min="8" max="72"/>
+    <fields name="textColor" fieldType="COLOUR" defaultValue="#202124"/>
+  </blockTypes>
+  <blockTypes typeName="Button" label="Button" colour="20" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="false" tooltip="Associate a button with an ordered action model.">
+    <orderedInputNames>text</orderedInputNames>
+    <orderedInputNames>width</orderedInputNames>
+    <orderedInputNames>enabled</orderedInputNames>
+    <orderedInputNames>backgroundColor</orderedInputNames>
+    <orderedInputNames>onClick</orderedInputNames>
+    <fields name="text" defaultValue="Continue" required="true" lowerBound="1"/>
+    <fields name="width" fieldType="INTEGER" defaultValue="160" min="60" max="320"/>
+    <fields name="enabled" fieldType="BOOLEAN" defaultValue="true"/>
+    <fields name="backgroundColor" fieldType="COLOUR" defaultValue="#1a73e8"/>
+    <statementInputs name="onClick" checkType="Action" upperBound="10"/>
+  </blockTypes>
+  <blockTypes typeName="Image" label="Image" colour="65" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="false" tooltip="Display an image from a URL.">
+    <orderedInputNames>url</orderedInputNames>
+    <orderedInputNames>rotation</orderedInputNames>
+    <orderedInputNames>opacity</orderedInputNames>
+    <fields name="url" defaultValue="https://example.org/welcome.png" required="true" lowerBound="1"/>
+    <fields name="rotation" fieldType="ANGLE" defaultValue="0"/>
+    <fields name="opacity" fieldType="FLOAT" defaultValue="1" min="0" max="1"/>
+  </blockTypes>
+  <blockTypes typeName="Action" label="Action" abstract="true" connectionType="TYPED" connectionTypeName="Action" inputsInline="false"/>
+  <blockTypes typeName="NavigateAction" label="Navigate" colour="20" categoryName="Actions" superTypeName="Action" connectionType="TYPED" connectionTypeName="Action" inputsInline="false" tooltip="Open an existing page in the application.">
+    <orderedInputNames>target</orderedInputNames>
+    <referenceFields name="target" targetTypeName="Page" required="true" lowerBound="1" referenceLabelField="id"/>
+  </blockTypes>
+  <blockTypes typeName="ShowMessageAction" label="Show message" colour="20" categoryName="Actions" superTypeName="Action" connectionType="TYPED" connectionTypeName="Action" inputsInline="false" tooltip="Display text to the user.">
+    <orderedInputNames>message</orderedInputNames>
+    <fields name="message" defaultValue="Message" required="true" lowerBound="1"/>
+  </blockTypes>
+  <validations type="CARDINALITY" name="App_pages" ownerType="App" containmentName="pages" lowerBound="1" upperBound="5">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="App"/>
+      <fields name="INPUT" value="pages"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="5"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="pages"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="pages"/>
+        <children kind="NUMBER_LITERAL" literal="5"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Page_components" ownerType="Page" containmentName="components" upperBound="10">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Page"/>
+      <fields name="INPUT" value="components"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="10"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="components"/>
+      <children kind="NUMBER_LITERAL" literal="10"/>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Container_children" ownerType="Container" containmentName="children" lowerBound="1" upperBound="10">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Container"/>
+      <fields name="INPUT" value="children"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="10"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="INPUT_COUNT" fieldName="children"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="INPUT_COUNT" fieldName="children"/>
+        <children kind="NUMBER_LITERAL" literal="10"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="CARDINALITY" name="Button_onClick" ownerType="Button" containmentName="onClick" upperBound="10">
+    <visualBlock blocklyBlockType="validation_statement_cardinality">
+      <fields name="TYPE" value="Button"/>
+      <fields name="INPUT" value="onClick"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="10"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="INPUT_COUNT" fieldName="onClick"/>
+      <children kind="NUMBER_LITERAL" literal="10"/>
+    </visualExpression>
+  </validations>
+  <validations type="REQUIRED" name="App_name_required" ownerType="App" fieldName="name" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="App"/>
+      <fields name="FIELD" value="name"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="name"/>
+  </validations>
+  <validations type="REQUIRED" name="App_previewWidths_required" ownerType="App" fieldName="previewWidths" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="App"/>
+      <fields name="FIELD" value="previewWidths"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="previewWidths"/>
+  </validations>
+  <validations type="REQUIRED" name="App_targetPlatforms_required" ownerType="App" fieldName="targetPlatforms" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="App"/>
+      <fields name="FIELD" value="targetPlatforms"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="targetPlatforms"/>
+  </validations>
+  <validations type="REQUIRED" name="Page_id_required" ownerType="Page" fieldName="id" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Page"/>
+      <fields name="FIELD" value="id"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="id"/>
+  </validations>
+  <validations type="REQUIRED" name="Page_title_required" ownerType="Page" fieldName="title" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Page"/>
+      <fields name="FIELD" value="title"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="title"/>
+  </validations>
+  <validations type="REQUIRED" name="Label_text_required" ownerType="Label" fieldName="text" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Label"/>
+      <fields name="FIELD" value="text"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="text"/>
+  </validations>
+  <validations type="REQUIRED" name="Button_text_required" ownerType="Button" fieldName="text" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Button"/>
+      <fields name="FIELD" value="text"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="text"/>
+  </validations>
+  <validations type="REQUIRED" name="Image_url_required" ownerType="Image" fieldName="url" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="Image"/>
+      <fields name="FIELD" value="url"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="url"/>
+  </validations>
+  <validations type="REQUIRED" name="NavigateAction_target_required" ownerType="NavigateAction" fieldName="target" fieldKind="reference">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="NavigateAction"/>
+      <fields name="FIELD" value="target"/>
+      <fields name="FIELD_KIND" value="reference"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="target"/>
+  </validations>
+  <validations type="REQUIRED" name="ShowMessageAction_message_required" ownerType="ShowMessageAction" fieldName="message" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_required_field">
+      <fields name="TYPE" value="ShowMessageAction"/>
+      <fields name="FIELD" value="message"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_EXISTS" fieldName="message"/>
+  </validations>
+  <validations type="FIELD_CARDINALITY" name="App_tags_cardinality" ownerType="App" upperBound="3" fieldName="tags" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_field_cardinality">
+      <fields name="TYPE" value="App"/>
+      <fields name="FIELD" value="tags"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+      <fields name="MIN" value="0"/>
+      <fields name="MAX" value="3"/>
+    </visualBlock>
+    <visualExpression kind="LOGIC_COMPARE" operator="LTE">
+      <children kind="FIELD_COUNT" fieldName="tags"/>
+      <children kind="NUMBER_LITERAL" literal="3"/>
+    </visualExpression>
+  </validations>
+  <validations type="FIELD_CARDINALITY" name="App_previewWidths_cardinality" ownerType="App" lowerBound="1" upperBound="4" fieldName="previewWidths" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_field_cardinality">
+      <fields name="TYPE" value="App"/>
+      <fields name="FIELD" value="previewWidths"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="4"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="FIELD_COUNT" fieldName="previewWidths"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="FIELD_COUNT" fieldName="previewWidths"/>
+        <children kind="NUMBER_LITERAL" literal="4"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="FIELD_CARDINALITY" name="App_targetPlatforms_cardinality" ownerType="App" lowerBound="1" upperBound="3" fieldName="targetPlatforms" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_field_cardinality">
+      <fields name="TYPE" value="App"/>
+      <fields name="FIELD" value="targetPlatforms"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+      <fields name="MIN" value="1"/>
+      <fields name="MAX" value="3"/>
+    </visualBlock>
+    <visualExpression operator="AND">
+      <children kind="LOGIC_COMPARE" operator="GTE">
+        <children kind="FIELD_COUNT" fieldName="targetPlatforms"/>
+        <children kind="NUMBER_LITERAL" literal="1"/>
+      </children>
+      <children kind="LOGIC_COMPARE" operator="LTE">
+        <children kind="FIELD_COUNT" fieldName="targetPlatforms"/>
+        <children kind="NUMBER_LITERAL" literal="3"/>
+      </children>
+    </visualExpression>
+  </validations>
+  <validations type="UNIQUE" name="App_tags_unique" ownerType="App" fieldName="tags" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_field_unique">
+      <fields name="TYPE" value="App"/>
+      <fields name="FIELD" value="tags"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_UNIQUE" fieldName="tags"/>
+  </validations>
+  <validations type="UNIQUE" name="App_previewWidths_unique" ownerType="App" fieldName="previewWidths" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_field_unique">
+      <fields name="TYPE" value="App"/>
+      <fields name="FIELD" value="previewWidths"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_UNIQUE" fieldName="previewWidths"/>
+  </validations>
+  <validations type="UNIQUE" name="App_targetPlatforms_unique" ownerType="App" fieldName="targetPlatforms" fieldKind="attribute">
+    <visualBlock blocklyBlockType="validation_field_unique">
+      <fields name="TYPE" value="App"/>
+      <fields name="FIELD" value="targetPlatforms"/>
+      <fields name="FIELD_KIND" value="attribute"/>
+    </visualBlock>
+    <visualExpression kind="FIELD_UNIQUE" fieldName="targetPlatforms"/>
+  </validations>
+  <validations type="UNIQUE" name="Page_id_unique" ownerType="Page" fieldName="id" fieldKind="id">
+    <visualBlock blocklyBlockType="validation_type_field_unique">
+      <fields name="TYPE" value="Page"/>
+      <fields name="FIELD" value="id"/>
+    </visualBlock>
+    <visualExpression kind="TYPE_FIELD_UNIQUE" fieldName="id" typeName="Page"/>
+  </validations>
+</blocklyspec:EditorSpec>

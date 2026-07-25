@@ -3,9 +3,41 @@
 function parseBlocklyListField(value) {
   if (Array.isArray(value)) return value;
   if (value === null || value === undefined) return [];
-  return String(value).split(/[,\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });
+  var text = String(value).trim();
+  if (!text) return [];
+  if (text.charAt(0) === '[') {
+    try {
+      var parsed = JSON.parse(text);
+      if (Array.isArray(parsed)) return parsed;
+    } catch (ignored) {}
+  }
+  return text.split(/[,\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });
 }
 window.parseBlocklyListField = parseBlocklyListField;
+
+function parseBlocklyTypedListField(value, type) {
+  var itemType = String(type || 'TEXT').toUpperCase();
+  return parseBlocklyListField(value).map(function(item) {
+    if (itemType === 'INTEGER' || itemType === 'ANGLE') {
+      if (typeof item === 'number' && Number.isInteger(item)) return item;
+      var integerText = String(item).trim();
+      return /^[+-]?\d+$/.test(integerText) ? Number(integerText) : item;
+    }
+    if (itemType === 'FLOAT') {
+      if (typeof item === 'number' && Number.isFinite(item)) return item;
+      var floatText = String(item).trim();
+      return floatText !== '' && Number.isFinite(Number(floatText)) ? Number(floatText) : item;
+    }
+    if (itemType === 'BOOLEAN') {
+      if (item === true || item === false) return item;
+      var booleanText = String(item).trim().toLowerCase();
+      if (booleanText === 'true' || booleanText === '1' || booleanText === 'yes') return true;
+      if (booleanText === 'false' || booleanText === '0' || booleanText === 'no') return false;
+    }
+    return item === null || item === undefined ? '' : String(item);
+  });
+}
+window.parseBlocklyTypedListField = parseBlocklyTypedListField;
 
 /* ── Built-in block generators (JSON AST output) ── */
 
@@ -325,8 +357,19 @@ function applyDomainTemplate(block, config, template) {
     })
     .replace(/\{\{\s*type\s*\}\}/g, block.type)
     .replace(/\{\{\s*([A-Za-z_][\w-]*)\s*\}\}/g, function(_, name) {
-      return block.getFieldValue(name) || '';
+      return domainFieldText(block, config, name);
     });
+}
+
+function domainFieldText(block, config, name) {
+  var value = block.getFieldValue(name);
+  if (value === null || value === undefined) return '';
+  var type = config && config.fieldTypes ? config.fieldTypes[name] : null;
+  if (type === 'BOOLEAN') {
+    if (value === true || value === 'TRUE' || value === 'true') return 'true';
+    if (value === false || value === 'FALSE' || value === 'false') return 'false';
+  }
+  return String(value);
 }
 
 function renderDomainValue(block, inputName) {

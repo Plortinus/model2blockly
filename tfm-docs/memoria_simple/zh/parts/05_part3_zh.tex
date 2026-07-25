@@ -90,7 +90,7 @@ Ecore 专用案例保存在目录：
 \begin{center}
   \path{examples/ecore_specific/07_ecore_specific}
 \end{center}
-该案例检验 Ecore 原生具备而文本 DSL 尚无等价构造的信息，因此不纳入六个
+该案例检验 Ecore 原生具备而文本 DSL 尚无等价构造的信息，因此不纳入三个
 双表示示例之间的等价性比较。
 
 该元模型在根包中包含 \texttt{Catalog}，以 \texttt{NamedElement} 作为接口，并在子包 \texttt{details} 中包含 \texttt{Entry}。\texttt{Catalog} 包含抽象类型 \texttt{NamedElement} 的条目，并维护一个指向 \texttt{Entry} 的 \texttt{featured} 引用。具体类增加一个标识符和五个数值属性。此外，\texttt{Catalog} 还声明了四种技术属性——派生、瞬态、易失和不可修改——它们不应转换为可编辑控件。
@@ -358,7 +358,7 @@ public void run(IProgressMonitor monitor)
 
 可安装分发包分两个层级实现。\texttt{feature.xml} 文件把主 bundle、IDE bundle 和 UI bundle 归入 feature \path{io.github.plortinus.model2blockly.feature}。随后，\texttt{category.xml} 在 p2 仓库的 Model2Blockly 类别中发布该 feature。此仓库包含三个 bundle 的 JAR，以及元数据 \texttt{content.jar} 和 \texttt{artifacts.jar}；这样，无需导入源项目，即可通过 \texttt{Help -> Install New Software} 安装本章所述的同一实现。
 
-仓库还会发布源代码、p2 仓库、六个双表示示例、Ecore 专用案例及其生成输出。对于每个示例，\path{generated/ecore} 和 \path{generated/dsl} 目录都包含报告、中间 XMI、示例模型、验证规则和编辑器。因此，无需再次执行转换即可检查两条路线。表 \ref{tab:artefactos-entrega} 汇总了交付所用的访问入口。
+仓库还会发布源代码、p2 仓库、三个双表示示例、Ecore 专用案例及其生成输出。对于每个示例，\path{generated/ecore} 和 \path{generated/dsl} 目录都包含报告、中间 XMI、示例模型、验证规则和编辑器。因此，无需再次执行转换即可检查两条路线。表 \ref{tab:artefactos-entrega} 汇总了交付所用的访问入口。
 
 \begin{table}[htbp]
   \centering
@@ -503,14 +503,14 @@ Blockly 产物写入 \texttt{html/} 下；中间 XMI、README 和报告则写入
     \hline
     \texttt{smoke} & 打开每个指定编辑器，加载示例模型，并检查 Blockly 工作区、检查器、验证及可观察的导出结果。 \\
     \hline
-    \texttt{verify:feature-pairs} & 生成六个双表示示例，对 \texttt{EditorSpec} 进行规范化比较，执行能力断言，并对十二个编辑器和 Ecore 专用案例运行 \texttt{smoke}。 \\
+    \texttt{verify:feature-pairs} & 生成三个双表示示例，对 \texttt{EditorSpec} 进行规范化比较，执行能力断言，并对六个编辑器和 Ecore 专用案例运行 \texttt{smoke}。 \\
     \hline
   \end{tabular}
   \caption{实现的自动化验证}
   \label{tab:implementation-verification-commands}
 \end{table}
 
-在最近一次执行中，六个双表示示例均通过生成与对比；Ecore 示例通过七组断言；十三个编辑器均通过浏览器测试。由此，Java 约定、两条路线的等价性、没有文本等价构造的能力、Eclipse 打包以及生成 HTML 的实际行为都得到了分别验证。
+在最近一次执行中，三个双表示示例均通过生成与规范化对比，Ecore 专用案例通过七组断言。重新设计的第二个示例在两条路线中均通过浏览器测试；代码生成示例的浏览器断言仍需随示例重组一并更新。
 
 \subsection{与评估的区分}
 

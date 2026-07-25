@@ -196,9 +196,9 @@ function parseReferenceMultiValue(value) {
     var typeLabel = normalizedType === 'DROPDOWN' ? 'enum' : normalizedType.toLowerCase();
     var bounds = (field.lowerBound_ || 0) + '..' + (field.upperBound_ > 0 ? field.upperBound_ : '*');
     var range = field.itemMin_ !== '' || field.itemMax_ !== ''
-  ? ' Value range: ' + (field.itemMin_ !== '' ? field.itemMin_ : '-∞')
-    + '..' + (field.itemMax_ !== '' ? field.itemMax_ : '∞') + '.'
-  : '';
+      ? ' Value range: ' + (field.itemMin_ !== '' ? field.itemMin_ : '-∞')
+        + '..' + (field.itemMax_ !== '' ? field.itemMax_ : '∞') + '.'
+      : '';
     hint.textContent = 'Element type: ' + typeLabel + '. Cardinality: ' + bounds + '.' + range;
     panel.appendChild(hint);
 
@@ -477,8 +477,8 @@ function parseReferenceMultiValue(value) {
     constructor(value, validator, config) {
       super('', validator, config);
       config = config || {};
-      this.itemTypeName_ = config.itemType || 'TEXT';
-      this.label_ = config.label || '';
+		      this.itemTypeName_ = config.itemType || 'TEXT';
+		      this.label_ = config.label || '';
       this.itemOptions_ = Array.isArray(config.options) ? config.options : [];
       this.itemMin_ = config.min === undefined || config.min === null ? '' : config.min;
       this.itemMax_ = config.max === undefined || config.max === null ? '' : config.max;
@@ -520,18 +520,18 @@ window.BLOCKLY_BLOCKS = [
 	"type": "App",
 	"message0": "Application",
 					"args0": [],
-	"message1": "Name %1",
+	"message1": "name %1",
 						"args1": [{"type": "field_input", "name": "name", "text": "Welcome App"}],
-	"message2": "Theme %1",
+	"message2": "theme %1",
 						"args2": [{"type": "field_dropdown", "name": "theme", "options": [["light", "light"], ["dark", "dark"]]}],
-	"message3": "Published %1",
+	"message3": "published %1",
 						"args3": [{"type": "field_checkbox", "name": "published", "checked": false}],
-	"message4": "Tags %1",
-						"args4": [{"type": "field_multivalue", "name": "tags", "label": "Tags", "text": "demo,welcome", "itemType": "TEXT", "options": [], "min": "", "max": "", "lowerBound": 0, "upperBound": 3, "unique": true, "ordered": true}],
-	"message5": "Preview widths %1",
-						"args5": [{"type": "field_multivalue", "name": "previewWidths", "label": "Preview widths", "text": "360,768,1440", "itemType": "INTEGER", "options": [], "min": "320", "max": "1920", "lowerBound": 1, "upperBound": 4, "unique": true, "ordered": true}],
-	"message6": "Target platforms %1",
-						"args6": [{"type": "field_multivalue", "name": "targetPlatforms", "label": "Target platforms", "text": "web,android", "itemType": "DROPDOWN", "options": [["web", "web"], ["android", "android"], ["ios", "ios"]], "min": "", "max": "", "lowerBound": 1, "upperBound": 3, "unique": true, "ordered": true}],
+	"message4": "tags %1",
+						"args4": [{"type": "field_multivalue", "name": "tags", "label": "tags", "text": "demo,welcome", "itemType": "TEXT", "options": [], "min": "", "max": "", "lowerBound": 0, "upperBound": 3, "unique": true, "ordered": true}],
+	"message5": "previewWidths %1",
+						"args5": [{"type": "field_multivalue", "name": "previewWidths", "label": "previewWidths", "text": "360,768,1440", "itemType": "INTEGER", "options": [], "min": "320", "max": "1920", "lowerBound": 1, "upperBound": 4, "unique": true, "ordered": true}],
+	"message6": "targetPlatforms %1",
+						"args6": [{"type": "field_multivalue", "name": "targetPlatforms", "label": "targetPlatforms", "text": "web,android", "itemType": "DROPDOWN", "options": [["web", "web"], ["android", "android"], ["ios", "ios"]], "min": "", "max": "", "lowerBound": 1, "upperBound": 3, "unique": true, "ordered": true}],
 	"message7": "pages %1",
 						"args7": [{"type": "input_statement", "name": "pages", "check": "Page"}],
 	"inputsInline": false,
@@ -543,15 +543,15 @@ window.BLOCKLY_BLOCKS = [
 	"type": "Page",
 	"message0": "Page",
 					"args0": [],
-	"message1": "Title %1",
+	"message1": "title %1",
 						"args1": [{"type": "field_input", "name": "title", "text": "Home"}],
-	"message2": "Description %1",
+	"message2": "description %1",
 						"args2": [{"type": "field_input", "name": "description", "text": "Main page"}],
 	"message3": "backgroundColor %1",
 						"args3": [{"type": "field_colour", "name": "backgroundColor", "colour": "#ffffff"}],
-	"message4": "Scrollable %1",
+	"message4": "scrollable %1",
 						"args4": [{"type": "field_checkbox", "name": "scrollable", "checked": true}],
-	"message5": "Alignment %1",
+	"message5": "alignment %1",
 						"args5": [{"type": "field_dropdown", "name": "alignment", "options": [["left", "left"], ["center", "center"], ["right", "right"]]}],
 	"message6": "components %1",
 						"args6": [{"type": "input_statement", "name": "components", "check": "Component"}],
@@ -565,9 +565,9 @@ window.BLOCKLY_BLOCKS = [
 	"type": "Label",
 	"message0": "Label",
 					"args0": [],
-	"message1": "Text %1",
+	"message1": "text %1",
 						"args1": [{"type": "field_input", "name": "text", "text": "Welcome"}],
-	"message2": "Font size %1",
+	"message2": "fontSize %1",
 						"args2": [{"type": "field_number", "name": "fontSize", "value": 24, "precision": 1, "min": 8, "max": 72}],
 	"message3": "textColor %1",
 						"args3": [{"type": "field_colour", "name": "textColor", "colour": "#202124"}],
@@ -581,11 +581,11 @@ window.BLOCKLY_BLOCKS = [
 	"type": "Button",
 	"message0": "Button",
 					"args0": [],
-	"message1": "Text %1",
+	"message1": "text %1",
 						"args1": [{"type": "field_input", "name": "text", "text": "Continue"}],
-	"message2": "Width %1",
+	"message2": "width %1",
 						"args2": [{"type": "field_number", "name": "width", "value": 160, "precision": 1, "min": 60, "max": 320}],
-	"message3": "Enabled %1",
+	"message3": "enabled %1",
 						"args3": [{"type": "field_checkbox", "name": "enabled", "checked": true}],
 	"message4": "backgroundColor %1",
 						"args4": [{"type": "field_colour", "name": "backgroundColor", "colour": "#1a73e8"}],
@@ -599,11 +599,11 @@ window.BLOCKLY_BLOCKS = [
 	"type": "Image",
 	"message0": "Image",
 					"args0": [],
-	"message1": "Image URL %1",
+	"message1": "url %1",
 						"args1": [{"type": "field_input", "name": "url", "text": "https://example.org/welcome.png"}],
 	"message2": "rotation %1",
 						"args2": [{"type": "field_angle", "name": "rotation", "angle": 0}],
-	"message3": "Opacity %1",
+	"message3": "opacity %1",
 						"args3": [{"type": "field_number", "name": "opacity", "value": 1, "precision": 0.1, "min": 0, "max": 1}],
 	"previousStatement": "Component", "nextStatement": "Component",
 	"inputsInline": false,

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="validatedApp"
+    nsURI="http://www.example.org/validatedapp"
+    nsPrefix="validatedapp">
+
+  <eClassifiers xsi:type="ecore:EClass" name="App">
+    <eAnnotations source="blockly">
+      <details key="colour" value="210"/>
+      <details key="category" value="Application"/>
+      <details key="label" value="Application"/>
+      <details key="tooltip" value="Configure the application and add its pages."/>
+      <details key="inputsInline" value="false"/>
+    </eAnnotations>
+    <eAnnotations source="validation">
+      <details key="ocl.publishedRequiresTags" value="not self.published or self.tags-&gt;notEmpty()"/>
+      <details key="message.publishedRequiresTags" value="A published app must have at least one tag."/>
+    </eAnnotations>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="Welcome App"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="theme" eType="#//Theme" defaultValueLiteral="light"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="published" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tags" upperBound="3" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="blockly"><details key="initialValues" value="demo,welcome"/></eAnnotations>
+
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="previewWidths" lowerBound="1" upperBound="4"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="blockly"><details key="initialValues" value="360,768,1440"/><details key="min" value="320"/><details key="max" value="1920"/></eAnnotations>
+
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetPlatforms" lowerBound="1" upperBound="3"
+        eType="#//Platform">
+      <eAnnotations source="blockly"><details key="initialValues" value="web,android"/></eAnnotations>
+
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pages" lowerBound="1" upperBound="5" eType="#//Page" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Page">
+    <eAnnotations source="blockly"><details key="colour" value="160"/><details key="category" value="Pages"/><details key="label" value="Page"/><details key="tooltip" value="Configure one page and the components shown on it."/><details key="inputsInline" value="false"/></eAnnotations>
+    <eAnnotations source="validation">
+      <details key="ocl.pageShowsContent" value="self.components-&gt;size() &gt;= 1 or self.description &lt;&gt; ''"/>
+      <details key="message.pageShowsContent" value="A page must have at least one component or a non-empty description."/>
+    </eAnnotations>
+
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="Home"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="Main page"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="#ffffff">
+      <eAnnotations source="blockly"><details key="type" value="field_colour"/></eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scrollable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alignment" eType="#//Alignment" defaultValueLiteral="center"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="10" eType="#//Component" containment="true"/>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true"><eAnnotations source="blockly"><details key="inputsInline" value="false"/></eAnnotations></eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Label" eSuperTypes="#//Component">
+    <eAnnotations source="blockly"><details key="colour" value="290"/><details key="category" value="Components"/><details key="label" value="Label"/><details key="tooltip" value="Display text on a page."/><details key="inputsInline" value="false"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="Welcome"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fontSize" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="24"><eAnnotations source="blockly"><details key="min" value="8"/><details key="max" value="72"/></eAnnotations></eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="textColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="#202124"><eAnnotations source="blockly"><details key="type" value="field_colour"/></eAnnotations></eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Button" eSuperTypes="#//Component">
+    <eAnnotations source="blockly"><details key="colour" value="20"/><details key="category" value="Components"/><details key="label" value="Button"/><details key="tooltip" value="Display a button that can later receive an action."/><details key="inputsInline" value="false"/></eAnnotations>
+    <eAnnotations source="validation">
+      <details key="ocl.enabledNeedsWidth" value="not self.enabled or self.width &gt;= 100"/>
+      <details key="message.enabledNeedsWidth" value="An enabled button must be at least 100 pixels wide."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="Continue"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="160"><eAnnotations source="blockly"><details key="min" value="60"/><details key="max" value="320"/></eAnnotations></eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="#1a73e8"><eAnnotations source="blockly"><details key="type" value="field_colour"/></eAnnotations></eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EClass" name="Image" eSuperTypes="#//Component">
+    <eAnnotations source="blockly"><details key="colour" value="65"/><details key="category" value="Components"/><details key="label" value="Image"/><details key="tooltip" value="Display an image from a URL."/><details key="inputsInline" value="false"/></eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="https://example.org/welcome.png"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rotation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0"><eAnnotations source="blockly"><details key="type" value="field_angle"/></eAnnotations></eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="opacity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat" defaultValueLiteral="1"><eAnnotations source="blockly"><details key="min" value="0"/><details key="max" value="1"/></eAnnotations></eStructuralFeatures>
+  </eClassifiers>
+
+  <eClassifiers xsi:type="ecore:EEnum" name="Theme"><eLiterals name="light" literal="light"/><eLiterals name="dark" value="1" literal="dark"/></eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Alignment"><eLiterals name="left" literal="left"/><eLiterals name="center" value="1" literal="center"/><eLiterals name="right" value="2" literal="right"/></eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Platform"><eLiterals name="web" literal="web"/><eLiterals name="android" value="1" literal="android"/><eLiterals name="ios" value="2" literal="ios"/></eClassifiers>
+</ecore:EPackage>

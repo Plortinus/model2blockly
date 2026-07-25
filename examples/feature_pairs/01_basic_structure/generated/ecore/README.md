@@ -1,6 +1,6 @@
 # Generated Blockly Editor
 
-Input Ecore metamodel: `examples/feature_pairs/01_basic_structure/basicStructure.ecore`
+Input Ecore metamodel: `/Users/wxy/model2blockly/examples/feature_pairs/01_basic_structure/basicStructure.ecore`
 
 Output: EMF EditorSpec intermediate XMI and HTML Blockly editor
 

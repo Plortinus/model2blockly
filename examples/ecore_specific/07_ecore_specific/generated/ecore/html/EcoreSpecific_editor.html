@@ -83,6 +83,14 @@
 		.reference-dialog-row input{margin:0}
 		.reference-dialog-empty{padding:18px 0;color:#777;text-align:center}
 		.reference-dialog-textarea{margin:12px 16px 0;min-height:160px;resize:vertical;border:1px solid #dadce0;border-radius:4px;padding:8px;font:13px/1.4 monospace}
+		.multivalue-list{display:flex;flex-direction:column;gap:6px}
+		.multivalue-row{padding:0}
+		.multivalue-control{box-sizing:border-box;flex:1;min-width:0;border:1px solid #dadce0;border-radius:4px;padding:7px 8px;background:#fff;color:#202124}
+		.multivalue-control[type="color"]{min-height:36px;padding:3px}
+		.multivalue-icon-button{width:32px;height:32px;border:1px solid #dadce0;border-radius:4px;background:#fff;cursor:pointer;font-size:16px;line-height:1}
+		.multivalue-errors{min-height:0;margin:0 16px;color:#b3261e;font-size:.82em;line-height:1.4}
+		.multivalue-errors:not(:empty){padding:8px 0}
+		.multivalue-hint{padding:6px 16px 10px;color:#666;font-size:.8em}
 		.reference-dialog-actions{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid #e0e0e0}
 		.reference-dialog-actions button{border:1px solid #dadce0;background:#fff;border-radius:4px;padding:7px 12px;cursor:pointer;font-weight:bold}
 		.reference-dialog-actions .reference-dialog-primary{background:#1a73e8;border-color:#1a73e8;color:#fff}
@@ -456,7 +464,18 @@
 		
 		/* ── Extract model JSON from workspace ── */
 		function getModelJSON() {
-			var code = javascript.javascriptGenerator.workspaceToCode(workspace);
+			var gen = javascript.javascriptGenerator;
+			gen.init(workspace);
+			var pieces = [];
+			workspace.getTopBlocks(true).forEach(function(top) {
+				// Detached value blocks (e.g. bumped out of an occupied
+				// value input) are not part of the model tree.
+				if (top.outputConnection) return;
+				var line = gen.blockToCode(top);
+				if (Array.isArray(line)) line = line[0];
+				if (line) pieces.push(line);
+			});
+			var code = gen.finish(pieces.join('\n'));
 			if (!code || !code.trim()) return null;
 			try {
 				var wrapped = '[' + code.replace(/,\s*$/, '') + ']';
@@ -721,11 +740,15 @@
 				var field = block.getField(name);
 				var current = field.getValue ? field.getValue() : null;
 				if (Array.isArray(value)) {
-					value = value.map(function(item) {
-						return item === null || item === undefined ? '' : String(item).trim();
-					}).filter(function(item) {
-						return item.length > 0;
-					}).join(', ');
+					if (field.itemTypeName_) {
+						value = JSON.stringify(value);
+					} else {
+						value = value.map(function(item) {
+							return item === null || item === undefined ? '' : String(item).trim();
+						}).filter(function(item) {
+							return item.length > 0;
+						}).join(', ');
+					}
 				}
 				if (typeof value === 'boolean' && (current === 'TRUE' || current === 'FALSE')) {
 					value = value ? 'TRUE' : 'FALSE';

@@ -11,15 +11,15 @@
     <orderedInputNames>previewWidths</orderedInputNames>
     <orderedInputNames>targetPlatforms</orderedInputNames>
     <orderedInputNames>pages</orderedInputNames>
-    <fields name="name" defaultValue="Welcome App" required="true" lowerBound="1" uiWidget="text" uiLabel="Name" uiPlaceholder="Enter an application name" uiGroup="General" uiOrder="1" uiVariant="prominent"/>
-    <fields name="theme" fieldType="DROPDOWN" defaultValue="light" uiWidget="select" uiLabel="Theme" uiGroup="General" uiOrder="2" uiVariant="default">
+    <fields name="name" defaultValue="Welcome App" required="true" lowerBound="1"/>
+    <fields name="theme" fieldType="DROPDOWN" defaultValue="light">
       <options value="light" label="light"/>
       <options value="dark" label="dark"/>
     </fields>
-    <fields name="published" fieldType="BOOLEAN" defaultValue="false" uiWidget="switch" uiLabel="Published" uiGroup="General" uiOrder="3" uiVariant="default"/>
-    <fields name="tags" defaultValue="demo,welcome" upperBound="3" uiWidget="text" uiLabel="Tags" uiHelp="Search tags used to describe the application." uiGroup="General" uiOrder="4" uiVariant="compact"/>
-    <fields name="previewWidths" fieldType="INTEGER" defaultValue="360,768,1440" min="320" max="1920" required="true" lowerBound="1" upperBound="4" uiWidget="number" uiLabel="Preview widths" uiHelp="Device widths offered by the responsive preview." uiGroup="Preview" uiOrder="5" uiVariant="compact"/>
-    <fields name="targetPlatforms" fieldType="DROPDOWN" defaultValue="web,android" required="true" lowerBound="1" upperBound="3" uiWidget="select" uiLabel="Target platforms" uiHelp="Platforms for which the application will be built." uiGroup="Publishing" uiOrder="6" uiVariant="compact">
+    <fields name="published" fieldType="BOOLEAN" defaultValue="false"/>
+    <fields name="tags" defaultValue="demo,welcome" upperBound="3"/>
+    <fields name="previewWidths" fieldType="INTEGER" defaultValue="360,768,1440" min="320" max="1920" required="true" lowerBound="1" upperBound="4"/>
+    <fields name="targetPlatforms" fieldType="DROPDOWN" defaultValue="web,android" required="true" lowerBound="1" upperBound="3">
       <options value="web" label="web"/>
       <options value="android" label="android"/>
       <options value="ios" label="ios"/>
@@ -33,11 +33,11 @@
     <orderedInputNames>scrollable</orderedInputNames>
     <orderedInputNames>alignment</orderedInputNames>
     <orderedInputNames>components</orderedInputNames>
-    <fields name="title" defaultValue="Home" required="true" lowerBound="1" uiWidget="text" uiLabel="Title" uiPlaceholder="Enter a page title" uiGroup="Content" uiOrder="1" uiVariant="prominent"/>
-    <fields name="description" defaultValue="Main page" uiWidget="textarea" uiLabel="Description" uiGroup="Content" uiOrder="2" uiVariant="default"/>
+    <fields name="title" defaultValue="Home" required="true" lowerBound="1"/>
+    <fields name="description" defaultValue="Main page"/>
     <fields name="backgroundColor" fieldType="COLOUR" defaultValue="#ffffff"/>
-    <fields name="scrollable" fieldType="BOOLEAN" defaultValue="true" uiWidget="checkbox" uiLabel="Scrollable" uiGroup="Layout" uiOrder="4" uiVariant="default"/>
-    <fields name="alignment" fieldType="DROPDOWN" defaultValue="center" uiWidget="radio" uiLabel="Alignment" uiGroup="Layout" uiOrder="5" uiVariant="default">
+    <fields name="scrollable" fieldType="BOOLEAN" defaultValue="true"/>
+    <fields name="alignment" fieldType="DROPDOWN" defaultValue="center">
       <options value="left" label="left"/>
       <options value="center" label="center"/>
       <options value="right" label="right"/>
@@ -49,8 +49,8 @@
     <orderedInputNames>text</orderedInputNames>
     <orderedInputNames>fontSize</orderedInputNames>
     <orderedInputNames>textColor</orderedInputNames>
-    <fields name="text" defaultValue="Welcome" required="true" lowerBound="1" uiWidget="text" uiLabel="Text" uiGroup="Content" uiOrder="1" uiVariant="prominent"/>
-    <fields name="fontSize" fieldType="INTEGER" defaultValue="24" min="8" max="72" uiWidget="number" uiLabel="Font size" uiGroup="Appearance" uiOrder="2" uiVariant="default"/>
+    <fields name="text" defaultValue="Welcome" required="true" lowerBound="1"/>
+    <fields name="fontSize" fieldType="INTEGER" defaultValue="24" min="8" max="72"/>
     <fields name="textColor" fieldType="COLOUR" defaultValue="#202124"/>
   </blockTypes>
   <blockTypes typeName="Button" label="Button" colour="20" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="false" tooltip="Display a button that can later receive an action.">
@@ -58,18 +58,18 @@
     <orderedInputNames>width</orderedInputNames>
     <orderedInputNames>enabled</orderedInputNames>
     <orderedInputNames>backgroundColor</orderedInputNames>
-    <fields name="text" defaultValue="Continue" required="true" lowerBound="1" uiWidget="text" uiLabel="Text" uiGroup="Content" uiOrder="1" uiVariant="prominent"/>
-    <fields name="width" fieldType="INTEGER" defaultValue="160" min="60" max="320" uiWidget="slider" uiLabel="Width" uiGroup="Layout" uiOrder="2" uiVariant="compact"/>
-    <fields name="enabled" fieldType="BOOLEAN" defaultValue="true" uiWidget="switch" uiLabel="Enabled" uiGroup="State" uiOrder="3" uiVariant="default"/>
+    <fields name="text" defaultValue="Continue" required="true" lowerBound="1"/>
+    <fields name="width" fieldType="INTEGER" defaultValue="160" min="60" max="320"/>
+    <fields name="enabled" fieldType="BOOLEAN" defaultValue="true"/>
     <fields name="backgroundColor" fieldType="COLOUR" defaultValue="#1a73e8"/>
   </blockTypes>
   <blockTypes typeName="Image" label="Image" colour="65" categoryName="Components" superTypeName="Component" connectionType="TYPED" connectionTypeName="Component" inputsInline="false" tooltip="Display an image from a URL.">
     <orderedInputNames>url</orderedInputNames>
     <orderedInputNames>rotation</orderedInputNames>
     <orderedInputNames>opacity</orderedInputNames>
-    <fields name="url" defaultValue="https://example.org/welcome.png" required="true" lowerBound="1" uiWidget="text" uiLabel="Image URL" uiPlaceholder="https://..." uiGroup="Content" uiOrder="1" uiVariant="default"/>
+    <fields name="url" defaultValue="https://example.org/welcome.png" required="true" lowerBound="1"/>
     <fields name="rotation" fieldType="ANGLE" defaultValue="0"/>
-    <fields name="opacity" fieldType="FLOAT" defaultValue="1" min="0" max="1" uiWidget="slider" uiLabel="Opacity" uiGroup="Appearance" uiOrder="3" uiVariant="compact"/>
+    <fields name="opacity" fieldType="FLOAT" defaultValue="1" min="0" max="1"/>
   </blockTypes>
   <validations type="CARDINALITY" name="App_pages" ownerType="App" containmentName="pages" lowerBound="1" upperBound="5">
     <visualBlock blocklyBlockType="validation_statement_cardinality">

@@ -119,16 +119,16 @@
 </head>
 <body>
   <header>
-    <h1>Model2Blockly: 7 ejemplos</h1>
+    <h1>Model2Blockly: 4 ejemplos</h1>
     <p>Los ejemplos utilizados en la memoria para demostrar la cobertura funcional y la equivalencia entre las rutas Ecore y <code>.m2b</code>.</p>
   </header>
 
   <main>
     <section class="metrics" aria-label="Resumen de la suite">
-      <div class="metric"><strong>7</strong><span>Ejemplos de la memoria</span></div>
-      <div class="metric"><strong>6</strong><span>Pares Ecore–.m2b</span></div>
-      <div class="metric"><strong>12</strong><span>Editores equivalentes por pares</span></div>
-      <div class="metric"><strong>13/13</strong><span>Editores verificados en navegador</span></div>
+      <div class="metric"><strong>4</strong><span>Ejemplos conservados</span></div>
+      <div class="metric"><strong>3</strong><span>Pares Ecore–.m2b</span></div>
+      <div class="metric"><strong>6</strong><span>Editores equivalentes por pares</span></div>
+      <div class="metric"><strong>2</strong><span>Rutas de entrada</span></div>
     </section>
 
     <aside class="precision-note">
@@ -157,87 +157,20 @@
       </div>
     </section>
 
-    <section class="case" id="fields-ui">
+    <section class="case" id="interactive-app">
       <div class="case-head">
         <div>
-          <h2>2. Campos e interfaz</h2>
-          <p>Tipos de atributos, valores iniciales, límites, widgets Blockly, presentación de clases y categorías anidadas.</p>
+          <h2>2. Lógica interactiva del App Maker</h2>
+          <p>Acciones de carga y clic, secuencias de instrucciones, entradas de valor tipadas, bloques de salida y bloques sombra.</p>
         </div>
         <span class="tag">Par equivalente</span>
       </div>
-      <div class="case-metrics"><span>Tipos y enumeraciones</span><span>Valores por defecto</span><span>Límites</span><span>Widgets y presentación</span></div>
+      <div class="case-metrics"><span>Statement inputs</span><span>Value inputs</span><span>Typed outputs</span><span>Shadow blocks</span></div>
       <div class="actions">
-        <a class="primary" href="/examples/feature_pairs/02_fields_ui/generated/ecore/html/FieldsUi_standalone.html">Abrir editor Ecore</a>
-        <a href="/examples/feature_pairs/02_fields_ui/generated/dsl/html/FieldsUi_standalone.html">Abrir editor .m2b</a>
-        <a href="/examples/feature_pairs/02_fields_ui/fieldsUi.ecore">Fuente Ecore</a>
-        <a href="/examples/feature_pairs/02_fields_ui/fieldsUi.m2b">Fuente .m2b</a>
-      </div>
-      <div class="evidence">
-        <figure><img src="/examples/feature_pairs/02_fields_ui/screenshots/ecore.png" alt="Campos e interfaz generados desde Ecore"><figcaption>Ruta Ecore</figcaption></figure>
-        <figure><img src="/examples/feature_pairs/02_fields_ui/screenshots/dsl.png" alt="Campos e interfaz generados desde M2B"><figcaption>Ruta .m2b</figcaption></figure>
-      </div>
-    </section>
-
-    <section class="case" id="composition-inputs">
-      <div class="case-head">
-        <div>
-          <h2>3. Composición y entradas</h2>
-          <p>Referencias de composición transformadas en entradas de sentencias o de valor, cardinalidades, bloques sombra y orden mixto.</p>
-        </div>
-        <span class="tag">Par equivalente</span>
-      </div>
-      <div class="case-metrics"><span>Statement inputs</span><span>Value inputs</span><span>Cardinalidad</span><span>Shadow blocks</span></div>
-      <div class="actions">
-        <a class="primary" href="/examples/feature_pairs/03_composition_inputs/generated/ecore/html/CompositionInputs_standalone.html">Abrir editor Ecore</a>
-        <a href="/examples/feature_pairs/03_composition_inputs/generated/dsl/html/CompositionInputs_standalone.html">Abrir editor .m2b</a>
-        <a href="/examples/feature_pairs/03_composition_inputs/compositionInputs.ecore">Fuente Ecore</a>
-        <a href="/examples/feature_pairs/03_composition_inputs/compositionInputs.m2b">Fuente .m2b</a>
-      </div>
-      <div class="evidence">
-        <figure><img src="/examples/feature_pairs/03_composition_inputs/screenshots/ecore.png" alt="Composición y entradas generadas desde Ecore"><figcaption>Ruta Ecore</figcaption></figure>
-        <figure><img src="/examples/feature_pairs/03_composition_inputs/screenshots/dsl.png" alt="Composición y entradas generadas desde M2B"><figcaption>Ruta .m2b</figcaption></figure>
-      </div>
-    </section>
-
-    <section class="case" id="references-integrity">
-      <div class="case-head">
-        <div>
-          <h2>4. Referencias e integridad</h2>
-          <p>Identificadores, referencias dinámicas, etiquetas visibles, multiplicidad, referencias opuestas, unicidad y orden.</p>
-        </div>
-        <span class="tag">Par equivalente</span>
-      </div>
-      <div class="case-metrics"><span>ID</span><span>Selección dinámica</span><span>eOpposite</span><span>Unique / ordered</span></div>
-      <div class="actions">
-        <a class="primary" href="/examples/feature_pairs/04_references_integrity/generated/ecore/html/ReferencesIntegrity_standalone.html">Abrir editor Ecore</a>
-        <a href="/examples/feature_pairs/04_references_integrity/generated/dsl/html/ReferencesIntegrity_standalone.html">Abrir editor .m2b</a>
-        <a href="/examples/feature_pairs/04_references_integrity/referencesIntegrity.ecore">Fuente Ecore</a>
-        <a href="/examples/feature_pairs/04_references_integrity/referencesIntegrity.m2b">Fuente .m2b</a>
-      </div>
-      <div class="evidence">
-        <figure><img src="/examples/feature_pairs/04_references_integrity/screenshots/ecore.png" alt="Referencias e integridad generadas desde Ecore"><figcaption>Ruta Ecore</figcaption></figure>
-        <figure><img src="/examples/feature_pairs/04_references_integrity/screenshots/reference-selection.png" alt="Selección dinámica de referencias"><figcaption>Selección dinámica de referencias</figcaption></figure>
-      </div>
-    </section>
-
-    <section class="case" id="validations">
-      <div class="case-head">
-        <div>
-          <h2>5. Validaciones</h2>
-          <p>Reglas obligatorias, cardinalidad, unicidad, orden y expresiones semánticas. Incluye OCL básico: <code>self.actions-&gt;size() &gt;= 1</code>.</p>
-        </div>
-        <span class="tag">Par equivalente + OCL</span>
-      </div>
-      <div class="case-metrics"><span>Required</span><span>Cardinalidad</span><span>Expresiones</span><span>OCL traducido</span><span>Edición visual</span></div>
-      <div class="actions">
-        <a class="primary" href="/examples/feature_pairs/05_validations/generated/ecore/html/Validations_standalone.html">Abrir editor Ecore</a>
-        <a href="/examples/feature_pairs/05_validations/generated/dsl/html/Validations_standalone.html">Abrir editor .m2b</a>
-        <a href="/examples/feature_pairs/05_validations/validations.ecore">Fuente Ecore</a>
-        <a href="/examples/feature_pairs/05_validations/validations.m2b">Fuente .m2b</a>
-      </div>
-      <div class="evidence">
-        <figure><img src="/examples/feature_pairs/05_validations/screenshots/validation-issues.png" alt="Panel de incidencias de validación"><figcaption>Validaciones ejecutadas en el editor</figcaption></figure>
-        <figure><img src="/examples/feature_pairs/05_validations/screenshots/validation-blocks.png" alt="Edición visual de reglas de validación"><figcaption>Edición visual de las reglas</figcaption></figure>
+        <a class="primary" href="/examples/feature_pairs/02_enhanced_app/generated/ecore/html/InteractiveApp_standalone.html">Abrir editor Ecore</a>
+        <a href="/examples/feature_pairs/02_enhanced_app/generated/dsl/html/InteractiveApp_standalone.html">Abrir editor .m2b</a>
+        <a href="/examples/feature_pairs/02_enhanced_app/enhancedApp.ecore">Fuente Ecore</a>
+        <a href="/examples/feature_pairs/02_enhanced_app/enhancedApp.m2b">Fuente .m2b</a>
       </div>
     </section>
 

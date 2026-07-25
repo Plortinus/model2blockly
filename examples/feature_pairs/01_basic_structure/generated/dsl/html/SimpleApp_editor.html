@@ -388,7 +388,18 @@
 		
 		/* ── Extract model JSON from workspace ── */
 		function getModelJSON() {
-			var code = javascript.javascriptGenerator.workspaceToCode(workspace);
+			var gen = javascript.javascriptGenerator;
+			gen.init(workspace);
+			var pieces = [];
+			workspace.getTopBlocks(true).forEach(function(top) {
+				// Detached value blocks (e.g. bumped out of an occupied
+				// value input) are not part of the model tree.
+				if (top.outputConnection) return;
+				var line = gen.blockToCode(top);
+				if (Array.isArray(line)) line = line[0];
+				if (line) pieces.push(line);
+			});
+			var code = gen.finish(pieces.join('\n'));
 			if (!code || !code.trim()) return null;
 			try {
 				var wrapped = '[' + code.replace(/,\s*$/, '') + ']';

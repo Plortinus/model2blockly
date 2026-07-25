@@ -24,7 +24,7 @@
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="basicStructure.ecore#/"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_FqV-sIagEfGS7M78RNxnpA" name="simpleApp class diagram" repPath="#_FqB1oIagEfGS7M78RNxnpA" changeId="1784815840233">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_FqV-sIagEfGS7M78RNxnpA" name="simpleApp class diagram" repPath="#_FqB1oIagEfGS7M78RNxnpA" changeId="1784926103995">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="basicStructure.ecore#/"/>
       </ownedRepresentationDescriptors>
@@ -2554,7 +2554,9 @@
       <target xmi:type="ecore:EReference" href="basicStructure.ecore#//App/pages"/>
       <semanticElements xmi:type="ecore:EReference" href="basicStructure.ecore#//App/pages"/>
       <ownedStyle xmi:type="diagram:EdgeStyle" uid="_GJ8Ew4agEfGS7M78RNxnpA" description="_GJ8EwIagEfGS7M78RNxnpA" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_GJ8ExYagEfGS7M78RNxnpA" showIcon="false"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_GJ8ExYagEfGS7M78RNxnpA" showIcon="false">
+          <labelFormat>bold</labelFormat>
+        </centerLabelStyle>
         <endLabelStyle xmi:type="diagram:EndLabelStyle" uid="_GJ8ExIagEfGS7M78RNxnpA" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>

@@ -83,6 +83,14 @@
 			.reference-dialog-row input{margin:0}
 			.reference-dialog-empty{padding:18px 0;color:#777;text-align:center}
 			.reference-dialog-textarea{margin:12px 16px 0;min-height:160px;resize:vertical;border:1px solid #dadce0;border-radius:4px;padding:8px;font:13px/1.4 monospace}
+			.multivalue-list{display:flex;flex-direction:column;gap:6px}
+			.multivalue-row{padding:0}
+			.multivalue-control{box-sizing:border-box;flex:1;min-width:0;border:1px solid #dadce0;border-radius:4px;padding:7px 8px;background:#fff;color:#202124}
+			.multivalue-control[type="color"]{min-height:36px;padding:3px}
+			.multivalue-icon-button{width:32px;height:32px;border:1px solid #dadce0;border-radius:4px;background:#fff;cursor:pointer;font-size:16px;line-height:1}
+			.multivalue-errors{min-height:0;margin:0 16px;color:#b3261e;font-size:.82em;line-height:1.4}
+			.multivalue-errors:not(:empty){padding:8px 0}
+			.multivalue-hint{padding:6px 16px 10px;color:#666;font-size:.8em}
 			.reference-dialog-actions{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid #e0e0e0}
 			.reference-dialog-actions button{border:1px solid #dadce0;background:#fff;border-radius:4px;padding:7px 12px;cursor:pointer;font-weight:bold}
 			.reference-dialog-actions .reference-dialog-primary{background:#1a73e8;border-color:#1a73e8;color:#fff}
@@ -313,10 +321,107 @@
 		function parseReferenceMultiValue(value) {
 		    if (Array.isArray(value)) return value;
 		    if (value === null || value === undefined) return [];
-		    return String(value).split(/[,\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });
+		    var text = String(value).trim();
+		    if (!text) return [];
+		    if (text.charAt(0) === '[') {
+		      try {
+		        var parsed = JSON.parse(text);
+		        if (Array.isArray(parsed)) return parsed;
+		      } catch (ignored) {}
+		    }
+		    return text.split(/[,\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });
 		  }
 		  window.parseReferenceMultiValue = parseReferenceMultiValue;
 		  window.parseBlocklyListField = parseReferenceMultiValue;
+		
+		  function normalizedMultiValueType(type) {
+		    return String(type || 'TEXT').trim().toUpperCase();
+		  }
+		
+		  function coerceMultiValueItem(value, type) {
+		    var itemType = normalizedMultiValueType(type);
+		    if (itemType === 'INTEGER' || itemType === 'ANGLE') {
+		      if (typeof value === 'number' && Number.isInteger(value)) return value;
+		      var integerText = String(value === null || value === undefined ? '' : value).trim();
+		      if (/^[+-]?\d+$/.test(integerText)) return Number(integerText);
+		      return value;
+		    }
+		    if (itemType === 'FLOAT') {
+		      if (typeof value === 'number' && Number.isFinite(value)) return value;
+		      var floatText = String(value === null || value === undefined ? '' : value).trim();
+		      if (floatText !== '' && Number.isFinite(Number(floatText))) return Number(floatText);
+		      return value;
+		    }
+		    if (itemType === 'BOOLEAN') {
+		      if (value === true || value === false) return value;
+		      var booleanText = String(value === null || value === undefined ? '' : value).trim().toLowerCase();
+		      if (booleanText === 'true' || booleanText === '1' || booleanText === 'yes') return true;
+		      if (booleanText === 'false' || booleanText === '0' || booleanText === 'no') return false;
+		      return value;
+		    }
+		    return value === null || value === undefined ? '' : String(value);
+		  }
+		
+		  function parseBlocklyTypedListField(value, type) {
+		    return parseReferenceMultiValue(value).map(function(item) {
+		      return coerceMultiValueItem(item, type);
+		    });
+		  }
+		  window.parseBlocklyTypedListField = parseBlocklyTypedListField;
+		
+		  function multiValueItemLabel(field, value) {
+		    if (normalizedMultiValueType(field.itemTypeName_) === 'DROPDOWN') {
+		      var match = (field.itemOptions_ || []).find(function(option) {
+		        return String(option[1]) === String(value);
+		      });
+		      if (match) return String(match[0]);
+		    }
+		    if (typeof value === 'boolean') return value ? 'true' : 'false';
+		    return String(value);
+		  }
+		
+		  function multiValueValidationErrors(field, values) {
+		    var errors = [];
+		    var type = normalizedMultiValueType(field.itemTypeName_);
+		    var min = field.itemMin_ === '' || field.itemMin_ === null || field.itemMin_ === undefined
+		      ? null : Number(field.itemMin_);
+		    var max = field.itemMax_ === '' || field.itemMax_ === null || field.itemMax_ === undefined
+		      ? null : Number(field.itemMax_);
+		    var lower = Number(field.lowerBound_ || 0);
+		    var upper = Number(field.upperBound_ || 0);
+		    if (values.length < lower) errors.push('At least ' + lower + ' value(s) are required.');
+		    if (upper > 0 && values.length > upper) errors.push('At most ' + upper + ' value(s) are allowed.');
+		    var allowed = (field.itemOptions_ || []).map(function(option) { return String(option[1]); });
+		    values.forEach(function(value, index) {
+		      var label = 'Value ' + (index + 1);
+		      if (type === 'INTEGER' && !(typeof value === 'number' && Number.isInteger(value))) {
+		        errors.push(label + ' must be an integer.');
+		      } else if (type === 'FLOAT' && !(typeof value === 'number' && Number.isFinite(value))) {
+		        errors.push(label + ' must be a number.');
+		      } else if (type === 'BOOLEAN' && typeof value !== 'boolean') {
+		        errors.push(label + ' must be true or false.');
+		      } else if (type === 'DROPDOWN' && allowed.indexOf(String(value)) === -1) {
+		        errors.push(label + ' is not one of the permitted enumeration values.');
+		      } else if (type === 'COLOUR' && !/^#[0-9a-f]{6}$/i.test(String(value))) {
+		        errors.push(label + ' must be a six-digit colour such as #1a73e8.');
+		      } else if (type === 'ANGLE' && !(typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 360)) {
+		        errors.push(label + ' must be an integer from 0 to 360.');
+		      }
+		      if ((type === 'INTEGER' || type === 'FLOAT' || type === 'ANGLE') && typeof value === 'number') {
+		        if (Number.isFinite(min) && value < min) errors.push(label + ' must be at least ' + min + '.');
+		        if (Number.isFinite(max) && value > max) errors.push(label + ' must be at most ' + max + '.');
+		      }
+		    });
+		    if (field.unique_) {
+		      var seen = new Set();
+		      values.forEach(function(value) {
+		        var key = typeof value + ':' + JSON.stringify(value);
+		        if (seen.has(key) && errors.indexOf('Values must be unique.') === -1) errors.push('Values must be unique.');
+		        seen.add(key);
+		      });
+		    }
+		    return errors;
+		  }
 		
 		  function closeMultiValueDialog() {
 		    var existing = document.getElementById('multiValueDialog');
@@ -325,7 +430,7 @@
 		
 		  window.openMultiValueDialog = function(field) {
 		    closeMultiValueDialog();
-		    var values = parseReferenceMultiValue(field.getValue());
+		    var values = parseBlocklyTypedListField(field.getValue(), field.itemTypeName_);
 		    var overlay = document.createElement('div');
 		    overlay.id = 'multiValueDialog';
 		    overlay.className = 'reference-dialog-backdrop';
@@ -333,23 +438,116 @@
 		    panel.className = 'reference-dialog-panel';
 		    var title = document.createElement('div');
 		    title.className = 'reference-dialog-title';
-		    title.textContent = 'Edit ' + (field.name || 'values');
+		    title.textContent = 'Edit ' + (field.label_ || field.name || 'values');
 		    panel.appendChild(title);
-		    var input = document.createElement('textarea');
-		    input.className = 'reference-dialog-textarea';
-		    input.rows = 8;
-		    input.value = values.join('\\n');
-		    panel.appendChild(input);
+		    var list = document.createElement('div');
+		    list.className = 'reference-dialog-list multivalue-list';
+		    panel.appendChild(list);
+		    var errorBox = document.createElement('div');
+		    errorBox.className = 'multivalue-errors';
+		    panel.appendChild(errorBox);
 		    var hint = document.createElement('div');
-		    hint.className = 'reference-dialog-empty';
-		    hint.textContent = 'One value per line. Values are stored as a comma-separated list.';
+		    hint.className = 'multivalue-hint';
+		    var normalizedType = normalizedMultiValueType(field.itemTypeName_);
+		    var typeLabel = normalizedType === 'DROPDOWN' ? 'enum' : normalizedType.toLowerCase();
+		    var bounds = (field.lowerBound_ || 0) + '..' + (field.upperBound_ > 0 ? field.upperBound_ : '*');
+		    var range = field.itemMin_ !== '' || field.itemMax_ !== ''
+		      ? ' Value range: ' + (field.itemMin_ !== '' ? field.itemMin_ : '-∞')
+		        + '..' + (field.itemMax_ !== '' ? field.itemMax_ : '∞') + '.'
+		      : '';
+		    hint.textContent = 'Element type: ' + typeLabel + '. Cardinality: ' + bounds + '.' + range;
 		    panel.appendChild(hint);
+		
+		    function createValueControl(value) {
+		      var type = normalizedMultiValueType(field.itemTypeName_);
+		      var control;
+		      if (type === 'BOOLEAN' || type === 'DROPDOWN') {
+		        control = document.createElement('select');
+		        var options = type === 'BOOLEAN'
+		          ? [['true', 'true'], ['false', 'false']]
+		          : (field.itemOptions_ || []);
+		        options.forEach(function(option) {
+		          var item = document.createElement('option');
+		          item.textContent = String(option[0]);
+		          item.value = String(option[1]);
+		          control.appendChild(item);
+		        });
+		        control.value = typeof value === 'boolean' ? String(value) : String(value === undefined ? '' : value);
+		      } else {
+		        control = document.createElement('input');
+		        control.type = type === 'COLOUR' ? 'color'
+		          : (type === 'INTEGER' || type === 'FLOAT' || type === 'ANGLE' ? 'number' : 'text');
+		        if (type === 'INTEGER') control.step = '1';
+		        if (type === 'FLOAT') control.step = 'any';
+		        if (type === 'ANGLE') {
+		          control.step = '1';
+		          control.min = '0';
+		          control.max = '360';
+		        }
+		        if ((type === 'INTEGER' || type === 'FLOAT') && field.itemMin_ !== '') control.min = field.itemMin_;
+		        if ((type === 'INTEGER' || type === 'FLOAT') && field.itemMax_ !== '') control.max = field.itemMax_;
+		        var nextValue = value === null || value === undefined ? '' : String(value);
+		        if (type === 'COLOUR' && !/^#[0-9a-f]{6}$/i.test(nextValue)) nextValue = '#000000';
+		        control.value = nextValue;
+		      }
+		      control.className = 'multivalue-control';
+		      return control;
+		    }
+		
+		    function addRow(value) {
+		      var row = document.createElement('div');
+		      row.className = 'reference-dialog-row multivalue-row';
+		      var control = createValueControl(value);
+		      row.__multiValueControl = control;
+		      row.appendChild(control);
+		      if (field.ordered_) {
+		        var upBtn = document.createElement('button');
+		        upBtn.type = 'button';
+		        upBtn.className = 'multivalue-icon-button';
+		        upBtn.title = 'Move up';
+		        upBtn.textContent = '↑';
+		        upBtn.addEventListener('click', function() {
+		          if (row.previousElementSibling) list.insertBefore(row, row.previousElementSibling);
+		        });
+		        row.appendChild(upBtn);
+		        var downBtn = document.createElement('button');
+		        downBtn.type = 'button';
+		        downBtn.className = 'multivalue-icon-button';
+		        downBtn.title = 'Move down';
+		        downBtn.textContent = '↓';
+		        downBtn.addEventListener('click', function() {
+		          if (row.nextElementSibling) list.insertBefore(row.nextElementSibling, row);
+		        });
+		        row.appendChild(downBtn);
+		      }
+		      var removeBtn = document.createElement('button');
+		      removeBtn.type = 'button';
+		      removeBtn.className = 'multivalue-icon-button';
+		      removeBtn.title = 'Remove';
+		      removeBtn.textContent = '×';
+		      removeBtn.addEventListener('click', function() { row.remove(); });
+		      row.appendChild(removeBtn);
+		      list.appendChild(row);
+		      return control;
+		    }
+		
+		    values.forEach(addRow);
 		    var actions = document.createElement('div');
 		    actions.className = 'reference-dialog-actions';
 		    var clearBtn = document.createElement('button');
 		    clearBtn.type = 'button';
 		    clearBtn.textContent = 'Clear';
-		    clearBtn.addEventListener('click', function() { input.value = ''; });
+		    clearBtn.addEventListener('click', function() {
+		      list.innerHTML = '';
+		      errorBox.textContent = '';
+		    });
+		    var addBtn = document.createElement('button');
+		    addBtn.type = 'button';
+		    addBtn.textContent = 'Add value';
+		    addBtn.addEventListener('click', function() {
+		      var control = addRow(normalizedMultiValueType(field.itemTypeName_) === 'BOOLEAN' ? false : '');
+		      control.focus();
+		    });
 		    var cancelBtn = document.createElement('button');
 		    cancelBtn.type = 'button';
 		    cancelBtn.textContent = 'Cancel';
@@ -359,12 +557,24 @@
 		    applyBtn.className = 'reference-dialog-primary';
 		    applyBtn.textContent = 'Apply';
 		    applyBtn.addEventListener('click', function() {
-		      field.setValue(parseReferenceMultiValue(input.value).join(', '));
+		      var nextValues = Array.from(list.children).map(function(row) {
+		        var control = row.__multiValueControl;
+		        return coerceMultiValueItem(control ? control.value : '', field.itemTypeName_);
+		      }).filter(function(value) {
+		        return !(typeof value === 'string' && value.trim() === '');
+		      });
+		      var errors = multiValueValidationErrors(field, nextValues);
+		      if (errors.length) {
+		        errorBox.textContent = errors.join(' ');
+		        return;
+		      }
+		      field.setValue(JSON.stringify(nextValues));
 		      if (typeof applyValidationWarnings === 'function') applyValidationWarnings(referenceWorkspaceForField(field));
 		      if (typeof updateOutput === 'function') updateOutput();
 		      closeMultiValueDialog();
 		    });
 		    actions.appendChild(clearBtn);
+		    actions.appendChild(addBtn);
 		    actions.appendChild(cancelBtn);
 		    actions.appendChild(applyBtn);
 		    panel.appendChild(actions);
@@ -373,7 +583,8 @@
 		      if (event.target === overlay) closeMultiValueDialog();
 		    });
 		    document.body.appendChild(overlay);
-		    input.focus();
+		    var firstControl = list.querySelector('.multivalue-control');
+		    (firstControl || addBtn).focus();
 		  };
 		
 		  function referenceLabelForBlock(block, labelField) {
@@ -520,23 +731,42 @@
 		
 		  class FieldMultiValue extends Blockly.FieldTextInput {
 		    constructor(value, validator, config) {
-		      super(value || '', validator, config);
+		      super('', validator, config);
+		      config = config || {};
+				      this.itemTypeName_ = config.itemType || 'TEXT';
+				      this.label_ = config.label || '';
+		      this.itemOptions_ = Array.isArray(config.options) ? config.options : [];
+		      this.itemMin_ = config.min === undefined || config.min === null ? '' : config.min;
+		      this.itemMax_ = config.max === undefined || config.max === null ? '' : config.max;
+		      this.lowerBound_ = Number(config.lowerBound || 0);
+		      this.upperBound_ = Number(config.upperBound || 0);
+		      this.unique_ = config.unique !== false;
+		      this.ordered_ = config.ordered !== false;
+		      this.setValue(value || '');
 		    }
 		    static fromJson(options) {
 		      return new FieldMultiValue(options.text || '', undefined, options);
 		    }
 		    doClassValidation_(value) {
-		      if (value === null || value === undefined) return '';
-		      return parseReferenceMultiValue(value).join(', ');
+		      if (value === null || value === undefined || value === '') return '[]';
+		      return JSON.stringify(parseBlocklyTypedListField(value, this.itemTypeName_));
 		    }
 		    getDisplayText_() {
-		      var values = parseReferenceMultiValue(this.getValue());
+		      var values = parseBlocklyTypedListField(this.getValue(), this.itemTypeName_);
 		      if (!values.length) return '(empty)';
-		      if (values.length <= 2) return values.join(', ');
+		      if (values.length <= 2) return values.map(function(value) {
+		        return multiValueItemLabel(this, value);
+		      }, this).join(', ');
 		      return values.length + ' values';
 		    }
 		    showEditor_() {
 		      window.openMultiValueDialog(this);
+		    }
+		    getValidationErrors() {
+		      return multiValueValidationErrors(
+		        this,
+		        parseBlocklyTypedListField(this.getValue(), this.itemTypeName_)
+		      );
 		    }
 		  }
 		  Blockly.fieldRegistry.register('field_multivalue', FieldMultiValue);
@@ -623,9 +853,41 @@
 		function parseBlocklyListField(value) {
 		  if (Array.isArray(value)) return value;
 		  if (value === null || value === undefined) return [];
-		  return String(value).split(/[,\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });
+		  var text = String(value).trim();
+		  if (!text) return [];
+		  if (text.charAt(0) === '[') {
+		    try {
+		      var parsed = JSON.parse(text);
+		      if (Array.isArray(parsed)) return parsed;
+		    } catch (ignored) {}
+		  }
+		  return text.split(/[,\n]/).map(function(part) { return part.trim(); }).filter(function(part) { return part.length > 0; });
 		}
 		window.parseBlocklyListField = parseBlocklyListField;
+		
+		function parseBlocklyTypedListField(value, type) {
+		  var itemType = String(type || 'TEXT').toUpperCase();
+		  return parseBlocklyListField(value).map(function(item) {
+		    if (itemType === 'INTEGER' || itemType === 'ANGLE') {
+		      if (typeof item === 'number' && Number.isInteger(item)) return item;
+		      var integerText = String(item).trim();
+		      return /^[+-]?\d+$/.test(integerText) ? Number(integerText) : item;
+		    }
+		    if (itemType === 'FLOAT') {
+		      if (typeof item === 'number' && Number.isFinite(item)) return item;
+		      var floatText = String(item).trim();
+		      return floatText !== '' && Number.isFinite(Number(floatText)) ? Number(floatText) : item;
+		    }
+		    if (itemType === 'BOOLEAN') {
+		      if (item === true || item === false) return item;
+		      var booleanText = String(item).trim().toLowerCase();
+		      if (booleanText === 'true' || booleanText === '1' || booleanText === 'yes') return true;
+		      if (booleanText === 'false' || booleanText === '0' || booleanText === 'no') return false;
+		    }
+		    return item === null || item === undefined ? '' : String(item);
+		  });
+		}
+		window.parseBlocklyTypedListField = parseBlocklyTypedListField;
 		
 		/* ── Built-in block generators (JSON AST output) ── */
 		
@@ -965,8 +1227,19 @@
 		    })
 		    .replace(/\{\{\s*type\s*\}\}/g, block.type)
 		    .replace(/\{\{\s*([A-Za-z_][\w-]*)\s*\}\}/g, function(_, name) {
-		      return block.getFieldValue(name) || '';
+		      return domainFieldText(block, config, name);
 		    });
+		}
+		
+		function domainFieldText(block, config, name) {
+		  var value = block.getFieldValue(name);
+		  if (value === null || value === undefined) return '';
+		  var type = config && config.fieldTypes ? config.fieldTypes[name] : null;
+		  if (type === 'BOOLEAN') {
+		    if (value === true || value === 'TRUE' || value === 'true') return 'true';
+		    if (value === false || value === 'FALSE' || value === 'false') return 'false';
+		  }
+		  return String(value);
 		}
 		
 		function renderDomainValue(block, inputName) {
@@ -1098,6 +1371,10 @@
 		      if (raw === null || raw === undefined) return '';
 		      return String(raw).trim();
 		    }
+		    function bool(name) {
+		      const text = value(name).toLowerCase();
+		      return text === 'true' || text === '1' || text === 'yes';
+		    }
 		    function number(name) {
 		      const parsed = Number(value(name));
 		      return Number.isFinite(parsed) ? parsed : 0;
@@ -1114,7 +1391,18 @@
 		      }
 		      return count;
 		    }
+		    function size(name) {
+		      const fields = fieldCount(name);
+		      if (fields > 0) return fields;
+		      if (block && block.getField && block.getField(name)) {
+		        return value(name) !== '' ? 1 : 0;
+		      }
+		      return inputCount(name);
+		    }
 		    function has(name) {
+		      if (block && block.getInput && block.getInput(name) && !(block.getField && block.getField(name))) {
+		        return inputCount(name) > 0;
+		      }
 		      return fieldCount(name) > 0 && value(name) !== '';
 		    }
 		    function includes(name, item) {
@@ -1142,6 +1430,7 @@
 		    }
 		    return {
 		      value,
+		      bool,
 		      number,
 		      has,
 		      includes,
@@ -1150,7 +1439,7 @@
 		      fieldUnique,
 		      typeFieldUnique,
 		      previousBlockIs,
-		      size: fieldCount
+		      size
 		    };
 		  }
 		
@@ -1161,6 +1450,7 @@
 		    try {
 		      const fn = new Function(
 		        'value',
+		        'bool',
 		        'number',
 		        'has',
 		        'includes',
@@ -1177,6 +1467,7 @@
 		      return {
 		        ok: Boolean(fn(
 		          accessors.value,
+		          accessors.bool,
 		          accessors.number,
 		          accessors.has,
 		          accessors.includes,
@@ -1271,8 +1562,17 @@
 		  }
 		
 		  function fieldValuesFromRaw(raw) {
+		    if (Array.isArray(raw)) return raw.map(String);
 		    if (raw === null || raw === undefined || raw === '') return [];
-		    return String(raw)
+		    const text = String(raw).trim();
+		    if (!text) return [];
+		    if (text.charAt(0) === '[') {
+		      try {
+		        const parsed = JSON.parse(text);
+		        if (Array.isArray(parsed)) return parsed.map(String);
+		      } catch (ignored) {}
+		    }
+		    return text
 		      .split(/[,\n]/)
 		      .map((part) => part.trim())
 		      .filter((part) => part.length > 0);
@@ -1336,14 +1636,35 @@
 				if (value === null || value === undefined) return '';
 				return String(value).trim();
 			}
+			function validationBool(block, name) {
+				var text = validationValue(block, name).toLowerCase();
+				return text === 'true' || text === '1' || text === 'yes';
+			}
 			function validationNumber(block, name) {
 				var number = Number(validationValue(block, name));
 				return isFinite(number) ? number : 0;
 			}
+			function validationStatementCount(block, name) {
+				var count = 0;
+				var child = block && block.getInputTargetBlock ? block.getInputTargetBlock(name) : null;
+				while (child) {
+					count += 1;
+					child = child.getNextBlock ? child.getNextBlock() : null;
+				}
+				return count;
+			}
 			function validationSize(block, name) {
-				return fieldMultiplicityCount(block && block.getFieldValue ? block.getFieldValue(name) : '');
+				var fieldCount = fieldMultiplicityCount(block && block.getFieldValue ? block.getFieldValue(name) : '');
+				if (fieldCount > 0) return fieldCount;
+				if (block && block.getField && block.getField(name)) {
+					return validationValue(block, name) !== '' ? 1 : 0;
+				}
+				return validationStatementCount(block, name);
 			}
 			function validationHas(block, name) {
+				if (block && block.getInput && block.getInput(name) && !(block.getField && block.getField(name))) {
+					return validationStatementCount(block, name) > 0;
+				}
 				return validationSize(block, name) > 0 && validationValue(block, name) !== '';
 			}
 			function validationIncludes(block, name, item) {
@@ -1351,12 +1672,13 @@
 			}
 			function evaluateValidationExpression(block, expression) {
 				var value = function(name) { return validationValue(block, name); };
+				var bool = function(name) { return validationBool(block, name); };
 				var number = function(name) { return validationNumber(block, name); };
 				var size = function(name) { return validationSize(block, name); };
 				var has = function(name) { return validationHas(block, name); };
 				var includes = function(name, item) { return validationIncludes(block, name, item); };
 				try {
-					return { ok: !!(new Function('value', 'number', 'size', 'has', 'includes', 'block', 'return (' + expression + ');'))(value, number, size, has, includes, block) };
+					return { ok: !!(new Function('value', 'bool', 'number', 'size', 'has', 'includes', 'block', 'return (' + expression + ');'))(value, bool, number, size, has, includes, block) };
 				} catch(e) {
 					return { ok: false, error: e && e.message ? e.message : String(e) };
 				}
@@ -1422,6 +1744,19 @@
 				});
 				return true;
 			}
+			function computeTypedMultiValueWarnings(workspace, queueWarn) {
+				workspace.getAllBlocks(false).forEach(function(block) {
+					(block.inputList || []).forEach(function(input) {
+						(input.fieldRow || []).forEach(function(field) {
+							if (!field || typeof field.getValidationErrors !== 'function') return;
+							field.getValidationErrors().forEach(function(message) {
+								queueWarn(block, '"' + block.type + '.' + (field.name || 'values') + '": ' + message);
+							});
+						});
+					});
+				});
+			}
+			computeTypedMultiValueWarnings(workspace, queueWarn);
 			if (computeRuntimeValidationWarnings(workspace, queueWarn)) return warnings;
 			workspace.getAllBlocks(false).forEach(function(block) {
 				if (block.type === 'Program') {
@@ -1625,7 +1960,18 @@
 	
 	/* ── Extract model JSON from workspace ── */
 	function getModelJSON() {
-		var code = javascript.javascriptGenerator.workspaceToCode(workspace);
+		var gen = javascript.javascriptGenerator;
+		gen.init(workspace);
+		var pieces = [];
+		workspace.getTopBlocks(true).forEach(function(top) {
+			// Detached value blocks (e.g. bumped out of an occupied
+			// value input) are not part of the model tree.
+			if (top.outputConnection) return;
+			var line = gen.blockToCode(top);
+			if (Array.isArray(line)) line = line[0];
+			if (line) pieces.push(line);
+		});
+		var code = gen.finish(pieces.join('\n'));
 		if (!code || !code.trim()) return null;
 		try {
 			var wrapped = '[' + code.replace(/,\s*$/, '') + ']';
@@ -1890,11 +2236,15 @@
 			var field = block.getField(name);
 			var current = field.getValue ? field.getValue() : null;
 			if (Array.isArray(value)) {
-				value = value.map(function(item) {
-					return item === null || item === undefined ? '' : String(item).trim();
-				}).filter(function(item) {
-					return item.length > 0;
-				}).join(', ');
+				if (field.itemTypeName_) {
+					value = JSON.stringify(value);
+				} else {
+					value = value.map(function(item) {
+						return item === null || item === undefined ? '' : String(item).trim();
+					}).filter(function(item) {
+						return item.length > 0;
+					}).join(', ');
+				}
 			}
 			if (typeof value === 'boolean' && (current === 'TRUE' || current === 'FALSE')) {
 				value = value ? 'TRUE' : 'FALSE';

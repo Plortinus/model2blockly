@@ -1,0 +1,119 @@
+// Provisional class diagram for scriptedApp (example 03).
+// Render: dot -Tjpg -Gdpi=150 scriptedApp-class-diagram.dot -o "scriptedApp class diagram.jpg"
+// Replace with a Sirius/Ecore Tools export when available.
+digraph scriptedApp {
+  graph [rankdir=TB, splines=ortho, nodesep=0.55, ranksep=0.75, bgcolor=white, fontname="Helvetica"];
+  node [shape=plain, fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=10, color="#555555"];
+
+  App [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fffbd6" COLOR="#8a8a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>App</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>name : EString = Welcome App</B></TD></TR>
+      <TR><TD ALIGN="LEFT">theme : Theme = light</TD></TR>
+      <TR><TD ALIGN="LEFT">published : EBoolean = false</TD></TR>
+      <TR><TD ALIGN="LEFT">tags : EString [0..3]</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>previewWidths : EInt [1..4]</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>targetPlatforms : Platform [1..3]</B></TD></TR>
+    </TABLE>>];
+
+  Page [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fffbd6" COLOR="#8a8a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>Page</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>title : EString = Home</B></TD></TR>
+      <TR><TD ALIGN="LEFT">description : EString = Main page</TD></TR>
+      <TR><TD ALIGN="LEFT">backgroundColor : EString = #ffffff</TD></TR>
+      <TR><TD ALIGN="LEFT">scrollable : EBoolean = true</TD></TR>
+      <TR><TD ALIGN="LEFT">alignment : Alignment = center</TD></TR>
+    </TABLE>>];
+
+  Component [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#f4f4f4" COLOR="#8a8a8a">
+      <TR><TD ALIGN="CENTER"><I><B>Component</B></I></TD></TR>
+    </TABLE>>];
+
+  Label_ [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fffbd6" COLOR="#8a8a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>Label</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>text : EString = Welcome</B></TD></TR>
+      <TR><TD ALIGN="LEFT">fontSize : EInt = 24</TD></TR>
+      <TR><TD ALIGN="LEFT">textColor : EString = #202124</TD></TR>
+    </TABLE>>];
+
+  Button [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fffbd6" COLOR="#8a8a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>Button</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>text : EString = Continue</B></TD></TR>
+      <TR><TD ALIGN="LEFT">width : EInt = 160</TD></TR>
+      <TR><TD ALIGN="LEFT">backgroundColor : EString = #1a73e8</TD></TR>
+    </TABLE>>];
+
+  Image [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fffbd6" COLOR="#8a8a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>Image</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>url : EString = https://example.org/welcome.png</B></TD></TR>
+      <TR><TD ALIGN="LEFT">rotation : EInt = 0</TD></TR>
+      <TR><TD ALIGN="LEFT">opacity : EFloat = 1</TD></TR>
+    </TABLE>>];
+
+  Expression [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#f4f4f4" COLOR="#8a8a8a">
+      <TR><TD ALIGN="CENTER"><I><B>Expression</B></I></TD></TR>
+    </TABLE>>];
+
+  BoolLiteral [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fffbd6" COLOR="#8a8a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>BoolLiteral</B></TD></TR>
+      <TR><TD ALIGN="LEFT">literal : EBoolean = true</TD></TR>
+    </TABLE>>];
+
+  PlatformIs [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fffbd6" COLOR="#8a8a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>PlatformIs</B></TD></TR>
+      <TR><TD ALIGN="LEFT">platform : Platform = web</TD></TR>
+    </TABLE>>];
+
+  NotExpression [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fffbd6" COLOR="#8a8a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>NotExpression</B></TD></TR>
+    </TABLE>>];
+
+  Theme [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#eaf6dc" COLOR="#7a9a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>Theme</B></TD></TR>
+      <TR><TD ALIGN="LEFT">light</TD></TR>
+      <TR><TD ALIGN="LEFT">dark</TD></TR>
+    </TABLE>>];
+
+  Alignment [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#eaf6dc" COLOR="#7a9a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>Alignment</B></TD></TR>
+      <TR><TD ALIGN="LEFT">left</TD></TR>
+      <TR><TD ALIGN="LEFT">center</TD></TR>
+      <TR><TD ALIGN="LEFT">right</TD></TR>
+    </TABLE>>];
+
+  Platform [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#eaf6dc" COLOR="#7a9a5c">
+      <TR><TD BORDER="1" SIDES="B" ALIGN="CENTER"><B>Platform</B></TD></TR>
+      <TR><TD ALIGN="LEFT">web</TD></TR>
+      <TR><TD ALIGN="LEFT">android</TD></TR>
+      <TR><TD ALIGN="LEFT">ios</TD></TR>
+    </TABLE>>];
+
+  // Containment references (filled diamond on the container side).
+  App -> Page [dir=both, arrowtail=diamond, arrowhead=vee, label="[1..5] pages"];
+  Page -> Component [dir=both, arrowtail=diamond, arrowhead=vee, label="[0..10] components"];
+  Button -> Expression [dir=both, arrowtail=diamond, arrowhead=vee, label="[0..1] enabledWhen"];
+  NotExpression -> Expression [dir=both, arrowtail=diamond, arrowhead=vee, label="[1..1] operand"];
+
+  // Inheritance (hollow triangle on the supertype side).
+  Label_ -> Component [arrowhead=onormal];
+  Button -> Component [arrowhead=onormal];
+  Image -> Component [arrowhead=onormal];
+  BoolLiteral -> Expression [arrowhead=onormal];
+  PlatformIs -> Expression [arrowhead=onormal];
+  NotExpression -> Expression [arrowhead=onormal];
+
+  { rank=same; Theme; Alignment; Platform; }
+}

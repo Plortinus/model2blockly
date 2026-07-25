@@ -25,29 +25,26 @@ The symbols used in the summary matrix are:
 | Example | Role | Source of the implementation |
 |---|---|---|
 | `01_basic_structure` | Domain structure and inferred Blockly organization | Existing pair, retained and simplified if necessary |
-| `02_fields_ui` | Field types, widgets, and presentation metadata | Existing pair, retained |
-| `03_composition_inputs` | Containment, statement inputs, value inputs, and shadow blocks | Extracted from the current `03_relations` pair |
-| `04_references_integrity` | Model identity, dynamic references, opposites, and relation integrity | Extracted from the current `03_relations` pair |
-| `05_validations` | Inferred and declared validation rules | Extracted from the current `04_validation_codegen` pair |
-| `06_codegen_workspace` | Code generation, output blocks, runtime metadata, and workspace configuration | Extracted from the current `04_validation_codegen` pair |
+| `02_enhanced_app` | Interactive App Maker actions, model identifiers, recursive containment, and model references | Progressive App Maker extension |
+| `03_expressions_codegen` | Value inputs, output blocks, shadow blocks, and App Maker code generation | Progressive App Maker extension (independent of `02_enhanced_app`) |
+| `04_constraint_subset` | Cross-feature domain constraints from a small OCL-like subset | Progressive App Maker extension based on `01_basic_structure` |
+| `06_codegen_workspace` | Code generation, runtime metadata, and workspace configuration | Extracted from the current `04_validation_codegen` pair |
 | `07_ecore_specific` | Capabilities that have no equivalent `.m2b` spelling | Separate Ecore-only example, outside strict route equivalence |
 
 ## Summary allocation
 
-| Capability family | 01 | 02 | 03 | 04 | 05 | 06 |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| Domain and class structure | P | S | S | S | S | S |
-| Inheritance and inferred connections | P | -- | S | S | S | S |
-| Automatic categories | P | -- | -- | -- | -- | -- |
-| Explicit categories and class presentation | -- | P | S | S | S | S |
-| Field types, defaults, limits, and widgets | S | P | S | S | S | S |
-| Containment and statement inputs | S | -- | P | S | S | S |
-| Value inputs and shadow blocks | -- | -- | P | -- | S | S |
-| Dynamic references and model identity | -- | -- | -- | P | S | S |
-| Multiplicity, opposites, uniqueness, and ordering | S | S | S | P | S | -- |
-| Inferred and declared validations | S | S | S | S | P | -- |
-| Code templates and output blocks | -- | -- | S | -- | -- | P |
-| Runtime and workspace configuration | -- | S | -- | -- | -- | P |
+| Capability family | 01 | 02 | 03 | 04 | 06 |
+|---|:---:|:---:|:---:|:---:|:---:|
+| Domain and class structure | P | S | S | S | S |
+| Inheritance and inferred connections | P | S | S | S | S |
+| Automatic categories | P | -- | -- | -- | -- |
+| Explicit categories and class presentation | -- | S | S | -- | S |
+| Field types, defaults, limits, and widgets | P | S | S | S | S |
+| Containment and statement inputs | S | P | S | S | S |
+| Value inputs and shadow blocks | -- | -- | P | -- | S |
+| Code templates and output blocks | -- | -- | S | -- | P |
+| Runtime and workspace configuration | -- | -- | S | -- | P |
+| Basic constraint subset (OCL-like) | -- | -- | -- | P | -- |
 
 ## Detailed shared capability catalogue
 

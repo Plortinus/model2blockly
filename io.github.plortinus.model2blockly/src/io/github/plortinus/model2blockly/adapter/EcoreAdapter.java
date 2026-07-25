@@ -47,7 +47,7 @@ import io.github.plortinus.model2blockly.intermediate.blocklyspec.EditorSpec;
  *
  * <h3>Optional EAnnotation hints (source="blockly"):</h3>
  * <ul>
- *   <li>On EClass: message0, colour, category, tooltip, helpUrl, inputsInline, output</li>
+ *   <li>On EClass: message0, label, colour, category, tooltip, helpUrl, inputsInline, output</li>
  *   <li>On EAttribute: type (field_colour/field_angle/field_image/field_label),
  *       initialValues (for multi-valued attributes), min, max, src, width, height, alt</li>
  *   <li>On EReference: type=input_value, check, shadow</li>
@@ -179,6 +179,9 @@ public class EcoreAdapter {
 			String message0 = ann.getDetails().get("message0");
 			if (message0 != null) bt.setMessage0(message0);
 
+			String label = ann.getDetails().get("label");
+			if (label != null && !label.isBlank()) bt.setLabel(label);
+
 			String colour = ann.getDetails().get("colour");
 			if (colour != null) {
 				try { bt.setColour(Integer.parseInt(colour)); }
@@ -228,7 +231,7 @@ public class EcoreAdapter {
 		}
 
 		EAnnotation uiClassAnn = eClass.getEAnnotation(UI_ANNOTATION_SOURCE);
-		if (uiClassAnn != null) {
+		if (uiClassAnn != null && eClass.getName().equals(bt.getLabel())) {
 			String label = uiClassAnn.getDetails().get("label");
 			if (label != null && !label.isBlank()) {
 				bt.setLabel(label);
@@ -931,9 +934,15 @@ public class EcoreAdapter {
 			"!has(\"$1\")");
 
 		for (EStructuralFeature feature : eClass.getEAllStructuralFeatures()) {
-			String accessor = isNumericFeature(feature)
-				? "number(\"" + feature.getName() + "\")"
-				: "value(\"" + feature.getName() + "\")";
+			String accessor;
+			if (isNumericFeature(feature)) {
+				accessor = "number(\"" + feature.getName() + "\")";
+			} else if (isBooleanFeature(feature)) {
+				// Blockly checkboxes store "TRUE"/"FALSE"; normalize before logic ops.
+				accessor = "bool(\"" + feature.getName() + "\")";
+			} else {
+				accessor = "value(\"" + feature.getName() + "\")";
+			}
 			expr = expr.replaceAll("\\bself\\." + Pattern.quote(feature.getName()) + "\\b",
 				Matcher.quoteReplacement(accessor));
 		}
@@ -967,6 +976,12 @@ public class EcoreAdapter {
 			default:
 				return false;
 		}
+	}
+
+	private static boolean isBooleanFeature(EStructuralFeature feature) {
+		if (!(feature instanceof EAttribute)) return false;
+		EDataType type = ((EAttribute) feature).getEAttributeType();
+		return type != null && "EBoolean".equals(type.getName());
 	}
 
 	private static String replaceAll(String value, String pattern, String replacement) {

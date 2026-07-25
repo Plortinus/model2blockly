@@ -452,9 +452,9 @@
 		    var typeLabel = normalizedType === 'DROPDOWN' ? 'enum' : normalizedType.toLowerCase();
 		    var bounds = (field.lowerBound_ || 0) + '..' + (field.upperBound_ > 0 ? field.upperBound_ : '*');
 		    var range = field.itemMin_ !== '' || field.itemMax_ !== ''
-		  ? ' Value range: ' + (field.itemMin_ !== '' ? field.itemMin_ : '-∞')
-		    + '..' + (field.itemMax_ !== '' ? field.itemMax_ : '∞') + '.'
-		  : '';
+		      ? ' Value range: ' + (field.itemMin_ !== '' ? field.itemMin_ : '-∞')
+		        + '..' + (field.itemMax_ !== '' ? field.itemMax_ : '∞') + '.'
+		      : '';
 		    hint.textContent = 'Element type: ' + typeLabel + '. Cardinality: ' + bounds + '.' + range;
 		    panel.appendChild(hint);
 		
@@ -733,8 +733,8 @@
 		    constructor(value, validator, config) {
 		      super('', validator, config);
 		      config = config || {};
-		      this.itemTypeName_ = config.itemType || 'TEXT';
-		      this.label_ = config.label || '';
+				      this.itemTypeName_ = config.itemType || 'TEXT';
+				      this.label_ = config.label || '';
 		      this.itemOptions_ = Array.isArray(config.options) ? config.options : [];
 		      this.itemMin_ = config.min === undefined || config.min === null ? '' : config.min;
 		      this.itemMax_ = config.max === undefined || config.max === null ? '' : config.max;
@@ -776,18 +776,18 @@
 			"type": "App",
 			"message0": "Application",
 							"args0": [],
-			"message1": "Name %1",
+			"message1": "name %1",
 								"args1": [{"type": "field_input", "name": "name", "text": "Welcome App"}],
-			"message2": "Theme %1",
+			"message2": "theme %1",
 								"args2": [{"type": "field_dropdown", "name": "theme", "options": [["light", "light"], ["dark", "dark"]]}],
-			"message3": "Published %1",
+			"message3": "published %1",
 								"args3": [{"type": "field_checkbox", "name": "published", "checked": false}],
-			"message4": "Tags %1",
-								"args4": [{"type": "field_multivalue", "name": "tags", "label": "Tags", "text": "demo,welcome", "itemType": "TEXT", "options": [], "min": "", "max": "", "lowerBound": 0, "upperBound": 3, "unique": true, "ordered": true}],
-			"message5": "Preview widths %1",
-								"args5": [{"type": "field_multivalue", "name": "previewWidths", "label": "Preview widths", "text": "360,768,1440", "itemType": "INTEGER", "options": [], "min": "320", "max": "1920", "lowerBound": 1, "upperBound": 4, "unique": true, "ordered": true}],
-			"message6": "Target platforms %1",
-								"args6": [{"type": "field_multivalue", "name": "targetPlatforms", "label": "Target platforms", "text": "web,android", "itemType": "DROPDOWN", "options": [["web", "web"], ["android", "android"], ["ios", "ios"]], "min": "", "max": "", "lowerBound": 1, "upperBound": 3, "unique": true, "ordered": true}],
+			"message4": "tags %1",
+								"args4": [{"type": "field_multivalue", "name": "tags", "label": "tags", "text": "demo,welcome", "itemType": "TEXT", "options": [], "min": "", "max": "", "lowerBound": 0, "upperBound": 3, "unique": true, "ordered": true}],
+			"message5": "previewWidths %1",
+								"args5": [{"type": "field_multivalue", "name": "previewWidths", "label": "previewWidths", "text": "360,768,1440", "itemType": "INTEGER", "options": [], "min": "320", "max": "1920", "lowerBound": 1, "upperBound": 4, "unique": true, "ordered": true}],
+			"message6": "targetPlatforms %1",
+								"args6": [{"type": "field_multivalue", "name": "targetPlatforms", "label": "targetPlatforms", "text": "web,android", "itemType": "DROPDOWN", "options": [["web", "web"], ["android", "android"], ["ios", "ios"]], "min": "", "max": "", "lowerBound": 1, "upperBound": 3, "unique": true, "ordered": true}],
 			"message7": "pages %1",
 								"args7": [{"type": "input_statement", "name": "pages", "check": "Page"}],
 			"inputsInline": false,
@@ -799,15 +799,15 @@
 			"type": "Page",
 			"message0": "Page",
 							"args0": [],
-			"message1": "Title %1",
+			"message1": "title %1",
 								"args1": [{"type": "field_input", "name": "title", "text": "Home"}],
-			"message2": "Description %1",
+			"message2": "description %1",
 								"args2": [{"type": "field_input", "name": "description", "text": "Main page"}],
 			"message3": "backgroundColor %1",
 								"args3": [{"type": "field_colour", "name": "backgroundColor", "colour": "#ffffff"}],
-			"message4": "Scrollable %1",
+			"message4": "scrollable %1",
 								"args4": [{"type": "field_checkbox", "name": "scrollable", "checked": true}],
-			"message5": "Alignment %1",
+			"message5": "alignment %1",
 								"args5": [{"type": "field_dropdown", "name": "alignment", "options": [["left", "left"], ["center", "center"], ["right", "right"]]}],
 			"message6": "components %1",
 								"args6": [{"type": "input_statement", "name": "components", "check": "Component"}],
@@ -821,9 +821,9 @@
 			"type": "Label",
 			"message0": "Label",
 							"args0": [],
-			"message1": "Text %1",
+			"message1": "text %1",
 								"args1": [{"type": "field_input", "name": "text", "text": "Welcome"}],
-			"message2": "Font size %1",
+			"message2": "fontSize %1",
 								"args2": [{"type": "field_number", "name": "fontSize", "value": 24, "precision": 1, "min": 8, "max": 72}],
 			"message3": "textColor %1",
 								"args3": [{"type": "field_colour", "name": "textColor", "colour": "#202124"}],
@@ -837,11 +837,11 @@
 			"type": "Button",
 			"message0": "Button",
 							"args0": [],
-			"message1": "Text %1",
+			"message1": "text %1",
 								"args1": [{"type": "field_input", "name": "text", "text": "Continue"}],
-			"message2": "Width %1",
+			"message2": "width %1",
 								"args2": [{"type": "field_number", "name": "width", "value": 160, "precision": 1, "min": 60, "max": 320}],
-			"message3": "Enabled %1",
+			"message3": "enabled %1",
 								"args3": [{"type": "field_checkbox", "name": "enabled", "checked": true}],
 			"message4": "backgroundColor %1",
 								"args4": [{"type": "field_colour", "name": "backgroundColor", "colour": "#1a73e8"}],
@@ -855,11 +855,11 @@
 			"type": "Image",
 			"message0": "Image",
 							"args0": [],
-			"message1": "Image URL %1",
+			"message1": "url %1",
 								"args1": [{"type": "field_input", "name": "url", "text": "https://example.org/welcome.png"}],
 			"message2": "rotation %1",
 								"args2": [{"type": "field_angle", "name": "rotation", "angle": 0}],
-			"message3": "Opacity %1",
+			"message3": "opacity %1",
 								"args3": [{"type": "field_number", "name": "opacity", "value": 1, "precision": 0.1, "min": 0, "max": 1}],
 			"previousStatement": "Component", "nextStatement": "Component",
 			"inputsInline": false,
@@ -1399,8 +1399,19 @@
 		    })
 		    .replace(/\{\{\s*type\s*\}\}/g, block.type)
 		    .replace(/\{\{\s*([A-Za-z_][\w-]*)\s*\}\}/g, function(_, name) {
-		      return block.getFieldValue(name) || '';
+		      return domainFieldText(block, config, name);
 		    });
+		}
+		
+		function domainFieldText(block, config, name) {
+		  var value = block.getFieldValue(name);
+		  if (value === null || value === undefined) return '';
+		  var type = config && config.fieldTypes ? config.fieldTypes[name] : null;
+		  if (type === 'BOOLEAN') {
+		    if (value === true || value === 'TRUE' || value === 'true') return 'true';
+		    if (value === false || value === 'FALSE' || value === 'false') return 'false';
+		  }
+		  return String(value);
 		}
 		
 		function renderDomainValue(block, inputName) {
@@ -1532,6 +1543,10 @@
 		      if (raw === null || raw === undefined) return '';
 		      return String(raw).trim();
 		    }
+		    function bool(name) {
+		      const text = value(name).toLowerCase();
+		      return text === 'true' || text === '1' || text === 'yes';
+		    }
 		    function number(name) {
 		      const parsed = Number(value(name));
 		      return Number.isFinite(parsed) ? parsed : 0;
@@ -1548,7 +1563,18 @@
 		      }
 		      return count;
 		    }
+		    function size(name) {
+		      const fields = fieldCount(name);
+		      if (fields > 0) return fields;
+		      if (block && block.getField && block.getField(name)) {
+		        return value(name) !== '' ? 1 : 0;
+		      }
+		      return inputCount(name);
+		    }
 		    function has(name) {
+		      if (block && block.getInput && block.getInput(name) && !(block.getField && block.getField(name))) {
+		        return inputCount(name) > 0;
+		      }
 		      return fieldCount(name) > 0 && value(name) !== '';
 		    }
 		    function includes(name, item) {
@@ -1576,6 +1602,7 @@
 		    }
 		    return {
 		      value,
+		      bool,
 		      number,
 		      has,
 		      includes,
@@ -1584,7 +1611,7 @@
 		      fieldUnique,
 		      typeFieldUnique,
 		      previousBlockIs,
-		      size: fieldCount
+		      size
 		    };
 		  }
 		
@@ -1595,6 +1622,7 @@
 		    try {
 		      const fn = new Function(
 		        'value',
+		        'bool',
 		        'number',
 		        'has',
 		        'includes',
@@ -1611,6 +1639,7 @@
 		      return {
 		        ok: Boolean(fn(
 		          accessors.value,
+		          accessors.bool,
 		          accessors.number,
 		          accessors.has,
 		          accessors.includes,
@@ -1705,8 +1734,17 @@
 		  }
 		
 		  function fieldValuesFromRaw(raw) {
+		    if (Array.isArray(raw)) return raw.map(String);
 		    if (raw === null || raw === undefined || raw === '') return [];
-		    return String(raw)
+		    const text = String(raw).trim();
+		    if (!text) return [];
+		    if (text.charAt(0) === '[') {
+		      try {
+		        const parsed = JSON.parse(text);
+		        if (Array.isArray(parsed)) return parsed.map(String);
+		      } catch (ignored) {}
+		    }
+		    return text
 		      .split(/[,\n]/)
 		      .map((part) => part.trim())
 		      .filter((part) => part.length > 0);
@@ -1770,14 +1808,35 @@
 				if (value === null || value === undefined) return '';
 				return String(value).trim();
 			}
+			function validationBool(block, name) {
+				var text = validationValue(block, name).toLowerCase();
+				return text === 'true' || text === '1' || text === 'yes';
+			}
 			function validationNumber(block, name) {
 				var number = Number(validationValue(block, name));
 				return isFinite(number) ? number : 0;
 			}
+			function validationStatementCount(block, name) {
+				var count = 0;
+				var child = block && block.getInputTargetBlock ? block.getInputTargetBlock(name) : null;
+				while (child) {
+					count += 1;
+					child = child.getNextBlock ? child.getNextBlock() : null;
+				}
+				return count;
+			}
 			function validationSize(block, name) {
-				return fieldMultiplicityCount(block && block.getFieldValue ? block.getFieldValue(name) : '');
+				var fieldCount = fieldMultiplicityCount(block && block.getFieldValue ? block.getFieldValue(name) : '');
+				if (fieldCount > 0) return fieldCount;
+				if (block && block.getField && block.getField(name)) {
+					return validationValue(block, name) !== '' ? 1 : 0;
+				}
+				return validationStatementCount(block, name);
 			}
 			function validationHas(block, name) {
+				if (block && block.getInput && block.getInput(name) && !(block.getField && block.getField(name))) {
+					return validationStatementCount(block, name) > 0;
+				}
 				return validationSize(block, name) > 0 && validationValue(block, name) !== '';
 			}
 			function validationIncludes(block, name, item) {
@@ -1785,12 +1844,13 @@
 			}
 			function evaluateValidationExpression(block, expression) {
 				var value = function(name) { return validationValue(block, name); };
+				var bool = function(name) { return validationBool(block, name); };
 				var number = function(name) { return validationNumber(block, name); };
 				var size = function(name) { return validationSize(block, name); };
 				var has = function(name) { return validationHas(block, name); };
 				var includes = function(name, item) { return validationIncludes(block, name, item); };
 				try {
-					return { ok: !!(new Function('value', 'number', 'size', 'has', 'includes', 'block', 'return (' + expression + ');'))(value, number, size, has, includes, block) };
+					return { ok: !!(new Function('value', 'bool', 'number', 'size', 'has', 'includes', 'block', 'return (' + expression + ');'))(value, bool, number, size, has, includes, block) };
 				} catch(e) {
 					return { ok: false, error: e && e.message ? e.message : String(e) };
 				}
@@ -2189,7 +2249,18 @@
 	
 	/* ── Extract model JSON from workspace ── */
 	function getModelJSON() {
-		var code = javascript.javascriptGenerator.workspaceToCode(workspace);
+		var gen = javascript.javascriptGenerator;
+		gen.init(workspace);
+		var pieces = [];
+		workspace.getTopBlocks(true).forEach(function(top) {
+			// Detached value blocks (e.g. bumped out of an occupied
+			// value input) are not part of the model tree.
+			if (top.outputConnection) return;
+			var line = gen.blockToCode(top);
+			if (Array.isArray(line)) line = line[0];
+			if (line) pieces.push(line);
+		});
+		var code = gen.finish(pieces.join('\n'));
 		if (!code || !code.trim()) return null;
 		try {
 			var wrapped = '[' + code.replace(/,\s*$/, '') + ']';

@@ -315,7 +315,30 @@ public class DomainModelAdapter {
 		rfs.setOrdered(!featureAsBoolean(ref, "unordered"));
 		rfs.setOppositeName(featureAsString(ref, "oppositeName"));
 		applyDslUiOptions(ref, rfs);
+		if (rfs.getReferenceLabelField() == null) {
+			rfs.setReferenceLabelField(defaultReferenceLabelField(ref.getType()));
+		}
 		return rfs;
+	}
+
+	private static String defaultReferenceLabelField(ClassDef targetType) {
+		for (ClassDef current = targetType; current != null; current = current.getSuperClass()) {
+			for (Feature feature : current.getFeatures()) {
+				if (feature instanceof Attribute && ((Attribute) feature).isId()) {
+					return feature.getName();
+				}
+			}
+		}
+		for (String candidate : new String[] {"displayName", "title", "name"}) {
+			for (ClassDef current = targetType; current != null; current = current.getSuperClass()) {
+				for (Feature feature : current.getFeatures()) {
+					if (feature instanceof Attribute && candidate.equals(feature.getName())) {
+						return candidate;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	private static ValueInputSpec convertValueInput(ValueInput vi) {
@@ -737,9 +760,14 @@ public class DomainModelAdapter {
 			"!has(\"$1\")");
 
 		for (Feature feature : allFeatures(cls)) {
-			String accessor = isNumericFeature(feature)
-				? "number(\"" + feature.getName() + "\")"
-				: "value(\"" + feature.getName() + "\")";
+			String accessor;
+			if (isNumericFeature(feature)) {
+				accessor = "number(\"" + feature.getName() + "\")";
+			} else if (isBooleanFeature(feature)) {
+				accessor = "bool(\"" + feature.getName() + "\")";
+			} else {
+				accessor = "value(\"" + feature.getName() + "\")";
+			}
 			expr = expr.replaceAll("\\bself\\." + Pattern.quote(feature.getName()) + "\\b",
 				Matcher.quoteReplacement(accessor));
 		}
@@ -775,6 +803,13 @@ public class DomainModelAdapter {
 		return typeName == SimpleTypeName.INT
 			|| typeName == SimpleTypeName.FLOAT
 			|| typeName == SimpleTypeName.ANGLE;
+	}
+
+	private static boolean isBooleanFeature(Feature feature) {
+		if (!(feature instanceof Attribute)) return false;
+		Attribute attr = (Attribute) feature;
+		if (!(attr.getType() instanceof SimpleType)) return false;
+		return ((SimpleType) attr.getType()).getTypeName() == SimpleTypeName.BOOLEAN;
 	}
 
 	private static String replaceAll(String value, String pattern, String replacement) {

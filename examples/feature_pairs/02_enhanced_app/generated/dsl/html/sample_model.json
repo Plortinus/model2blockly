@@ -1,0 +1,79 @@
+[
+  {
+    "_type": "App",
+    "_blockId": "sample_App_1",
+    "name": "Welcome App",
+    "theme": "light",
+    "published": "false",
+    "tags": [
+      "demo",
+      "welcome"
+    ],
+    "previewWidths": [
+      360,
+      768,
+      1440
+    ],
+    "targetPlatforms": [
+      "web",
+      "android"
+    ],
+    "pages": [
+      {
+        "_type": "Page",
+        "_blockId": "sample_Page_1",
+        "id": "home",
+        "title": "Home",
+        "description": "Main page",
+        "backgroundColor": "#ffffff",
+        "scrollable": "true",
+        "alignment": "center",
+        "components": [
+          {
+            "_type": "Container",
+            "_blockId": "sample_Container_1",
+            "layout": "column",
+            "children": [
+              {
+                "_type": "Label",
+                "_blockId": "sample_Label_1",
+                "text": "Welcome",
+                "fontSize": "24",
+                "textColor": "#202124"
+              }
+            ]
+          },
+          {
+            "_type": "Label",
+            "_blockId": "sample_Label_2",
+            "text": "Welcome",
+            "fontSize": "24",
+            "textColor": "#202124"
+          },
+          {
+            "_type": "Button",
+            "_blockId": "sample_Button_1",
+            "text": "Continue",
+            "width": "160",
+            "enabled": "true",
+            "backgroundColor": "#1a73e8",
+            "onClick": [
+              {
+                "_type": "NavigateAction",
+                "_blockId": "sample_NavigateAction_1",
+                "target": "sample_Page_1"
+              }
+            ]
+          },
+          {
+            "_type": "Image",
+            "_blockId": "sample_Image_1",
+            "url": "https://example.org/welcome.png",
+            "rotation": "0",
+            "opacity": "1"
+          }
+        ]
+      }
+    ]
+  }
+]

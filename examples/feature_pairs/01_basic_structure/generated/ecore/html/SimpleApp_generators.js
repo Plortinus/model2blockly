@@ -407,8 +407,19 @@ function applyDomainTemplate(block, config, template) {
     })
     .replace(/\{\{\s*type\s*\}\}/g, block.type)
     .replace(/\{\{\s*([A-Za-z_][\w-]*)\s*\}\}/g, function(_, name) {
-      return block.getFieldValue(name) || '';
+      return domainFieldText(block, config, name);
     });
+}
+
+function domainFieldText(block, config, name) {
+  var value = block.getFieldValue(name);
+  if (value === null || value === undefined) return '';
+  var type = config && config.fieldTypes ? config.fieldTypes[name] : null;
+  if (type === 'BOOLEAN') {
+    if (value === true || value === 'TRUE' || value === 'true') return 'true';
+    if (value === false || value === 'FALSE' || value === 'false') return 'false';
+  }
+  return String(value);
 }
 
 function renderDomainValue(block, inputName) {

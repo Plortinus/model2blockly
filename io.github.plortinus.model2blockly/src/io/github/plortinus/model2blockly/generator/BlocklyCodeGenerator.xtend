@@ -1080,8 +1080,19 @@ class BlocklyCodeGenerator {
 		    })
 		    .replace(/\{\{\s*type\s*\}\}/g, block.type)
 		    .replace(/\{\{\s*([A-Za-z_][\w-]*)\s*\}\}/g, function(_, name) {
-		      return block.getFieldValue(name) || '';
+		      return domainFieldText(block, config, name);
 		    });
+		}
+
+		function domainFieldText(block, config, name) {
+		  var value = block.getFieldValue(name);
+		  if (value === null || value === undefined) return '';
+		  var type = config && config.fieldTypes ? config.fieldTypes[name] : null;
+		  if (type === 'BOOLEAN') {
+		    if (value === true || value === 'TRUE' || value === 'true') return 'true';
+		    if (value === false || value === 'FALSE' || value === 'false') return 'false';
+		  }
+		  return String(value);
 		}
 
 		function renderDomainValue(block, inputName) {
@@ -1511,14 +1522,35 @@ class BlocklyCodeGenerator {
 					if (value === null || value === undefined) return '';
 					return String(value).trim();
 				}
+				function validationBool(block, name) {
+					var text = validationValue(block, name).toLowerCase();
+					return text === 'true' || text === '1' || text === 'yes';
+				}
 				function validationNumber(block, name) {
 					var number = Number(validationValue(block, name));
 					return isFinite(number) ? number : 0;
 				}
+				function validationStatementCount(block, name) {
+					var count = 0;
+					var child = block && block.getInputTargetBlock ? block.getInputTargetBlock(name) : null;
+					while (child) {
+						count += 1;
+						child = child.getNextBlock ? child.getNextBlock() : null;
+					}
+					return count;
+				}
 				function validationSize(block, name) {
-					return fieldMultiplicityCount(block && block.getFieldValue ? block.getFieldValue(name) : '');
+					var fieldCount = fieldMultiplicityCount(block && block.getFieldValue ? block.getFieldValue(name) : '');
+					if (fieldCount > 0) return fieldCount;
+					if (block && block.getField && block.getField(name)) {
+						return validationValue(block, name) !== '' ? 1 : 0;
+					}
+					return validationStatementCount(block, name);
 				}
 				function validationHas(block, name) {
+					if (block && block.getInput && block.getInput(name) && !(block.getField && block.getField(name))) {
+						return validationStatementCount(block, name) > 0;
+					}
 					return validationSize(block, name) > 0 && validationValue(block, name) !== '';
 				}
 				function validationIncludes(block, name, item) {
@@ -1526,12 +1558,13 @@ class BlocklyCodeGenerator {
 				}
 				function evaluateValidationExpression(block, expression) {
 					var value = function(name) { return validationValue(block, name); };
+					var bool = function(name) { return validationBool(block, name); };
 					var number = function(name) { return validationNumber(block, name); };
 					var size = function(name) { return validationSize(block, name); };
 					var has = function(name) { return validationHas(block, name); };
 					var includes = function(name, item) { return validationIncludes(block, name, item); };
 					try {
-						return { ok: !!(new Function('value', 'number', 'size', 'has', 'includes', 'block', 'return (' + expression + ');'))(value, number, size, has, includes, block) };
+						return { ok: !!(new Function('value', 'bool', 'number', 'size', 'has', 'includes', 'block', 'return (' + expression + ');'))(value, bool, number, size, has, includes, block) };
 					} catch(e) {
 						return { ok: false, error: e && e.message ? e.message : String(e) };
 					}
@@ -2422,7 +2455,18 @@ class BlocklyCodeGenerator {
 
 			/* ── Extract model JSON from workspace ── */
 			function getModelJSON() {
-				var code = javascript.javascriptGenerator.workspaceToCode(workspace);
+				var gen = javascript.javascriptGenerator;
+				gen.init(workspace);
+				var pieces = [];
+				workspace.getTopBlocks(true).forEach(function(top) {
+					// Detached value blocks (e.g. bumped out of an occupied
+					// value input) are not part of the model tree.
+					if (top.outputConnection) return;
+					var line = gen.blockToCode(top);
+					if (Array.isArray(line)) line = line[0];
+					if (line) pieces.push(line);
+				});
+				var code = gen.finish(pieces.join('\n'));
 				if (!code || !code.trim()) return null;
 				try {
 					var wrapped = '[' + code.replace(/,\s*$/, '') + ']';

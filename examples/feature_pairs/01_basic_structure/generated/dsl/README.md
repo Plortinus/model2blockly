@@ -1,6 +1,6 @@
 # Generated Blockly Editor
 
-Input DSL model: `examples/feature_pairs/01_basic_structure/basicStructure.m2b`
+Input DSL model: `/Users/wxy/model2blockly/examples/feature_pairs/01_basic_structure/basicStructure.m2b`
 
 Output: EMF EditorSpec intermediate XMI and HTML Blockly editor
 

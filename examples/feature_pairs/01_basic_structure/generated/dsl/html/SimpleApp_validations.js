@@ -31,14 +31,35 @@ function computeValidationWarnings(workspace) {
 		if (value === null || value === undefined) return '';
 		return String(value).trim();
 	}
+	function validationBool(block, name) {
+		var text = validationValue(block, name).toLowerCase();
+		return text === 'true' || text === '1' || text === 'yes';
+	}
 	function validationNumber(block, name) {
 		var number = Number(validationValue(block, name));
 		return isFinite(number) ? number : 0;
 	}
+	function validationStatementCount(block, name) {
+		var count = 0;
+		var child = block && block.getInputTargetBlock ? block.getInputTargetBlock(name) : null;
+		while (child) {
+			count += 1;
+			child = child.getNextBlock ? child.getNextBlock() : null;
+		}
+		return count;
+	}
 	function validationSize(block, name) {
-		return fieldMultiplicityCount(block && block.getFieldValue ? block.getFieldValue(name) : '');
+		var fieldCount = fieldMultiplicityCount(block && block.getFieldValue ? block.getFieldValue(name) : '');
+		if (fieldCount > 0) return fieldCount;
+		if (block && block.getField && block.getField(name)) {
+			return validationValue(block, name) !== '' ? 1 : 0;
+		}
+		return validationStatementCount(block, name);
 	}
 	function validationHas(block, name) {
+		if (block && block.getInput && block.getInput(name) && !(block.getField && block.getField(name))) {
+			return validationStatementCount(block, name) > 0;
+		}
 		return validationSize(block, name) > 0 && validationValue(block, name) !== '';
 	}
 	function validationIncludes(block, name, item) {
@@ -46,12 +67,13 @@ function computeValidationWarnings(workspace) {
 	}
 	function evaluateValidationExpression(block, expression) {
 		var value = function(name) { return validationValue(block, name); };
+		var bool = function(name) { return validationBool(block, name); };
 		var number = function(name) { return validationNumber(block, name); };
 		var size = function(name) { return validationSize(block, name); };
 		var has = function(name) { return validationHas(block, name); };
 		var includes = function(name, item) { return validationIncludes(block, name, item); };
 		try {
-			return { ok: !!(new Function('value', 'number', 'size', 'has', 'includes', 'block', 'return (' + expression + ');'))(value, number, size, has, includes, block) };
+			return { ok: !!(new Function('value', 'bool', 'number', 'size', 'has', 'includes', 'block', 'return (' + expression + ');'))(value, bool, number, size, has, includes, block) };
 		} catch(e) {
 			return { ok: false, error: e && e.message ? e.message : String(e) };
 		}

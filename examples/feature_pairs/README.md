@@ -18,18 +18,9 @@ feature_pairs/
   01_basic_structure/
     basicStructure.ecore
     basicStructure.m2b
-  02_fields_ui/
-    fieldsUi.ecore
-    fieldsUi.m2b
-  03_composition_inputs/
-    compositionInputs.ecore
-    compositionInputs.m2b
-  04_references_integrity/
-    referencesIntegrity.ecore
-    referencesIntegrity.m2b
-  05_validations/
-    validations.ecore
-    validations.m2b
+  02_enhanced_app/
+    enhancedApp.ecore
+    enhancedApp.m2b
   06_codegen_workspace/
     codegenWorkspace.ecore
     codegenWorkspace.m2b
@@ -91,9 +82,8 @@ The canonical comparison will:
 - ignore serialization order that is not part of the model contract;
 - normalize `nsURI` and `nsPrefix`, because Ecore supplies them explicitly while
   the DSL adapter derives them from the domain name;
-- require explicit `referenceLabelField` in paired DSL inputs instead of relying
-  on the Ecore adapter's automatic `id`, `displayName`, `title`, or `name`
-  fallback;
+- compare the automatically inferred reference label field (`id`,
+  `displayName`, `title`, or `name`) in both routes;
 - use finite upper bounds in paired examples, avoiding a comparison between
   Ecore `-1` and the intermediate model's normalized unbounded value `0`.
 
@@ -103,9 +93,9 @@ This pair describes a compact but realistic App Maker. An `App` contains one to
 five `Page` elements, and each page contains `Label`, `Button`, and `Image`
 components through an abstract `Component` type. Application, page, and
 component properties exercise common text, enum, boolean, numeric, colour,
-angle, and multi-value fields together with UI metadata. Explicit categories
-and `inputsInline=false` keep the generated editor readable while both adapters
-remain structurally equivalent.
+angle, and multi-value fields. Ecore structure supplies the domain semantics,
+while optional `blockly` annotations supply only Blockly-specific presentation
+details. Both adapters remain structurally equivalent.
 
 | Capability | Ecore notation | `.m2b` notation | Expected `EditorSpec` evidence | Existing Ecore gallery seed |
 |---|---|---|---|---|
@@ -116,84 +106,26 @@ remain structurally equivalent.
 | Contained block inference | containment target | target of `contains` | typed statement connection | `04-containment-statement` |
 | Text attributes and defaults | `EString` attributes and default literals | `attribute ... : string ... default` | `TEXT` fields with initial values | `01-text-field` |
 | Typed application fields | enums, booleans, integers, floats, colour and angle annotations | `enum`, `boolean`, `int`, `float`, `colour`, and `angle` | dropdown, checkbox, number, colour, and angle fields | `02-enum-dropdown`, `03-typed-fields`, `10-image-angle-label` |
-| UI metadata | structural-feature `ui` annotations | `widget`, `uiLabel`, `placeholder`, `group`, `order`, and `variant` | widget and form metadata | `19-ui-metadata` |
 | Multi-valued tags | `tags` upper bound `3` | `attribute tags : string [0..3]` | `many=true` and multivalue editor | `09-multivalue-field` |
 | Containment cardinality | containment bounds `1..5` and `0..10` | `contains Page pages [1..5]` and `contains Component components [0..10]` | cardinality validation for both containments | `04-containment-statement` |
 | Explicit categories | class category annotations | category declarations and class references | `Application`, `Pages`, and `Components` categories | `00-annotation-customization` |
 
-## Pair 02: fields and UI metadata
+## Pair 02: interactive App Maker logic and typed connections
 
-This pair remains a focused coverage fixture for every field type and
-presentation option, including hidden and readonly states that would be
-artificial in Pair 01. It also tests nested categories. Where UI metadata is tested,
-widget and variant values are written explicitly in both sources because the
-DSL metamodel uses the first enum literals (`text` and `default`) when those
-clauses are omitted. The dedicated colour, angle, image, and label types map
-directly to their specialised Blockly fields and do not repeat that choice as
-widget metadata.
+This pair extends the App Maker introduced by Pair 01 without repeating its
+field-mapping focus. It preserves `App -> Page -> Component`, then adds a
+button-click action sequence. Action blocks use typed statement connections, while
+message content uses a typed value input, an output block, and a replaceable
+shadow block. The pair therefore demonstrates how generated blocks compose into
+interaction logic.
 
 | Capability | Ecore notation | `.m2b` notation | Expected `EditorSpec` evidence | Existing Ecore gallery seed |
 |---|---|---|---|---|
-| Explicit category | `blockly.category` | `category` plus class `category` | named category and block membership | `00-annotation-customization` |
-| Nested category | slash-separated category path | nested category declaration | category children | `12-nested-category` |
-| Class presentation | `blockly` and class `ui` annotations | class options | label, colour, message, tooltip, help URL, inline layout | `11-custom-message`, `17-class-presentation` |
-| Text field | `EString` | `string` | field type `TEXT` | `01-text-field` |
-| Integer and float fields | numeric EDataTypes | `int`, `float` | `INTEGER` and `FLOAT` fields | `03-typed-fields` |
-| Boolean field | `EBoolean` | `boolean` | `BOOLEAN` field | `03-typed-fields` |
-| Enum dropdown | `EEnum` attribute | inline `enum` | dropdown options and labels | `02-enum-dropdown` |
-| Colour, angle, image, and label fields | field-type annotation | dedicated DSL simple type | specialised field type and image metadata | `10-image-angle-label` |
-| Defaults and numeric limits | default literal plus `min`/`max` annotations | `default`, `min`, `max` | default value and limits | `03-typed-fields`, `18-field-overrides` |
-| Multi-valued attribute | EAttribute multiplicity | attribute cardinality | text representation plus field-cardinality metadata | `09-multivalue-field` |
-| Attribute widget family | structural-feature `ui.widget` detail | `text`, `textarea`, `number`, `slider`, `switch`, `checkbox`, `select`, `radio` | field widget metadata without compatibility warnings | `03-typed-fields`, `19-ui-metadata` |
-| UI text | structural-feature `ui` annotation | `uiLabel`, `help`, `placeholder` | field UI text metadata | `19-ui-metadata` |
-| UI layout and visibility | structural-feature `ui` annotation | `group`, `order`, `readonly`, `hidden`, and the three `variant` values | grouping, order, visibility, and variant metadata | `19-ui-metadata` |
-
-## Pair 03: relations and inputs
-
-This pair is the focused relational example intended to replace large Ecore XML
-fragments in explanatory material. It contains a root, contained blocks,
-an expression input, a dynamic reference, an id/label field, and an opposite
-reference. UI order is explicit on every relation input because the DSL stores
-`UiOptions.order` as an integer whose implicit value becomes `0` once a UI
-options clause exists, while an omitted Ecore `ui.order` remains unset.
-
-| Capability | Ecore notation | `.m2b` notation | Expected `EditorSpec` evidence | Existing Ecore gallery seed |
-|---|---|---|---|---|
-| Containment | containment `EReference` | `contains` | `StatementInputSpec` | `04-containment-statement` |
-| Containment cardinality | reference bounds | `[lower..upper]` | input bounds and cardinality validation | `04-containment-statement` |
-| Value input | containment annotated `type=input_value` | `value` | `ValueInputSpec` | `05-value-input-shadow` |
-| Shadow block | reference `shadow` detail | `shadow` | `shadowBlockType` | `05-value-input-shadow` |
-| Non-containment reference | ordinary `EReference` | `reference` | `ReferenceFieldSpec` and dynamic dropdown | `06-reference-dropdown` |
-| Required reference | lower bound at least one | `required` or lower bound | required flag and validation | `06-reference-dropdown` |
-| Reference label | `ui.referenceLabelField` | `referenceLabelField` | selected display field | `06-reference-dropdown`, `20-id-reference-label` |
-| Relation/input widgets | structural-feature `ui.widget` detail | `reference-select`, `slot`, `expression-slot` | reference, statement, and value-input UI metadata | `06-reference-dropdown`, `19-ui-metadata` |
-| Model id | `EAttribute iD="true"` | `modelId` | block `idFieldName` and uniqueness validation | `20-id-reference-label` |
-| Opposite reference | `eOpposite` | `opposite` | reciprocal reference name | `21-multireference-opposite` |
-| Reference multiplicity | EReference bounds | reference cardinality | bounds and field-cardinality validation | `21-multireference-opposite` |
-| Unique and ordered relation | ETypedElement flags | `unique`/`nonUnique`, `ordered`/`unordered` | relation flags and uniqueness validation | `21-multireference-opposite` |
-| Mixed declaration order | EStructuralFeature order | feature declaration order | `orderedInputNames` across all input kinds | adapter regression tests |
-
-## Pair 04: validation, generation, and workspace
-
-This pair exercises the metadata that affects validation and generated
-artifacts. It includes `Action`, `Alert`, `Navigate`, `Page`, and one output
-expression so the model stays small while covering the complete generation
-path.
-
-| Capability | Ecore notation | `.m2b` notation | Expected `EditorSpec` evidence | Existing Ecore gallery seed |
-|---|---|---|---|---|
-| Required validation | lower bound at least one | `required` | required validation rule | `01-text-field` |
-| Cardinality validation | structural bounds | cardinality | cardinality rule and visual expression | `04-containment-statement`, `09-multivalue-field` |
-| Uniqueness validation | id/unique structural flags | `modelId`/`unique` | uniqueness rule | `20-id-reference-label`, `21-multireference-opposite` |
-| Order constraint | `validation.mustFollow` | `constraint ... must follow` | `MUST_FOLLOW` validation | `08-validation-rule` |
-| Expression/condition/JS validation aliases | validation annotation details | `validation` with `expression`, `condition`, and `js` kinds | expression rules, visual blocks, and messages | `22-expression-validation` |
-| Basic OCL subset | Ecore OCL annotation | `validation ... ocl` | translated browser expression | `23-ocl-validation` |
-| Code language and extension | package `code` annotation | domain code options | code metadata | `13-code-template` |
-| Per-block code template | class `code.template` annotation | class `code` option | block code template | `13-code-template` |
-| Output block | class `blockly.output` annotation | `output class` | output connection and optional type | `16-output-blocks` |
-| Runtime kind | package `runtime.kind` annotation | `runtimeKind` | runtime metadata | `27-runtime-kind` |
-| Workspace configuration | `blockly.workspace.*` details | nested `workspace` options | typed nested workspace map | `14-workspace-options` |
-| Flyout toolbox | `workspace.toolboxType` detail | workspace `toolboxType` | toolbox type | `26-flyout-toolbox` |
+| Preserved App Maker structure | the same EClass and containment pattern as Pair 01 | the same class and `contains` pattern | the original application, page, and component blocks | `04-containment-statement`, `07-abstract-inheritance` |
+| Action sequences | multi-valued containment of abstract `Action` | `contains Action` | typed statement inputs and stackable action blocks | `04-containment-statement`, `07-abstract-inheritance` |
+| Typed value input | contained reference annotated as `input_value` with `check` | `value TextExpression` | a horizontal input accepting only text-producing blocks | `05-value-input-shadow` |
+| Output block | `output=TextExpression` | `output as TextExpression` | `TextLiteral` with a typed output connector | `06-output-blocks` |
+| Default shadow block | `shadow=TextLiteral` | `shadow TextLiteral` | a replaceable default value in a newly created message action | `05-value-input-shadow` |
 
 ## Route-specific coverage
 
@@ -206,7 +138,7 @@ in route-specific tests and must not be presented as cross-route equivalence.
 | Ignored derived/transient/volatile/non-changeable features | Ecore only | These are EMF structural flags with no DSL spelling; covered by `24-ignored-features`. |
 | EClass interface flag | Ecore only | The adapter treats interfaces as abstract; the DSL exposes `abstract` but no interface declaration. |
 | Broad Ecore numeric aliases | Ecore only | ELong, EShort, EBigInteger, EDouble, and EBigDecimal normalize to the smaller DSL type set. |
-| Automatic reference-label fallback | Ecore only automation | Ecore can infer id/displayName/title/name; paired DSL inputs specify `referenceLabelField` explicitly. |
+| Automatic reference-label fallback | shared automation | Both routes infer id/displayName/title/name when no explicit label field is supplied. |
 | Explicit namespace URI and prefix | Ecore only input | The DSL adapter synthesizes both values from the domain name, so canonical comparison normalizes them. |
 | Standard Ecore/OCL annotation containers | Ecore only notation | The DSL can express the supported OCL subset, but it does not reproduce Ecore annotation containers. |
 
@@ -230,7 +162,7 @@ A pair is complete only when all of the following are true:
 
 ## Verification workflow
 
-All six source pairs are implemented. The verification command processes them
+All three source pairs are implemented. The verification command processes them
 in numerical order, then runs one browser smoke test for each Ecore and `.m2b`
 result. Temporary classes and generated editors are deleted after a successful
 run; set `KEEP_FEATURE_PAIR_OUTPUTS=1` to retain them for inspection.

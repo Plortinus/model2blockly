@@ -51,8 +51,13 @@ Model2Blockly 要求使用兼容 Java 21 的 Eclipse 发行版，并通过 JDK 2
   \label{fig:plugin-context-menu}
 \end{figure}
 
-\subsection{本章使用的仓库目录与示例概览}
+\section{渐进式示例与转换实现}
 \label{subsec:directorios-repositorio-implementacion}
+
+本节通过一组逐步增加能力的示例说明 Model2Blockly 的实现。每个示例均按照
+“新增的领域需求、输入中的定义、统一中间表示、生成的 Blockly 功能和对应实现”
+的顺序展开。读者可以先观察某项能力如何从 Ecore 或文本 DSL 转换为 Blockly，
+随后再在本章后半部分查看完整的执行流程和代码组织。
 
 本章使用的示例、核心实现和 Eclipse 集成分别位于表
 \ref{tab:directorios-repositorio-implementacion} 所列目录中。
@@ -80,12 +85,13 @@ Model2Blockly 要求使用兼容 Java 21 的 Eclipse 发行版，并通过 JDK 2
   \label{tab:directorios-repositorio-implementacion}
 \end{table}
 
-\path{examples/feature_pairs/} 中包含六个互补示例。每个目录分别提供
+\path{examples/feature_pairs/} 中包含本节连续讲解的四个递进示例。每个目录分别提供
 一个 \texttt{.ecore} 元模型和一个表达相同领域结构的 \texttt{.m2b}
-文件；两种输入用于生成并比较同一个 Blockly 编辑器。第一个示例完整展示
-App Maker 从输入到输出的转换，其余示例分别隔离一种项目能力。各示例均可
-独立执行，并按照从结构与字段到代码生成的顺序排列。表
-\ref{tab:chapter-example-overview} 给出本章使用的全部案例。
+文件；两种输入用于生成并比较同一个 Blockly 编辑器。示例 01 说明类和属性
+如何生成自定义块与字段；示例 02 与示例 03 都在示例 01 的基础上扩展：前者
+增加更丰富的模型关系，后者增加值表达式和代码生成；示例 04 同样基于示例
+01，补充结构 alone 写不出的领域约束。表
+\ref{tab:chapter-example-overview} 给出四个案例的分工。
 
 \begin{table}[H]
   \centering
@@ -99,29 +105,26 @@ App Maker 从输入到输出的转换，其余示例分别隔离一种项目能�
     \midrule
     \path{01_basic_structure} & 一个可实际理解的 App Maker，包括应用、页面、
     标签、按钮和图像，并展示常用字段控件、继承、包含关系和基数。 \\
-    \path{02_fields_ui} & 将全部字段类型及界面元数据集中在两个测试类中，
-    用于补充验证第一个示例没有采用的边界配置。 \\
-    \path{03_composition_inputs} & 组合关系、语句输入、值输入和阴影块。 \\
-    \path{04_references_integrity} & 模型标识符、非包含引用、动态选择器、
-    相反引用和一致性检查。 \\
-    \path{05_validations} & 由结构推断的规则、显式声明的规则、诊断信息和
-    可视化验证。 \\
-    \path{06_codegen_workspace} & 代码模板、输出块、运行时元数据和 Blockly
-    工作区配置。 \\
-    \path{ecore_specific/07_ecore_specific} & 子包、接口、扩展数值类型和
-    Ecore 技术属性等仅适用于 Ecore 路线的能力。 \\
+    \path{02_enhanced_app} & 增加模型标识、递归嵌套容器、多态动作列表和
+    页面引用，展示模型关系到结构输入、块连接和动态下拉框的转换。 \\
+    \path{03_expressions_codegen} & 增加条件表达式和代码模板，展示值连接、
+    输出块、阴影块、代码生成和工作区配置。 \\
+    \path{04_constraint_subset} & 增加跨特征领域约束，展示约束子集如何转换为
+    编辑器中的实时验证与 Issues 面板。 \\
     \bottomrule
   \end{tabular}
-  \caption{本章示例及其逐步增加的能力}
+  \caption{四个示例分别验证的转换能力}
   \label{tab:chapter-example-overview}
 \end{table}
 
 \subsection{示例 01：从元模型描述到 Blockly 编辑器}
 
-App Maker（应用搭建器）允许用户通过可视化方式组织应用、页面和界面组件。
-本例借鉴 MIT App Inventor 将组件配置与积木编辑结合的思路
+App Maker 是一个用于描述应用结构的领域模型示例，其中包含应用、页面和界面
+组件等模型元素。本例借鉴 MIT App Inventor 将组件配置与积木编辑结合的思路
 \cite{mitAppInventorDesignerBlocks,mitAppInventorGlossary}，但不复现其领域模型
-或源代码。示例只描述界面结构；事件、页面跳转和动作由后续示例说明。
+或源代码。Model2Blockly 根据该领域模型生成 Blockly 编辑器，用户在编辑器中
+建立的应用结构保存为模型数据。示例 01 描述界面结构；事件、页面跳转和动作
+模型由示例 02 说明。
 
 \subsubsection{\texttt{basicStructure.ecore}：Ecore 元模型文件}
 
@@ -540,8 +543,8 @@ Ecore 的数量和取值限制生成相应的验证规则；\texttt{blockly} 注
     \texttt{extends} & 定义类的继承关系，对应 \texttt{eSuperTypes}。 \\
     \texttt{contains} & 定义包含关系及数量范围，对应包含型
       \texttt{EReference}。 \\
-    \texttt{widget}、\texttt{min}、\texttt{max} 和 \texttt{uiLabel} &
-      指定控件形式、数值范围和显示文字，对应 Ecore 路线中的生成注解。 \\
+    \texttt{min} 和 \texttt{max} &
+      指定数值范围，对应 Ecore 路线中的 \texttt{blockly} 注解。 \\
     \bottomrule
   \end{tabular}
   \caption{\texttt{.m2b} 核心语法与 Ecore 概念的对应关系}
@@ -572,12 +575,12 @@ class App category Application colour 210 label "Application" {
   // int [1..4] 表示由一至四个整数组成的多值属性。
   // 每个整数使用数值框编辑，并且必须位于 320 至 1920。
   attribute previewWidths : int [1..4] default "360,768,1440"
-    min "320" max "1920" widget number uiLabel "Preview widths"
+    min "320" max "1920"
 
   // enum 给出每一项允许选择的值；[1..3] 表示列表项数。
   // 每一项显示为下拉框，初始列表为 web 和 android。
   attribute targetPlatforms : enum { web, android, ios } [1..3]
-    default "web,android" widget select uiLabel "Target platforms"
+    default "web,android"
 
   // 定义 App 对 Page 的包含关系：一个 App 包含一至五个 Page。
   // 该语句生成 App 块中用于接入 Page 块的 pages 连接位置。
@@ -613,6 +616,815 @@ Xtext 根据 \path{Model2Blockly.xtext} 解析 \texttt{.m2b} 文件
 \path{adapter/DomainModelAdapter.java} 转换为与 Ecore 路线相同的
 \texttt{EditorSpec}。因此，等价的 \texttt{.ecore} 和 \texttt{.m2b} 输入生成
 相同的 Blockly 块、连接和验证规则；两条路线的区别仅在元模型的书写方式。
+
+\subsection{示例 02：增加嵌套组件与模型引用}
+
+\begin{landscape}
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.96\linewidth]{../../examples/feature_pairs/02_enhanced_app/interactiveApp class diagram.jpg}
+  \caption{\texttt{interactiveApp.ecore} 的完整 App Maker 元模型}
+  \label{fig:interactive-app-ecore}
+\end{figure}
+\end{landscape}
+
+图 \ref{fig:interactive-app-ecore} 给出了第二个示例的完整类图。
+示例 01 主要使用属性、枚举、继承和两层包含关系描述 App Maker 的静态结构。
+示例 02 保留原有定义，再从领域模型本身出发增加以下结构：
+
+\begin{enumerate}
+  \item 每个 \texttt{Page} 具有稳定且唯一的模型标识；
+  \item \texttt{Container} 也是一种 \texttt{Component}，并且可以继续包含
+  \texttt{Component}，因此页面组件可以形成多层结构；
+  \item \texttt{Button} 包含一个有序的动作列表；
+  \item 抽象类 \texttt{Action} 统一表示动作，
+  \texttt{ShowMessageAction} 和 \texttt{NavigateAction} 是其具体子类；
+  \item 导航动作引用 App 中已经存在的 \texttt{Page}，而不复制或重新包含页面。
+\end{enumerate}
+
+新增结构如下：
+
+\begin{lstlisting}[style=tfmcode, captionpos=t,
+caption={第二个示例新增的元模型结构},
+label={lst:interactive-app-result}]
+Page
+  id : EString [1..1] { ID }
+
+Component (abstract)
+  Container
+    layout   : Layout
+    children : Component [1..10] { containment }
+  Button
+    onClick  : Action [0..10] { containment }
+
+Action (abstract)
+  ShowMessageAction
+    message : EString [1..1]
+  NavigateAction
+    target  : Page [1..1] { reference }
+\end{lstlisting}
+
+\subsubsection{Ecore 路线}
+
+代码清单 \ref{lst:interactive-app-ecore} 使用简化形式列出新增定义。
+
+\begin{lstlisting}[style=tfmcode, captionpos=t,
+caption={新增 Ecore 定义的简化表示},
+label={lst:interactive-app-ecore}]
+EClass Page
+  // Ecore ID：作为页面的模型标识
+  EAttribute id : EString [1..1] { iD = true } = "home"
+
+abstract EClass Component
+
+// Container 本身是 Component，并继续包含 Component
+EClass Container extends Component
+  EAttribute layout : Layout [0..1] = column
+  EReference children : Component [1..10]
+    { containment = true }
+
+EClass Button extends Component
+  EReference onClick : Action [0..10]
+    { containment = true }
+
+abstract EClass Action
+
+EClass ShowMessageAction extends Action
+  EAttribute message : EString [1..1] = "Message"
+
+EClass NavigateAction extends Action
+  // 非包含引用：目标 Page 仍由 App.pages 保存
+  EReference target : Page [1..1]
+\end{lstlisting}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.68\textwidth,trim=0 0 500 70,clip]{../../examples/feature_pairs/02_enhanced_app/screenshots/advanced_structure.png}
+  \caption{第二个 Ecore 示例生成的 Blockly 块结构}
+  \label{fig:interactive-app-blockly-structure}
+\end{figure}
+
+图 \ref{fig:interactive-app-blockly-structure} 是加载示例模型后的实际编辑结果。
+图中的块不是应用运行界面，而是元模型对象的可视化表示：
+\texttt{Application} 块包含 \texttt{Page} 块，\texttt{Page} 块再包含组件块；
+\texttt{Container} 内部继续嵌套组件，\texttt{Button} 的
+\texttt{onClick} 内部连接动作块，而导航动作中的 \texttt{target} 下拉框用于
+选择已有页面。以下结合该图说明四种新增结构的转换。
+
+\textbf{（1）页面标识。}
+\texttt{Page.id} 是必填的 \texttt{EString} 属性，
+\texttt{iD=true} 表示它是 \texttt{Page} 的 Ecore 标识，而不只是普通页面字段。
+
+转换后，\texttt{Page} 块中出现一个可输入文字的单行文本框。该控件在
+Blockly 中称为 \texttt{field\_input}。编辑器还会检查该文本是否为空，以及
+不同页面是否填写了相同的 \texttt{id}。
+
+这里不能使用下拉框，因为页面标识不是 \texttt{home}、\texttt{details} 等一组
+预先规定的值，而是由建模者为每个页面自行命名。文本框允许输入新的标识，
+与 \texttt{EString} 的含义一致。不过，Blockly 文本框只负责接收文字，并不
+知道 Ecore 对必填和唯一性的要求，因此这两项规则需要另外生成。
+
+实现时，适配器读取属性的 \texttt{EString} 类型、
+\texttt{lowerBound=1} 和 \texttt{iD=true}：字符串类型决定生成文本框，
+\texttt{lowerBound=1} 产生非空检查，\texttt{iD=true} 产生重复标识检查。
+生成器据此写出 \texttt{field\_input} 配置和两条验证规则。后面的页面引用也
+使用该标识区分目标。
+
+\textbf{（2）递归包含。}
+\texttt{Container} 继承 \texttt{Component}，所以它可以放入
+\texttt{Page.components}；其 \texttt{children} 又包含一至十个
+\texttt{Component}，因而可以继续包含普通组件或另一个容器。
+
+转换后，\texttt{Container} 块内部出现一个可以放置组件块的空白区域。
+用户可以把多个 \texttt{Label}、\texttt{Button}、\texttt{Image} 或
+\texttt{Container} 块依次放入其中。Blockly 将这种可以容纳一列块的区域称为
+\texttt{input\_statement}。
+
+\texttt{children} 保存的不是一个简单值，而是一至十个完整的组件对象，并且
+这些对象归当前容器所有。把组件块放在容器块内部，可以直接表现这种所属关系；
+块从上到下的排列顺序也对应 Ecore 列表的先后顺序。相比之下，
+\texttt{input\_value} 只能连接一个提供数值或文本的块，不能表示组件列表，
+因此不适合这里的关系。
+
+实现时，适配器识别 \texttt{containment=true}，读取目标类型和
+\texttt{[1..10]}，把 \texttt{children} 记录为一个组件块区域。目标类型
+\texttt{Component} 被写入 \texttt{check}，因此只有组件子类能够放入；
+\texttt{[1..10]} 则生成最少一个、最多十个组件的数量检查。由于
+\texttt{Container} 本身也是 \texttt{Component}，它也可以放入其他组件区域，
+从而形成多层嵌套。
+
+\textbf{（3）多态动作列表。}
+\texttt{Button.onClick} 包含零至十个 \texttt{Action}；
+\texttt{Action} 是抽象父类，\texttt{ShowMessageAction} 和
+\texttt{NavigateAction} 是可以实际创建的子类。
+
+转换后，\texttt{Button} 块内部出现一个动作区域。消息动作块和导航动作块
+可以像积木一样上下拼接，再整体放入该区域。动作区域使用
+\texttt{input\_statement}，每个动作块的上、下连接分别由
+\texttt{previousStatement} 和 \texttt{nextStatement} 定义。
+
+\texttt{onClick} 可以同时保存多种 \texttt{Action} 子类，而且动作的先后顺序
+有意义。因此，最贴合的表示不是多个互不相关的字段，而是一列可以上下拼接的
+动作块。两个具体动作虽然内容不同，但都使用 \texttt{Action} 作为连接类型，
+所以它们可以互相连接；其他类型的块则不能进入该动作区域。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.72\textwidth,trim=40 1160 2160 250,clip]{../../examples/feature_pairs/02_enhanced_app/screenshots/actions_toolbox_2x.png}
+  \caption{\texttt{Action} 的具体子类生成的动作块}
+  \label{fig:interactive-app-actions-toolbox}
+\end{figure}
+
+如图 \ref{fig:interactive-app-actions-toolbox} 所示，工具箱的
+\texttt{Actions} 类别提供 \texttt{Navigate} 和
+\texttt{Show message} 两种块。抽象类 \texttt{Action} 不能创建模型对象，
+因此它只作为连接类型使用，不生成可以拖入工作区的块。
+
+实现时，适配器先把 \texttt{onClick} 记录为接受 \texttt{Action} 的块区域，
+再读取两个子类的继承关系，将它们的连接类型也设为 \texttt{Action}。生成器
+不会为抽象类生成工具箱块，只为两个具体子类输出上下连接，并根据
+\texttt{[0..10]} 生成最多十个动作的检查。
+
+\textbf{（4）普通引用。}
+\texttt{NavigateAction.target} 是指向 \texttt{Page} 的必填
+普通引用，没有设置 \texttt{containment=true}；目标页面仍由
+\texttt{App.pages} 保存。
+
+转换后，导航动作块中出现一个页面选择框。展开后可以看到当前模型已经包含的
+页面，并选择其中一个作为目标。该控件使用 Blockly 内置的
+\texttt{field\_dropdown}。
+
+这里需要选择的是已经由 \texttt{App.pages} 保存的页面，而不是在导航动作内部
+再创建一个页面。由于本例一个 App 最多只有五个页面，下拉框可以清楚地列出
+全部目标。若使用普通文本框，建模者可能输入一个并不存在的页面标识，模型中的
+引用便无法解析。
+
+实现时，适配器发现该 \texttt{EReference} 没有设置
+\texttt{containment=true}，便把它记录为指向已有 \texttt{Page} 的引用字段，
+并选用 \texttt{Page.id} 区分各个页面。生成器输出
+\texttt{field\_dropdown}；编辑器运行时扫描工作区中的页面块，把它们的
+\texttt{id} 加入候选项。新增、删除或修改页面后，候选项也随之更新。
+\texttt{lowerBound=1} 另外生成“必须选择目标页面”的检查。
+
+\subsubsection{生成的 Blockly 配置}
+
+代码清单 \ref{lst:interactive-app-blockly} 节选自生成的
+\texttt{InteractiveApp\_blocks.js}，只保留与新增 Ecore 结构直接对应的部分。
+
+\begin{lstlisting}[style=tfmcode, captionpos=t,
+caption={Ecore 路线生成的主要 Blockly 配置},
+label={lst:interactive-app-blockly}]
+// Container.children：嵌套组件区域
+{
+  "type": "Container",
+  "args2": [{
+    "type": "input_statement",
+    "name": "children",
+    "check": "Component"
+  }],
+  "previousStatement": "Component",
+  "nextStatement": "Component"
+}
+
+// Button.onClick：动作区域
+{
+  "type": "Button",
+  "args5": [{
+    "type": "input_statement",
+    "name": "onClick",
+    "check": "Action"
+  }]
+}
+
+// NavigateAction.target：已有页面的选择字段
+{
+  "type": "NavigateAction",
+  "args1": [{
+    "type": "field_dropdown",
+    "name": "target",
+    "options": [["(none)", ""]]
+  }],
+  "previousStatement": "Action",
+  "nextStatement": "Action"
+}
+\end{lstlisting}
+
+\texttt{input\_statement}、\texttt{previousStatement}、
+\texttt{nextStatement} 和 \texttt{field\_dropdown} 是 Blockly 提供的块配置。
+Model2Blockly 根据 Ecore 的包含、继承和普通引用自动选择这些配置，并另外生成
+\texttt{id} 唯一性、必填项以及 \texttt{[1..10]}、\texttt{[0..10]} 的数量检查。
+
+\subsubsection{\texttt{.m2b} 路线}
+
+文本 DSL 使用更短的关键字表达同一元模型：
+
+\begin{lstlisting}[style=tfmm2b, captionpos=t,
+caption={新增模型能力的 \texttt{.m2b} 定义},
+label={lst:interactive-app-m2b}]
+class Page {
+  // modelId 对应 Ecore 的 iD=true
+  attribute id : string [1..1] default "home" modelId
+}
+
+abstract class Component {}
+
+class Container extends Component {
+  attribute layout : enum { column, row, grid }
+    [0..1] default "column"
+  contains Component children [1..10]
+}
+
+class Button extends Component {
+  contains Action onClick [0..10]
+}
+
+abstract class Action {}
+
+class ShowMessageAction extends Action {
+  attribute message : string [1..1] default "Message"
+}
+
+class NavigateAction extends Action {
+  reference Page target [1..1] required
+}
+\end{lstlisting}
+
+\texttt{modelId}、\texttt{contains}、\texttt{extends} 和
+\texttt{reference} 分别表达 Ecore 中的标识、包含、继承和普通引用。
+
+转换后，它们生成与 Ecore 路线相同的文本字段、嵌套区域、
+动作连接、页面选择字段和验证规则。
+
+DSL 保留了目标类型、包含关系和数量范围，所以每个
+结构的语义与前述 Ecore 定义相同，Blockly 表示及其选择理由也相同。
+
+实现时，\texttt{DomainModelAdapter} 读取这些关键字并建立通用中间
+模型，后续仍由同一个生成器输出 Blockly 配置；两条路线的差别仅在输入的读取
+方式。
+
+\subsubsection{转换实现与结果}
+
+Ecore 路线读取 \texttt{iD}、继承关系和 \texttt{EReference} 的
+\texttt{containment}、类型及数量范围；DSL 路线读取对应关键字。两个适配器随后
+交给同一个生成器，因此得到相同的嵌套组件区域、动作序列、页面引用字段和验证
+规则。第二个例子说明：Model2Blockly 可以在不改变元模型语义的前提下，把比
+示例 01 更丰富的 Ecore 结构转换为 Blockly 编辑器。
+\FloatBarrier
+
+\subsection{示例 03：值连接、表达式与代码生成}
+
+\begin{landscape}
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.96\linewidth]{../../examples/feature_pairs/03_expressions_codegen/scriptedApp class diagram.jpg}
+  \caption{\texttt{scriptedApp.ecore} 的完整 App Maker 元模型}
+  \label{fig:scripted-app-ecore}
+\end{figure}
+\end{landscape}
+
+图 \ref{fig:scripted-app-ecore} 给出了第三个示例的完整类图。示例 03 直接
+扩展示例 01 的元模型，不依赖示例 02 的动作模型。示例 01 中，
+\texttt{Button.enabled} 是 \texttt{EBoolean} 属性，只能保存一个固定的
+布尔值；当按钮是否可用取决于某个条件（例如应用运行的目标平台）时，固定
+字面值无法表达该语义。本例因此删除 \texttt{enabled}，改为让按钮包含一个
+条件表达式对象，并为元模型补充生成代码文本所需的模板信息。新增结构如下：
+
+\begin{lstlisting}[style=tfmcode, captionpos=t,
+caption={第三个示例新增的元模型结构},
+label={lst:scripted-app-result}]
+Button
+  enabledWhen : Expression [0..1] { containment }
+
+Expression (abstract)
+  BoolLiteral
+    literal  : EBoolean [0..1] = true
+  PlatformIs
+    platform : Platform [0..1] = web
+  NotExpression
+    operand  : Expression [1..1] { containment }
+\end{lstlisting}
+
+\texttt{Expression} 是新的抽象类，表示可求值的条件。
+\texttt{BoolLiteral} 表示固定的真假值，\texttt{PlatformIs} 表示“应用运行
+在所选平台上”，\texttt{NotExpression} 对内部表达式取反。由于
+\texttt{NotExpression.operand} 的目标又是 \texttt{Expression}，表达式可以
+逐层组合，例如“非（平台是 web）”。
+
+\subsubsection{Ecore 路线}
+
+代码清单 \ref{lst:scripted-app-ecore} 使用简化形式列出新增定义。本例引入
+\texttt{source="code"} 的 \texttt{EAnnotation}（下文简写为
+\texttt{@code}）。\texttt{blockly} 注解补充的是编辑器的显示信息，
+\texttt{@code} 注解补充的则是每类模型对象对应的代码文本模板；二者互不重叠。
+
+\begin{lstlisting}[style=tfmcode, captionpos=t,
+caption={新增 Ecore 定义的简化表示},
+label={lst:scripted-app-ecore}]
+EPackage scriptedApp
+  // 生成代码的目标语言和文件扩展名
+  @code(language="javascript", fileExtension="js")
+  // 编辑器页面的背景网格、缩放按钮和垃圾桶
+  @blockly(workspace.grid.spacing=24, workspace.grid.snap=true,
+           workspace.zoom.controls=true, workspace.trashcan=true)
+
+EClass Button extends Component
+  // {{text}} 展开为字段值；{{value:enabledWhen}} 展开为表达式代码
+  @code(template="button('{{text}}', {{value:enabledWhen}});")
+  EReference enabledWhen : Expression [0..1] { containment }
+    // 显示为值插槽，并预置一个 BoolLiteral 阴影块
+    @blockly(type=input_value, shadow=BoolLiteral)
+
+abstract EClass Expression
+  @blockly(output=true)  // 表达式家族的块提供一个值
+
+EClass BoolLiteral extends Expression
+  @blockly(output=true) @code(template="{{literal}}")
+  EAttribute literal : EBoolean = true
+
+EClass PlatformIs extends Expression
+  @blockly(output=true)
+  @code(template="platform === '{{platform}}'")
+  EAttribute platform : Platform = web
+
+EClass NotExpression extends Expression
+  @blockly(output=true) @code(template="!({{value:operand}})")
+  EReference operand : Expression [1..1] { containment }
+    @blockly(type=input_value, shadow=BoolLiteral)
+\end{lstlisting}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[t]{0.42\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../examples/feature_pairs/03_expressions_codegen/screenshots/button_shadow.png}\\[-1mm]
+    \small (a) 值插槽中的阴影块
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.54\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../../examples/feature_pairs/03_expressions_codegen/screenshots/button_expression.png}\\[-1mm]
+    \small (b) 接入嵌套表达式后的同一插槽
+  \end{minipage}
+  \caption{\texttt{Button.enabledWhen} 生成的值插槽}
+  \label{fig:scripted-app-value-shadow}
+\end{figure}
+
+图 \ref{fig:scripted-app-value-shadow} 展示生成结果中的按钮块。图 (a) 中，
+\texttt{enabledWhen} 一行的右侧不再是文本框或复选框，而是块边缘上的一个
+凹口；图 (b) 中，两个表达式块正是通过这样的凹口水平插入。以下结合该图
+说明各项新增结构的转换。
+
+\textbf{（1）单值包含与值输入。}
+\texttt{enabledWhen} 在 Ecore 中仍是 \texttt{containment=true} 的
+\texttt{EReference}。与示例 01 中的 \texttt{pages} 和 \texttt{components}
+不同，它的上限为 1：按钮拥有的不是一列子对象，而是至多一个表达式对象。
+
+转换后，按钮块右侧出现一个带凹口的水平连接位置，只能接入一个提供值的块。
+Blockly 将这种连接位置称为 \texttt{input\_value}（值输入），与容纳一列块
+的结构输入 \texttt{input\_statement} 相对。
+
+结构输入表达“依次拥有多个对象”，块在其中上下排列；值输入表达“恰好使用
+一个可求值的对象”，块只能水平插入一个。\texttt{enabledWhen} 保存的表达式
+对象自身还有属性和嵌套结构，因此也不能退化为一个复选框或文本框字段。
+不过，仅凭 \texttt{containment=true} 和数量范围，Ecore 定义并未说明应该
+使用哪种显示方式，这一选择由引用上的注解
+\texttt{blockly.type=input\_value} 指定。
+
+实现时，适配器读取该注解，把 \texttt{enabledWhen} 记录为值输入，并把引用
+的目标类型 \texttt{Expression} 写入 \texttt{check}，因此只有表达式块能够
+插入该插槽。
+
+\textbf{（2）输出块。}
+\texttt{Expression} 及其三个子类在 Ecore 中是普通的继承结构。类上的注解
+\texttt{blockly.output=true} 声明这一家族的块提供“值”。
+
+转换后，三个具体表达式类各生成一种块。如图
+\ref{fig:scripted-app-value-shadow}~(b) 所示，这些块的左侧有一个凸头，
+形状与值输入的凹口互补；它们没有上下连接，不能像组件块那样排成一列，只能
+水平插入某个值输入。Blockly 使用块定义中的 \texttt{output} 声明这种连接，
+带有 \texttt{output} 的块称为输出块。
+
+与示例 01 中组件块的规则对照：同样是“抽象父类加具体子类”的继承结构，
+\texttt{Label} 等组件块因为要在 \texttt{components} 区域中排成一列而得到
+\texttt{previousStatement} 和 \texttt{nextStatement}，表达式块因为要作为
+单个值被使用而得到 \texttt{output}。连接方式取决于目标位置如何使用这些
+对象，而不是继承结构本身。三个表达式块的输出类型统一为祖先类型
+\texttt{Expression}，因此都能插入 \texttt{check} 为 \texttt{Expression}
+的插槽，而组件块不能。
+
+实现时，适配器读取 \texttt{output=true} 与 \texttt{eSuperTypes}，把连接
+类型记录为“输出，类型为根祖先 \texttt{Expression}”；抽象类
+\texttt{Expression} 本身照旧不生成可拖出的块。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth]{../../examples/feature_pairs/03_expressions_codegen/screenshots/expressions_toolbox.png}
+  \caption{\texttt{Expression} 的具体子类生成的表达式块}
+  \label{fig:scripted-app-expressions-toolbox}
+\end{figure}
+
+图 \ref{fig:scripted-app-expressions-toolbox} 是工具箱的
+\texttt{Expressions} 类别。可以观察到三种表达式块左侧的输出凸头，以及
+\texttt{Not} 块内部预置的浅色操作数；抽象类 \texttt{Expression} 不出现在
+工具箱中。
+
+\textbf{（3）递归的表达式组合。}
+在元模型中，\texttt{NotExpression} 同时扮演两个角色：它继承
+\texttt{Expression}，本身\emph{是}一个表达式；又通过 \texttt{operand}
+包含一个 \texttt{Expression}，内部\emph{使用}一个表达式。这两行普通的
+Ecore 声明合在一起就构成递归结构：表达式里可以再放表达式，嵌套深度没有
+上限。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.55\textwidth]{../../examples/feature_pairs/03_expressions_codegen/screenshots/expression_recursion.png}
+  \caption{两个 \texttt{Not} 块逐层嵌套，对应表达式“非（非（平台是 web））”}
+  \label{fig:scripted-app-recursion}
+\end{figure}
+
+转换后，递归在编辑器中只体现为一条类型匹配规则：\texttt{Not} 块的插槽
+接受输出类型为 \texttt{Expression} 的块，而 \texttt{Not} 块自身的输出
+类型恰好也是 \texttt{Expression}，因此 \texttt{Not} 块可以插入另一个
+\texttt{Not} 块。图 \ref{fig:scripted-app-recursion} 中，用户每插入一层，
+Blockly 执行的都是同一个连接检查，不存在任何针对嵌套深度的机制。示例 02
+中容器块的递归嵌套依赖的也是同样的原理，只是发生在结构输入而不是值插槽上。
+
+实现时，适配器不需要对递归做任何专门处理：\texttt{NotExpression} 这一个类
+只转换出一种块定义——带 \texttt{Expression} 输出和一个 \texttt{check} 为
+\texttt{Expression} 的插槽。递归能力不是在转换时展开出来的，而是在编辑时
+由连接检查逐层匹配产生。代码生成同理：模板
+\texttt{!(\{\{value:operand\}\})} 只有一条，嵌套两层就被套用两次，图
+\ref{fig:scripted-app-recursion} 中的块生成
+\texttt{!(!(platform === 'web'))}。块嵌套多少层，模板就展开多少次，
+模型对象树、块和代码始终保持相同的嵌套结构。
+
+\textbf{（4）阴影块。}
+\texttt{enabledWhen} 的注解还包含 \texttt{shadow=BoolLiteral}。
+
+转换后，值插槽并不显示为空缺，而是预先放着一个颜色较浅的 \texttt{Boolean}
+块（图 \ref{fig:scripted-app-value-shadow}~(a)）。它可以直接编辑，例如
+把复选框改为未勾选；也可以被拖入的真实表达式块覆盖（图 (b)）；删除覆盖它
+的块后，它重新出现。Blockly 将这种占位块称为阴影块（shadow block）。
+
+\texttt{enabledWhen} 的下限为 0，允许引用为空，但空缺的插槽无法提示可以
+放入什么。阴影块同时给出该插槽的默认取值和可接入块的形状。阴影块显示的是
+元模型定义的默认内容；只有当它被真实块替换、或其字段被修改后，对应内容才
+成为模型中的表达式对象。
+
+实现时，适配器把 \texttt{shadow} 注解记录在值输入上，生成器把它写入工具箱
+条目，因此每次从工具箱创建按钮块都会带出这个阴影块。
+\texttt{NotExpression.operand} 采用同样的配置。
+
+\textbf{（5）代码模板与代码生成。}
+包级 \texttt{@code} 注解声明目标语言为 JavaScript；每个具体类的
+\texttt{template} 给出一段文本模板。模板中的占位符有三种：
+\texttt{\{\{name\}\}} 展开为块中同名字段的当前值；
+\texttt{\{\{statements:pages\}\}} 按连接顺序依次展开结构输入中每个块的
+代码；\texttt{\{\{value:enabledWhen\}\}} 递归展开值插槽中表达式块的代码。
+
+转换后，生成的编辑器在 \emph{Inspector} 的 \emph{Code} 页签中持续显示由
+当前工作区模型生成的代码文本。图 \ref{fig:scripted-app-editor-code} 中，
+工作区里的应用模型与右侧代码一一对应：
+
+\begin{lstlisting}[style=tfmjavascript, captionpos=t,
+caption={图 \ref{fig:scripted-app-editor-code} 中模型生成的代码},
+label={lst:scripted-app-generated-code}]
+app('Welcome App', () => { page('Home', () => {
+  label('Welcome');
+  button('Continue', !(platform === 'web'));
+  image('https://example.org/welcome.png'); }); });
+\end{lstlisting}
+
+截图中的 Blockly 块不是应用运行界面，这段代码也不是正在执行的程序；块与
+代码是同一个模型对象树的图形形式和文本形式。\texttt{Button} 块内插入的
+\texttt{Not} 与 \texttt{Platform is} 两个块，对应代码中的
+\texttt{!(platform === 'web')}：块的嵌套结构直接决定代码的嵌套结构。
+
+实现时，生成器把全部模板写入 \path{ScriptedApp_generators.js}；编辑器运行
+时从根块出发套用各块的模板，遇到 \texttt{statements} 与 \texttt{value}
+占位符时递归处理被连接的块。
+
+\textbf{（6）工作区配置。}
+包级 \texttt{blockly} 注解中以 \texttt{workspace.} 开头的键不描述任何块，
+而是配置编辑器页面本身：本例开启了背景网格及对齐吸附、缩放按钮和用于删除
+块的垃圾桶。图 \ref{fig:scripted-app-value-shadow} 背景中的浅色网格点即
+来自该配置。适配器把这些键值收集为工作区选项，生成器将其写入编辑器页面的
+初始化参数。
+
+\begin{landscape}
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.96\linewidth]{../../examples/feature_pairs/03_expressions_codegen/screenshots/editor_overview.png}
+  \caption{由 \texttt{scriptedApp.ecore} 生成的编辑器：左侧为模型的块形式，
+  右侧 \emph{Code} 页签为同一模型生成的 JavaScript 文本}
+  \label{fig:scripted-app-editor-code}
+\end{figure}
+\end{landscape}
+
+\subsubsection{生成的 Blockly 配置}
+
+代码清单 \ref{lst:scripted-app-blockly} 节选自生成的
+\path{ScriptedApp_blocks.js} 和 \path{ScriptedApp_toolbox.js}，只保留与
+新增结构直接对应的部分。
+
+\begin{lstlisting}[style=tfmcode, captionpos=t,
+caption={Ecore 路线生成的主要 Blockly 配置},
+label={lst:scripted-app-blockly}]
+// Button.enabledWhen：只接受表达式块的值插槽
+{
+  "type": "Button",
+  "args4": [{
+    "type": "input_value",
+    "name": "enabledWhen",
+    "check": "Expression"
+  }],
+  "previousStatement": "Component",
+  "nextStatement": "Component"
+}
+
+// NotExpression：输出块，内部再包含一个值插槽
+{
+  "type": "NotExpression",
+  "args1": [{
+    "type": "input_value",
+    "name": "operand",
+    "check": "Expression"
+  }],
+  "output": "Expression"
+}
+
+// 工具箱条目：按钮块的值插槽预置 BoolLiteral 阴影块
+{
+  "kind": "block", "type": "Button",
+  "inputs": {
+    "enabledWhen": { "shadow": { "type": "BoolLiteral" } }
+  }
+}
+\end{lstlisting}
+
+\texttt{input\_value}、\texttt{output} 和工具箱中的 \texttt{shadow} 均为
+Blockly 提供的块配置。与示例 01 和示例 02 中的字段、结构输入和上下连接
+一样，它们由 Model2Blockly 根据 Ecore 定义和注解自动选择。
+
+\subsubsection{\texttt{.m2b} 路线}
+
+文本 DSL 用一级关键字表达 Ecore 路线中由注解补充的信息：
+
+\begin{lstlisting}[style=tfmm2b, captionpos=t,
+caption={新增模型能力的 \texttt{.m2b} 定义},
+label={lst:scripted-app-m2b}]
+domain ScriptedApp
+// 对应包级 @code 注解
+codeLanguage "javascript"
+codeFileExtension "js"
+
+// 对应包级 blockly 注解中的 workspace.* 键
+workspace {
+  grid: { spacing: 24  snap: true }
+  zoom: { controls: true }
+  trashcan: true
+}
+
+class Button extends Component
+  // code 对应类级 @code 注解中的模板
+  code "button('{{text}}', {{value:enabledWhen}});" {
+  attribute ^text : string [1..1] default "Continue"
+
+  // value 定义值插槽；shadow 指定预置的阴影块
+  value Expression enabledWhen shadow BoolLiteral
+}
+
+// output 使该类的块带输出连接
+abstract output class Expression {}
+
+output class BoolLiteral extends Expression code "{{literal}}" {
+  attribute literal : boolean [0..1] default "true"
+}
+
+output class PlatformIs extends Expression
+  code "platform === '{{platform}}'" {
+  attribute platform : enum { web, android, ios } [0..1]
+    default "web"
+}
+
+output class NotExpression extends Expression
+  code "!({{value:operand}})" {
+  value Expression operand shadow BoolLiteral
+}
+\end{lstlisting}
+
+\texttt{output}、\texttt{value}、\texttt{shadow}、\texttt{code} 和
+\texttt{workspace} 分别对应 Ecore 路线中的 \texttt{output=true}、
+\texttt{type=input\_value}、\texttt{shadow=...}、\texttt{@code} 模板和
+\texttt{workspace.*} 注解。语义相同，因此两条路线生成相同的值插槽、
+输出块、阴影块、代码模板和页面配置。
+
+\subsubsection{转换实现与结果}
+
+Ecore 路线读取类上的 \texttt{output} 注解与继承关系确定输出连接的类型，
+读取引用上的 \texttt{input\_value} 与 \texttt{shadow} 注解建立值输入，
+并收集 \texttt{@code} 模板和 \texttt{workspace.*} 选项；DSL 路线读取对应
+关键字。两个适配器产出相同的中间模型，生成器据此输出块定义、含阴影块的
+工具箱、代码生成脚本和页面配置。具体实现可参考 \texttt{EcoreAdapter}、
+\texttt{DomainModelAdapter} 和 \texttt{BlocklyCodeGenerator} 等文件。
+\FloatBarrier
+
+\subsection{示例 04：领域约束与约束子集}
+
+示例 01 已经说明：属性的 \texttt{lowerBound}/\texttt{upperBound} 和
+\texttt{min}/\texttt{max} 会生成基数与取值范围验证。示例 02 进一步覆盖了
+标识唯一性。这类规则都直接来自结构声明。还有一类约束无法只靠结构写出，
+例如“已发布的应用必须带有标签”：它同时涉及布尔属性 \texttt{published}
+与多值属性 \texttt{tags}。
+
+Model2Blockly 为此支持一小部分常见于 OCL 不变式的写法，并把它翻译成编辑器
+内可执行的验证表达式。本节只讨论这一\emph{约束子集}，不把 Model2Blockly
+表述为完整的 OCL 引擎。子集涵盖：\texttt{self.<特征>}、
+\texttt{size()}、\texttt{notEmpty()}、\texttt{isEmpty()}、
+\texttt{oclIsUndefined()}、比较运算以及 \texttt{and}/\texttt{or}/
+\texttt{not}。\texttt{forAll}、\texttt{exists}、\texttt{select}、
+\texttt{collect} 等集合推导不在子集内；超出范围的表达式会留下明确的
+“不支持”诊断，而不是静默忽略。
+
+本例直接扩展示例 01 的 App Maker：类、属性、引用与数量范围保持不变，只在
+若干类上补充约束。类图因此与图 \ref{fig:basic-structure-ecore} 相同，下文
+不再重复。新增的三条规则如下。
+
+\begin{lstlisting}[style=tfmcode, captionpos=t,
+caption={第四个示例新增的约束子集规则},
+label={lst:validated-app-rules}]
+-- App：已发布则必须至少有一个标签
+not self.published or self.tags->notEmpty()
+
+-- Page：要么有组件，要么有非空描述
+self.components->size() >= 1 or self.description <> ''
+
+-- Button：启用时宽度至少为 100
+not self.enabled or self.width >= 100
+\end{lstlisting}
+
+\subsubsection{Ecore 路线}
+
+代码清单 \ref{lst:validated-app-ecore} 使用简化形式给出类上的
+\texttt{source="validation"} 注解（下文简写为 \texttt{@validation}）。
+\texttt{ocl.<规则名>} 存放约束文本，\texttt{message.<规则名>} 存放违例时
+显示给用户的说明。
+
+\begin{lstlisting}[style=tfmcode, captionpos=t,
+caption={新增约束的 Ecore 注解简化表示},
+label={lst:validated-app-ecore}]
+EClass App
+  @validation(
+    ocl.publishedRequiresTags =
+      "not self.published or self.tags->notEmpty()",
+    message.publishedRequiresTags =
+      "A published app must have at least one tag.")
+
+EClass Page
+  @validation(
+    ocl.pageShowsContent =
+      "self.components->size() >= 1 or self.description <> ''",
+    message.pageShowsContent =
+      "A page must have at least one component or a non-empty description.")
+
+EClass Button
+  @validation(
+    ocl.enabledNeedsWidth =
+      "not self.enabled or self.width >= 100",
+    message.enabledNeedsWidth =
+      "An enabled button must be at least 100 pixels wide.")
+\end{lstlisting}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.96\textwidth]{../../examples/feature_pairs/04_constraint_subset/screenshots/issues_violations.png}
+  \caption{故意违反两条跨特征约束后的 Issues 面板}
+  \label{fig:validated-app-issues}
+\end{figure}
+
+图 \ref{fig:validated-app-issues} 中，应用块勾选了 \texttt{published} 且
+\texttt{tags} 为空，按钮块勾选了 \texttt{enabled} 且 \texttt{width} 为
+80。Issues 页签列出两条对应消息，相关块上也出现警告标记。以下按规则说明
+转换。
+
+\textbf{（1）跨特征约束。}
+\texttt{publishedRequiresTags} 在 Ecore 中不是某个属性的数量范围，而是
+一条同时读取两个特征的布尔表达式。
+
+转换后，每当工作区模型变化，编辑器都会重新求值该表达式。当
+\texttt{published} 为真且 \texttt{tags} 为空时，规则不成立，Issues 面板
+显示注解中给出的消息；补上标签或取消发布后，该条目消失。图
+\ref{fig:validated-app-cleared} 是修复后的同一编辑器。
+
+这类约束不能简化为“\texttt{tags} 的下限改为 1”：未发布的应用允许没有
+标签。结构验证管形状，约束子集管跨特征的业务一致性。
+
+实现时，适配器读取 \texttt{ocl.*} 键，把子集内的 OCL 文本翻译为浏览器可
+执行表达式（例如 \texttt{not self.published or self.tags->notEmpty()}
+变为 \texttt{!bool("published") || has("tags")}），并写入中间模型的表达式
+验证项；生成器把它编入运行时检查与 Issues 面板。
+
+\textbf{（2）包含数量与属性的组合约束。}
+\texttt{pageShowsContent} 同时使用 \texttt{components->size()} 与
+\texttt{description}。页面可以没有组件，也可以没有描述，但不能两者皆空。
+
+转换后，清空描述并移除全部组件会使该规则失败；保留其一即可通过。它与示例
+01 中 \texttt{components [0..10]} 的基数验证并存：基数只限制数量上界，
+组合约束才要求“页面至少展示某种内容”。
+
+\textbf{（3）条件性数值约束。}
+\texttt{enabledNeedsWidth} 要求：仅当按钮启用时，宽度至少为 100。示例 01
+中 \texttt{width} 的字段注解已有 \texttt{min=60}；本规则更严，且只在
+\texttt{enabled} 为真时生效。禁用的窄按钮仍然合法。
+
+转换后，图 \ref{fig:validated-app-issues} 中宽度为 80 的启用按钮触发违例；
+把宽度改回 160 后该条目消失。字段控件的 \texttt{min}/\texttt{max} 限制
+输入范围，约束子集则表达依赖其他特征的条件限制。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.96\textwidth]{../../examples/feature_pairs/04_constraint_subset/screenshots/issues_cleared.png}
+  \caption{恢复合法取值后，Issues 面板显示无验证问题}
+  \label{fig:validated-app-cleared}
+\end{figure}
+
+\subsubsection{\texttt{.m2b} 路线}
+
+文本 DSL 用顶级 \texttt{validation} 声明表达同一约束子集：
+
+\begin{lstlisting}[style=tfmm2b, captionpos=t,
+caption={约束子集的 \texttt{.m2b} 定义},
+label={lst:validated-app-m2b}]
+validation publishedRequiresTags on App
+  : ocl "not self.published or self.tags->notEmpty()"
+  errorMessage "A published app must have at least one tag."
+
+validation pageShowsContent on Page
+  : ocl "self.components->size() >= 1 or self.description <> ''"
+  errorMessage "A page must have at least one component or a non-empty description."
+
+validation enabledNeedsWidth on Button
+  : ocl "not self.enabled or self.width >= 100"
+  errorMessage "An enabled button must be at least 100 pixels wide."
+\end{lstlisting}
+
+关键字 \texttt{ocl} 标明表达式属于上述约束子集；\texttt{errorMessage}
+对应 Ecore 路线中的 \texttt{message.*}。两条路线翻译到同一套运行时检查，
+因此 Issues 面板中的结果一致。
+
+\subsubsection{转换实现与结果}
+
+Ecore 路线从类上的 \texttt{validation} 注解读取子集表达式与消息；DSL
+路线从 \texttt{validation ... : ocl} 声明读取。适配器只翻译子集内的构造；
+超出子集的写法进入诊断信息。生成器输出验证脚本，编辑器在每次模型变更时
+求值并把违例写入 Issues 面板。具体实现可参考 \texttt{EcoreAdapter}、
+\texttt{DomainModelAdapter} 与验证运行时生成逻辑。
+
+四个示例合起来覆盖了 Model2Blockly 的主要转换能力：示例 01 说明类、属性
+和枚举如何成为块与字段，示例 02 说明对象之间的关系如何成为块连接与引用
+字段，示例 03 说明值表达式如何成为可组合的输出块以及模型如何生成代码，
+示例 04 说明结构写不出的领域约束如何进入编辑器的实时验证。
+\FloatBarrier
+\endinput
 
 \section{一次执行的内部流程}
 \label{sec:flujo-interno-ejecucion}
@@ -934,77 +1746,9 @@ DSL 文件都可以作为 EMF 模型处理。该模型的根对象汇集领域�
 类中可以声明四类元素：属性、包含关系、引用和值输入。语法中的这一区分对应
 Blockly 表示信息的几种主要形式：字段、语句输入、引用下拉框和值连接器。
 
-DSL 还包括界面选项。利用这些选项，可以指定控件、标签、帮助文本、分组、
-展示顺序、只读字段、隐藏字段，以及用于显示引用的字段。基本 Blockly 编辑器
-并不需要这些信息，但它们可以在无须手写 JavaScript 的情况下丰富生成的
-输出。本论文通过小型示例使用这些信息说明它与 Ecore 的对应关系，同时避免
-把文本表示法和 Xtext 所生成的元模型混为一谈。
-
-代码清单 \ref{lst:composition-inputs-dsl} 和
-\ref{lst:references-integrity-dsl} 分别展示了前文同时涉及的两项决策。
-前者声明组合和值输入，后者声明标识和非包含引用。Ecore 适配器一节中的图
-\ref{fig:ecore-composition-acotado} 和
-\ref{fig:ecore-references-acotado} 展示了相应结构。
-
-\begin{lstlisting}[style=tfmm2b, captionpos=t, caption={\texttt{03\_composition\_inputs} 的组合和值输入}, label={lst:composition-inputs-dsl}]
-domain CompositionInputs
-category Composition colour 200
-category Expressions colour 230
-
-class Document category Composition colour 200 inputsInline false {
-  contains Section sections [1..4]
-    widget slot uiLabel "Sections" order 2 variant default
-}
-
-abstract class Section category Composition colour 120 inputsInline false {
-}
-
-class Paragraph extends Section category Composition colour 120 inputsInline false {
-  value TextExpression content shadow TextLiteral
-    widget expression-slot uiLabel "Content" order 2 variant default
-}
-
-abstract output class TextExpression category Expressions colour 230 inputsInline false {
-}
-
-output as TextExpression class TextLiteral extends TextExpression
-  category Expressions colour 230 inputsInline false {
-}
-\end{lstlisting}
-
-在该片段中，\texttt{sections} 和 \texttt{content} 是 Blockly 输入的
-内部名称，而不是 Java 变量。\texttt{contains} 构造生成一个可堆叠块的
-语句输入；\texttt{value} 则生成水平输入。\texttt{TextExpression}
-是可接受的连接类型，\texttt{TextLiteral} 是默认显示的影子块，直到用户
-接入另一个兼容表达式。
-
-\begin{lstlisting}[style=tfmm2b, captionpos=t, caption={\texttt{04\_references\_integrity} 的标识和引用}, label={lst:references-integrity-dsl}]
-domain ReferencesIntegrity
-category References colour 260
-
-class Card extends Element category References colour 120 inputsInline false {
-  attribute cardId : string [1..1] default "card-1" modelId
-  reference Link outgoing [0..3] opposite source unique ordered
-    widget reference-select uiLabel "Outgoing links" order 3 variant default
-    referenceLabelField linkId
-}
-
-class Link extends Element category References colour 120 inputsInline false {
-  attribute linkId : string [1..1] default "link-1" modelId
-  reference Card source [1..1] opposite outgoing required unique ordered
-    widget reference-select uiLabel "Source card" order 2 variant default
-    referenceLabelField title
-  reference Card target [1..2] required nonUnique unordered
-    widget reference-select uiLabel "Target cards" order 4 variant default
-    referenceLabelField title
-}
-\end{lstlisting}
-
-这里，\texttt{cardId} 和 \texttt{linkId} 是被标记为标识符的领域属性；
-即使可见标签发生变化，编辑器也能借助它们保留引用。\texttt{outgoing}、
-\texttt{source} 和 \texttt{target} 是模型中的引用名称。
-\texttt{opposite} 连接必须保持同步的两个端点，\texttt{referenceLabelField}
-则决定下拉框中显示哪个便于用户理解的属性，而不会替换持久化的标识符。
+本章的主路线不再使用单独的 \texttt{ui} 配置。字段类型直接决定基础 Blockly
+控件，Blockly 特有设置统一写入 \texttt{blockly} 注解或 DSL 中与 Blockly
+结果直接对应的关键字。引用显示名称等关系配置仍由相应的关系语句表达。
 
 按照第 \ref{sec:carga-validacion-entradas} 节所述流程解析文件后，该语法
 会得到一个已完成链接和验证的 \texttt{DomainModel}。这个对象就是第
